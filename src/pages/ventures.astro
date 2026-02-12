@@ -1,0 +1,93 @@
+---
+const siteName = "Visio Nova Mundi";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ventures — {siteName}</title>
+  </head>
+
+  <body>
+    <main>
+      <a class="back" href="/">← Back to Home</a>
+
+      <h1>Ventures</h1>
+      <p class="lead">
+        We build private/commercial projects to generate revenue. Profits support the CIC mission —
+        creating a sustainable loop: ventures fund impact.
+      </p>
+
+      <section class="card">
+        <h2>What belongs here</h2>
+        <ul>
+          <li>Commercial products and services</li>
+          <li>R&amp;D and innovation projects</li>
+          <li>Digital initiatives and partnerships</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Future ventures</h2>
+        <p>
+          This section will list active and planned ventures, each with a clear description and how it
+          contributes to funding impact.
+        </p>
+        <ul>
+          <li>Venture 1 — coming soon</li>
+          <li>Venture 2 — coming soon</li>
+          <li>Venture 3 — coming soon</li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>
+
+<style>
+  :global(body) {
+    margin: 0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: #0b0f19;
+    color: #e6e8ee;
+  }
+  main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 56px 20px;
+  }
+  .back {
+    color: #b7bfd6;
+    text-decoration: none;
+  }
+  .back:hover {
+    text-decoration: underline;
+  }
+  h1 {
+    margin: 18px 0 10px;
+    font-size: 40px;
+    letter-spacing: -0.02em;
+  }
+  .lead {
+    color: #b7bfd6;
+    line-height: 1.6;
+    font-size: 18px;
+    max-width: 70ch;
+  }
+  .card {
+    margin-top: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 18px;
+    background: rgba(255, 255, 255, 0.03);
+  }
+  h2 {
+    margin: 0 0 10px;
+    font-size: 20px;
+  }
+  p,
+  li {
+    color: #b7bfd6;
+    line-height: 1.6;
+  }
+</style>

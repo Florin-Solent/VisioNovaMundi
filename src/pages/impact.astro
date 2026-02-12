@@ -1,0 +1,88 @@
+---
+const siteName = "Visio Nova Mundi";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Impact — {siteName}</title>
+  </head>
+
+  <body>
+    <main>
+      <a class="back" href="/">← Back to Home</a>
+
+      <h1>Impact (CIC)</h1>
+      <p class="lead">
+        We build public-benefit initiatives designed to help people in practical, measurable ways —
+        with long-term sustainability at the core.
+      </p>
+
+      <section class="card">
+        <h2>What we do</h2>
+        <ul>
+          <li>Community support and direct help</li>
+          <li>Long-term programs with measurable outcomes</li>
+          <li>Partnerships, transparency, and accountability</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>How it’s funded</h2>
+        <p>
+          Visio Nova Mundi develops ventures that generate revenue. Profits are used to support the
+          CIC mission and scale impact responsibly.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>
+
+<style>
+  :global(body) {
+    margin: 0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: #0b0f19;
+    color: #e6e8ee;
+  }
+  main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 56px 20px;
+  }
+  .back {
+    color: #b7bfd6;
+    text-decoration: none;
+  }
+  .back:hover {
+    text-decoration: underline;
+  }
+  h1 {
+    margin: 18px 0 10px;
+    font-size: 40px;
+    letter-spacing: -0.02em;
+  }
+  .lead {
+    color: #b7bfd6;
+    line-height: 1.6;
+    font-size: 18px;
+    max-width: 70ch;
+  }
+  .card {
+    margin-top: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 18px;
+    background: rgba(255, 255, 255, 0.03);
+  }
+  h2 {
+    margin: 0 0 10px;
+    font-size: 20px;
+  }
+  p,
+  li {
+    color: #b7bfd6;
+    line-height: 1.6;
+  }
+</style>
