@@ -1,123 +1,340 @@
 ---
-const siteName = "Visio Nova Mundi";
-const tagline = "Ventures that fund impact — building sustainable projects to help people.";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const heroTitle = "Designing better systems for people and communities.";
+const heroText =
+  "A London-based social innovation organisation combining research, institutional reform, and applied pilot programmes to strengthen public services and improve outcomes.";
+
+const quickPoints = [
+  {
+    title: "Research & Systems Evaluation",
+    text: "Evidence-led analysis of institutional performance, service delivery, and community needs.",
+  },
+  {
+    title: "Innovation & Pilot Programmes",
+    text: "Design and testing of scalable models in controlled community environments.",
+  },
+  {
+    title: "Advisory & Capacity Building",
+    text: "Workshops, training, and strategic support to improve outcomes and operational resilience.",
+  },
+];
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{siteName}</title>
-  </head>
+<BaseLayout title="">
+  <section class="hero">
+    <div class="heroGrid">
+      <div>
+        <p class="eyebrow">Social Innovation • Research • Applied Pilots</p>
+        <h1>{heroTitle}</h1>
+        <p class="lead">{heroText}</p>
 
-  <body>
-    <main>
-      <header>
-        <h1>{siteName}</h1>
-        <p>{tagline}</p>
-      </header>
-
-      <section>
-        <h2>Two pillars, one mission</h2>
-
-        <div class="grid">
-          <article class="card">
-            <h3><a href="/impact">Impact (CIC)</a></h3>
-            <p>
-              Public-benefit work: community support, long-term initiatives, and measurable outcomes.
-            </p>
-          </article>
-
-          <article class="card">
-            <h3><a href="/ventures">Ventures</a></h3>
-            <p>
-              Private/commercial projects that generate revenue — with profits supporting our impact work.
-            </p>
-          </article>
+        <div class="actions">
+          <a class="btn primary" href="/work">Explore our work</a>
+          <a class="btn" href="/contact">Partner with us</a>
         </div>
-      </section>
 
-      <footer>
-        <small>© {new Date().getFullYear()} {siteName}</small>
-      </footer>
-    </main>
-  </body>
-</html>
+        <div class="trust">
+          <div class="chip">CIC • Public benefit</div>
+          <div class="chip">Evidence-led</div>
+          <div class="chip">Measurable outcomes</div>
+        </div>
+      </div>
 
-<style>
-  :global(body) {
-    margin: 0;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    background: #0b0f19;
-    color: #e6e8ee;
-  }
+      <div class="heroCard">
+        <h2>Our focus</h2>
+        <p>
+          We work at the intersection of research, operational insight, and system design — improving coordination,
+          reducing waste, and increasing long-term social impact.
+        </p>
 
-  main {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 56px 20px;
-  }
+        <div class="miniGrid">
+          <div class="mini">
+            <div class="miniTop">Sectors</div>
+            <div class="miniBig">Health • Justice • Education • Community</div>
+          </div>
+          <div class="mini">
+            <div class="miniTop">Approach</div>
+            <div class="miniBig">Pilot → Measure → Refine → Scale</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  header {
-    margin-bottom: 48px;
-  }
+  <section class="section">
+    <div class="sectionHead">
+      <h2>What we do</h2>
+      <p>Three pillars that support research-led reform and scalable innovation.</p>
+    </div>
 
-  h1 {
-    font-size: 48px;
-    letter-spacing: -0.02em;
-    margin: 0 0 12px;
-  }
+    <div class="cards">
+      {quickPoints.map((p) => (
+        <article class="card">
+          <h3>{p.title}</h3>
+          <p>{p.text}</p>
+          <a class="link" href="/work">Learn more →</a>
+        </article>
+      ))}
+    </div>
+  </section>
 
-  p {
-    font-size: 18px;
-    line-height: 1.6;
-    color: #b7bfd6;
-    margin: 0;
-    max-width: 70ch;
-  }
+  <section class="section subtle">
+    <div class="twoCol">
+      <div>
+        <h2>Innovation spotlight</h2>
+        <p class="lead2">
+          <strong>Unity House Center (UHC)</strong> is a research-led pilot exploring integrated food redistribution,
+          employment pathways, and circular economy models within a community setting.
+        </p>
+        <ul class="list">
+          <li>Designed as a controlled pilot with defined KPIs</li>
+          <li>Independent evaluation and impact reporting</li>
+          <li>Scalability assessment based on evidence</li>
+        </ul>
+        <div class="actions">
+          <a class="btn primary" href="/innovation">Explore the Innovation Programme</a>
+          <a class="btn" href="/projects">View projects</a>
+        </div>
 
-  h2 {
-    font-size: 26px;
-    margin: 0 0 18px;
-  }
+        <p class="note">
+          *UHC is presented as an innovation pilot concept under development — not a national policy position.
+        </p>
+      </div>
 
-  a {
-    color: #e6e8ee;
-    text-decoration: none;
-  }
-  a:hover {
-    text-decoration: underline;
-  }
+      <figure class="poster">
+        <img src="/images/uhc-poster.png" alt="Unity House Center — promotional poster" loading="lazy" />
+        <figcaption>Unity House Center — pilot concept visual</figcaption>
+      </figure>
+    </div>
+  </section>
 
-  .grid {
-    display: grid;
-    gap: 18px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+  <section class="section">
+    <div class="sectionHead">
+      <h2>Governance & transparency</h2>
+      <p>
+        As a Community Interest Company, we operate for public benefit and reinvest surplus into research,
+        innovation, and community-focused initiatives aligned with our mission.
+      </p>
+    </div>
 
-  .card {
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 16px;
-    padding: 18px;
-    background: rgba(255, 255, 255, 0.03);
-  }
+    <div class="ctaBar">
+      <div>
+        <h3>Work with us</h3>
+        <p>Partnerships, pilots, and advisory — built on evidence and measurable outcomes.</p>
+      </div>
+      <div class="actions">
+        <a class="btn primary" href="/contact">Contact</a>
+        <a class="btn" href="/governance">Governance</a>
+      </div>
+    </div>
+  </section>
 
-  .card h3 {
-    margin: 0 0 8px;
-    font-size: 18px;
-  }
+  <style>
+    .hero { padding: 18px 0 10px; }
 
-  footer {
-    margin-top: 56px;
-    color: #8891a9;
-  }
+    .heroGrid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      align-items: start;
+    }
 
-  @media (max-width: 700px) {
+    .eyebrow {
+      margin: 0 0 10px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
     h1 {
-      font-size: 36px;
+      margin: 0 0 10px;
+      font-size: clamp(34px, 4vw, 54px);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: var(--text);
     }
-    .grid {
-      grid-template-columns: 1fr;
+
+    .lead {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 70ch;
     }
-  }
-</style>
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, rgba(39, 99, 235, 0.10), rgba(16, 185, 129, 0.10));
+      border-color: rgba(39, 99, 235, 0.25);
+    }
+
+    .btn:hover {
+      border-color: rgba(0, 0, 0, 0.18);
+      text-decoration: none;
+    }
+
+    .trust {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip {
+      font-size: 13px;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.7);
+      padding: 8px 10px;
+      border-radius: 999px;
+    }
+
+    .heroCard {
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+    }
+
+    .heroCard h2 { margin: 0 0 8px; font-size: 16px; letter-spacing: -0.01em; }
+    .heroCard p { margin: 0; color: var(--muted); line-height: 1.7; }
+
+    .miniGrid { display: grid; gap: 10px; margin-top: 14px; }
+
+    .mini {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      background: rgba(39, 99, 235, 0.04);
+    }
+
+    .miniTop {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .miniBig { font-weight: 800; letter-spacing: -0.01em; color: var(--text); }
+
+    .section { margin-top: 34px; }
+
+    .sectionHead h2 {
+      margin: 0 0 8px;
+      font-size: 26px;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .sectionHead p { margin: 0; color: var(--muted); line-height: 1.7; max-width: 90ch; }
+
+    .cards {
+      margin-top: 14px;
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+    }
+
+    .card h3 { margin: 0 0 8px; font-size: 16px; letter-spacing: -0.01em; color: var(--text); }
+    .card p { margin: 0 0 10px; color: var(--muted); line-height: 1.7; }
+
+    .link {
+      font-weight: 800;
+      text-decoration: none;
+      color: rgba(39, 99, 235, 0.95);
+    }
+    .link:hover { text-decoration: underline; }
+
+    .subtle {
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
+      background: linear-gradient(135deg, rgba(39, 99, 235, 0.05), rgba(16, 185, 129, 0.05));
+    }
+
+    .twoCol {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: start;
+    }
+
+    .lead2 { color: var(--muted); line-height: 1.7; margin: 0 0 12px; }
+
+    .list { margin: 0; padding-left: 18px; color: var(--muted); line-height: 1.8; }
+
+    .poster {
+      margin: 0;
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .poster img { display: block; width: 100%; height: auto; }
+    .poster figcaption {
+      padding: 10px 12px;
+      font-size: 13px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    .note { margin-top: 12px; font-size: 13px; color: var(--muted); }
+
+    .ctaBar {
+      margin-top: 14px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      background: white;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.06);
+    }
+
+    .ctaBar h3 { margin: 0 0 6px; font-size: 16px; letter-spacing: -0.01em; color: var(--text); }
+    .ctaBar p { margin: 0; color: var(--muted); line-height: 1.6; }
+
+    @media (max-width: 900px) {
+      .heroGrid, .twoCol { grid-template-columns: 1fr; }
+      .cards { grid-template-columns: 1fr; }
+      .ctaBar { flex-direction: column; align-items: stretch; }
+    }
+  </style>
+</BaseLayout>
