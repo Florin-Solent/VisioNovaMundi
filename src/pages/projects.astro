@@ -1,10 +1,196 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const projects = [
+  {
+    tag: "Innovation Pilot",
+    title: "Unity House Center (UHC)",
+    text: "A research-led pilot exploring integrated food redistribution, employment pathways, and circular economy models within a community setting.",
+    status: "Concept → Pilot design",
+    link: "/innovation",
+  },
+  {
+    tag: "Research",
+    title: "Service Systems Evaluation",
+    text: "Research programme focused on identifying inefficiencies, duplication, and improvement opportunities across institutional workflows and community support systems.",
+    status: "In development",
+    link: "/work",
+  },
+  {
+    tag: "Capacity Building",
+    title: "Training & Implementation Support",
+    text: "Workshops and structured support for organisations seeking measurable improvement, stronger governance, and sustainable delivery models.",
+    status: "Available for partners",
+    link: "/contact",
+  },
+];
 ---
 
 <BaseLayout title="Projects">
   <h1>Projects</h1>
-  <p>
-    This page will list both Impact Projects and Venture Projects, with a clear separation and a shared purpose.
+
+  <p class="lead">
+    We develop research and innovation projects that improve how systems serve people and communities.
+    Projects may begin as controlled pilots and scale based on evidence.
   </p>
+
+  <div class="cards">
+    {projects.map((p) => (
+      <article class="card">
+        <div class="top">
+          <span class="tag">{p.tag}</span>
+          <span class="status">{p.status}</span>
+        </div>
+        <h2>{p.title}</h2>
+        <p>{p.text}</p>
+        <a class="link" href={p.link}>View →</a>
+      </article>
+    ))}
+  </div>
+
+  <section class="bar">
+    <div>
+      <h3>Have a project opportunity?</h3>
+      <p>
+        We welcome partnerships with councils, public bodies, universities, and community organisations.
+        Contact us to discuss pilots, evaluation, or advisory support.
+      </p>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="/contact">Contact</a>
+      <a class="btn" href="/work">Our Work</a>
+    </div>
+  </section>
+
+  <style>
+    h1 {
+      margin: 0 0 12px;
+      font-size: 40px;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .lead {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 18px;
+      max-width: 95ch;
+    }
+
+    .cards {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: start;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      background: white;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .tag {
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(39, 99, 235, 0.05);
+      color: var(--muted);
+    }
+
+    .status {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .card p {
+      margin: 0 0 10px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .link {
+      font-weight: 850;
+      text-decoration: none;
+      color: rgba(39, 99, 235, 0.95);
+    }
+    .link:hover { text-decoration: underline; }
+
+    .bar {
+      margin-top: 14px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(39, 99, 235, 0.06), rgba(16, 185, 129, 0.06));
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .bar h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .bar p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 80ch;
+    }
+
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 850;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, rgba(39, 99, 235, 0.10), rgba(16, 185, 129, 0.10));
+      border-color: rgba(39, 99, 235, 0.25);
+    }
+
+    .btn:hover { border-color: rgba(0, 0, 0, 0.18); text-decoration: none; }
+
+    @media (max-width: 900px) {
+      .cards { grid-template-columns: 1fr; }
+      .bar { flex-direction: column; align-items: stretch; }
+    }
+  </style>
 </BaseLayout>

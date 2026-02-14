@@ -1,6 +1,8 @@
 ---
 const { title } = Astro.props;
 const siteName = "Visio Nova Mundi CIC";
+const email = "contact@visionovamundi.com";
+const linkedin = "https://www.linkedin.com/in/marcel-florin-banias-90295b97/";
 ---
 
 <html lang="en">
@@ -12,13 +14,13 @@ const siteName = "Visio Nova Mundi CIC";
 
   <body>
     <header class="header">
-      <div class="wrap">
+      <div class="wrap headerInner">
         <a class="brand" href="/">
           <span class="brandMark">VNM</span>
           <span class="brandText">{siteName}</span>
         </a>
 
-        <nav class="nav">
+        <nav class="nav" aria-label="Primary">
           <a href="/about">About</a>
           <a href="/work">Our Work</a>
           <a href="/innovation">Innovation</a>
@@ -34,8 +36,28 @@ const siteName = "Visio Nova Mundi CIC";
     </main>
 
     <footer class="footer">
-      <div class="wrap">
-        <small>© {new Date().getFullYear()} {siteName}</small>
+      <div class="wrap footerGrid">
+        <div>
+          <div class="footerBrand">{siteName}</div>
+          <small class="footerText">
+            © {new Date().getFullYear()} {siteName}. Community Interest Company (CIC).
+          </small>
+
+          <div class="footerText contactLine">
+            <a href={`mailto:${email}`}>{email}</a>
+            <span class="sep">•</span>
+            <a href={linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
+          </div>
+        </div>
+
+        <nav class="footerLinks" aria-label="Footer">
+          <a href="/about">About</a>
+          <a href="/work">Our Work</a>
+          <a href="/innovation">Innovation</a>
+          <a href="/projects">Projects</a>
+          <a href="/governance">Governance</a>
+          <a href="/contact">Contact</a>
+        </nav>
       </div>
     </footer>
   </body>
@@ -74,6 +96,7 @@ const siteName = "Visio Nova Mundi CIC";
     padding: 0 20px;
   }
 
+  /* Header */
   .header {
     position: sticky;
     top: 0;
@@ -83,7 +106,7 @@ const siteName = "Visio Nova Mundi CIC";
     border-bottom: 1px solid var(--border);
   }
 
-  .header .wrap {
+  .headerInner {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -109,13 +132,13 @@ const siteName = "Visio Nova Mundi CIC";
     border-radius: 14px;
     border: 1px solid var(--border);
     background: var(--surface);
-    font-weight: 800;
+    font-weight: 900;
     letter-spacing: 0.06em;
     box-shadow: 0 8px 26px rgba(0, 0, 0, 0.06);
   }
 
   .brandText {
-    font-weight: 750;
+    font-weight: 850;
     letter-spacing: -0.01em;
   }
 
@@ -123,7 +146,7 @@ const siteName = "Visio Nova Mundi CIC";
     display: flex;
     gap: 18px;
     align-items: center;
-    font-weight: 600;
+    font-weight: 750;
     color: var(--muted);
   }
 
@@ -145,15 +168,66 @@ const siteName = "Visio Nova Mundi CIC";
     border-color: rgba(0, 0, 0, 0.18);
   }
 
+  /* Main */
   .main {
     padding: 44px 0 60px;
   }
 
+  /* Footer */
   .footer {
     border-top: 1px solid var(--border);
     color: var(--muted);
     padding: 24px 0;
     background: rgba(255, 255, 255, 0.55);
+  }
+
+  .footerGrid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 16px;
+    align-items: start;
+  }
+
+  .footerBrand {
+    font-weight: 850;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+
+  .footerText {
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .contactLine {
+    margin-top: 8px;
+  }
+
+  .footerText a {
+    color: rgba(39, 99, 235, 0.95);
+    font-weight: 850;
+  }
+
+  .sep {
+    margin: 0 8px;
+    color: var(--muted);
+  }
+
+  .footerLinks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 14px;
+    justify-items: end;
+  }
+
+  .footerLinks a {
+    color: var(--muted);
+    font-weight: 750;
+  }
+
+  .footerLinks a:hover {
+    color: var(--text);
   }
 
   @media (max-width: 900px) {
@@ -169,6 +243,14 @@ const siteName = "Visio Nova Mundi CIC";
     }
     .nav a:not(.cta) {
       display: none;
+    }
+    .footerGrid {
+      grid-template-columns: 1fr;
+    }
+    .footerLinks {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      justify-items: start;
+      margin-top: 10px;
     }
   }
 </style>

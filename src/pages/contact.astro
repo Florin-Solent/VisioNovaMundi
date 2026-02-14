@@ -1,8 +1,285 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const email = "contact@visionovamundi.com";
+const phone = "+44 7503 264056";
+const linkedin = "https://www.linkedin.com/in/marcel-florin-banias-90295b97/";
 ---
 
 <BaseLayout title="Contact">
-  <h1>Contact</h1>
-  <p>Email and links will go here.</p>
+  <h1>Get in touch</h1>
+
+  <p class="lead">
+    We welcome partnerships with councils, public bodies, universities, and community organisations.
+    Contact us to discuss pilots, evaluation, advisory support, or collaboration.
+  </p>
+
+  <div class="grid">
+    <section class="card">
+      <h2>Contact details</h2>
+
+      <div class="row">
+        <div class="label">Email</div>
+        <a class="value" href={`mailto:${email}`}>{email}</a>
+      </div>
+
+      <div class="row">
+        <div class="label">Phone</div>
+        <a class="value" href={`tel:${phone.replace(/\s/g, "")}`}>{phone}</a>
+      </div>
+
+      <div class="row">
+        <div class="label">LinkedIn</div>
+        <a class="value" href={linkedin} target="_blank" rel="noreferrer">
+          Marcel Florin Banias →
+        </a>
+      </div>
+
+      <p class="note">
+        For partnerships or official enquiries, email is the best first contact. For urgent matters, please use the phone number above.
+      </p>
+    </section>
+
+    <section class="card highlight">
+      <h2>Send a message</h2>
+
+      <form class="form" method="post">
+        <label>
+          <span>Name</span>
+          <input name="name" type="text" placeholder="Your name" required />
+        </label>
+
+        <label>
+          <span>Email</span>
+          <input name="email" type="email" placeholder="your@email.com" required />
+        </label>
+
+        <label>
+          <span>Organisation (optional)</span>
+          <input name="org" type="text" placeholder="Organisation name" />
+        </label>
+
+        <label>
+          <span>Message</span>
+          <textarea name="message" rows="6" placeholder="How can we help?" required></textarea>
+        </label>
+
+        <button class="btn primary" type="submit">Send message</button>
+
+        <p class="formNote">
+          Note: This form is currently a visual placeholder. We can connect it to a secure form service next.
+        </p>
+      </form>
+    </section>
+  </div>
+
+  <section class="bar">
+    <div>
+      <h3>Prefer an introduction?</h3>
+      <p>
+        If you're contacting us on behalf of an institution, feel free to include your objectives, timelines,
+        and any relevant context — it helps us respond faster.
+      </p>
+    </div>
+    <div class="actions">
+      <a class="btn" href="/work">Our Work</a>
+      <a class="btn primary" href="/innovation">Innovation</a>
+    </div>
+  </section>
+
+  <style>
+    h1 {
+      margin: 0 0 12px;
+      font-size: 40px;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .lead {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 18px;
+      max-width: 95ch;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      background: white;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+    }
+
+    .highlight {
+      background: linear-gradient(135deg, rgba(39, 99, 235, 0.06), rgba(16, 185, 129, 0.06));
+    }
+
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 10px;
+      padding: 10px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .row:first-of-type {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .label {
+      color: var(--muted);
+      font-weight: 850;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .value {
+      color: rgba(39, 99, 235, 0.95);
+      font-weight: 850;
+      text-decoration: none;
+    }
+    .value:hover {
+      text-decoration: underline;
+    }
+
+    .note {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .form {
+      display: grid;
+      gap: 12px;
+    }
+
+    label span {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 850;
+      color: var(--text);
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      padding: 12px 12px;
+      font: inherit;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--text);
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: rgba(39, 99, 235, 0.35);
+      box-shadow: 0 0 0 4px rgba(39, 99, 235, 0.10);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 850;
+      cursor: pointer;
+      width: fit-content;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, rgba(39, 99, 235, 0.10), rgba(16, 185, 129, 0.10));
+      border-color: rgba(39, 99, 235, 0.25);
+    }
+
+    .btn:hover {
+      border-color: rgba(0, 0, 0, 0.18);
+      text-decoration: none;
+    }
+
+    .formNote {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .bar {
+      margin-top: 14px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      background: white;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .bar h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .bar p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 80ch;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </BaseLayout>
