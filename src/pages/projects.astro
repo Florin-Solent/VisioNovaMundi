@@ -8,6 +8,8 @@ const projects = [
     text: "A research-led pilot exploring integrated food redistribution, employment pathways, and circular economy models within a community setting.",
     status: "Concept → Pilot design",
     link: "/innovation",
+    docx: "/docs/three-of-life-uhc.docx",
+    docxLabel: "Download DOCX",
   },
   {
     tag: "Research",
@@ -41,9 +43,19 @@ const projects = [
           <span class="tag">{p.tag}</span>
           <span class="status">{p.status}</span>
         </div>
+
         <h2>{p.title}</h2>
         <p>{p.text}</p>
-        <a class="link" href={p.link}>View →</a>
+
+        <div class="cardActions">
+          <a class="link" href={p.link}>View →</a>
+
+          {p.docx && (
+            <a class="miniBtn" href={p.docx} download>
+              {p.docxLabel ?? "Download"}
+            </a>
+          )}
+        </div>
       </article>
     ))}
   </div>
@@ -132,12 +144,35 @@ const projects = [
       line-height: 1.75;
     }
 
+    .cardActions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
     .link {
       font-weight: 850;
       text-decoration: none;
       color: rgba(39, 99, 235, 0.95);
     }
     .link:hover { text-decoration: underline; }
+
+    .miniBtn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius: 14px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 850;
+      font-size: 14px;
+    }
+    .miniBtn:hover { border-color: rgba(0,0,0,0.18); }
 
     .bar {
       margin-top: 14px;
