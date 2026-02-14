@@ -1,0 +1,111 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="About">
+  <h1>About Visio Nova Mundi CIC</h1>
+
+  <p class="lead">
+    Visio Nova Mundi CIC is a London-based social innovation organisation combining research,
+    institutional reform, and applied pilot programmes to improve how systems serve people and communities.
+  </p>
+
+  <div class="grid">
+    <section class="card">
+      <h2>Mission</h2>
+      <p>
+        To strengthen institutions, improve public service delivery, and create sustainable models that expand opportunity and long-term wellbeing.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Vision</h2>
+      <p>
+        A future where institutions operate ethically, effectively, and inclusively — ensuring communities have access to opportunity, wellbeing, and fair systems of support.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Values</h2>
+      <ul>
+        <li><strong>Integrity</strong> — transparency, ethics, accountability</li>
+        <li><strong>Innovation</strong> — practical solutions for complex challenges</li>
+        <li><strong>Equity</strong> — inclusion and fair access to opportunity</li>
+        <li><strong>Collaboration</strong> — cross-sector partnerships</li>
+        <li><strong>Sustainability</strong> — long-term, responsible models</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="card founder">
+    <h2>Founder perspective</h2>
+    <p>
+      Visio Nova Mundi was founded by Marcel Florin, drawing on cross-sector experience across healthcare environments,
+      custodial institutions, community organisations, and operational food systems. This perspective supports an evidence-led,
+      practical approach to designing better systems and measurable outcomes.
+    </p>
+  </section>
+
+  <style>
+    h1 {
+      margin: 0 0 12px;
+      font-size: 40px;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .lead {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 18px;
+      max-width: 80ch;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: start;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      background: white;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .card p,
+    .card li {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .card ul {
+      margin: 0;
+      padding-left: 18px;
+      line-height: 1.8;
+    }
+
+    .founder {
+      margin-top: 14px;
+      background: linear-gradient(135deg, rgba(39, 99, 235, 0.05), rgba(16, 185, 129, 0.05));
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</BaseLayout>

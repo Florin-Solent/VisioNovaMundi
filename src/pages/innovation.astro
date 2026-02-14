@@ -1,0 +1,253 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Innovation">
+  <h1>Innovation Programme</h1>
+
+  <p class="lead">
+    Our innovation work focuses on piloting integrated models that reduce waste, improve coordination,
+    and deliver measurable social outcomes. We start with controlled pilots and scale based on evidence.
+  </p>
+
+  <div class="grid">
+    <section class="card">
+      <h2>How we pilot and scale</h2>
+      <ol>
+        <li><strong>Feasibility</strong> — partner mapping, needs analysis, and operational design</li>
+        <li><strong>Prototype</strong> — pilot delivery with defined KPIs and clear scope</li>
+        <li><strong>Evaluate</strong> — independent review and impact reporting</li>
+        <li><strong>Scale</strong> — refine delivery, publish evidence, and expand responsibly</li>
+      </ol>
+    </section>
+
+    <section class="card highlight">
+      <h2>Innovation Spotlight: Unity House Center (UHC)</h2>
+      <p>
+        Unity House Center is a research-led pilot exploring integrated food redistribution, employment pathways,
+        and circular economy models within a community setting. It is designed to test operational efficiency,
+        cost reduction, and reintegration outcomes at local level before wider scalability assessment.
+      </p>
+
+      <div class="pillRow">
+        <span class="pill">Pilot-first</span>
+        <span class="pill">Measurable KPIs</span>
+        <span class="pill">Independent evaluation</span>
+      </div>
+
+      <p class="note">
+        UHC is presented as an innovation pilot concept under development — not a national policy position.
+      </p>
+    </section>
+  </div>
+
+  <section class="card">
+    <h2>What we measure</h2>
+    <div class="kpis">
+      <div class="kpi">
+        <div class="kpiTop">Efficiency</div>
+        <div class="kpiBig">Cost per outcome</div>
+      </div>
+      <div class="kpi">
+        <div class="kpiTop">Environment</div>
+        <div class="kpiBig">Waste reduced</div>
+      </div>
+      <div class="kpi">
+        <div class="kpiTop">Social</div>
+        <div class="kpiBig">Retention & reintegration</div>
+      </div>
+      <div class="kpi">
+        <div class="kpiTop">Quality</div>
+        <div class="kpiBig">Service reliability</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bar">
+    <div>
+      <h3>Interested in piloting with us?</h3>
+      <p>
+        We collaborate with councils, institutions, and community partners to design pilots with clear governance,
+        transparent reporting, and measurable outcomes.
+      </p>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="/contact">Contact</a>
+      <a class="btn" href="/governance">Governance</a>
+    </div>
+  </section>
+
+  <style>
+    h1 {
+      margin: 0 0 12px;
+      font-size: 40px;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .lead {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 18px;
+      max-width: 90ch;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      background: white;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .card p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .card ol {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    .highlight {
+      background: linear-gradient(135deg, rgba(39, 99, 235, 0.06), rgba(16, 185, 129, 0.06));
+    }
+
+    .pillRow {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .pill {
+      font-size: 13px;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.75);
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    .note {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .kpis {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 10px;
+    }
+
+    .kpi {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      background: rgba(39, 99, 235, 0.04);
+    }
+
+    .kpiTop {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .kpiBig {
+      font-weight: 850;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .bar {
+      margin-top: 14px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      background: white;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .bar h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .bar p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 80ch;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 850;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, rgba(39, 99, 235, 0.10), rgba(16, 185, 129, 0.10));
+      border-color: rgba(39, 99, 235, 0.25);
+    }
+
+    .btn:hover {
+      border-color: rgba(0, 0, 0, 0.18);
+      text-decoration: none;
+    }
+
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      .kpis { grid-template-columns: 1fr 1fr; }
+      .bar { flex-direction: column; align-items: stretch; }
+    }
+
+    @media (max-width: 520px) {
+      .kpis { grid-template-columns: 1fr; }
+    }
+  </style>
+</BaseLayout>

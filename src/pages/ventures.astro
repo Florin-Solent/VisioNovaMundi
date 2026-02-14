@@ -3,40 +3,31 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="Ventures">
-  <h1>Ventures</h1>
-  <p>
-    We build private/commercial projects to generate revenue. Profits support the CIC mission —
-    creating a sustainable loop: ventures fund impact.
+  <h1>Information update</h1>
+  <p class="lead">
+    This website focuses on Visio Nova Mundi CIC. Our governance approach and sustainability model are explained on the
+    <a href="/governance">Governance</a> page.
   </p>
 
-  <section class="card">
-    <h2>What belongs here</h2>
-    <ul>
-      <li>Commercial products and services</li>
-      <li>R&amp;D and innovation projects</li>
-      <li>Digital initiatives and partnerships</li>
-    </ul>
-  </section>
-
-  <section class="card">
-    <h2>Future ventures</h2>
-    <ul>
-      <li>Venture 1 — coming soon</li>
-      <li>Venture 2 — coming soon</li>
-      <li>Venture 3 — coming soon</li>
-    </ul>
-  </section>
+  <div class="actions">
+    <a class="btn primary" href="/governance">Go to Governance</a>
+    <a class="btn" href="/contact">Contact us</a>
+  </div>
 
   <style>
-    h1 { margin: 0 0 12px; font-size: 40px; letter-spacing: -0.02em; }
-    p, li { color: #b7bfd6; line-height: 1.6; }
-    .card {
-      margin-top: 18px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 16px;
-      padding: 18px;
-      background: rgba(255, 255, 255, 0.03);
+    h1 { margin: 0 0 12px; font-size: 40px; letter-spacing: -0.02em; color: var(--text); }
+    .lead { margin: 0 0 18px; color: var(--muted); line-height: 1.75; font-size: 18px; max-width: 80ch; }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 14px; padding: 11px 14px;
+      border: 1px solid var(--border); background: white; color: var(--text);
+      text-decoration: none; font-weight: 850;
     }
-    h2 { margin: 0 0 10px; font-size: 20px; }
+    .btn.primary {
+      background: linear-gradient(135deg, rgba(39, 99, 235, 0.10), rgba(16, 185, 129, 0.10));
+      border-color: rgba(39, 99, 235, 0.25);
+    }
+    .btn:hover { border-color: rgba(0,0,0,0.18); text-decoration: none; }
   </style>
 </BaseLayout>

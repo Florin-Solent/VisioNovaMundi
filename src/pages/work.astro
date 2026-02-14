@@ -1,0 +1,199 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Our Work">
+  <h1>Our Work</h1>
+
+  <p class="lead">
+    We work at the intersection of research, operational insight, and system design — helping institutions deliver
+    better outcomes with measurable impact.
+  </p>
+
+  <div class="grid">
+    <section class="card">
+      <h2>Research &amp; Systems Evaluation</h2>
+      <p>
+        Evidence-led assessment of institutional performance, service delivery, community needs, and operational bottlenecks.
+        We translate findings into clear recommendations and measurable improvement plans.
+      </p>
+      <ul>
+        <li>Service evaluation &amp; needs assessment</li>
+        <li>Baseline measurement and KPI design</li>
+        <li>Cost-efficiency and process mapping</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Innovation &amp; Pilot Programmes</h2>
+      <p>
+        Design and testing of scalable models in controlled community environments. Pilots are built to produce evidence
+        for responsible scale — not assumptions.
+      </p>
+      <ul>
+        <li>Feasibility studies and partnership mapping</li>
+        <li>Pilot delivery with defined KPIs</li>
+        <li>Evaluation and scalability assessment</li>
+      </ul>
+      <a class="link" href="/innovation">Explore innovation →</a>
+    </section>
+
+    <section class="card">
+      <h2>Advisory &amp; Capacity Building</h2>
+      <p>
+        Workshops, training, and strategic support to strengthen organisations. We focus on building internal capability,
+        governance clarity, and sustainable implementation.
+      </p>
+      <ul>
+        <li>Training, workshops and facilitation</li>
+        <li>Operational improvement and change support</li>
+        <li>Impact measurement and reporting</li>
+      </ul>
+      <a class="link" href="/contact">Partner with us →</a>
+    </section>
+  </div>
+
+  <section class="bar">
+    <div>
+      <h3>How we work</h3>
+      <p>
+        We start small, measure rigorously, and scale responsibly: <strong>Pilot → Measure → Refine → Scale</strong>.
+        This approach supports credible funding, strong delivery, and long-term sustainability.
+      </p>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="/projects">View projects</a>
+      <a class="btn" href="/governance">Governance</a>
+    </div>
+  </section>
+
+  <style>
+    h1 {
+      margin: 0 0 12px;
+      font-size: 40px;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .lead {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 18px;
+      max-width: 90ch;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: start;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      background: white;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .card p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    .link {
+      display: inline-block;
+      margin-top: 12px;
+      font-weight: 850;
+      color: rgba(39, 99, 235, 0.95);
+      text-decoration: none;
+    }
+
+    .link:hover {
+      text-decoration: underline;
+    }
+
+    .bar {
+      margin-top: 14px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(39, 99, 235, 0.06), rgba(16, 185, 129, 0.06));
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .bar h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .bar p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 80ch;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 850;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, rgba(39, 99, 235, 0.10), rgba(16, 185, 129, 0.10));
+      border-color: rgba(39, 99, 235, 0.25);
+    }
+
+    .btn:hover {
+      border-color: rgba(0, 0, 0, 0.18);
+      text-decoration: none;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</BaseLayout>

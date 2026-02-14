@@ -1,0 +1,180 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Governance">
+  <h1>Governance &amp; Transparency</h1>
+
+  <p class="lead">
+    Visio Nova Mundi is a Community Interest Company (CIC). We operate for public benefit and reinvest surplus into
+    research, innovation, and community-focused initiatives aligned with our mission.
+  </p>
+
+  <div class="grid">
+    <section class="card">
+      <h2>Community benefit</h2>
+      <p>
+        Our activities are designed to deliver measurable improvements in service delivery, inclusion, and wellbeing outcomes.
+        We work with partners to pilot solutions, evaluate results, and scale responsibly based on evidence.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Asset lock</h2>
+      <p>
+        As a CIC, we operate under an asset lock to ensure that assets and profits are used for community benefit.
+        Surplus is reinvested into programmes and activities aligned with our public benefit objectives.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Transparency</h2>
+      <p>
+        We aim to operate with clear reporting, accountable governance, and responsible partnerships.
+        Where appropriate, we publish summaries of outcomes, impact, and evaluation findings.
+      </p>
+    </section>
+  </div>
+
+  <section class="card highlight">
+    <h2>Our wider ecosystem</h2>
+    <p>
+      Visio Nova Mundi operates within a broader international ecosystem of independent commercial ventures led by the founder.
+      Any surplus contributed from such ventures may be reinvested to support the CIC’s public benefit mission.
+    </p>
+    <p class="note">
+      The CIC remains independent and operates with clear separation of governance, finances, and decision-making.
+    </p>
+  </section>
+
+  <section class="bar">
+    <div>
+      <h3>Working with partners</h3>
+      <p>
+        We welcome partnerships with councils, public bodies, research institutions, and community organisations.
+        Our approach is evidence-led, measurable, and designed for long-term sustainability.
+      </p>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="/contact">Contact</a>
+      <a class="btn" href="/work">Our work</a>
+    </div>
+  </section>
+
+  <style>
+    h1 {
+      margin: 0 0 12px;
+      font-size: 40px;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .lead {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 18px;
+      max-width: 90ch;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: start;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      background: white;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .card p {
+      margin: 0 0 10px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .highlight {
+      margin-top: 14px;
+      background: linear-gradient(135deg, rgba(39, 99, 235, 0.06), rgba(16, 185, 129, 0.06));
+    }
+
+    .note {
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .bar {
+      margin-top: 14px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      background: white;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .bar h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .bar p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 80ch;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 850;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, rgba(39, 99, 235, 0.10), rgba(16, 185, 129, 0.10));
+      border-color: rgba(39, 99, 235, 0.25);
+    }
+
+    .btn:hover {
+      border-color: rgba(0, 0, 0, 0.18);
+      text-decoration: none;
+    }
+
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      .bar { flex-direction: column; align-items: stretch; }
+    }
+  </style>
+</BaseLayout>
