@@ -7,9 +7,7 @@ const projects = [
     title: "Unity House Center (UHC)",
     text: "A research-led pilot exploring integrated food redistribution, employment pathways, and circular economy models within a community setting.",
     status: "Concept → Pilot design",
-    link: "/innovation",
-    docx: "/docs/three-of-life-uhc.docx",
-    docxLabel: "Download DOCX",
+    download: "/docs/three-of-life-uhc.pdf",
   },
   {
     tag: "Research",
@@ -47,15 +45,18 @@ const projects = [
         <h2>{p.title}</h2>
         <p>{p.text}</p>
 
-        <div class="cardActions">
+        {p.download ? (
+          <a
+            class="link"
+            href={p.download}
+            target="_blank"
+            rel="noopener"
+          >
+            Download PDF →
+          </a>
+        ) : (
           <a class="link" href={p.link}>View →</a>
-
-          {p.docx && (
-            <a class="miniBtn" href={p.docx} download>
-              {p.docxLabel ?? "Download"}
-            </a>
-          )}
-        </div>
+        )}
       </article>
     ))}
   </div>
@@ -64,10 +65,12 @@ const projects = [
     <div>
       <h3>Have a project opportunity?</h3>
       <p>
-        We welcome partnerships with councils, public bodies, universities, and community organisations.
-        Contact us to discuss pilots, evaluation, or advisory support.
+        We welcome partnerships with councils, public bodies, universities,
+        and community organisations. Contact us to discuss pilots,
+        evaluation, or advisory support.
       </p>
     </div>
+
     <div class="actions">
       <a class="btn primary" href="/contact">Contact</a>
       <a class="btn" href="/work">Our Work</a>
@@ -144,42 +147,26 @@ const projects = [
       line-height: 1.75;
     }
 
-    .cardActions {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-top: 6px;
-    }
-
     .link {
       font-weight: 850;
       text-decoration: none;
       color: rgba(39, 99, 235, 0.95);
     }
-    .link:hover { text-decoration: underline; }
 
-    .miniBtn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border-radius: 14px;
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      background: white;
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 850;
-      font-size: 14px;
+    .link:hover {
+      text-decoration: underline;
     }
-    .miniBtn:hover { border-color: rgba(0,0,0,0.18); }
 
     .bar {
       margin-top: 14px;
       border: 1px solid var(--border);
       border-radius: 18px;
       padding: 16px;
-      background: linear-gradient(135deg, rgba(39, 99, 235, 0.06), rgba(16, 185, 129, 0.06));
+      background: linear-gradient(
+        135deg,
+        rgba(39, 99, 235, 0.06),
+        rgba(16, 185, 129, 0.06)
+      );
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
       display: flex;
       justify-content: space-between;
@@ -201,7 +188,11 @@ const projects = [
       max-width: 80ch;
     }
 
-    .actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
 
     .btn {
       display: inline-flex;
@@ -217,15 +208,27 @@ const projects = [
     }
 
     .btn.primary {
-      background: linear-gradient(135deg, rgba(39, 99, 235, 0.10), rgba(16, 185, 129, 0.10));
+      background: linear-gradient(
+        135deg,
+        rgba(39, 99, 235, 0.10),
+        rgba(16, 185, 129, 0.10)
+      );
       border-color: rgba(39, 99, 235, 0.25);
     }
 
-    .btn:hover { border-color: rgba(0, 0, 0, 0.18); text-decoration: none; }
+    .btn:hover {
+      border-color: rgba(0, 0, 0, 0.18);
+      text-decoration: none;
+    }
 
     @media (max-width: 900px) {
-      .cards { grid-template-columns: 1fr; }
-      .bar { flex-direction: column; align-items: stretch; }
+      .cards {
+        grid-template-columns: 1fr;
+      }
+      .bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
     }
   </style>
 </BaseLayout>
