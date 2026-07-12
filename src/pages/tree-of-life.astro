@@ -1,0 +1,101 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const branches = [
+  ["Social and Community Impact", "Community programmes, reintegration pathways and accessible support models."],
+  ["Research and Artificial Intelligence", "Responsible research and innovation exploring better outcomes across public services and community wellbeing."],
+  ["Education and Opportunity", "Skills, learning and routes into meaningful participation and employment."],
+  ["Creative and Cultural Innovation", "Independent creative ventures that use stories, symbols and interactive experiences."],
+  ["Workplace and Practical Innovation", "Practical ideas that improve how people organise, carry out and sustain their work."],
+  ["Strategic Transformation and Place Development", "Future advisory work for organisations, communities and public institutions."],
+  ["Future Partnerships and Ventures", "Projects delivered with external partners, founders or separate legal structures."],
+];
+
+const projects = [
+  {
+    classification: "CIC-led programme",
+    title: "Unity House Center",
+    stage: "Under development",
+    text: "Unity House Center is a social-impact programme being developed through Visio Nova Mundi CIC. Its proposed model combines affordable food, community support, education, employment pathways, charitable collaboration and reintegration opportunities within one accessible community environment.",
+    note: "Future services described here are proposals until the programme is operational.",
+  },
+  {
+    classification: "Independent founder-led venture",
+    title: "Project Clandestinus",
+    stage: "Independent venture",
+    text: "Project Clandestinus is an independent creative and publishing venture featured within the Tree of Life ecosystem. It combines books, symbols, decoding challenges, interactive experiences and a wider creative world.",
+    note: "Project Clandestinus remains independently owned and operated. Its inclusion within the Tree of Life ecosystem does not transfer its ownership, finances, intellectual property, prize obligations, publishing activities or legal responsibilities to Visio Nova Mundi CIC.",
+  },
+  {
+    classification: "Independent founder-led venture",
+    title: "WorkCraft / Painter Tool Bag",
+    stage: "Working public name",
+    text: "WorkCraft is an independent founder-led workplace innovation focused on improving how painters, decorators and other practical professionals carry, organise and access their tools. The Painter Tool Bag concept remains part of its development context.",
+    note: "WorkCraft retains its own ownership, intellectual property and future commercial options. Its inclusion within the Tree of Life ecosystem does not make it a CIC-owned product.",
+  },
+  {
+    classification: "CIC research and innovation",
+    title: "Research and AI initiatives",
+    stage: "Exploration and development",
+    text: "Visio Nova Mundi explores responsible uses of research and artificial intelligence in healthcare, justice, education, public services, community wellbeing and social innovation.",
+    note: "This work is not presented as a live AI platform or operational service unless separately evidenced.",
+  },
+  {
+    classification: "Future advisory and innovation initiative",
+    title: "Strategic Transformation and Place Development",
+    stage: "Long-term professional direction",
+    text: "Founder and Strategic Transformation Adviser Florin is developing a future advisory role supporting organisations, communities and public institutions through structured review, research and practical planning.",
+    note: "Future delivery may use Visio Nova Mundi CIC, a separate commercial company, a partnership or another appropriate structure. It does not claim governmental authority or completed city-scale assignments.",
+  },
+];
+---
+
+<BaseLayout title="Tree of Life" description="Tree of Life is Visio Nova Mundi's ecosystem for aligned programmes, research initiatives and independent founder-led ventures.">
+  <section class="hero">
+    <p class="eyebrow">Visio Nova Mundi ecosystem</p>
+    <h1>Tree of Life</h1>
+    <p class="lead">One shared vision. Distinct projects. Independent identities.</p>
+    <p>Tree of Life is the strategic ecosystem through which Visio Nova Mundi presents social programmes, research initiatives, creative ventures and founder-led innovations that contribute to a more inclusive and sustainable future.</p>
+  </section>
+
+  <section class="statement" aria-labelledby="ecosystem-heading">
+    <h2 id="ecosystem-heading">An ecosystem, not one legal structure</h2>
+    <p>Tree of Life connects projects through shared values and objectives while preserving their different ownership, governance, funding and operational arrangements.</p>
+    <blockquote>Tree of Life brings together CIC-led programmes and independent founder-led ventures under one shared vision, while each project retains its own legal, financial and operational identity.</blockquote>
+  </section>
+
+  <section>
+    <h2>Ecosystem branches</h2>
+    <div class="grid branches">
+      {branches.map(([title, text]) => <article class="card"><h3>{title}</h3><p>{text}</p></article>)}
+    </div>
+  </section>
+
+  <section>
+    <div class="sectionHead"><h2>Current project portfolio</h2><p>Each label explains how a project relates to the ecosystem. It does not necessarily indicate legal ownership.</p></div>
+    <div class="portfolio">
+      {projects.map((project) => <article class="card project">
+        <div class="meta"><span class="label">{project.classification}</span><span>{project.stage}</span></div>
+        <h3>{project.title}</h3><p>{project.text}</p><p class="note">{project.note}</p>
+      </article>)}
+    </div>
+  </section>
+
+  <section class="framework">
+    <h2>Future project framework</h2>
+    <p>Projects will be classified before public listing. The review considers legal and intellectual-property ownership; the responsible operator; funding, contracts, risk and insurance; data-controller responsibility; prize or reward obligations; and whether the work is operational, under development or conceptual.</p>
+  </section>
+
+  <section class="clarification">
+    <h2>Legal and operational clarification</h2>
+    <p>References to projects within the Tree of Life ecosystem describe strategic alignment and shared purpose. They do not, by themselves, establish common ownership, agency, partnership, financial responsibility or legal liability between Visio Nova Mundi CIC and independently operated ventures.</p>
+  </section>
+
+  <style>
+    h1, h2, h3 { color: var(--text); letter-spacing: -0.02em; } h1 { font-size: clamp(42px, 6vw, 62px); margin: 0 0 8px; } h2 { margin: 0 0 10px; font-size: 27px; } h3 { margin: 0 0 8px; font-size: 17px; }
+    p { color: var(--muted); line-height: 1.75; } .hero { max-width: 80ch; padding: 12px 0 26px; } .eyebrow { color: #0f766e; font-size: 13px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; margin: 0 0 9px; } .lead { color: var(--text); font-size: 22px; margin: 0 0 12px; }
+    section { margin-top: 34px; } .statement, .framework, .clarification { border: 1px solid var(--border); border-radius: 20px; padding: 22px; background: linear-gradient(135deg, rgba(37,99,235,.06), rgba(16,185,129,.07)); } blockquote { margin: 18px 0 0; padding: 16px 18px; border-left: 4px solid #0f766e; background: rgba(255,255,255,.76); color: var(--text); font-weight: 700; line-height: 1.6; border-radius: 0 14px 14px 0; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; } .card { border: 1px solid var(--border); border-radius: 18px; padding: 17px; background: rgba(255,255,255,.84); box-shadow: 0 6px 24px rgba(0,0,0,.05); } .card p { margin: 0; } .portfolio { display: grid; gap: 14px; } .sectionHead p { margin: 0; max-width: 78ch; } .meta { display: flex; gap: 9px; align-items: center; justify-content: space-between; color: var(--muted); font-size: 13px; font-weight: 700; margin-bottom: 12px; } .label { border: 1px solid rgba(37,99,235,.22); background: rgba(37,99,235,.07); border-radius: 999px; padding: 6px 9px; color: #1d4ed8; } .project .note { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 14px; } .clarification { background: rgba(255,255,255,.7); }
+    @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } .meta { align-items: flex-start; flex-direction: column; } }
+  </style>
+</BaseLayout>

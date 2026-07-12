@@ -3,21 +3,21 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 const projects = [
   {
-    tag: "Innovation Pilot",
+    tag: "CIC-led programme",
     title: "Unity House Center (UHC)",
-    text: "A research-led pilot exploring integrated food redistribution, employment pathways, and circular economy models within a community setting.",
+    text: "A social-impact programme being developed through Visio Nova Mundi CIC. Its proposed model combines affordable food, community support, education, employment pathways, charitable collaboration and reintegration opportunities.",
     status: "Concept → Pilot design",
     download: "/docs/three-of-life-uhc.pdf",
   },
   {
-    tag: "Research",
+    tag: "CIC research and innovation",
     title: "Service Systems Evaluation",
     text: "Research programme focused on identifying inefficiencies, duplication, and improvement opportunities across institutional workflows and community support systems.",
     status: "In development",
     link: "/work",
   },
   {
-    tag: "Capacity Building",
+    tag: "Future advisory and innovation initiative",
     title: "Training & Implementation Support",
     text: "Workshops and structured support for organisations seeking measurable improvement, stronger governance, and sustainable delivery models.",
     status: "Available for partners",
@@ -31,7 +31,8 @@ const projects = [
 
   <p class="lead">
     We develop research and innovation projects that improve how systems serve people and communities.
-    Projects may begin as controlled pilots and scale based on evidence.
+    Projects may begin as controlled pilots and scale based on evidence. Classification identifies a project's relationship to
+    the Tree of Life ecosystem; it does not by itself establish legal ownership.
   </p>
 
   <div class="cards">
@@ -60,6 +61,8 @@ const projects = [
       </article>
     ))}
   </div>
+
+  <p class="ecosystemLink">Looking for the wider portfolio? <a href="/tree-of-life">Explore the Tree of Life ecosystem</a>.</p>
 
   <section class="bar">
     <div>
@@ -99,6 +102,9 @@ const projects = [
       grid-template-columns: repeat(3, minmax(0, 1fr));
       align-items: start;
     }
+
+    .ecosystemLink { margin: 18px 0 0; color: var(--muted); }
+    .ecosystemLink a { color: rgba(39, 99, 235, 0.95); font-weight: 800; }
 
     .card {
       border: 1px solid var(--border);

@@ -11,6 +11,10 @@ const quickPoints = [
     text: "Evidence-led analysis of institutional performance, service delivery, and community needs.",
   },
   {
+    title: "Tree of Life Ecosystem",
+    text: "A shared framework for CIC-led programmes, research initiatives and independently operated founder-led ventures.",
+  },
+  {
     title: "Innovation & Pilot Programmes",
     text: "Design and testing of scalable models in controlled community environments.",
   },
@@ -21,7 +25,7 @@ const quickPoints = [
 ];
 ---
 
-<BaseLayout title="">
+<BaseLayout title="" description="Visio Nova Mundi CIC is a London-based social innovation organisation advancing research, applied pilots and long-term community impact.">
   <section class="hero">
     <div class="heroGrid">
       <div>
@@ -59,6 +63,20 @@ const quickPoints = [
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="section ecosystem">
+    <div class="sectionHead">
+      <p class="eyebrow">Our ecosystem</p>
+      <h2>Tree of Life</h2>
+      <p>
+        One shared vision. Distinct projects. Independent identities. Tree of Life presents aligned social programmes,
+        research initiatives and founder-led ventures without blurring their different legal and operational roles.
+      </p>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="/tree-of-life">Explore the Tree of Life</a>
     </div>
   </section>
 
@@ -243,6 +261,11 @@ const quickPoints = [
     .miniBig { font-weight: 800; letter-spacing: -0.01em; color: var(--text); }
 
     .section { margin-top: 34px; }
+
+    .ecosystem {
+      border-left: 3px solid rgba(16, 185, 129, 0.55);
+      padding: 4px 0 4px 18px;
+    }
 
     .sectionHead h2 {
       margin: 0 0 8px;

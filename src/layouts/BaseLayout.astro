@@ -1,5 +1,8 @@
 ---
-const { title = "Visio Nova Mundi" } = Astro.props;
+const {
+  title = "Visio Nova Mundi",
+  description = "Visio Nova Mundi CIC — Innovation, research and systems reform for long-term community impact.",
+} = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -7,8 +10,8 @@ const { title = "Visio Nova Mundi" } = Astro.props;
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title}</title>
-  <meta name="description" content="Visio Nova Mundi CIC — Innovation, research and systems reform for long-term community impact." />
+  <title>{title ? `${title} | Visio Nova Mundi` : "Visio Nova Mundi CIC"}</title>
+  <meta name="description" content={description} />
 </head>
 
 <body>
@@ -22,6 +25,7 @@ const { title = "Visio Nova Mundi" } = Astro.props;
         <a href="/">Home</a>
         <a href="/impact">Impact</a>
         <a href="/projects">Projects</a>
+        <a href="/tree-of-life">Tree of Life</a>
         <a href="/contact" class="nav-btn">Contact</a>
       </nav>
     </div>
@@ -171,9 +175,18 @@ const { title = "Visio Nova Mundi" } = Astro.props;
   }
 
   @media (max-width: 768px) {
-    nav {
-      gap: 16px;
+    .nav .container {
+      align-items: flex-start;
+      gap: 12px;
     }
+
+    nav {
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+    }
+
+    nav a { font-size: 14px; }
   }
 </style>
 
