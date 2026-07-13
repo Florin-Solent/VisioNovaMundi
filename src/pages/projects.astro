@@ -3,11 +3,18 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 const projects = [
   {
+    tag: "CIC research and innovation",
+    title: "Tree of Life Circular Justice",
+    text: "A proposed discovery-stage concept exploring institutional waste measurement, reduction, reuse and recycling opportunities, alongside possible green-skills and employment pathways.",
+    status: "Discovery stage",
+    link: "/circular-justice",
+  },
+  {
     tag: "CIC-led programme",
     title: "Unity House Center (UHC)",
     text: "A social-impact programme being developed through Visio Nova Mundi CIC. Its proposed model combines affordable food, community support, education, employment pathways, charitable collaboration and reintegration opportunities.",
-    status: "Concept → Pilot design",
-    download: "/docs/three-of-life-uhc.pdf",
+    status: "Proposed programme",
+    link: "/innovation",
   },
   {
     tag: "CIC research and innovation",
@@ -20,7 +27,7 @@ const projects = [
     tag: "Future advisory and innovation initiative",
     title: "Training & Implementation Support",
     text: "Workshops and structured support for organisations seeking measurable improvement, stronger governance, and sustainable delivery models.",
-    status: "Available for partners",
+    status: "Exploring partner interest",
     link: "/contact",
   },
 ];
@@ -46,18 +53,7 @@ const projects = [
         <h2>{p.title}</h2>
         <p>{p.text}</p>
 
-        {p.download ? (
-          <a
-            class="link"
-            href={p.download}
-            target="_blank"
-            rel="noopener"
-          >
-            Download PDF →
-          </a>
-        ) : (
-          <a class="link" href={p.link}>View →</a>
-        )}
+        <a class="link" href={p.link}>View →</a>
       </article>
     ))}
   </div>
@@ -68,9 +64,8 @@ const projects = [
     <div>
       <h3>Have a project opportunity?</h3>
       <p>
-        We welcome partnerships with councils, public bodies, universities,
-        and community organisations. Contact us to discuss pilots,
-        evaluation, or advisory support.
+        We welcome enquiries from councils, public bodies, universities and
+        community organisations about proposed pilots, evaluation or advisory support.
       </p>
     </div>
 
@@ -99,7 +94,7 @@ const projects = [
     .cards {
       display: grid;
       gap: 14px;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       align-items: start;
     }
 
