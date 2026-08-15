@@ -1,5 +1,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 
+// Keep the Sites worker entrypoint explicit so the deployment package is rebuilt
+// whenever the static asset-serving contract is repaired or revalidated.
 const entry = `
 const worker = {
   async fetch(request, env) {
