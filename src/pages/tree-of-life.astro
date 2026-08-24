@@ -100,6 +100,54 @@ const futureCandidates = [
     <p>Projects will be classified before public listing. The review considers legal and intellectual-property ownership; the responsible operator; funding, contracts, risk and insurance; data-controller responsibility; prize or reward obligations; and whether the work is operational, under development or conceptual.</p>
   </section>
 
+  <section class="ecosystemMapSection" aria-labelledby="ecosystem-map-heading">
+    <div class="sectionHead">
+      <p class="eyebrow">Ecosystem structure</p>
+      <h2 id="ecosystem-map-heading">A framework that makes relationships clear</h2>
+      <p>The Tree of Life groups distinct areas of work without suggesting that every branch is an active programme or shares one legal structure.</p>
+    </div>
+
+    <div class="mapLegend" aria-label="Portfolio status legend">
+      <span class="legendCic">CIC-led</span><span class="legendResearch">Research / discovery</span><span class="legendIndependent">Independent founder-led</span><span class="legendFuture">Future / concept</span>
+    </div>
+
+    <div class="ecosystemMap" data-ecosystem-map>
+      <svg viewBox="-210 0 1380 500" role="img" aria-labelledby="mapTitle mapDescription">
+        <title id="mapTitle">Tree of Life ecosystem structure</title>
+        <desc id="mapDescription">A central framework joins seven strategic Tree of Life branches. Line styles distinguish CIC-led, research, independent and future categories.</desc>
+        <path class="mapLine trunk" pathLength="1" d="M480 440 L480 96" />
+        <path class="mapLine cic branchOne" pathLength="1" d="M480 164 C408 154 338 119 205 112" />
+        <path class="mapLine research branchTwo" pathLength="1" d="M480 211 C402 205 339 203 180 202" />
+        <path class="mapLine cic branchThree" pathLength="1" d="M480 258 C403 270 341 291 211 304" />
+        <path class="mapLine independent branchFour" pathLength="1" d="M480 143 C555 127 635 98 754 88" />
+        <path class="mapLine research branchFive" pathLength="1" d="M480 197 C557 191 634 177 763 175" />
+        <path class="mapLine future branchSix" pathLength="1" d="M480 252 C554 261 636 274 757 282" />
+        <path class="mapLine future branchSeven" pathLength="1" d="M480 307 C557 333 633 364 750 385" />
+        <circle class="mapRoot" cx="480" cy="440" r="7" />
+        <circle class="mapNode cic" cx="205" cy="112" r="5" /><circle class="mapNode research" cx="180" cy="202" r="5" /><circle class="mapNode cic" cx="211" cy="304" r="5" />
+        <circle class="mapNode independent" cx="754" cy="88" r="5" /><circle class="mapNode research" cx="763" cy="175" r="5" /><circle class="mapNode future" cx="757" cy="282" r="5" /><circle class="mapNode future" cx="750" cy="385" r="5" />
+        <g class="mapLabel labelOne"><text x="194" y="91" text-anchor="end">Social and Community Impact</text><text class="mapType" x="194" y="108" text-anchor="end">CIC-led</text></g>
+        <g class="mapLabel labelTwo"><text x="169" y="181" text-anchor="end">Research and Artificial Intelligence</text><text class="mapType" x="169" y="198" text-anchor="end">Research / discovery</text></g>
+        <g class="mapLabel labelThree"><text x="200" y="330" text-anchor="end">Education and Opportunity</text><text class="mapType" x="200" y="347" text-anchor="end">CIC-led</text></g>
+        <g class="mapLabel labelFour"><text x="765" y="66">Creative and Cultural Innovation</text><text class="mapType" x="765" y="83">Independent founder-led</text></g>
+        <g class="mapLabel labelFive"><text x="774" y="153">Workplace and Practical Innovation</text><text class="mapType" x="774" y="170">Research / discovery</text></g>
+        <g class="mapLabel labelSix"><text x="768" y="309">Strategic Transformation and Place Development</text><text class="mapType" x="768" y="326">Future / concept</text></g>
+        <g class="mapLabel labelSeven"><text x="761" y="412">Future Partnerships and Ventures</text><text class="mapType" x="761" y="429">Future / concept</text></g>
+        <text class="mapCore" x="480" y="468" text-anchor="middle">Shared vision · distinct identities</text>
+      </svg>
+    </div>
+
+    <ol class="mobileMap" aria-label="Tree of Life ecosystem branches">
+      <li class="cic"><strong>Social and Community Impact</strong><span>CIC-led</span></li>
+      <li class="research"><strong>Research and Artificial Intelligence</strong><span>Research / discovery</span></li>
+      <li class="cic"><strong>Education and Opportunity</strong><span>CIC-led</span></li>
+      <li class="independent"><strong>Creative and Cultural Innovation</strong><span>Independent founder-led</span></li>
+      <li class="research"><strong>Workplace and Practical Innovation</strong><span>Research / discovery</span></li>
+      <li class="future"><strong>Strategic Transformation and Place Development</strong><span>Future / concept</span></li>
+      <li class="future"><strong>Future Partnerships and Ventures</strong><span>Future / concept</span></li>
+    </ol>
+  </section>
+
   <section>
     <div class="sectionHead"><h2>Future candidates</h2><p>These concepts are not part of the current operating portfolio. They may be assessed against the same governance and evidence framework before any public launch.</p></div>
     <div class="portfolio">
@@ -120,6 +168,28 @@ const futureCandidates = [
     p { color: var(--muted); line-height: 1.75; } .hero { max-width: 80ch; padding: 12px 0 26px; } .eyebrow { color: #0f766e; font-size: 13px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; margin: 0 0 9px; } .lead { color: var(--text); font-size: 22px; margin: 0 0 12px; }
     section { margin-top: 34px; } .statement, .framework, .clarification { border: 1px solid var(--border); border-radius: 20px; padding: 22px; background: linear-gradient(135deg, rgba(37,99,235,.06), rgba(16,185,129,.07)); } blockquote { margin: 18px 0 0; padding: 16px 18px; border-left: 4px solid #0f766e; background: rgba(255,255,255,.76); color: var(--text); font-weight: 700; line-height: 1.6; border-radius: 0 14px 14px 0; }
     .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; } .card { border: 1px solid var(--border); border-radius: 18px; padding: 17px; background: rgba(255,255,255,.84); box-shadow: 0 6px 24px rgba(0,0,0,.05); } .card p { margin: 0; } .portfolio { display: grid; gap: 14px; } .sectionHead p { margin: 0; max-width: 78ch; } .meta { display: flex; gap: 9px; align-items: center; justify-content: space-between; color: var(--muted); font-size: 13px; font-weight: 700; margin-bottom: 12px; } .label { border: 1px solid rgba(37,99,235,.22); background: rgba(37,99,235,.07); border-radius: 999px; padding: 6px 9px; color: #1d4ed8; } .project .note { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 14px; } .clarification { background: rgba(255,255,255,.7); }
-    @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } .meta { align-items: flex-start; flex-direction: column; } }
+    .ecosystemMapSection { margin-top: 34px; } .mapLegend { display:flex; flex-wrap:wrap; gap:8px; margin:15px 0 12px; font-size:12px; font-weight:750; color:var(--muted); } .mapLegend span { border:1px solid var(--border); border-radius:999px; padding:6px 9px; background:rgba(255,255,255,.68); } .legendCic { border-color:rgba(15,118,110,.28)!important; } .legendResearch { border-color:rgba(37,99,235,.28)!important; } .legendIndependent { border-color:rgba(126,87,194,.28)!important; } .legendFuture { border-style:dashed!important; }
+    .ecosystemMap { border:1px solid var(--border); border-radius:20px; padding:16px; background:linear-gradient(135deg,rgba(37,99,235,.045),rgba(16,185,129,.055)); overflow:hidden; } .ecosystemMap svg { display:block; width:100%; height:auto; min-height:420px; } .mapLine { fill:none; stroke:#0f766e; stroke-width:2; stroke-linecap:round; stroke-dasharray:1; stroke-dashoffset:1; } .mapLine.research { stroke:#2563eb; stroke-dasharray:.05 .035; } .mapLine.independent { stroke:#7e57c2; } .mapLine.future { stroke:#64748b; stroke-dasharray:.025 .04; opacity:.75; } .mapNode { fill:#fff; stroke:#0f766e; stroke-width:2; opacity:0; } .mapNode.research { stroke:#2563eb; } .mapNode.independent { stroke:#7e57c2; } .mapNode.future { stroke:#64748b; } .mapRoot { fill:#0f766e; opacity:0; } .mapLabel { fill:var(--text); font-size:15px; font-weight:750; opacity:0; transform:translateY(5px); } .mapType { fill:var(--muted); font-size:11px; font-weight:600; } .mapCore { fill:var(--muted); font-size:12px; font-weight:700; opacity:0; } .ecosystemMap.is-drawn .trunk { animation:drawLine .55s ease-out forwards; } .ecosystemMap.is-drawn .branchOne { animation:drawLine .42s .42s ease-out forwards; } .ecosystemMap.is-drawn .branchTwo { animation:drawLine .42s .7s ease-out forwards; } .ecosystemMap.is-drawn .branchThree { animation:drawLine .42s .98s ease-out forwards; } .ecosystemMap.is-drawn .branchFour { animation:drawLine .42s 1.26s ease-out forwards; } .ecosystemMap.is-drawn .branchFive { animation:drawLine .42s 1.54s ease-out forwards; } .ecosystemMap.is-drawn .branchSix { animation:drawLine .42s 1.82s ease-out forwards; } .ecosystemMap.is-drawn .branchSeven { animation:drawLine .42s 2.1s ease-out forwards; } .ecosystemMap.is-drawn .mapNode, .ecosystemMap.is-drawn .mapRoot { animation:fadeIn .2s ease-out forwards; } .ecosystemMap.is-drawn .mapLabel { animation:labelIn .28s ease-out forwards; } .ecosystemMap.is-drawn .labelOne { animation-delay:.82s; } .ecosystemMap.is-drawn .labelTwo { animation-delay:1.1s; } .ecosystemMap.is-drawn .labelThree { animation-delay:1.38s; } .ecosystemMap.is-drawn .labelFour { animation-delay:1.66s; } .ecosystemMap.is-drawn .labelFive { animation-delay:1.94s; } .ecosystemMap.is-drawn .labelSix { animation-delay:2.22s; } .ecosystemMap.is-drawn .labelSeven { animation-delay:2.5s; } .ecosystemMap.is-drawn .mapCore { animation:fadeIn .3s 2.55s ease-out forwards; } .mobileMap { display:none; }
+    @keyframes drawLine { to { stroke-dashoffset:0; } } @keyframes fadeIn { to { opacity:1; } } @keyframes labelIn { to { opacity:1; transform:translateY(0); } }
+    @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } .meta { align-items: flex-start; flex-direction: column; } .ecosystemMap { display:none; } .mobileMap { display:grid; gap:10px; margin:14px 0 0; padding:0; list-style:none; } .mobileMap li { position:relative; padding:13px 14px 13px 27px; border:1px solid var(--border); border-radius:14px; background:rgba(255,255,255,.78); } .mobileMap li::before { content:""; position:absolute; left:12px; top:18px; width:7px; height:7px; border-radius:50%; background:#0f766e; } .mobileMap .research::before { background:#2563eb; } .mobileMap .independent::before { background:#7e57c2; } .mobileMap .future::before { background:#64748b; } .mobileMap strong, .mobileMap span { display:block; } .mobileMap strong { color:var(--text); font-size:14px; } .mobileMap span { margin-top:3px; color:var(--muted); font-size:12px; } }
+    @media (prefers-reduced-motion: reduce) { .ecosystemMap .mapLine { stroke-dashoffset:0; } .ecosystemMap .mapNode, .ecosystemMap .mapRoot, .ecosystemMap .mapLabel, .ecosystemMap .mapCore { opacity:1; transform:none; animation:none; } }
   </style>
+
+  <script>
+    const ecosystemMap = document.querySelector<HTMLElement>("[data-ecosystem-map]");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (ecosystemMap) {
+      if (reduceMotion) {
+        ecosystemMap.classList.add("is-drawn");
+      } else {
+        const mapObserver = new IntersectionObserver(([entry], observer) => {
+          if (entry.isIntersecting) {
+            ecosystemMap.classList.add("is-drawn");
+            observer.disconnect();
+          }
+        }, { threshold: 0.28 });
+        mapObserver.observe(ecosystemMap);
+      }
+    }
+  </script>
 </BaseLayout>

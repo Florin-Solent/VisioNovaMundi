@@ -26,7 +26,7 @@ const quickPoints = [
 ---
 
 <BaseLayout title="" description="Visio Nova Mundi CIC is a London-based social innovation organisation advancing research, applied pilots and long-term community impact.">
-  <section class="hero">
+  <section class="hero home-hero-mesh">
     <div class="heroGrid">
       <div>
         <p class="eyebrow">Social Innovation • Research • Applied Pilots</p>
@@ -64,6 +64,20 @@ const quickPoints = [
         </div>
       </div>
     </div>
+  </section>
+
+  <section class="methodology" data-methodology aria-labelledby="methodology-heading">
+    <div class="sectionHead">
+      <p class="eyebrow">Evidence-led methodology</p>
+      <h2 id="methodology-heading">Pilot → Measure → Refine → Scale</h2>
+      <p>A controlled learning cycle for turning operational insight into responsible, testable improvement.</p>
+    </div>
+    <ol class="methodologySteps">
+      <li><span>01</span><strong>Pilot</strong><small>Test carefully</small></li>
+      <li><span>02</span><strong>Measure</strong><small>Gather evidence</small></li>
+      <li><span>03</span><strong>Refine</strong><small>Improve responsibly</small></li>
+      <li><span>04</span><strong>Scale</strong><small>Only when justified</small></li>
+    </ol>
   </section>
 
   <section class="section ecosystem">
@@ -150,6 +164,9 @@ const quickPoints = [
 
   <style>
     .hero { padding: 18px 0 10px; }
+    .home-hero-mesh { position: relative; isolation: isolate; overflow: hidden; }
+    .home-hero-mesh::before { content: ""; position: absolute; z-index: -1; inset: -30%; background: radial-gradient(circle at 20% 35%, rgba(37,99,235,.10), transparent 34%), radial-gradient(circle at 70% 28%, rgba(16,185,129,.09), transparent 35%), radial-gradient(circle at 56% 80%, rgba(37,99,235,.07), transparent 38%); animation: heroMeshDrift 56s ease-in-out infinite alternate; }
+    .home-hero-mesh > * { position: relative; }
 
     .heroGrid {
       display: grid;
@@ -262,6 +279,22 @@ const quickPoints = [
 
     .section { margin-top: 34px; }
 
+    .methodology { margin-top: 32px; padding: 20px; border: 1px solid var(--border); border-radius: 20px; background: rgba(255,255,255,.58); }
+    .methodologySteps { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; margin: 18px 0 0; padding: 0; list-style: none; }
+    .methodologySteps li { position: relative; min-height: 102px; padding: 15px; border: 1px solid var(--border); border-radius: 16px; background: rgba(255,255,255,.86); opacity: 0; transform: translateY(14px); transition: opacity .38s ease-out, transform .38s cubic-bezier(.22,1,.36,1); }
+    .methodologySteps li:not(:last-child)::after { content: ""; position: absolute; top: 50%; left: calc(100% + 1px); width: 12px; height: 1px; background: linear-gradient(90deg, rgba(37,99,235,.55), rgba(16,185,129,.58)); transform: scaleX(0); transform-origin: left; transition: transform .3s ease-out; }
+    .methodologySteps span { display: block; margin-bottom: 10px; color: #0f766e; font-size: 12px; font-weight: 850; letter-spacing: .08em; }
+    .methodologySteps strong { display: block; color: var(--text); font-size: 17px; }
+    .methodologySteps small { display: block; margin-top: 5px; color: var(--muted); line-height: 1.45; }
+    .methodology.is-complete .methodologySteps li { opacity: 1; transform: translateY(0); }
+    .methodology.is-complete .methodologySteps li:nth-child(1) { transition-delay: 0ms; }
+    .methodology.is-complete .methodologySteps li:nth-child(2) { transition-delay: 560ms; }
+    .methodology.is-complete .methodologySteps li:nth-child(3) { transition-delay: 1120ms; }
+    .methodology.is-complete .methodologySteps li:nth-child(4) { transition-delay: 1680ms; }
+    .methodology.is-complete .methodologySteps li:nth-child(1)::after { transform: scaleX(1); transition-delay: 390ms; }
+    .methodology.is-complete .methodologySteps li:nth-child(2)::after { transform: scaleX(1); transition-delay: 950ms; }
+    .methodology.is-complete .methodologySteps li:nth-child(3)::after { transform: scaleX(1); transition-delay: 1510ms; }
+
     .ecosystem {
       border-left: 3px solid rgba(16, 185, 129, 0.55);
       padding: 4px 0 4px 18px;
@@ -358,6 +391,35 @@ const quickPoints = [
       .heroGrid, .twoCol { grid-template-columns: 1fr; }
       .cards { grid-template-columns: 1fr; }
       .ctaBar { flex-direction: column; align-items: stretch; }
+      .methodologySteps { grid-template-columns: 1fr 1fr; }
+      .methodologySteps li:not(:last-child)::after { display: none; }
+    }
+
+    @keyframes heroMeshDrift { from { transform: translate3d(-1%, -1%, 0) scale(1); } to { transform: translate3d(1%, 1%, 0) scale(1.03); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .home-hero-mesh::before { animation: none; }
+      .methodologySteps li { opacity: 1; transform: none; transition: none; }
+      .methodologySteps li:not(:last-child)::after { transform: scaleX(1); transition: none; }
     }
   </style>
+
+  <script>
+    const methodology = document.querySelector<HTMLElement>("[data-methodology]");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (methodology) {
+      if (reduceMotion) {
+        methodology.classList.add("is-complete");
+      } else {
+        const methodologyObserver = new IntersectionObserver(([entry], observer) => {
+          if (entry.isIntersecting) {
+            methodology.classList.add("is-complete");
+            observer.disconnect();
+          }
+        }, { threshold: 0.35 });
+        methodologyObserver.observe(methodology);
+      }
+    }
+  </script>
 </BaseLayout>
