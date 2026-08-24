@@ -2,31 +2,38 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="Impact">
-  <h1>Page moved</h1>
-  <p class="lead">
-    Our Impact content is now part of <a href="/work">Our Work</a> and the <a href="/innovation">Innovation Programme</a>.
-  </p>
+<BaseLayout title="Impact" description="How Visio Nova Mundi CIC connects proposed public-benefit work with responsible independent innovation through the Tree of Life ecosystem.">
+  <section class="hero">
+    <p class="eyebrow">Tree of Life · impact approach</p>
+    <h1>Impact begins with people — and is strengthened by responsible innovation.</h1>
+    <p class="lead">Tree of Life combines direct public-benefit initiatives with responsible independent innovation. Successful founder-led ventures may help create resources that can later be contributed to public-benefit work, while each venture remains legally and financially distinct.</p>
+  </section>
 
-  <div class="actions">
-    <a class="btn primary" href="/work">Go to Our Work</a>
-    <a class="btn" href="/innovation">Go to Innovation</a>
-  </div>
+  <section class="statement">
+    <h2>Two complementary pathways</h2>
+    <div class="pathways">
+      <article><span>01</span><h3>Direct public benefit</h3><p>Visio Nova Mundi CIC develops proposed programmes, research and partnerships intended to address practical community and systems challenges. Delivery only follows appropriate partners, governance, safeguards and evidence.</p></article>
+      <article><span>02</span><h3>Independent innovation</h3><p>Founder-led ventures can create knowledge, creative work, products or commercial value. Where a founder chooses to make a contribution, it would be separately documented and managed in line with the CIC’s governance and public-benefit responsibilities.</p></article>
+    </div>
+    <p class="boundary"><strong>Important boundary:</strong> a contribution is never automatic, guaranteed or attached to every sale. CIC grants, sponsorship and public-benefit funds do not automatically finance an independent venture.</p>
+  </section>
+
+  <section>
+    <div class="sectionHead"><p class="eyebrow">Human impact</p><h2>What the Tree of Life initiatives are working towards</h2></div>
+    <div class="cards">
+      <article class="card"><h3>Unity House Centres</h3><p>Unity House is a proposed public-benefit programme. Its first proposed test is a hosted Waltham Forest pilot exploring surplus-food redistribution, community access and responsible evidence. The intent is to learn with existing local organisations, not replace them.</p><p class="note">No physical centre is operating and no outcomes are claimed in advance.</p><a href="/unity-house">Explore Unity House →</a></article>
+      <article class="card"><h3>Tree of Life Circular Justice</h3><p>Circular Justice is a proposed discovery-stage concept exploring whether better measurement and management of institutional material flows could support environmental, skills and employment outcomes, subject to safeguards and formal permissions.</p><p class="note">It is not a live platform, approved pilot or proven savings programme.</p><a href="/circular-justice">Explore Circular Justice →</a></article>
+      <article class="card"><h3>Project Clandestinus</h3><p>Clandestinus is the independent Creative &amp; Cultural Innovation branch: a mystery-publishing world designed around symbols, decoding, curiosity and active reader discovery.</p><p class="note">It is a separate commercial and creative IP venture, not a CIC programme.</p><a href="/project-clandestinus">Explore Project Clandestinus →</a></article>
+    </div>
+  </section>
+
+  <section class="governance">
+    <h2>Clear separation protects the mission</h2>
+    <p>Being part of Tree of Life does not transfer an independent venture’s ownership, intellectual property, finances, contracts, publishing activities, prize or reward obligations, or legal responsibilities to Visio Nova Mundi CIC. The same principle protects CIC-led work from being represented as funding or operating a separate venture.</p>
+    <div class="actions"><a class="btn primary" href="/tree-of-life">Explore Tree of Life</a><a class="btn" href="/governance">Read our governance approach</a></div>
+  </section>
 
   <style>
-    h1 { margin: 0 0 12px; font-size: 40px; letter-spacing: -0.02em; color: var(--text); }
-    .lead { margin: 0 0 18px; color: var(--muted); line-height: 1.75; font-size: 18px; max-width: 80ch; }
-    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      border-radius: 14px; padding: 11px 14px;
-      border: 1px solid var(--border); background: white; color: var(--text);
-      text-decoration: none; font-weight: 850;
-    }
-    .btn.primary {
-      background: linear-gradient(135deg, rgba(39, 99, 235, 0.10), rgba(16, 185, 129, 0.10));
-      border-color: rgba(39, 99, 235, 0.25);
-    }
-    .btn:hover { border-color: rgba(0,0,0,0.18); text-decoration: none; }
+    .hero{max-width:88ch;padding:12px 0 14px}.eyebrow{margin:0 0 9px;color:#0f766e;text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:850}h1{margin:0 0 14px;font-size:clamp(40px,6vw,62px);letter-spacing:-.04em;line-height:1.05;color:var(--text)}h2{margin:0 0 10px;color:var(--text);font-size:clamp(25px,3vw,32px);letter-spacing:-.025em}h3{margin:0 0 8px;color:var(--text);font-size:18px}.lead,p{color:var(--muted);line-height:1.75}.lead{margin:0;font-size:19px}.statement,.governance{margin-top:30px;border:1px solid var(--border);border-radius:20px;padding:22px;background:linear-gradient(135deg,rgba(37,99,235,.07),rgba(16,185,129,.08));box-shadow:0 8px 28px rgba(0,0,0,.04)}.pathways,.cards{display:grid;gap:14px}.pathways{grid-template-columns:1fr 1fr;margin-top:16px}.pathways article,.card{border:1px solid var(--border);border-radius:18px;padding:17px;background:rgba(255,255,255,.88)}.pathways span{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:rgba(15,118,110,.12);color:#0f766e;font-size:12px;font-weight:850}.pathways h3{margin-top:12px}.pathways p,.card p{margin:0}.boundary{margin:16px 0 0!important;padding:13px 15px;border-left:3px solid #d97706;background:rgba(255,255,255,.58);font-size:14px}.sectionHead{margin-top:34px}.sectionHead h2{margin-bottom:0}.cards{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:14px}.card{box-shadow:0 6px 24px rgba(0,0,0,.05)}.card .note{margin-top:12px;color:var(--muted);font-size:13px}.card a{display:inline-block;margin-top:14px;color:#1d4ed8;font-weight:800;text-decoration:none}.card a:hover{text-decoration:underline}.governance p{margin:0;max-width:90ch}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:11px 14px;border:1px solid var(--border);border-radius:14px;background:white;color:var(--text);font-weight:800;text-decoration:none}.btn.primary{border-color:rgba(37,99,235,.25);background:linear-gradient(135deg,rgba(39,99,235,.10),rgba(16,185,129,.10))}@media(max-width:800px){.pathways,.cards{grid-template-columns:1fr}}
   </style>
 </BaseLayout>

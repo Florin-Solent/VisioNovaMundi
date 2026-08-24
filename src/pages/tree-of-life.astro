@@ -20,6 +20,13 @@ const projects = [
     note: "Future branches and permanent centres remain proposals until evidence, partners and governance justify them.",
   },
   {
+    classification: "CIC research and innovation",
+    title: "Tree of Life Circular Justice",
+    stage: "Discovery stage",
+    text: "A proposed research and partnership concept exploring institutional material flows, including waste measurement, reduction, reuse and recycling opportunities, alongside possible green-skills and employment pathways.",
+    note: "Circular Justice is not a live platform or approved pilot. It has no prison or HMPPS partnership, no access to prisoner data, no funding approval and no claimed savings or outcomes.",
+  },
+  {
     classification: "Independent founder-led venture",
     title: "Project Clandestinus",
     stage: "Independent venture",
@@ -46,6 +53,13 @@ const projects = [
     stage: "Long-term professional direction",
     text: "Founder and Strategic Transformation Adviser Florin is developing a future advisory role supporting organisations, communities and public institutions through structured review, research and practical planning.",
     note: "Future delivery may use Visio Nova Mundi CIC, a separate commercial company, a partnership or another appropriate structure. It does not claim governmental authority or completed city-scale assignments.",
+  },
+];
+
+const futureCandidates = [
+  {
+    title: "AdminTrace",
+    text: "A future Tree of Life candidate at concept stage. It is not an operational programme, service or platform, and has no public delivery, performance or data-processing claims.",
   },
 ];
 ---
@@ -84,6 +98,16 @@ const projects = [
   <section class="framework">
     <h2>Future project framework</h2>
     <p>Projects will be classified before public listing. The review considers legal and intellectual-property ownership; the responsible operator; funding, contracts, risk and insurance; data-controller responsibility; prize or reward obligations; and whether the work is operational, under development or conceptual.</p>
+  </section>
+
+  <section>
+    <div class="sectionHead"><h2>Future candidates</h2><p>These concepts are not part of the current operating portfolio. They may be assessed against the same governance and evidence framework before any public launch.</p></div>
+    <div class="portfolio">
+      {futureCandidates.map((candidate) => <article class="card project future">
+        <div class="meta"><span class="label">Future / concept stage</span></div>
+        <h3>{candidate.title}</h3><p>{candidate.text}</p>
+      </article>)}
+    </div>
   </section>
 
   <section class="clarification">
