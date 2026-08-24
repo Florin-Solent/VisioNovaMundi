@@ -46,3 +46,10 @@ The following captures show the corrected wording after the founder review direc
 
 - Mobile Impact correction: `output/founder-review-evidence/impact-correction-mobile.png`
 - Desktop Circular Justice correction: `output/founder-review-evidence/circular-justice-correction-desktop.png`
+
+## Funding-narrative removal addendum
+
+- Desktop Impact: `output/founder-review-evidence/impact-independence-desktop.png`
+- Mobile Impact: `output/founder-review-evidence/impact-independence-mobile.png`
+- Desktop Project Clandestinus: `output/founder-review-evidence/project-clandestinus-independence-desktop.png`
+- Mobile Project Clandestinus: `output/founder-review-evidence/project-clandestinus-independence-mobile.png`
