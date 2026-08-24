@@ -365,7 +365,10 @@ const {
 
   @media (max-width: 768px) {
     .nav {
-      position: static;
+      /* The mobile menu must scroll away with the page; Edge can otherwise retain
+         the desktop sticky declaration during responsive viewport changes. */
+      position: static !important;
+      top: auto;
     }
 
     .nav .container {
@@ -390,10 +393,6 @@ const {
       flex: 0 0 auto;
       font-size: 14px;
       scroll-snap-align: start;
-    }
-
-    .nav-indicator {
-      display: none;
     }
 
     .brand-name {
@@ -621,6 +620,7 @@ const {
 
     links.forEach((link) => {
       link.addEventListener("pointerenter", () => positionIndicator(link));
+      link.addEventListener("pointerdown", () => positionIndicator(link));
       link.addEventListener("focus", () => positionIndicator(link));
     });
 
