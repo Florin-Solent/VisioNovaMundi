@@ -118,6 +118,7 @@ const {
   .brand {
     display: inline-flex;
     align-items: center;
+    flex: 0 0 auto;
     gap: 10px;
     position: relative;
     isolation: isolate;
@@ -246,6 +247,7 @@ const {
   .brand-name {
     position: relative;
     z-index: 1;
+    white-space: nowrap;
     font-weight: 700;
     letter-spacing: -0.02em;
     font-size: 18px;
@@ -491,6 +493,22 @@ const {
 
     .nav-indicator {
       display: none;
+    }
+
+    .brand-name {
+      font-size: 16px;
+    }
+
+  }
+
+  @media (max-width: 360px) {
+    .brand {
+      gap: 7px;
+      padding-right: 7px;
+    }
+
+    .brand-name {
+      font-size: 15px;
     }
   }
 
