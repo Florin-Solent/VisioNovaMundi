@@ -102,8 +102,9 @@ const {
 
   /* Navigation */
   .nav {
-    position: sticky;
-    top: 0;
+    /* Navigation should never cover reading content: it scrolls with every layout. */
+    position: static;
+    top: auto;
     backdrop-filter: blur(14px);
     background: var(--glass);
     border-bottom: 1px solid var(--border);
@@ -364,13 +365,6 @@ const {
   }
 
   @media (max-width: 768px) {
-    .nav {
-      /* The mobile menu must scroll away with the page; Edge can otherwise retain
-         the desktop sticky declaration during responsive viewport changes. */
-      position: static !important;
-      top: auto;
-    }
-
     .nav .container {
       flex-direction: column;
       align-items: flex-start;
