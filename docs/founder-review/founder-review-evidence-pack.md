@@ -39,4 +39,3 @@ The affected pages are static information pages. Their user-facing interactions 
 ## Associated legal review material
 
 Review `docs/founder-review/voluntary-contribution-legal-review-extract.md` alongside this pack before any release decision.
-
