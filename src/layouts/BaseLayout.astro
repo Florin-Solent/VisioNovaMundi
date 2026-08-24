@@ -19,9 +19,19 @@ const {
 
   <header class="nav">
     <div class="container">
-      <div class="logo">Visio Nova Mundi</div>
+      <a class="brand" href="/" aria-label="Visio Nova Mundi home">
+        <span class="brand-mark" aria-hidden="true">
+          <span class="brand-star star-one"></span>
+          <span class="brand-star star-two"></span>
+          <span class="brand-star star-three"></span>
+          <span class="brand-star star-four"></span>
+          <span class="brand-star star-core"></span>
+        </span>
+        <span class="brand-name">Visio Nova Mundi</span>
+      </a>
 
-      <nav>
+      <nav data-site-nav>
+        <span class="nav-indicator" aria-hidden="true"></span>
         <a href="/">Home</a>
         <a href="/impact">Impact</a>
         <a href="/projects">Projects</a>
@@ -107,35 +117,187 @@ const {
     padding: 18px 20px;
   }
 
-  .logo {
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 5px 12px 5px 5px;
+    border: 1px solid rgba(37, 99, 235, 0.14);
+    border-radius: 999px;
+    color: var(--text);
+    text-decoration: none;
+    background:
+      radial-gradient(circle at 12% 52%, rgba(16, 185, 129, 0.25), transparent 29%),
+      radial-gradient(circle at 48% 22%, rgba(37, 99, 235, 0.22), transparent 34%),
+      radial-gradient(circle at 90% 72%, rgba(16, 185, 129, 0.18), transparent 31%),
+      linear-gradient(115deg, rgba(255, 255, 255, 0.68), rgba(231, 245, 255, 0.58), rgba(238, 255, 250, 0.62));
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  }
+
+  .brand::before,
+  .brand::after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .brand::before {
+    inset: 0;
+    opacity: 0.52;
+    background-image:
+      radial-gradient(circle at 12% 35%, rgba(255, 255, 255, 0.95) 0 1px, transparent 1.7px),
+      radial-gradient(circle at 34% 72%, rgba(255, 255, 255, 0.72) 0 1px, transparent 1.6px),
+      radial-gradient(circle at 69% 24%, rgba(255, 255, 255, 0.86) 0 1px, transparent 1.8px),
+      radial-gradient(circle at 91% 68%, rgba(255, 255, 255, 0.78) 0 1px, transparent 1.7px);
+    animation: vnm-galaxy-drift 10s ease-in-out infinite alternate;
+  }
+
+  .brand::after {
+    inset: -85% -18%;
+    border-radius: 50%;
+    background:
+      radial-gradient(ellipse at 25% 58%, rgba(16, 185, 129, 0.18), transparent 28%),
+      radial-gradient(ellipse at 57% 34%, rgba(37, 99, 235, 0.18), transparent 34%),
+      radial-gradient(ellipse at 84% 66%, rgba(16, 185, 129, 0.14), transparent 25%);
+    filter: blur(8px);
+    transform: scale(0.86) rotate(-5deg);
+    transition: transform 0.35s ease, opacity 0.35s ease;
+  }
+
+  .brand-mark {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    overflow: visible;
+    border: 1px solid rgba(255, 255, 255, 0.62);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0 7%, rgba(16, 185, 129, 0.36) 21%, rgba(37, 99, 235, 0.25) 48%, transparent 72%);
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+
+  .brand-mark::before {
+    content: "";
+    position: absolute;
+    width: 29px;
+    height: 11px;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: 50%;
+    transform: rotate(-26deg);
+    box-shadow: 0 0 12px rgba(37, 99, 235, 0.28);
+  }
+
+  .brand-mark::after {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 1px solid rgba(16, 185, 129, 0.5);
+    border-radius: 50%;
+    transform: rotate(36deg) scaleY(0.46);
+  }
+
+  .brand-star {
+    position: absolute;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.95), 0 0 15px rgba(37, 99, 235, 0.38);
+    animation: vnm-star-twinkle 2.8s ease-in-out infinite;
+  }
+
+  .star-one { width: 3px; height: 3px; top: 5px; right: 4px; }
+  .star-two { width: 2px; height: 2px; bottom: 5px; left: 5px; animation-delay: -0.9s; }
+  .star-three { width: 2px; height: 2px; top: 9px; left: 3px; animation-delay: -1.6s; }
+  .star-four { width: 2px; height: 2px; right: 6px; bottom: 8px; animation-delay: -2.2s; }
+  .star-core { width: 5px; height: 5px; animation-duration: 2.2s; }
+
+  .brand:hover .brand-mark,
+  .brand:focus-visible .brand-mark,
+  .brand:active .brand-mark {
+    transform: scale(1.16) rotate(7deg);
+    filter: drop-shadow(0 0 10px rgba(37, 99, 235, 0.5));
+  }
+
+  .brand:hover,
+  .brand:focus-visible,
+  .brand:active {
+    border-color: rgba(16, 185, 129, 0.36);
+    box-shadow: 0 8px 22px rgba(37, 99, 235, 0.13);
+  }
+
+  .brand:hover::after,
+  .brand:focus-visible::after,
+  .brand:active::after {
+    transform: scale(1.08) rotate(5deg);
+    opacity: 0.95;
+  }
+
+  .brand:hover .brand-star,
+  .brand:focus-visible .brand-star,
+  .brand:active .brand-star {
+    animation: vnm-star-bloom 0.7s ease-out both;
+  }
+
+  .brand-name {
+    position: relative;
+    z-index: 1;
     font-weight: 700;
     letter-spacing: -0.02em;
     font-size: 18px;
+    color: #102741;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.72), 0 0 14px rgba(37, 99, 235, 0.2);
   }
 
   nav {
     display: flex;
     gap: 24px;
     align-items: center;
+    position: relative;
   }
 
   nav a {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 10px 12px;
+    border-radius: 999px;
     text-decoration: none;
     color: var(--muted);
     font-weight: 500;
-    transition: all 0.2s ease;
+    transition: color 0.2s ease;
   }
 
-  nav a:hover {
+  nav a:hover,
+  nav a:focus-visible,
+  nav a[aria-current="page"] {
     color: var(--text);
   }
 
-  .nav-btn {
-    padding: 10px 18px;
+  .nav-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border: 1px solid rgba(37, 99, 235, 0.25);
     border-radius: 999px;
     background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(16, 185, 129, 0.15));
     backdrop-filter: blur(6px);
-    border: 1px solid rgba(37, 99, 235, 0.25);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.28s ease, width 0.28s ease, height 0.28s ease, opacity 0.2s ease;
+  }
+
+  .nav-btn {
     font-weight: 600;
   }
 
@@ -183,6 +345,22 @@ const {
     font-size: 14px;
   }
 
+  @keyframes vnm-galaxy-drift {
+    from { transform: translateX(-3px); opacity: 0.38; }
+    to { transform: translateX(3px); opacity: 0.7; }
+  }
+
+  @keyframes vnm-star-twinkle {
+    0%, 100% { transform: scale(0.72); opacity: 0.55; }
+    50% { transform: scale(1.18); opacity: 1; }
+  }
+
+  @keyframes vnm-star-bloom {
+    0% { transform: scale(0.8); opacity: 0.65; }
+    55% { transform: scale(2.7); opacity: 1; }
+    100% { transform: scale(1.15); opacity: 0.92; }
+  }
+
   @media (max-width: 768px) {
     .nav .container {
       align-items: flex-start;
@@ -209,6 +387,241 @@ const {
     }
   }
 </style>
+
+<style is:global>
+  .bg-glow {
+    background-size: 125% 125%;
+    animation: vnm-ambient-drift 18s ease-in-out infinite alternate;
+  }
+
+  main {
+    animation: vnm-page-arrive 0.55s ease-out both;
+  }
+
+  .motion-ready .vnm-reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.56s ease-out var(--vnm-reveal-delay, 0ms),
+      transform 0.56s cubic-bezier(0.22, 1, 0.36, 1) var(--vnm-reveal-delay, 0ms);
+  }
+
+  .motion-ready .vnm-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .motion-ready .flow > div,
+  .motion-ready .pilotFlow > div,
+  .motion-ready .branchGrid span {
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease,
+      border-color 0.25s ease;
+  }
+
+  .motion-ready .flow > div:hover,
+  .motion-ready .pilotFlow > div:hover,
+  .motion-ready .branchGrid span:hover {
+    transform: translateY(-3px);
+    border-color: rgba(15, 118, 110, 0.3);
+    box-shadow: 0 12px 26px rgba(15, 118, 110, 0.1);
+  }
+
+  .motion-ready .card,
+  .motion-ready .smallCard,
+  .motion-ready .pathways article {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .motion-ready .card::after,
+  .motion-ready .smallCard::after,
+  .motion-ready .pathways article::after {
+    content: "";
+    position: absolute;
+    inset: -35%;
+    z-index: 0;
+    background: linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, 0.78) 50%, transparent 58%);
+    opacity: 0;
+    transform: translateX(-42%);
+    pointer-events: none;
+  }
+
+  .motion-ready .card > *,
+  .motion-ready .smallCard > *,
+  .motion-ready .pathways article > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .motion-ready .card:hover::after,
+  .motion-ready .smallCard:hover::after,
+  .motion-ready .pathways article:hover::after {
+    opacity: 1;
+    animation: vnm-card-sheen 0.85s ease-out both;
+  }
+
+  .motion-ready .tag,
+  .motion-ready .label,
+  .motion-ready .statusPill,
+  .motion-ready .pathways span {
+    animation: vnm-label-breathe 3.8s ease-in-out infinite;
+  }
+
+  .motion-ready .card a,
+  .motion-ready .link,
+  .motion-ready .btn {
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background-position 0.35s ease;
+  }
+
+  .motion-ready .card a:hover,
+  .motion-ready .link:hover,
+  .motion-ready .btn:hover {
+    transform: translateX(3px);
+  }
+
+  .motion-ready .btn:hover {
+    background-size: 170% 170%;
+    background-position: 100% 0;
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.14);
+  }
+
+  .motion-ready .flowArrow {
+    animation: vnm-flow-nudge 1.7s ease-in-out infinite;
+  }
+
+  @keyframes vnm-ambient-drift {
+    from {
+      background-position: 20% 20%, 80% 30%, 50% 80%;
+    }
+    to {
+      background-position: 26% 15%, 74% 36%, 55% 74%;
+    }
+  }
+
+  @keyframes vnm-page-arrive {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes vnm-card-sheen {
+    from { transform: translateX(-42%); }
+    to { transform: translateX(42%); }
+  }
+
+  @keyframes vnm-label-breathe {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(15, 118, 110, 0); }
+    50% { box-shadow: 0 0 0 5px rgba(15, 118, 110, 0.06); }
+  }
+
+  @keyframes vnm-flow-nudge {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(4px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bg-glow,
+    main,
+    .motion-ready .vnm-reveal,
+    .motion-ready .flow > div,
+    .motion-ready .pilotFlow > div,
+    .motion-ready .branchGrid span {
+      animation: none !important;
+      transition: none !important;
+      transform: none !important;
+    }
+
+    .motion-ready .card::after,
+    .motion-ready .smallCard::after,
+    .motion-ready .pathways article::after {
+      display: none;
+    }
+
+    .motion-ready .vnm-reveal {
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  const navigation = document.querySelector<HTMLElement>("[data-site-nav]");
+
+  if (navigation) {
+    const indicator = navigation.querySelector<HTMLElement>(".nav-indicator");
+    const links = Array.from(navigation.querySelectorAll<HTMLAnchorElement>("a"));
+    const currentPath = window.location.pathname.replace(/\/$/, "") || "/";
+    const currentLink = links.find((link) => {
+      const linkPath = new URL(link.href).pathname.replace(/\/$/, "") || "/";
+      return linkPath === currentPath;
+    });
+
+    const positionIndicator = (link?: HTMLAnchorElement) => {
+      if (!indicator || !link) return;
+
+      const navigationBounds = navigation.getBoundingClientRect();
+      const linkBounds = link.getBoundingClientRect();
+      indicator.style.width = `${linkBounds.width}px`;
+      indicator.style.height = `${linkBounds.height}px`;
+      indicator.style.transform = `translate(${linkBounds.left - navigationBounds.left}px, ${linkBounds.top - navigationBounds.top}px)`;
+      indicator.style.opacity = "1";
+    };
+
+    if (currentLink) {
+      currentLink.setAttribute("aria-current", "page");
+    }
+
+    const resetIndicator = () => positionIndicator(currentLink);
+    requestAnimationFrame(resetIndicator);
+    window.addEventListener("resize", resetIndicator);
+
+    links.forEach((link) => {
+      link.addEventListener("pointerenter", () => positionIndicator(link));
+      link.addEventListener("focus", () => positionIndicator(link));
+    });
+
+    navigation.addEventListener("pointerleave", resetIndicator);
+  }
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  if (!prefersReducedMotion.matches) {
+    document.documentElement.classList.add("motion-ready");
+
+    const revealTargets = Array.from(document.querySelectorAll<HTMLElement>([
+      "main > section",
+      "main > .heroBlock",
+      "main > .controlNote",
+      "main .card",
+      "main .smallCard",
+      "main .flow > div",
+      "main .pilotFlow > div",
+      "main .branchGrid span",
+    ].join(", ")));
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -32px" });
+
+    revealTargets.forEach((element, index) => {
+      element.classList.add("vnm-reveal");
+      element.style.setProperty("--vnm-reveal-delay", `${Math.min(index % 6, 5) * 45}ms`);
+      revealObserver.observe(element);
+    });
+  }
+</script>
 
 </body>
 </html>
