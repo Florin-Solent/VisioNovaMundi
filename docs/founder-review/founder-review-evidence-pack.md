@@ -39,3 +39,10 @@ The affected pages are static information pages. Their user-facing interactions 
 ## Associated legal review material
 
 Review `docs/founder-review/voluntary-contribution-legal-review-extract.md` alongside this pack before any release decision.
+
+## Copy-correction addendum
+
+The following captures show the corrected wording after the founder review direction dated 24 August 2026:
+
+- Mobile Impact correction: `output/founder-review-evidence/impact-correction-mobile.png`
+- Desktop Circular Justice correction: `output/founder-review-evidence/circular-justice-correction-desktop.png`
