@@ -51,6 +51,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </p>
   </section>
 
+  <section class="card verify">
+    <p class="eyebrow">Accountability</p>
+    <h2>How to verify and work with us</h2>
+    <p>Visio Nova Mundi operates as a Community Interest Company for public benefit. Our governance page explains the asset lock, separation of independent ventures and approach to transparent reporting.</p>
+    <div class="actions"><a class="btn primary" href="/governance">Read governance and transparency</a><a class="btn" href="/contact">Contact the CIC</a></div>
+  </section>
+
   <style>
     h1 {
       margin: 0 0 12px;
@@ -106,6 +113,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       margin-top: 14px;
       background: linear-gradient(135deg, rgba(39, 99, 235, 0.05), rgba(16, 185, 129, 0.05));
     }
+
+    .verify { margin-top: 14px; background: rgba(255,255,255,.78); }
+    .eyebrow { margin: 0 0 8px; color: #0f766e; font-size: 12px; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+    .actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; padding:11px 14px; border:1px solid var(--border); border-radius:14px; background:white; color:var(--text); text-decoration:none; font-weight:800; }
+    .btn.primary { border-color:rgba(37,99,235,.25); background:linear-gradient(135deg,rgba(39,99,235,.10),rgba(16,185,129,.10)); }
 
     @media (max-width: 900px) {
       .grid {
