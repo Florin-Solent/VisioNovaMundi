@@ -15,6 +15,7 @@ const {
 </head>
 
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <div class="bg-glow"></div>
 
   <header class="nav">
@@ -30,7 +31,7 @@ const {
         <span class="brand-name">Visio Nova Mundi</span>
       </a>
 
-      <nav data-site-nav>
+      <nav data-site-nav aria-label="Main navigation">
         <span class="nav-indicator" aria-hidden="true"></span>
         <a href="/">Home</a>
         <a href="/impact">Impact</a>
@@ -46,7 +47,7 @@ const {
     </div>
   </header>
 
-  <main class="container">
+  <main class="container" id="main-content" tabindex="-1">
     <slot />
   </main>
 
@@ -426,6 +427,14 @@ const {
 </style>
 
 <style is:global>
+  .skip-link { position: absolute; top: -100px; left: 16px; z-index: 100; padding: 12px; background: white; color: #0f172a; }
+  .skip-link:focus { top: 12px; }
+  main { overflow-wrap: anywhere; }
+  .nav .container { flex-wrap: wrap; gap: 12px; }
+  nav[data-site-nav] { flex-wrap: wrap; gap: 4px; }
+  main .meta, main .top { flex-wrap: wrap; }
+  main .note, main .eyebrow, main .tag, main .status, main .label, main .statusPill { font-size: .875rem; }
+  @media (max-width: 768px) { nav[data-site-nav] { flex-wrap: wrap; overflow: visible; } }
   .bg-glow {
     background-size: 125% 125%;
     animation: vnm-ambient-drift 18s ease-in-out infinite alternate;
@@ -436,8 +445,8 @@ const {
   }
 
   .motion-ready .vnm-reveal {
-    opacity: 0;
-    transform: translateY(16px);
+    opacity: 1;
+    transform: none;
     transition:
       opacity 0.56s ease-out var(--vnm-reveal-delay, 0ms),
       transform 0.56s cubic-bezier(0.22, 1, 0.36, 1) var(--vnm-reveal-delay, 0ms);
