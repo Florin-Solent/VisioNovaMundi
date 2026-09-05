@@ -72,6 +72,15 @@ const futureCandidates = [
     <p>Tree of Life is the strategic ecosystem through which Visio Nova Mundi presents social programmes, research initiatives, creative ventures and founder-led innovations that contribute to a more inclusive and sustainable future.</p>
   </section>
 
+  <section class="structure" aria-labelledby="structure-heading">
+    <div class="sectionHead"><p class="eyebrow">How the structure works</p><h2 id="structure-heading">One vision, three roles</h2><p>These roles are connected by purpose, but they are not interchangeable.</p></div>
+    <div class="structureGrid">
+      <article class="card"><span class="role">01 · Legal operator</span><h3>Visio Nova Mundi CIC</h3><p>The Community Interest Company develops public-benefit programmes, research and approved partnerships.</p></article>
+      <article class="card"><span class="role">02 · Shared framework</span><h3>Tree of Life</h3><p>The ecosystem groups aligned projects and makes their relationship, status and boundaries visible.</p></article>
+      <article class="card"><span class="role">03 · Separate operators</span><h3>Independent ventures</h3><p>Commercial or creative projects retain their own ownership, finances, intellectual property and responsibilities.</p></article>
+    </div>
+  </section>
+
   <section class="statement" aria-labelledby="ecosystem-heading">
     <h2 id="ecosystem-heading">An ecosystem, not one legal structure</h2>
     <p>Tree of Life connects projects through shared values and objectives while preserving their different ownership, governance, funding and operational arrangements.</p>
@@ -119,7 +128,8 @@ const futureCandidates = [
     h1, h2, h3 { color: var(--text); letter-spacing: -0.02em; } h1 { font-size: clamp(42px, 6vw, 62px); margin: 0 0 8px; } h2 { margin: 0 0 10px; font-size: 27px; } h3 { margin: 0 0 8px; font-size: 17px; }
     p { color: var(--muted); line-height: 1.75; } .hero { max-width: 80ch; padding: 12px 0 26px; } .eyebrow { color: #0f766e; font-size: 13px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; margin: 0 0 9px; } .lead { color: var(--text); font-size: 22px; margin: 0 0 12px; }
     section { margin-top: 34px; } .statement, .framework, .clarification { border: 1px solid var(--border); border-radius: 20px; padding: 22px; background: linear-gradient(135deg, rgba(37,99,235,.06), rgba(16,185,129,.07)); } blockquote { margin: 18px 0 0; padding: 16px 18px; border-left: 4px solid #0f766e; background: rgba(255,255,255,.76); color: var(--text); font-weight: 700; line-height: 1.6; border-radius: 0 14px 14px 0; }
+    .structure { margin-top: 8px; } .structureGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 16px; } .role { display: inline-block; margin-bottom: 12px; color: #0f766e; font-size: 12px; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; } .structureGrid h3 { font-size: 19px; }
     .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; } .card { border: 1px solid var(--border); border-radius: 18px; padding: 17px; background: rgba(255,255,255,.84); box-shadow: 0 6px 24px rgba(0,0,0,.05); } .card p { margin: 0; } .portfolio { display: grid; gap: 14px; } .sectionHead p { margin: 0; max-width: 78ch; } .meta { display: flex; gap: 9px; align-items: center; justify-content: space-between; color: var(--muted); font-size: 13px; font-weight: 700; margin-bottom: 12px; } .label { border: 1px solid rgba(37,99,235,.22); background: rgba(37,99,235,.07); border-radius: 999px; padding: 6px 9px; color: #1d4ed8; } .project .note { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 14px; } .clarification { background: rgba(255,255,255,.7); }
-    @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } .meta { align-items: flex-start; flex-direction: column; } }
+    @media (max-width: 800px) { .grid, .structureGrid { grid-template-columns: 1fr; } .meta { align-items: flex-start; flex-direction: column; } }
   </style>
 </BaseLayout>
