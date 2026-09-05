@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Services" description="Research, pilot design, evaluation and advisory support from Visio Nova Mundi CIC.">
+  <section class="hero">
+    <p class="eyebrow">Work with Visio Nova Mundi</p>
+    <h1>Practical support for organisations working on difficult problems.</h1>
+    <p class="lead">We help public, community and research organisations understand a challenge, design a responsible response and build evidence for the next decision.</p>
+    <div class="actions"><a class="btn primary" href="/contact">Discuss your needs</a><a class="btn" href="/work">Read our approach</a></div>
+  </section>
+
+  <section class="section">
+    <div class="sectionHead"><p class="eyebrow">What we can support</p><h2>Four routes into collaboration</h2><p>Each engagement is scoped around the question, the available evidence and the safeguards required. We can begin with a short discovery conversation.</p></div>
+    <div class="cards">
+      <article class="card"><h3>Research & evaluation</h3><p>Understand needs, service performance and operational bottlenecks, then turn findings into clear recommendations.</p><ul><li>Needs assessments</li><li>Baseline and KPI design</li><li>Process and service evaluation</li></ul></article>
+      <article class="card"><h3>Pilot design</h3><p>Shape a controlled, testable response before committing to a larger programme or investment.</p><ul><li>Feasibility studies</li><li>Partner and readiness mapping</li><li>Pilot scope and learning questions</li></ul></article>
+      <article class="card"><h3>Impact measurement</h3><p>Build a proportionate way to record activity, learn what changed and report responsibly.</p><ul><li>Outcome frameworks</li><li>Data-quality and evidence plans</li><li>Evaluation and learning reports</li></ul></article>
+      <article class="card"><h3>Advisory & capacity building</h3><p>Support teams to improve governance, coordination and implementation while building their own internal capability.</p><ul><li>Workshops and facilitation</li><li>Operating-model reviews</li><li>Implementation support</li></ul></article>
+    </div>
+  </section>
+
+  <section class="section callout"><h2>Who we work with</h2><p>Councils, public bodies, universities, charities, community organisations and mission-led partners exploring a measurable improvement.</p><p class="note">We do not present proposed programmes as operating services. Any pilot or delivery work depends on appropriate partners, governance, funding, safeguards and evidence.</p><a class="btn primary" href="/contact">Start a written enquiry</a></section>
+
+  <style>
+    .hero{max-width:88ch;padding:12px 0 14px}.eyebrow{margin:0 0 9px;color:#0f766e;text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:850}h1{margin:0 0 14px;font-size:clamp(40px,6vw,62px);letter-spacing:-.04em;line-height:1.05;color:var(--text)}h2{margin:0 0 10px;color:var(--text);font-size:clamp(25px,3vw,32px);letter-spacing:-.025em}.lead,p{color:var(--muted);line-height:1.75}.lead{margin:0;font-size:19px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:11px 14px;border:1px solid var(--border);border-radius:14px;background:white;color:var(--text);font-weight:800;text-decoration:none}.btn.primary{border-color:rgba(37,99,235,.25);background:linear-gradient(135deg,rgba(39,99,235,.10),rgba(16,185,129,.10))}.section{margin-top:34px}.sectionHead p{margin:0;max-width:88ch}.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px}.card{border:1px solid var(--border);border-radius:18px;padding:18px;background:rgba(255,255,255,.88);box-shadow:0 6px 24px rgba(0,0,0,.05)}.card h3{margin:0 0 8px;color:var(--text);font-size:18px}.card p{margin:0}.card ul{margin:12px 0 0;padding-left:18px;color:var(--muted);line-height:1.8}.callout{border:1px solid var(--border);border-radius:20px;padding:22px;background:linear-gradient(135deg,rgba(37,99,235,.07),rgba(16,185,129,.08))}.callout p{max-width:88ch}.callout .note{font-size:14px}.callout .btn{margin-top:8px}@media(max-width:700px){.cards{grid-template-columns:1fr}}
+  </style>
+</BaseLayout>
