@@ -52,6 +52,17 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     <p><a class="ecosystemLink" href="/tree-of-life">Read how Tree of Life classifications work →</a></p>
   </section>
 
+  <section class="evidence card">
+    <p class="eyebrow">Evidence standard</p>
+    <h2>Clear about what is known, proposed and measured</h2>
+    <div class="evidenceGrid">
+      <div><strong>Verified facts</strong><p>Confirmed governance, ownership, partner roles and current operating status are stated plainly.</p></div>
+      <div><strong>Proposals</strong><p>Future pilots, concepts and targets are labelled as proposals until the required readiness conditions exist.</p></div>
+      <div><strong>Results</strong><p>Outcomes will be reported only where activity, method and evidence support a credible finding.</p></div>
+    </div>
+    <p class="note">As work develops, this page can link to published briefings, evaluation summaries and impact reports.</p>
+  </section>
+
   <section class="bar">
     <div>
       <h3>Working with partners</h3>
@@ -114,6 +125,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       margin-top: 14px;
       background: linear-gradient(135deg, rgba(39, 99, 235, 0.06), rgba(16, 185, 129, 0.06));
     }
+
+    .evidence { margin-top: 14px; background: rgba(255,255,255,.78); }
+    .eyebrow { margin: 0 0 8px; color: #0f766e; font-size: 12px; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+    .evidence h2 { font-size: 22px; margin-bottom: 14px; }
+    .evidenceGrid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
+    .evidenceGrid strong { color: var(--text); }
+    .evidenceGrid p { margin: 6px 0 0; }
 
     .note {
       margin: 0;
@@ -181,7 +199,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     }
 
     @media (max-width: 900px) {
-      .grid { grid-template-columns: 1fr; }
+      .grid, .evidenceGrid { grid-template-columns: 1fr; }
       .bar { flex-direction: column; align-items: stretch; }
     }
   </style>
