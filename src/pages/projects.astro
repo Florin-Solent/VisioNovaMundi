@@ -13,7 +13,7 @@ const projects = [
     tag: "CIC-led programme",
     title: "Unity House",
     text: "A proposed public-benefit programme beginning with a hosted Waltham Forest pilot for surplus-food redistribution, community access and responsible evidence. Future branches would be added only when partners and evidence justify them.",
-    status: "Controlled partner discovery",
+    status: "Pilot preparation",
     link: "/unity-house",
   },
   {
@@ -34,7 +34,7 @@ const projects = [
     tag: "Future advisory and innovation initiative",
     title: "Training & Implementation Support",
     text: "Workshops and structured support for organisations seeking measurable improvement, stronger governance, and sustainable delivery models.",
-    status: "Exploring partner interest",
+    status: "Future concept",
     link: "/contact",
   },
 ];
@@ -49,12 +49,21 @@ const projects = [
     the Tree of Life ecosystem; it does not by itself establish legal ownership.
   </p>
 
+  <div class="statusLegend" aria-label="Project status guide">
+    <strong>Status guide</strong>
+    <span><i class="dot discovery"></i>Discovery stage</span>
+    <span><i class="dot pilot"></i>Pilot preparation</span>
+    <span><i class="dot development"></i>Under development</span>
+    <span><i class="dot independent"></i>Independent venture</span>
+    <span><i class="dot future"></i>Future concept</span>
+  </div>
+
   <div class="cards">
     {projects.map((p) => (
       <article class="card">
         <div class="top">
           <span class="tag">{p.tag}</span>
-          <span class="status">{p.status}</span>
+          <span class={`status ${p.status.toLowerCase().replaceAll(" ", "-")}`}>{p.status}</span>
         </div>
 
         <h2>{p.title}</h2>
@@ -138,9 +147,24 @@ const projects = [
 
     .status {
       font-size: 13px;
-      color: var(--muted);
+      color: var(--text);
       font-weight: 700;
+      border: 1px solid rgba(15, 118, 110, 0.18);
+      background: rgba(16, 185, 129, 0.08);
+      border-radius: 999px;
+      padding: 6px 9px;
+      white-space: nowrap;
     }
+
+    .statusLegend { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin: 0 0 18px; color: var(--muted); font-size: 13px; }
+    .statusLegend strong { color: var(--text); }
+    .statusLegend span { display: inline-flex; align-items: center; gap: 6px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #0f766e; display: inline-block; }
+    .dot.discovery { background: #7c3aed; }
+    .dot.pilot { background: #2563eb; }
+    .dot.development { background: #0f766e; }
+    .dot.independent { background: #d97706; }
+    .dot.future { background: #64748b; }
 
     h2 {
       margin: 0 0 8px;
