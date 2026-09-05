@@ -56,10 +56,10 @@ const {
 <style>
   :root {
     --bg: #f8fafc;
-    --glass: rgba(255, 255, 255, 0.65);
-    --border: rgba(255, 255, 255, 0.4);
+    --glass: rgba(255, 255, 255, 0.78);
+    --border: rgba(15, 23, 42, 0.14);
     --text: #0f172a;
-    --muted: #475569;
+    --muted: #334155;
     --primary: #2563eb;
     --radius: 22px;
   }
@@ -276,6 +276,7 @@ const {
     border-radius: 999px;
     text-decoration: none;
     color: var(--muted);
+    font-size: 16px;
     font-weight: 500;
     transition: color 0.2s ease;
   }
@@ -284,6 +285,10 @@ const {
   nav a:focus-visible,
   nav a[aria-current="page"] {
     color: var(--text);
+  }
+
+  nav a[aria-current="page"] {
+    font-weight: 700;
   }
 
   .nav-indicator {
