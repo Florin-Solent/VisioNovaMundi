@@ -430,11 +430,15 @@ const {
   .skip-link { position: absolute; top: -100px; left: 16px; z-index: 100; padding: 12px; background: white; color: #0f172a; }
   .skip-link:focus { top: 12px; }
   main { overflow-wrap: anywhere; }
-  .nav .container { flex-wrap: wrap; gap: 12px; }
-  nav[data-site-nav] { flex-wrap: wrap; gap: 4px; }
+  .nav .container { flex-wrap: nowrap; gap: 12px; }
+  nav[data-site-nav] { flex: 1 1 auto; justify-content: flex-end; flex-wrap: nowrap; gap: 4px; }
   main .meta, main .top { flex-wrap: wrap; }
   main .note, main .eyebrow, main .tag, main .status, main .label, main .statusPill { font-size: .875rem; }
-  @media (max-width: 768px) { nav[data-site-nav] { flex-wrap: wrap; overflow: visible; } }
+  @media (max-width: 1100px) {
+    .nav .container { flex-wrap: wrap; }
+    nav[data-site-nav] { flex-basis: 100%; justify-content: flex-start; flex-wrap: wrap; }
+  }
+  @media (max-width: 768px) { nav[data-site-nav] { flex-basis: auto; overflow: visible; } }
   .bg-glow {
     background-size: 125% 125%;
     animation: vnm-ambient-drift 18s ease-in-out infinite alternate;
