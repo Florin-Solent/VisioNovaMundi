@@ -146,13 +146,16 @@ const createEarthLayers = (renderer: THREE.WebGLRenderer): EarthLayers => {
       specularMap,
       specular: new THREE.Color("#6cc9d1"),
       shininess: 24,
-      color: "#b8d8d4",
+      color: "#ffffff",
+      emissive: new THREE.Color("#18535f"),
+      emissiveMap: surfaceMap,
+      emissiveIntensity: 0.28,
     }),
     nightLights: new THREE.MeshBasicMaterial({
       map: nightMap,
       color: "#b9f4df",
       transparent: true,
-      opacity: 0.42,
+      opacity: 0.18,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     }),
@@ -160,7 +163,7 @@ const createEarthLayers = (renderer: THREE.WebGLRenderer): EarthLayers => {
       map: cloudMap,
       color: "#bce9e8",
       transparent: true,
-      opacity: 0.34,
+      opacity: 0.24,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     }),
@@ -344,10 +347,12 @@ export const mountCosmicWorld = () => {
     world.add(nebula);
   }
 
-  const keyLight = new THREE.PointLight("#e5c985", 3.4, 10, 2);
+  const keyLight = new THREE.PointLight("#e5c985", 5.2, 10, 2);
   keyLight.position.set(-3.6, 2.8, 4.8);
   world.add(keyLight);
-  world.add(new THREE.AmbientLight("#71b8c0", 0.65));
+  world.add(new THREE.AmbientLight("#8ad4dc", 1.05));
+  const earthFill = new THREE.HemisphereLight("#d7f4ff", "#123a52", 0.72);
+  world.add(earthFill);
 
   const planet = new THREE.Mesh(new THREE.SphereGeometry(1.18, 64, 64), earthLayers.surface);
   world.add(planet);
@@ -364,9 +369,9 @@ export const mountCosmicWorld = () => {
   const lens = new THREE.Mesh(
     new THREE.SphereGeometry(1.36, 64, 64),
     new THREE.MeshPhysicalMaterial({
-      color: "#72d2d8",
+      color: "#8be7ea",
       transparent: true,
-      opacity: 0.34,
+      opacity: 0.18,
       transmission: 0.92,
       roughness: 0.08,
       ior: 1.54,
@@ -394,6 +399,8 @@ export const mountCosmicWorld = () => {
   );
   lensRim.rotation.x = Math.PI / 2;
   world.add(lensRim);
+
+  const earthBaseRotation = -0.62;
 
   const planetRing = new THREE.Mesh(
     new THREE.TorusGeometry(1.42, 0.035, 16, 160),
@@ -490,9 +497,9 @@ export const mountCosmicWorld = () => {
 
     world.rotation.y = pointer.x * 0.075 + mechanicalProgress * 0.28;
     world.rotation.x = pointer.y * -0.045 + mechanicalProgress * 0.08;
-    planet.rotation.y = earthSpin + mechanicalProgress * 0.56;
-    nightLights.rotation.y = earthSpin * 1.02 + mechanicalProgress * 0.56;
-    clouds.rotation.y = earthSpin * 1.08 + mechanicalProgress * 0.56;
+    planet.rotation.y = earthBaseRotation + earthSpin + mechanicalProgress * 0.56;
+    nightLights.rotation.y = earthBaseRotation + earthSpin * 1.02 + mechanicalProgress * 0.56;
+    clouds.rotation.y = earthBaseRotation + earthSpin * 1.08 + mechanicalProgress * 0.56;
     atmosphere.rotation.y = mechanicalProgress * 0.34;
     lens.rotation.y = mechanicalProgress * 0.24;
     lensRim.rotation.z = mechanicalProgress * -0.16;
