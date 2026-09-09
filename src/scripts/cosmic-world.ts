@@ -221,6 +221,7 @@ const createOrbiter = (color: string, size: number) => {
 export const mountCosmicWorld = () => {
   const stage = document.querySelector<HTMLElement>("[data-orrery]");
   const canvas = stage?.querySelector<HTMLCanvasElement>("[data-cosmic-canvas]");
+  const blueprint = stage?.querySelector<HTMLElement>("[data-gate-blueprint]");
 
   if (!stage || !canvas) return;
 
@@ -254,6 +255,58 @@ export const mountCosmicWorld = () => {
   let scrollTarget = 0;
   let scrollProgress = 0;
   let animationFrame = 0;
+  let audioContext: AudioContext | null = null;
+  let lastAudioProgress = 0;
+  let detentPlayed = false;
+
+  const ensureAudio = () => {
+    if (!audioContext) audioContext = new AudioContext();
+    if (audioContext.state === "suspended") void audioContext.resume();
+    return audioContext;
+  };
+
+  const playGateSound = (kind: "grind" | "detent", intensity = 1) => {
+    if (reducedMotion && kind === "grind") return;
+    const context = audioContext;
+    if (!context || context.state !== "running") return;
+    const now = context.currentTime;
+    const gain = context.createGain();
+    gain.connect(context.destination);
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(kind === "detent" ? 0.055 : 0.018 * intensity, now + 0.012);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + (kind === "detent" ? 0.22 : 0.16));
+
+    if (kind === "detent") {
+      const oscillator = context.createOscillator();
+      oscillator.type = "triangle";
+      oscillator.frequency.setValueAtTime(92, now);
+      oscillator.frequency.exponentialRampToValueAtTime(48, now + 0.18);
+      oscillator.connect(gain);
+      oscillator.start(now);
+      oscillator.stop(now + 0.23);
+      return;
+    }
+
+    const buffer = context.createBuffer(1, context.sampleRate * 0.18, context.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let index = 0; index < data.length; index += 1) {
+      const envelope = 1 - index / data.length;
+      data[index] = (Math.random() * 2 - 1) * envelope;
+    }
+    const source = context.createBufferSource();
+    const filter = context.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.setValueAtTime(420 + intensity * 180, now);
+    source.buffer = buffer;
+    source.connect(filter);
+    filter.connect(gain);
+    source.start(now);
+  };
+
+  const unlockAudio = () => {
+    ensureAudio();
+    stage?.removeEventListener("pointerdown", unlockAudio);
+  };
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -392,6 +445,7 @@ export const mountCosmicWorld = () => {
 
   stage.addEventListener("pointermove", updatePointer);
   stage.addEventListener("pointerleave", resetPointer);
+  stage.addEventListener("pointerdown", unlockAudio, { once: true });
   window.addEventListener("resize", resize);
   window.addEventListener("scroll", updateScroll, { passive: true });
 
@@ -401,6 +455,18 @@ export const mountCosmicWorld = () => {
 
     // Ease like a weighted mechanical lock: quick engagement, long damped settling.
     const mechanicalProgress = 1 - Math.pow(1 - scrollProgress, 4);
+
+    if (Math.abs(mechanicalProgress - lastAudioProgress) > 0.065) {
+      playGateSound("grind", 0.8 + mechanicalProgress * 0.4);
+      lastAudioProgress = mechanicalProgress;
+    }
+    if (mechanicalProgress > 0.985 && !detentPlayed) {
+      playGateSound("detent");
+      detentPlayed = true;
+    } else if (mechanicalProgress < 0.94) {
+      detentPlayed = false;
+    }
+    if (blueprint) blueprint.parentElement?.classList.toggle("gate-complete", mechanicalProgress > 0.985);
 
     world.rotation.y = pointer.x * 0.075 + mechanicalProgress * 0.28;
     world.rotation.x = pointer.y * -0.045 + mechanicalProgress * 0.08;
