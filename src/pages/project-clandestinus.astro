@@ -46,6 +46,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         Both editions will share the same planned <strong>$250,000</strong> mystery prize,
         subject to official rules, eligibility, validation and final published terms.
       </p>
+      <span class="prize-status-tag">[Status: Inactive — Pending Regulatory Activation &amp; Escrow Verification]</span>
     </div>
 
     <div class="book-ii-editions">
@@ -348,6 +349,20 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
     .book-ii-prize strong {
       color: #7a5c28;
+    }
+
+    .prize-status-tag {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 5px 9px;
+      border: 1px solid rgba(122,92,40,.35);
+      border-radius: 6px;
+      background: rgba(180,137,54,.07);
+      color: #7a5c28;
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      font-size: 11px;
+      letter-spacing: .03em;
+      line-height: 1.45;
     }
 
     .book-ii-editions {

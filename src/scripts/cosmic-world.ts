@@ -8,7 +8,7 @@ type Orbiter = {
   radiusY: number;
   depth: number;
   phase: number;
-  speed: number;
+  scrollTravel: number;
 };
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
@@ -247,11 +247,11 @@ export const mountCosmicWorld = () => {
   const orbitGroup = new THREE.Group();
   const gimbalGroup = new THREE.Group();
   const starfield = createStarfield();
-  const startedAt = performance.now();
   const pointer = new THREE.Vector2();
   const pointerTarget = new THREE.Vector2();
   const planetMaterial = createPlanetMaterial();
   const orbiters: Orbiter[] = [];
+  let scrollTarget = 0;
   let scrollProgress = 0;
   let animationFrame = 0;
 
@@ -357,9 +357,9 @@ export const mountCosmicWorld = () => {
   });
 
   const orbiterData = [
-    { color: "#8fd0c8", size: 0.11, radiusX: 2.12, radiusY: 1.02, depth: 0.24, phase: 2.62, speed: 0.18 },
-    { color: "#d7c18b", size: 0.14, radiusX: 1.78, radiusY: 1.58, depth: -0.14, phase: 0.62, speed: -0.13 },
-    { color: "#b5a3df", size: 0.1, radiusX: 2.34, radiusY: 1.64, depth: 0.12, phase: 4.15, speed: 0.1 },
+    { color: "#8fd0c8", size: 0.11, radiusX: 2.12, radiusY: 1.02, depth: 0.24, phase: 2.62, scrollTravel: 0.34 },
+    { color: "#d7c18b", size: 0.14, radiusX: 1.78, radiusY: 1.58, depth: -0.14, phase: 0.62, scrollTravel: -0.28 },
+    { color: "#b5a3df", size: 0.1, radiusX: 2.34, radiusY: 1.64, depth: 0.12, phase: 4.15, scrollTravel: 0.22 },
   ];
 
   orbiterData.forEach((data) => {
@@ -387,7 +387,7 @@ export const mountCosmicWorld = () => {
 
   const resetPointer = () => pointerTarget.set(0, 0);
   const updateScroll = () => {
-    scrollProgress = clamp(window.scrollY / Math.max(window.innerHeight * 1.2, 1), 0, 1);
+    scrollTarget = clamp(window.scrollY / Math.max(window.innerHeight * 1.2, 1), 0, 1);
   };
 
   stage.addEventListener("pointermove", updatePointer);
@@ -396,26 +396,27 @@ export const mountCosmicWorld = () => {
   window.addEventListener("scroll", updateScroll, { passive: true });
 
   const render = () => {
-    const elapsed = (performance.now() - startedAt) / 1000;
     pointer.lerp(pointerTarget, reducedMotion ? 1 : 0.055);
+    scrollProgress += (scrollTarget - scrollProgress) * (reducedMotion ? 1 : 0.06);
 
-    if (!reducedMotion) {
-      world.rotation.y = elapsed * 0.045 + scrollProgress * 0.28;
-      world.rotation.x = scrollProgress * 0.12;
-      planet.rotation.y = elapsed * 0.1;
-      atmosphere.rotation.y = elapsed * 0.075;
-      lens.rotation.y = elapsed * 0.04;
-      lensRim.rotation.z = elapsed * -0.08;
-      gimbalGroup.rotation.y = elapsed * 0.105;
-      gimbalGroup.rotation.x = Math.sin(elapsed * 0.2) * 0.035;
-      planetRing.rotation.z = 0.48 + elapsed * 0.06;
-      starfield.rotation.y = elapsed * -0.008;
-      starfield.rotation.x = scrollProgress * 0.06;
-      (planetMaterial.uniforms.uTime as { value: number }).value = elapsed;
-    }
+    // Ease like a weighted mechanical lock: quick engagement, long damped settling.
+    const mechanicalProgress = 1 - Math.pow(1 - scrollProgress, 4);
+
+    world.rotation.y = pointer.x * 0.075 + mechanicalProgress * 0.28;
+    world.rotation.x = pointer.y * -0.045 + mechanicalProgress * 0.08;
+    planet.rotation.y = mechanicalProgress * 0.56;
+    atmosphere.rotation.y = mechanicalProgress * 0.34;
+    lens.rotation.y = mechanicalProgress * 0.24;
+    lensRim.rotation.z = mechanicalProgress * -0.16;
+    gimbalGroup.rotation.y = mechanicalProgress * THREE.MathUtils.degToRad(15);
+    gimbalGroup.rotation.x = mechanicalProgress * 0.035;
+    planetRing.rotation.z = 0.48 + mechanicalProgress * 0.26;
+    starfield.rotation.y = mechanicalProgress * -0.12;
+    starfield.rotation.x = mechanicalProgress * 0.06;
+    (planetMaterial.uniforms.uTime as { value: number }).value = mechanicalProgress * 5;
 
     orbiters.forEach((orbiter) => {
-      const angle = orbiter.phase + (reducedMotion ? 0 : elapsed * orbiter.speed);
+      const angle = orbiter.phase + mechanicalProgress * orbiter.scrollTravel;
       const x = Math.cos(angle) * orbiter.radiusX;
       const y = Math.sin(angle) * orbiter.radiusY;
       const z = Math.sin(angle) * orbiter.depth;
@@ -428,6 +429,7 @@ export const mountCosmicWorld = () => {
     const desiredCameraY = pointer.y * -0.3;
     cameraTarget.x = desiredCameraX;
     cameraTarget.y = desiredCameraY;
+    cameraTarget.z = 5.9 - mechanicalProgress * 0.5;
     camera.position.lerp(cameraTarget, reducedMotion ? 1 : 0.045);
     lookTarget.set(0, 0, 0);
     camera.lookAt(lookTarget);

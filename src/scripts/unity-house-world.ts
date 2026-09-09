@@ -10,6 +10,7 @@ type Actor = {
 
 type FlowTrack = {
   curve: THREE.CatmullRomCurve3;
+  trail: THREE.Mesh;
   pulses: THREE.Mesh[];
   duration: number;
   offset: number;
@@ -78,7 +79,7 @@ const createTextTexture = (text: string, background: string, foreground: string)
   context.fillStyle = background;
   context.fillRect(0, 0, textureCanvas.width, textureCanvas.height);
   context.fillStyle = foreground;
-  context.font = "800 48px Arial, sans-serif";
+  context.font = "800 46px ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace";
   context.textAlign = "center";
   context.textBaseline = "middle";
   context.fillText(text, textureCanvas.width / 2, textureCanvas.height / 2 + 2);
@@ -88,12 +89,34 @@ const createTextTexture = (text: string, background: string, foreground: string)
   return texture;
 };
 
-const createPlaque = (text: string, width: number, height: number) => {
-  const texture = createTextTexture(text, "#091322", "#d7c18b");
+const createPlaque = (text: string, width: number, height: number, background = "#091322", foreground = "#d7c18b") => {
+  const texture = createTextTexture(text, background, foreground);
   return new THREE.Mesh(
     new THREE.PlaneGeometry(width, height),
     new THREE.MeshBasicMaterial({ map: texture ?? undefined, transparent: true }),
   );
+};
+
+const createFloorDatum = (text: string, width: number, depth: number, position: [number, number, number], color: string) => {
+  const datum = new THREE.Group();
+  const plate = addMesh(datum, new THREE.BoxGeometry(width, 0.035, depth), surface("#101d29", 0.7, 0.42), [0, 0, 0]);
+  plate.castShadow = false;
+  plate.receiveShadow = true;
+
+  const edge = new THREE.LineSegments(
+    new THREE.EdgesGeometry(new THREE.BoxGeometry(width, 0.038, depth)),
+    new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.62, depthWrite: false }),
+  );
+  edge.position.y = 0.022;
+  datum.add(edge);
+
+  const label = createPlaque(text, width * 0.88, depth * 0.58, "rgba(0,0,0,0)", color);
+  label.rotation.x = -Math.PI / 2;
+  label.position.y = 0.024;
+  label.castShadow = false;
+  datum.add(label);
+  datum.position.set(position[0], position[1], position[2]);
+  return datum;
 };
 
 const createCoordinateGrid = () => {
@@ -323,7 +346,7 @@ const createFlowTrack = (points: THREE.Vector3[], color: string, duration: numbe
   pulseA.castShadow = false;
   pulseB.castShadow = false;
 
-  return { curve, pulses: [pulseA, pulseB], duration, offset };
+  return { curve, trail, pulses: [pulseA, pulseB], duration, offset };
 };
 
 export const mountUnityHouseWorld = () => {
@@ -355,6 +378,8 @@ export const mountUnityHouseWorld = () => {
   const actors: Actor[] = [];
   const flows: FlowTrack[] = [];
   const startedAt = performance.now();
+  let scrollTarget = 0;
+  let scrollProgress = 0;
   let animationFrame = 0;
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.35));
@@ -433,6 +458,11 @@ export const mountUnityHouseWorld = () => {
   const hubNode = new THREE.Vector3(-0.58, 0.06, 0.18);
   const welcomeNode = new THREE.Vector3(0.02, 0.06, 0.72);
 
+  world.add(createFloorDatum("[01 // INTAKE]", 0.94, 0.3, [vanNode.x, 0.03, vanNode.z], "#48d1cc"));
+  world.add(createFloorDatum("[02 // PREP]", 0.78, 0.3, [kitchenNode.x, 0.03, kitchenNode.z], "#d7c18b"));
+  world.add(createFloorDatum("[03 // HUB]", 0.68, 0.3, [hubNode.x, 0.03, hubNode.z], "#d7c18b"));
+  world.add(createFloorDatum("[04 // WELCOME]", 0.9, 0.3, [welcomeNode.x, 0.03, welcomeNode.z], "#48d1cc"));
+
   world.add(createNodeBeacon([vanNode.x, vanNode.y, vanNode.z], "#20b2aa"));
   world.add(createNodeBeacon([kitchenNode.x, kitchenNode.y, kitchenNode.z], "#d7c18b"));
   world.add(createNodeBeacon([hubNode.x, hubNode.y, hubNode.z], "#d7c18b"));
@@ -462,7 +492,7 @@ export const mountUnityHouseWorld = () => {
       0.46,
     ),
   );
-  flows.forEach((flow) => world.add(...flow.pulses));
+  flows.forEach((flow) => world.add(flow.trail, ...flow.pulses));
 
   const resize = () => {
     const bounds = stage.getBoundingClientRect();
@@ -482,23 +512,33 @@ export const mountUnityHouseWorld = () => {
   };
 
   const resetPointer = () => pointerTarget.set(0, 0);
+  const updateScroll = () => {
+    scrollTarget = clamp(window.scrollY / Math.max(window.innerHeight * 1.2, 1), 0, 1);
+  };
+
   stage.addEventListener("pointermove", updatePointer);
   stage.addEventListener("pointerleave", resetPointer);
   window.addEventListener("resize", resize);
+  window.addEventListener("scroll", updateScroll, { passive: true });
 
   const render = () => {
     const elapsed = (performance.now() - startedAt) / 1000;
     pointer.lerp(pointerTarget, reducedMotion ? 1 : 0.06);
+    scrollProgress += (scrollTarget - scrollProgress) * (reducedMotion ? 1 : 0.06);
 
-    actors.forEach((actor, index) => {
-      const angle = actor.phase + (reducedMotion ? 0 : elapsed * actor.speed);
+    // A weighted camera move gives the cutaway the feeling of an inspected model,
+    // rather than a continuously rotating illustration.
+    const mechanicalProgress = 1 - Math.pow(1 - scrollProgress, 4);
+
+    actors.forEach((actor) => {
+      const angle = actor.phase + mechanicalProgress * actor.speed * 0.55;
       actor.group.position.x = actor.origin.x + Math.cos(angle) * actor.radius;
       actor.group.position.z = actor.origin.z + Math.sin(angle) * actor.radius;
-      actor.group.position.y = Math.abs(Math.sin(angle * 1.7)) * (index < 2 ? 0.018 : 0.008);
-      actor.group.rotation.y = Math.sin(angle) * 0.16;
+      actor.group.position.y = 0;
+      actor.group.rotation.y = Math.sin(angle) * 0.1;
     });
 
-    ball.position.set(0.06 + Math.cos(elapsed * 0.84) * 0.3, 0.14 + Math.abs(Math.sin(elapsed * 0.84)) * 0.13, 1.04 + Math.sin(elapsed * 0.84) * 0.2);
+    ball.position.set(0.06 + mechanicalProgress * 0.12, 0.14, 1.04);
 
     flows.forEach((flow) => {
       flow.pulses.forEach((pulse, index) => {
@@ -507,10 +547,14 @@ export const mountUnityHouseWorld = () => {
       });
     });
 
-    world.rotation.y = pointer.x * 0.075 + (reducedMotion ? 0 : Math.sin(elapsed * 0.08) * 0.008);
-    world.rotation.x = pointer.y * -0.035;
+    world.rotation.y = pointer.x * 0.075 + mechanicalProgress * 0.12;
+    world.rotation.x = pointer.y * -0.045 + mechanicalProgress * 0.035;
 
-    cameraGoal.set(8.4 + pointer.x * 0.62, 6.1 - pointer.y * 0.34, 9.6 + pointer.x * 0.42);
+    cameraGoal.set(
+      8.4 + pointer.x * 0.62 - mechanicalProgress * 0.34,
+      6.1 - pointer.y * 0.34 + mechanicalProgress * 0.16,
+      9.6 + pointer.x * 0.42 - mechanicalProgress * 0.88,
+    );
     cameraTarget.lerp(cameraGoal, reducedMotion ? 1 : 0.045);
     camera.position.copy(cameraTarget);
     camera.lookAt(lookTarget);
@@ -521,6 +565,7 @@ export const mountUnityHouseWorld = () => {
 
   stage.classList.add("is-webgl");
   resize();
+  updateScroll();
   render();
 
   if (reducedMotion) window.cancelAnimationFrame(animationFrame);
