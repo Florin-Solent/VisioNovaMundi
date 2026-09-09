@@ -1,0 +1,7 @@
+Earth surface, night-light, cloud, normal and specular maps are adapted from the Earth texture set distributed with the Three.js examples.
+
+Original imagery credit: Solar System Scope, Attribution 4.0 International (CC BY 4.0).
+Source: https://www.solarsystemscope.com/textures/
+License: https://creativecommons.org/licenses/by/4.0/
+
+The maps are used locally in an original Visio Nova Mundi Three.js composition.

@@ -116,49 +116,56 @@ const createGimbal = (radius: number, tube: number, color: string, rotation: [nu
   return group;
 };
 
-const createPlanetMaterial = () =>
-  new THREE.ShaderMaterial({
-    uniforms: {
-      uTime: { value: 0 },
-      uLightDirection: { value: new THREE.Vector3(-0.45, 0.55, 1).normalize() },
-    },
-    vertexShader: `
-      varying vec3 vNormal;
-      varying vec3 vPosition;
+type EarthLayers = {
+  surface: THREE.MeshPhongMaterial;
+  nightLights: THREE.MeshBasicMaterial;
+  clouds: THREE.MeshLambertMaterial;
+};
 
-      void main() {
-        vNormal = normalize(normalMatrix * normal);
-        vPosition = position;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-      }
-    `,
-    fragmentShader: `
-      uniform float uTime;
-      uniform vec3 uLightDirection;
-      varying vec3 vNormal;
-      varying vec3 vPosition;
+const createEarthLayers = (renderer: THREE.WebGLRenderer): EarthLayers => {
+  const loader = new THREE.TextureLoader();
+  const anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
+  const load = (path: string, colorSpace = THREE.SRGBColorSpace) => {
+    const texture = loader.load(path);
+    texture.colorSpace = colorSpace;
+    texture.anisotropy = anisotropy;
+    return texture;
+  };
 
-      float field(vec3 point) {
-        point = point * 2.65;
-        return sin(point.x + sin(point.z * 1.8)) * 0.28
-          + sin(point.y * 2.4 + point.z * 1.35) * 0.28
-          + sin(point.z * 3.1 - point.x * 0.75) * 0.2;
-      }
+  const surfaceMap = load("/images/earth-day.jpg");
+  const nightMap = load("/images/earth-night.png");
+  const cloudMap = load("/images/earth-clouds.png");
+  const normalMap = load("/images/earth-normal.jpg", THREE.NoColorSpace);
+  const specularMap = load("/images/earth-specular.jpg", THREE.NoColorSpace);
 
-      void main() {
-        vec3 normal = normalize(vNormal);
-        float contour = field(normalize(vPosition) + vec3(0.0, uTime * 0.008, 0.0));
-        float land = smoothstep(0.08, 0.5, contour + normal.y * 0.12);
-        vec3 ocean = mix(vec3(0.025, 0.11, 0.17), vec3(0.04, 0.29, 0.38), normal.y * 0.5 + 0.5);
-        vec3 landColor = mix(vec3(0.18, 0.46, 0.43), vec3(0.58, 0.62, 0.42), contour * 0.5 + 0.5);
-        vec3 surface = mix(ocean, landColor, land * 0.74);
-        float light = max(dot(normal, uLightDirection), 0.0);
-        float rim = pow(1.0 - max(dot(normal, vec3(0.0, 0.0, 1.0)), 0.0), 2.6);
-        vec3 finalColor = surface * (0.35 + light * 0.86) + vec3(0.08, 0.38, 0.42) * rim * 0.55;
-        gl_FragColor = vec4(finalColor, 1.0);
-      }
-    `,
-  });
+  return {
+    surface: new THREE.MeshPhongMaterial({
+      map: surfaceMap,
+      normalMap,
+      normalScale: new THREE.Vector2(0.38, 0.38),
+      specularMap,
+      specular: new THREE.Color("#6cc9d1"),
+      shininess: 24,
+      color: "#b8d8d4",
+    }),
+    nightLights: new THREE.MeshBasicMaterial({
+      map: nightMap,
+      color: "#b9f4df",
+      transparent: true,
+      opacity: 0.42,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    }),
+    clouds: new THREE.MeshLambertMaterial({
+      map: cloudMap,
+      color: "#bce9e8",
+      transparent: true,
+      opacity: 0.34,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    }),
+  };
+};
 
 const createAtmosphereMaterial = () =>
   new THREE.ShaderMaterial({
@@ -250,7 +257,6 @@ export const mountCosmicWorld = () => {
   const starfield = createStarfield();
   const pointer = new THREE.Vector2();
   const pointerTarget = new THREE.Vector2();
-  const planetMaterial = createPlanetMaterial();
   const orbiters: Orbiter[] = [];
   let scrollTarget = 0;
   let scrollProgress = 0;
@@ -258,6 +264,8 @@ export const mountCosmicWorld = () => {
   let audioContext: AudioContext | null = null;
   let lastAudioProgress = 0;
   let detentPlayed = false;
+  let earthSpin = 0;
+  let lastFrameTime = performance.now();
 
   const ensureAudio = () => {
     if (!audioContext) audioContext = new AudioContext();
@@ -313,6 +321,7 @@ export const mountCosmicWorld = () => {
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.18;
   renderer.setClearColor(0x000000, 0);
+  const earthLayers = createEarthLayers(renderer);
 
   camera.position.set(0, 0, 5.9);
   scene.add(starfield);
@@ -340,8 +349,14 @@ export const mountCosmicWorld = () => {
   world.add(keyLight);
   world.add(new THREE.AmbientLight("#71b8c0", 0.65));
 
-  const planet = new THREE.Mesh(new THREE.SphereGeometry(1.18, 64, 64), planetMaterial);
+  const planet = new THREE.Mesh(new THREE.SphereGeometry(1.18, 64, 64), earthLayers.surface);
   world.add(planet);
+
+  const nightLights = new THREE.Mesh(new THREE.SphereGeometry(1.195, 48, 48), earthLayers.nightLights);
+  world.add(nightLights);
+
+  const clouds = new THREE.Mesh(new THREE.SphereGeometry(1.225, 48, 48), earthLayers.clouds);
+  world.add(clouds);
 
   const atmosphere = new THREE.Mesh(new THREE.SphereGeometry(1.29, 48, 48), createAtmosphereMaterial());
   world.add(atmosphere);
@@ -450,6 +465,11 @@ export const mountCosmicWorld = () => {
   window.addEventListener("scroll", updateScroll, { passive: true });
 
   const render = () => {
+    const now = performance.now();
+    const frameDelta = Math.min(0.05, Math.max(0, (now - lastFrameTime) / 1000));
+    lastFrameTime = now;
+    if (!reducedMotion) earthSpin += frameDelta * 0.12;
+
     pointer.lerp(pointerTarget, reducedMotion ? 1 : 0.055);
     scrollProgress += (scrollTarget - scrollProgress) * (reducedMotion ? 1 : 0.06);
 
@@ -470,7 +490,9 @@ export const mountCosmicWorld = () => {
 
     world.rotation.y = pointer.x * 0.075 + mechanicalProgress * 0.28;
     world.rotation.x = pointer.y * -0.045 + mechanicalProgress * 0.08;
-    planet.rotation.y = mechanicalProgress * 0.56;
+    planet.rotation.y = earthSpin + mechanicalProgress * 0.56;
+    nightLights.rotation.y = earthSpin * 1.02 + mechanicalProgress * 0.56;
+    clouds.rotation.y = earthSpin * 1.08 + mechanicalProgress * 0.56;
     atmosphere.rotation.y = mechanicalProgress * 0.34;
     lens.rotation.y = mechanicalProgress * 0.24;
     lensRim.rotation.z = mechanicalProgress * -0.16;
@@ -479,8 +501,6 @@ export const mountCosmicWorld = () => {
     planetRing.rotation.z = 0.48 + mechanicalProgress * 0.26;
     starfield.rotation.y = mechanicalProgress * -0.12;
     starfield.rotation.x = mechanicalProgress * 0.06;
-    (planetMaterial.uniforms.uTime as { value: number }).value = mechanicalProgress * 5;
-
     orbiters.forEach((orbiter) => {
       const angle = orbiter.phase + mechanicalProgress * orbiter.scrollTravel;
       const x = Math.cos(angle) * orbiter.radiusX;
