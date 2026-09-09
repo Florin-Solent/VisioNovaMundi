@@ -38,7 +38,7 @@ const createStarfield = () => {
   const count = 1050;
   const positions = new Float32Array(count * 3);
   const colors = new Float32Array(count * 3);
-  const palette = [new THREE.Color("#dceef0"), new THREE.Color("#d7c18b"), new THREE.Color("#98d5d5")];
+  const palette = [new THREE.Color("#355b83"), new THREE.Color("#a77f3d"), new THREE.Color("#2c7e83")];
 
   for (let index = 0; index < count; index += 1) {
     const radius = 4.8 + Math.random() * 7.5;
