@@ -478,20 +478,24 @@ const {
     position: relative;
     overflow: hidden;
     border-radius: 20px;
-    background: radial-gradient(135% 120% at 85% 15%, rgba(13,37,63,.72) 0%, rgba(5,14,28,.9) 65%, rgba(2,6,15,.98) 100%);
-    border: 1px solid rgba(212,175,55,.22);
-    box-shadow: 0 24px 60px rgba(1,4,10,.85), inset 0 1px 1px rgba(255,255,255,.12), inset 0 0 25px rgba(32,178,170,.08);
-    -webkit-backdrop-filter: blur(28px) saturate(140%);
-    backdrop-filter: blur(28px) saturate(140%);
+    background-image: linear-gradient(135deg, rgba(37,99,235,.11), rgba(16,185,129,.09));
+    background-color: var(--glass);
+    border: 1px solid rgba(37,99,235,.2);
+    box-shadow: 0 10px 40px rgba(37,99,235,.12), inset 0 1px 0 rgba(255,255,255,.64);
+    -webkit-backdrop-filter: blur(20px) saturate(130%);
+    backdrop-filter: blur(20px) saturate(130%);
+    color: var(--text);
   }
+  .vnm-glass-card h1, .vnm-glass-card h2, .vnm-glass-card h3 { color: var(--text); }
+  .vnm-glass-card p { color: var(--muted); }
   .vnm-tech-badge {
     font-family: "JetBrains Mono", "Courier New", monospace;
     font-size: 11px;
     letter-spacing: .12em;
     text-transform: uppercase;
-    color: #c69b56;
-    background: rgba(13,37,63,.6);
-    border: 1px solid rgba(212,175,55,.3);
+    color: #1d4ed8;
+    background: rgba(37,99,235,.07);
+    border: 1px solid rgba(37,99,235,.22);
     padding: 4px 10px;
     border-radius: 6px;
     -webkit-backdrop-filter: blur(8px);
