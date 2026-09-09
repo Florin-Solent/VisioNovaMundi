@@ -512,6 +512,27 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     .threshold-note { color: #5d7690 !important; }
   </style>
 
+  <style>
+    /* Replace decorative gold UI accents with the shared blue-glass language. */
+    .archive-eyebrow-mark { background: linear-gradient(90deg, #2563eb, rgba(37,99,235,0)); }
+    .archive-hero .archiveMark,
+    .archive-hero .threshold-topline span:last-child,
+    .archive-hero .threshold-engraving.engraving-one { color: #1d4ed8; }
+    .archive-hero .btn.primary { border-color: rgba(37,99,235,.22); background-image: linear-gradient(135deg,rgba(37,99,235,.12),rgba(16,185,129,.10)); background-color: var(--glass); color: var(--text); }
+    .archive-hero .threshold-pin.pin-one { border-color: rgba(37,99,235,.28); background: rgba(255,255,255,.62); color: #1d4ed8; }
+    .archive-hero .phase-badge { color: #1d4ed8 !important; }
+    .archive-hero .phase-dot { background: #3b82f6; box-shadow: 0 0 0 5px rgba(59,130,246,.12); }
+    .archive-hero .noncanonical-watermark { color: rgba(37,99,235,.68); }
+    .gate-blueprint .blueprint-kicker,
+    .gate-blueprint .label-lock { color: #2f7e83; }
+    .book-ii-preview { background-image: linear-gradient(135deg,rgba(37,99,235,.10),rgba(16,185,129,.08)); background-color: var(--glass); }
+    .book-ii-prize { border-left-color: rgba(37,99,235,.24); }
+    .book-ii-prize strong { color: #1d4ed8; }
+    .prize-status-tag { border-color: rgba(37,99,235,.22); background: rgba(37,99,235,.07); color: #1d4ed8; }
+    .tags span { border-color: rgba(37,99,235,.22); background: rgba(37,99,235,.07); color: #1d4ed8; }
+    .archiveSide { background: linear-gradient(135deg,rgba(37,99,235,.08),rgba(16,185,129,.08)); }
+  </style>
+
   <script is:inline>
     const threshold = document.querySelector("[data-threshold]");
     const thresholdMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
