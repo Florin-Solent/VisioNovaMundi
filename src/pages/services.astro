@@ -3,11 +3,26 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="Services" description="Research, pilot design, evaluation and advisory support from Visio Nova Mundi CIC.">
-  <section class="hero">
-    <p class="eyebrow">Work with Visio Nova Mundi</p>
-    <h1>Practical support for organisations working on difficult problems.</h1>
-    <p class="lead">We help public, community and research organisations understand a challenge, design a responsible response and build evidence for the next decision.</p>
-    <div class="actions"><a class="btn primary" href="/contact">Discuss your needs</a><a class="btn" href="/work">Read our approach</a></div>
+  <section class="hero services-hero">
+    <div class="services-copy">
+      <p class="eyebrow">Work with Visio Nova Mundi</p>
+      <h1>Practical support for organisations working on difficult problems.</h1>
+      <p class="lead">We help public, community and research organisations understand a challenge, design a responsible response and build evidence for the next decision.</p>
+      <div class="actions"><a class="btn primary" href="/contact">Discuss your needs</a><a class="btn" href="/work">Read our approach</a></div>
+    </div>
+
+    <div class="unity-world-panel">
+      <div class="unity-world-topline"><span>Unity House / pilot architecture</span><span>Cutaway study 01</span></div>
+      <div class="unity-world vnm-glass-card" data-unity-world role="img" aria-label="Interactive architectural cutaway of a proposed Unity House community venue showing a hosted kitchen, play and learn hub, welcome portico, people, children and an electric surplus logistics van">
+        <canvas class="unity-canvas" data-unity-canvas aria-hidden="true"></canvas>
+        <div class="unity-callout vnm-tech-badge callout-welcome">[NODE 03: WELCOME POINT]</div>
+        <div class="unity-callout vnm-tech-badge callout-play">[NODE 02: PLAY / LEARN]</div>
+        <div class="unity-callout vnm-tech-badge callout-kitchen">[NODE 01: HOSTED KITCHEN]</div>
+        <div class="unity-callout vnm-tech-badge callout-flow">[FLOW: SURPLUS INTAKE → PREP → HUB]</div>
+        <div class="unity-fallback" aria-hidden="true">Unity House · architectural pilot study</div>
+      </div>
+      <p class="unity-world-note"><span class="unity-note-dot" aria-hidden="true"></span>Architectural concept study — not a current operating centre or service.</p>
+    </div>
   </section>
 
   <section class="section">
@@ -26,4 +41,66 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   <style>
     .hero{max-width:88ch;padding:12px 0 14px}.eyebrow{margin:0 0 9px;color:#0f766e;text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:850}h1{margin:0 0 14px;font-size:clamp(40px,6vw,62px);letter-spacing:-.04em;line-height:1.05;color:var(--text)}h2{margin:0 0 10px;color:var(--text);font-size:clamp(25px,3vw,32px);letter-spacing:-.025em}.lead,p{color:var(--muted);line-height:1.75}.lead{margin:0;font-size:19px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:11px 14px;border:1px solid var(--border);border-radius:14px;background:white;color:var(--text);font-weight:800;text-decoration:none}.btn.primary{border-color:rgba(37,99,235,.25);background:linear-gradient(135deg,rgba(39,99,235,.10),rgba(16,185,129,.10))}.section{margin-top:34px}.sectionHead p{margin:0;max-width:88ch}.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px}.card{border:1px solid var(--border);border-radius:18px;padding:18px;background:rgba(255,255,255,.88);box-shadow:0 6px 24px rgba(0,0,0,.05)}.card h3{margin:0 0 8px;color:var(--text);font-size:18px}.card p{margin:0}.card ul{margin:12px 0 0;padding-left:18px;color:var(--muted);line-height:1.8}.callout{border:1px solid var(--border);border-radius:20px;padding:22px;background:linear-gradient(135deg,rgba(37,99,235,.07),rgba(16,185,129,.08))}.callout p{max-width:88ch}.callout .note{font-size:14px}.callout .btn{margin-top:8px}@media(max-width:700px){.cards{grid-template-columns:1fr}}
   </style>
+
+  <style>
+    .services-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(360px, .92fr);
+      gap: clamp(28px, 5vw, 58px);
+      align-items: center;
+      max-width: none;
+      min-height: 570px;
+      padding: clamp(30px, 5vw, 58px);
+      border: 1px solid rgba(212,175,55,.18);
+      border-radius: 29px;
+      background:
+        radial-gradient(130% 120% at 84% 12%, rgba(13,37,63,.7) 0%, rgba(4,10,20,.92) 100%),
+        radial-gradient(circle at 14% 82%, rgba(32,178,170,.12), transparent 30%);
+      box-shadow: 0 24px 60px rgba(2,6,15,.75), inset 0 1px 1px rgba(255,255,255,.1), inset 0 0 30px rgba(32,178,170,.08);
+      -webkit-backdrop-filter: blur(20px) saturate(130%);
+      backdrop-filter: blur(20px) saturate(130%);
+    }
+
+    .services-copy { max-width: 620px; }
+    .services-hero .eyebrow { color: #a4bdc4; }
+    .services-hero h1 { color: #f8f2e6; }
+    .services-hero .lead { color: #b7c6c8; }
+    .services-hero .btn { border-color: rgba(194,214,211,.22); background: rgba(255,255,255,.06); color: #f8f2e6; box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
+    .services-hero .btn.primary { background: linear-gradient(135deg,#d7c18b,#b18e4f); border-color: #b18e4f; color: #0a1722; }
+
+    .unity-world-panel { min-width: 0; }
+    .unity-world-topline { display: flex; justify-content: space-between; gap: 12px; margin: 0 8px 12px; color: #8ea9b0; font-size: 10px; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+    .unity-world-topline span:last-child { color: #d7c18b; }
+    .unity-world { position: relative; width: 100%; min-height: 410px; overflow: hidden; border: 1px solid rgba(212,175,55,.22); border-radius: 20px; background: radial-gradient(135% 120% at 80% 10%, rgba(13,37,63,.7) 0%, rgba(4,10,20,.92) 100%); box-shadow: 0 24px 60px rgba(2,6,15,.75), inset 0 1px 1px rgba(255,255,255,.1), inset 0 0 30px rgba(32,178,170,.08); -webkit-backdrop-filter: blur(20px) saturate(130%); backdrop-filter: blur(20px) saturate(130%); }
+    .unity-world::before { content: ""; position: absolute; inset: 0; z-index: 0; background: linear-gradient(rgba(72,209,204,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(72,209,204,.1) 1px, transparent 1px); background-size: 32px 32px; opacity: .32; mask-image: linear-gradient(135deg, black, transparent 92%); }
+    .unity-world::after { content: ""; position: absolute; inset: auto -12% -28% 16%; height: 58%; background: radial-gradient(ellipse, rgba(32,178,170,.17), transparent 68%); filter: blur(20px); pointer-events: none; }
+    .unity-canvas { position: absolute; inset: 0; z-index: 1; display: block; width: 100%; height: 100%; }
+    .unity-callout { position: absolute; z-index: 2; padding: 7px 9px; border: 1px solid rgba(212,175,55,.36); border-radius: 7px; background: rgba(5,12,24,.68); box-shadow: 0 8px 18px rgba(2,6,15,.34), inset 0 1px 0 rgba(255,255,255,.08); color: #d7c18b; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 10px; font-weight: 750; letter-spacing: .04em; text-transform: uppercase; pointer-events: none; }
+    .callout-welcome { top: 12%; right: 7%; }
+    .callout-play { top: 25%; left: 7%; }
+    .callout-kitchen { bottom: 18%; left: 7%; }
+    .callout-flow { right: 7%; bottom: 7%; border-color: rgba(72,209,204,.38); color: #72d2d8; }
+    .unity-fallback { position: absolute; inset: 50% auto auto 50%; z-index: 1; padding: 13px 16px; border: 1px solid rgba(212,175,55,.3); border-radius: 8px; background: rgba(5,12,24,.72); color: #d7c18b; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-weight: 750; transform: translate(-50%,-50%); }
+    .is-webgl .unity-fallback { display: none; }
+    .unity-world-note { display: flex; align-items: center; gap: 8px; margin: 13px 4px 0; color: #829ba1; font-size: 12px !important; line-height: 1.5 !important; }
+    .unity-note-dot { width: 7px; height: 7px; flex: 0 0 7px; border-radius: 50%; background: #d7c18b; box-shadow: 0 0 0 4px rgba(215,193,139,.12); }
+
+    @media (max-width: 900px) {
+      .services-hero { grid-template-columns: 1fr; min-height: 0; }
+      .services-copy { max-width: 720px; }
+      .unity-world-panel { width: min(100%, 620px); margin: 0 auto; }
+    }
+
+    @media (max-width: 520px) {
+      .services-hero { padding: 28px 19px 32px; border-radius: 22px; }
+      .unity-world { min-height: 350px; border-radius: 22px; }
+      .unity-callout { font-size: 9px; padding: 6px 7px; }
+    }
+  </style>
+
+  <script>
+    import { mountUnityHouseWorld } from "../scripts/unity-house-world";
+
+    mountUnityHouseWorld();
+  </script>
 </BaseLayout>
