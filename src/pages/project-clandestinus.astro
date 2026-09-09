@@ -13,34 +13,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </div>
 
     <div class="threshold-panel">
-      <div class="threshold-topline"><span>Archive / threshold 01</span><span>Open the record</span></div>
       <div class="threshold-visual cosmic-threshold" data-threshold data-orrery aria-hidden="true">
         <canvas class="cosmic-canvas" data-cosmic-canvas></canvas>
-        <div class="threshold-frame threshold-frame-one"></div>
-        <div class="threshold-frame threshold-frame-two"></div>
-        <div class="threshold-engraving engraving-one">I · V · X</div>
-        <div class="threshold-engraving engraving-two">NOVA / CLANDESTINUS</div>
-        <div class="threshold-stamp">CL</div>
-        <div class="gate-blueprint" data-gate-blueprint aria-hidden="true">
-          <div class="blueprint-kicker">Gate alignment confirmed</div>
-          <svg viewBox="0 0 480 480" role="presentation">
-            <circle cx="240" cy="240" r="174" />
-            <circle cx="240" cy="240" r="118" />
-            <path d="M72 240h336M240 72v336M121 121l238 238M359 121 121 359" />
-            <path d="M104 304h272M104 176h272" stroke-dasharray="5 8" />
-            <rect x="182" y="182" width="116" height="116" rx="8" />
-            <path d="M205 274v-52l35-24 35 24v52M218 274v-37h44v37" />
-          </svg>
-          <div class="blueprint-label label-intake">INTAKE / 01</div>
-          <div class="blueprint-label label-lock">LOCK / CL</div>
-          <div class="blueprint-label label-exit">PHYSICAL GATE MAPPING</div>
-        </div>
         <div class="noncanonical-watermark">NON-CANONICAL DEMONSTRATOR — PROJECT CLANDESTINUS</div>
-        <span class="threshold-pin pin-one">01</span>
-        <span class="threshold-pin pin-two">✦</span>
-        <span class="threshold-pin pin-three">◇</span>
       </div>
-      <p class="phase-badge"><span class="phase-dot" aria-hidden="true"></span>Interim Discovery Phase — Observational Prototype</p>
       <p class="threshold-note">A visual threshold only. No manuscript interior or canonical solution is shown here.</p>
     </div>
   </section>
@@ -523,6 +499,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     .archive-hero .phase-badge { color: #1d4ed8 !important; }
     .archive-hero .phase-dot { background: #3b82f6; box-shadow: 0 0 0 5px rgba(59,130,246,.12); }
     .archive-hero .noncanonical-watermark { color: rgba(37,99,235,.68); }
+    .threshold-visual::before,
+    .threshold-visual::after { display: none; }
     .gate-blueprint .blueprint-kicker,
     .gate-blueprint .label-lock { color: #2f7e83; }
     .book-ii-preview { background-image: linear-gradient(135deg,rgba(37,99,235,.10),rgba(16,185,129,.08)); background-color: var(--glass); }
