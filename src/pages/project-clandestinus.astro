@@ -470,8 +470,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     .archive-hero .btn:hover { border-color: rgba(54,104,157,.52); }
     .threshold-topline { color: #52718f; }
     .threshold-topline span:last-child { color: #99733a; }
-    .threshold-visual { aspect-ratio: 1.08 / 1; border: 0; border-radius: 0; background: transparent; box-shadow: none; overflow: visible; }
-    .cosmic-threshold .cosmic-canvas { border-radius: 0; mask-image: radial-gradient(ellipse at 50% 50%, #000 0%, #000 48%, transparent 82%); -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 0%, #000 48%, transparent 82%); }
+    .threshold-visual { aspect-ratio: 1 / 1; border: 0; border-radius: 50%; background: transparent; box-shadow: none; overflow: hidden; clip-path: circle(50% at 50% 50%); }
+    .cosmic-threshold .cosmic-canvas { border-radius: 50%; mask-image: none; -webkit-mask-image: none; }
     .threshold-visual::before { border-color: rgba(105,139,177,.38); box-shadow: inset 0 0 0 7px rgba(255,255,255,.18), inset 0 0 0 8px rgba(105,139,177,.12); }
     .threshold-visual::after { border-color: rgba(47,126,131,.38); }
     .threshold-engraving { color: rgba(77,105,137,.76); }
