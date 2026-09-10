@@ -472,8 +472,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     .archive-hero .btn:hover { border-color: rgba(54,104,157,.52); }
     .threshold-topline { color: #52718f; }
     .threshold-topline span:last-child { color: #99733a; }
-    .threshold-visual { aspect-ratio: 1.08 / 1; border-radius: 24px; background: radial-gradient(ellipse at 50% 46%, rgba(33,91,137,.18), transparent 38%), radial-gradient(ellipse at 50% 50%, #071426 0%, #020711 70%, #000207 100%); border-color: rgba(117,180,226,.28); box-shadow: 0 0 0 1px rgba(117,180,226,.12), 0 24px 70px rgba(1,10,24,.48), inset 0 0 70px rgba(0,0,0,.78), inset 0 0 32px rgba(39,139,199,.08); }
-    .cosmic-threshold .cosmic-canvas { border-radius: inherit; }
+    .threshold-visual { aspect-ratio: 1.08 / 1; border: 0; border-radius: 0; background: transparent; box-shadow: none; overflow: visible; }
+    .cosmic-threshold .cosmic-canvas { border-radius: 0; mask-image: radial-gradient(ellipse at 50% 50%, #000 0%, #000 48%, transparent 82%); -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 0%, #000 48%, transparent 82%); }
     .threshold-visual::before { border-color: rgba(105,139,177,.38); box-shadow: inset 0 0 0 7px rgba(255,255,255,.18), inset 0 0 0 8px rgba(105,139,177,.12); }
     .threshold-visual::after { border-color: rgba(47,126,131,.38); }
     .threshold-engraving { color: rgba(77,105,137,.76); }
