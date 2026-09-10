@@ -24,10 +24,15 @@ const createRadialTexture = (inner: string, outer: string) => {
 };
 
 const createStarfield = () => {
-  const count = 1050;
+  const count = 1550;
   const positions = new Float32Array(count * 3);
   const colors = new Float32Array(count * 3);
-  const palette = [new THREE.Color("#355b83"), new THREE.Color("#a77f3d"), new THREE.Color("#2c7e83")];
+  const palette = [
+    new THREE.Color("#d7eaff"),
+    new THREE.Color("#78b8df"),
+    new THREE.Color("#9ed7d4"),
+    new THREE.Color("#d7c18b"),
+  ];
 
   for (let index = 0; index < count; index += 1) {
     const radius = 4.8 + Math.random() * 7.5;
@@ -50,10 +55,10 @@ const createStarfield = () => {
   geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
   const material = new THREE.PointsMaterial({
-    size: 0.045,
+    size: 0.052,
     sizeAttenuation: true,
     transparent: true,
-    opacity: 0.84,
+    opacity: 0.92,
     vertexColors: true,
     depthWrite: false,
   });
@@ -113,7 +118,7 @@ const createEarthLayers = (renderer: THREE.WebGLRenderer): EarthLayers => {
     return texture;
   };
 
-  const surfaceMap = load("/images/earth-day.jpg");
+  const surfaceMap = load("/images/earth-blue-marble.jpg");
   const nightMap = load("/images/earth-night.png");
   const cloudMap = load("/images/earth-clouds.png");
   const normalMap = load("/images/earth-normal.jpg", THREE.NoColorSpace);
@@ -130,14 +135,14 @@ const createEarthLayers = (renderer: THREE.WebGLRenderer): EarthLayers => {
       color: "#ffffff",
       emissive: new THREE.Color("#18535f"),
       emissiveMap: surfaceMap,
-      emissiveIntensity: 0.28,
+      emissiveIntensity: 0.2,
     }),
     nightLights: createNightLightsMaterial(nightMap),
     clouds: new THREE.MeshLambertMaterial({
       map: cloudMap,
-      color: "#bce9e8",
+      color: "#ffffff",
       transparent: true,
-      opacity: 0.24,
+      opacity: 0.22,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     }),
@@ -150,7 +155,7 @@ const createAtmosphereMaterial = () =>
     side: THREE.BackSide,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
-    uniforms: { uColor: { value: new THREE.Color("#82d6d8") } },
+    uniforms: { uColor: { value: new THREE.Color("#64bfff") } },
     vertexShader: `
       varying vec3 vNormal;
       void main() {
@@ -162,8 +167,8 @@ const createAtmosphereMaterial = () =>
       uniform vec3 uColor;
       varying vec3 vNormal;
       void main() {
-        float intensity = pow(0.68 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.1);
-        gl_FragColor = vec4(uColor, intensity * 0.56);
+        float intensity = pow(0.7 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.2);
+        gl_FragColor = vec4(uColor, intensity * 0.82);
       }
     `,
   });
@@ -191,7 +196,7 @@ export const mountCosmicWorld = () => {
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 40);
-  const cameraTarget = new THREE.Vector3(0, 0, 5.9);
+  const cameraTarget = new THREE.Vector3(0, 0, 5.45);
   const lookTarget = new THREE.Vector3();
   const world = new THREE.Group();
   const earthGroup = new THREE.Group();
@@ -213,7 +218,7 @@ export const mountCosmicWorld = () => {
   let earthRotationY = 0;
   let earthRotationTargetX = 0;
   let earthRotationTargetY = 0;
-  let cameraDistanceTarget = 5.9;
+  let cameraDistanceTarget = 5.45;
   let lastSolarUpdate = 0;
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
@@ -223,7 +228,7 @@ export const mountCosmicWorld = () => {
   renderer.setClearColor(0x000000, 0);
   const earthLayers = createEarthLayers(renderer);
 
-  camera.position.set(0, 0, 5.9);
+  camera.position.set(0, 0, 5.45);
   scene.add(starfield);
   scene.add(world);
   world.add(earthGroup);
@@ -234,7 +239,7 @@ export const mountCosmicWorld = () => {
       new THREE.SpriteMaterial({
         map: nebulaTexture,
         transparent: true,
-        opacity: 0.74,
+        opacity: 0.42,
         depthWrite: false,
         blending: THREE.AdditiveBlending,
       }),
@@ -251,51 +256,30 @@ export const mountCosmicWorld = () => {
   const earthFill = new THREE.HemisphereLight("#d7f4ff", "#123a52", 0.72);
   world.add(earthFill);
 
-  const planet = new THREE.Mesh(new THREE.SphereGeometry(1.3, 64, 64), earthLayers.surface);
+  const planet = new THREE.Mesh(new THREE.SphereGeometry(1.55, 64, 64), earthLayers.surface);
   earthGroup.add(planet);
 
-  const nightLights = new THREE.Mesh(new THREE.SphereGeometry(1.315, 48, 48), earthLayers.nightLights);
+  const nightLights = new THREE.Mesh(new THREE.SphereGeometry(1.566, 48, 48), earthLayers.nightLights);
   earthGroup.add(nightLights);
 
-  const clouds = new THREE.Mesh(new THREE.SphereGeometry(1.34, 48, 48), earthLayers.clouds);
+  const clouds = new THREE.Mesh(new THREE.SphereGeometry(1.59, 48, 48), earthLayers.clouds);
   earthGroup.add(clouds);
 
-  const atmosphere = new THREE.Mesh(new THREE.SphereGeometry(1.43, 48, 48), createAtmosphereMaterial());
+  const atmosphere = new THREE.Mesh(new THREE.SphereGeometry(1.7, 48, 48), createAtmosphereMaterial());
   earthGroup.add(atmosphere);
 
-  const lens = new THREE.Mesh(
-    new THREE.SphereGeometry(1.49, 64, 64),
-    new THREE.MeshPhysicalMaterial({
-      color: "#8be7ea",
+  const outerAura = new THREE.Mesh(
+    new THREE.SphereGeometry(1.82, 48, 48),
+    new THREE.MeshBasicMaterial({
+      color: "#4da9e8",
       transparent: true,
-      opacity: 0.075,
-      transmission: 0.92,
-      roughness: 0.08,
-      ior: 1.54,
-      thickness: 0.18,
-      clearcoat: 1,
-      clearcoatRoughness: 0.08,
+      opacity: 0.2,
       depthWrite: false,
-      side: THREE.DoubleSide,
+      side: THREE.BackSide,
+      blending: THREE.AdditiveBlending,
     }),
   );
-  lens.scale.set(1, 1, 0.92);
-  earthGroup.add(lens);
-
-  const lensRim = new THREE.Mesh(
-    new THREE.TorusGeometry(1.47, 0.018, 12, 160),
-    new THREE.MeshPhysicalMaterial({
-      color: "#48d1cc",
-      metalness: 0.48,
-      roughness: 0.18,
-      emissive: "#20b2aa",
-      emissiveIntensity: 0.26,
-      transparent: true,
-      opacity: 0.72,
-    }),
-  );
-  lensRim.rotation.x = Math.PI / 2;
-  earthGroup.add(lensRim);
+  earthGroup.add(outerAura);
 
   const earthBaseRotation = -0.62;
 
@@ -369,7 +353,7 @@ export const mountCosmicWorld = () => {
     // Preserve normal page scrolling; only pinch-to-zoom (ctrl+wheel) changes the globe camera.
     if (!event.ctrlKey) return;
     event.preventDefault();
-    cameraDistanceTarget = clamp(cameraDistanceTarget + event.deltaY * 0.002, 4.85, 7.1);
+    cameraDistanceTarget = clamp(cameraDistanceTarget + event.deltaY * 0.002, 4.55, 6.8);
   };
 
   const updateSolarDirection = (timestamp: number) => {
@@ -427,8 +411,6 @@ export const mountCosmicWorld = () => {
     earthGroup.rotation.set(earthRotationX, earthBaseRotation + earthSpin + mechanicalProgress * 0.56 + earthRotationY, 0);
     clouds.rotation.y = earthSpin * 0.018;
     atmosphere.rotation.y = mechanicalProgress * 0.08;
-    lens.rotation.y = mechanicalProgress * 0.08;
-    lensRim.rotation.z = mechanicalProgress * -0.08;
     starfield.rotation.y = mechanicalProgress * -0.12;
     starfield.rotation.x = mechanicalProgress * 0.06;
 

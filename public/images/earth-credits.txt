@@ -1,7 +1,7 @@
-Earth surface, night-light, cloud, normal and specular maps are adapted from the Earth texture set distributed with the Three.js examples.
+Earth surface, night-light, cloud, normal and specular maps are adapted from public Earth texture sets distributed with the Three.js examples and NASA Goddard Space Flight Center Scientific Visualization Studio.
 
 Original imagery credit: Solar System Scope, Attribution 4.0 International (CC BY 4.0).
 Source: https://www.solarsystemscope.com/textures/
 License: https://creativecommons.org/licenses/by/4.0/
 
-The maps are used locally in an original Visio Nova Mundi Three.js composition.
+The Solar System Scope maps are used locally in an original Visio Nova Mundi Three.js composition. The Blue Marble surface is from NASA SVS, "Equirectangular Projected Earth for LARGEST" (ID 3615): https://svs.gsfc.nasa.gov/3615
