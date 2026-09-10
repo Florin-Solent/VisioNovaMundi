@@ -35,14 +35,10 @@ const createStarfield = () => {
   ];
 
   for (let index = 0; index < count; index += 1) {
-    const radius = 2.8 + Math.random() * 3.8;
-    const theta = Math.random() * Math.PI * 2;
-    const phi = Math.acos(2 * Math.random() - 1);
-    const sinPhi = Math.sin(phi);
     const positionIndex = index * 3;
-    positions[positionIndex] = radius * sinPhi * Math.cos(theta);
-    positions[positionIndex + 1] = radius * Math.cos(phi);
-    positions[positionIndex + 2] = radius * sinPhi * Math.sin(theta);
+    positions[positionIndex] = (Math.random() - 0.5) * 8.4;
+    positions[positionIndex + 1] = (Math.random() - 0.5) * 8.4;
+    positions[positionIndex + 2] = -2.2 - Math.random() * 5.8;
 
     const color = palette[index % palette.length];
     colors[positionIndex] = color.r;
@@ -55,7 +51,7 @@ const createStarfield = () => {
   geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
   const material = new THREE.PointsMaterial({
-    size: 0.06,
+    size: 0.038,
     sizeAttenuation: true,
     transparent: true,
     opacity: 0.92,
@@ -69,15 +65,15 @@ const createStarfield = () => {
 type EarthLayers = {
   surface: THREE.MeshPhongMaterial;
   nightLights: THREE.ShaderMaterial;
-  clouds: THREE.MeshLambertMaterial;
+  clouds: THREE.MeshPhongMaterial;
 };
 
 const createNightLightsMaterial = (texture: THREE.Texture) =>
   new THREE.ShaderMaterial({
     uniforms: {
       uMap: { value: texture },
-      uColor: { value: new THREE.Color("#b9f4df") },
-      uSunDirection: { value: new THREE.Vector3(0.25, 0.2, 0.95).normalize() },
+      uColor: { value: new THREE.Color("#ffd39a") },
+      uSunDirection: { value: new THREE.Vector3(-0.65, 0.28, 0.72).normalize() },
     },
     transparent: true,
     blending: THREE.AdditiveBlending,
@@ -88,7 +84,7 @@ const createNightLightsMaterial = (texture: THREE.Texture) =>
 
       void main() {
         vUv = uv;
-        vNormal = normalize(normal);
+        vNormal = normalize(mat3(modelMatrix) * normal);
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
       }
     `,
@@ -101,16 +97,19 @@ const createNightLightsMaterial = (texture: THREE.Texture) =>
 
       void main() {
         float daylight = dot(normalize(vNormal), normalize(uSunDirection));
-        float night = 1.0 - smoothstep(-0.2, 0.16, daylight);
-        vec3 lights = texture2D(uMap, vUv).rgb * uColor;
-        gl_FragColor = vec4(lights, night * 0.82);
+        float night = 1.0 - smoothstep(-0.08, 0.14, daylight);
+        vec3 cityTexture = texture2D(uMap, vUv).rgb;
+        float luminance = dot(cityTexture, vec3(0.2126, 0.7152, 0.0722));
+        float cityMask = smoothstep(0.04, 0.42, luminance);
+        vec3 lights = pow(cityTexture, vec3(0.68)) * uColor * 1.8;
+        gl_FragColor = vec4(lights, cityMask * night * 0.92);
       }
     `,
   });
 
 const createEarthLayers = (renderer: THREE.WebGLRenderer): EarthLayers => {
   const loader = new THREE.TextureLoader();
-  const anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
+  const anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
   const load = (path: string, colorSpace = THREE.SRGBColorSpace) => {
     const texture = loader.load(path);
     texture.colorSpace = colorSpace;
@@ -128,20 +127,21 @@ const createEarthLayers = (renderer: THREE.WebGLRenderer): EarthLayers => {
     surface: new THREE.MeshPhongMaterial({
       map: surfaceMap,
       normalMap,
-      normalScale: new THREE.Vector2(0.52, 0.52),
+      normalScale: new THREE.Vector2(0.28, 0.28),
       specularMap,
-      specular: new THREE.Color("#82c7e8"),
-      shininess: 18,
+      specular: new THREE.Color("#31586f"),
+      shininess: 8,
       color: "#ffffff",
     }),
     nightLights: createNightLightsMaterial(nightMap),
-    clouds: new THREE.MeshLambertMaterial({
-      map: cloudMap,
+    clouds: new THREE.MeshPhongMaterial({
+      alphaMap: cloudMap,
       color: "#ffffff",
       transparent: true,
-      opacity: 0.3,
+      opacity: 0.12,
       blending: THREE.NormalBlending,
       depthWrite: false,
+      shininess: 2,
     }),
   };
 };
@@ -216,12 +216,11 @@ export const mountCosmicWorld = () => {
   let earthRotationTargetX = 0;
   let earthRotationTargetY = 0;
   let cameraDistanceTarget = 5.45;
-  let lastSolarUpdate = 0;
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.12;
+  renderer.toneMappingExposure = 1.02;
   renderer.setClearColor(0x000000, 0);
   const earthLayers = createEarthLayers(renderer);
 
@@ -246,15 +245,17 @@ export const mountCosmicWorld = () => {
     world.add(nebula);
   }
 
-  const keyLight = new THREE.DirectionalLight("#fff1d4", 2.7);
-  keyLight.position.set(-4.5, 2.8, 5.5);
-  world.add(keyLight);
-  world.add(new THREE.AmbientLight("#3f6b8a", 0.28));
-  const earthFill = new THREE.HemisphereLight("#8ccff0", "#071321", 0.24);
-  world.add(earthFill);
+  const sunDirection = new THREE.Vector3(-0.65, 0.28, 0.72).normalize();
+  const keyLight = new THREE.DirectionalLight("#fff4df", 1.85);
+  keyLight.position.copy(sunDirection).multiplyScalar(8);
+  scene.add(keyLight);
+  scene.add(keyLight.target);
+  world.add(new THREE.AmbientLight("#426780", 0.34));
+  const earthFill = new THREE.HemisphereLight("#8bc8e6", "#050b14", 0.28);
+  scene.add(earthFill);
   const rimLight = new THREE.DirectionalLight("#5bb7ff", 0.42);
   rimLight.position.set(3, -1, -5);
-  world.add(rimLight);
+  scene.add(rimLight);
 
   const planet = new THREE.Mesh(new THREE.SphereGeometry(1.42, 64, 64), earthLayers.surface);
   earthGroup.add(planet);
@@ -283,6 +284,7 @@ export const mountCosmicWorld = () => {
 
   const earthBaseRotation = -0.62;
   const earthAxialTilt = THREE.MathUtils.degToRad(-17);
+  earthLayers.nightLights.uniforms.uSunDirection.value.copy(sunDirection);
 
   const resize = () => {
     const bounds = stage.getBoundingClientRect();
@@ -357,25 +359,6 @@ export const mountCosmicWorld = () => {
     cameraDistanceTarget = clamp(cameraDistanceTarget + event.deltaY * 0.002, 4.55, 6.8);
   };
 
-  const updateSolarDirection = (timestamp: number) => {
-    if (timestamp - lastSolarUpdate < 60000) return;
-
-    const current = new Date();
-    const yearStart = Date.UTC(current.getUTCFullYear(), 0, 0);
-    const dayOfYear = Math.floor((current.getTime() - yearStart) / 86400000);
-    const declination = THREE.MathUtils.degToRad(-23.44) * Math.cos((Math.PI * 2 * (dayOfYear + 10)) / 365);
-    const utcHours = current.getUTCHours() + current.getUTCMinutes() / 60 + current.getUTCSeconds() / 3600;
-    const solarAngle = (utcHours / 24) * Math.PI * 2 - Math.PI;
-    const direction = new THREE.Vector3(
-      Math.cos(declination) * Math.cos(solarAngle),
-      Math.sin(declination),
-      Math.cos(declination) * Math.sin(solarAngle),
-    ).normalize();
-
-    earthLayers.nightLights.uniforms.uSunDirection.value.copy(direction);
-    lastSolarUpdate = timestamp;
-  };
-
   const updateScroll = () => {
     scrollTarget = clamp(window.scrollY / Math.max(window.innerHeight * 1.2, 1), 0, 1);
   };
@@ -397,8 +380,6 @@ export const mountCosmicWorld = () => {
     const frameDelta = Math.min(0.05, Math.max(0, (now - lastFrameTime) / 1000));
     lastFrameTime = now;
     if (!reducedMotion && earthAutoRotate && !earthDragActive) earthSpin += frameDelta * 0.12;
-    updateSolarDirection(Date.now());
-
     pointer.lerp(pointerTarget, reducedMotion ? 1 : 0.055);
     scrollProgress += (scrollTarget - scrollProgress) * (reducedMotion ? 1 : 0.06);
     earthRotationX += (earthRotationTargetX - earthRotationX) * (reducedMotion ? 1 : 0.08);
