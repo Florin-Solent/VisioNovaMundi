@@ -21,7 +21,41 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   <section class="panel tilt-card" data-tilt-card><h2>More than a traditional book</h2><p>Clandestinus invites readers to examine a story as well as follow it: looking for symbols, patterns, visual codes and layered mysteries; testing interpretations; and uncovering what may sit beneath the visible surface.</p><div class="tags"><span>Symbolic manuscripts</span><span>Hidden patterns</span><span>Visual codes</span><span>Decoding challenges</span><span>Shared discovery</span><span>Future artefacts &amp; experiences</span></div></section>
 
-  <section class="grid"><article class="panel tilt-card" data-tilt-card><p class="eyebrow">Book I</p><h2>The First Gate</h2><p>The opening symbolic manuscript invites readers to study signs, patterns, placement and structure — and investigate whether a deeper message exists within the work.</p><p class="note">A future reward and verification framework is being developed but is not activated. Participation, eligibility, verification, funding and any future reward remain subject to official rules and activation notices.</p><a class="textLink" href="https://projectclandestinus.com/book">Discover Book I →</a></article><article class="panel archiveSide tilt-card" data-tilt-card><p class="eyebrow">The wider world</p><h2>A growing creative universe</h2><p>Future possibilities include further books, deeper coded structures, physical artefacts, collector editions, verified discovery stages and carefully developed interactive or immersive experiences.</p><p class="note">Each expansion is subject to its own development, feasibility, funding and legal requirements.</p></article></section>
+  <section class="grid book-i-grid">
+    <article class="panel book-i-card tilt-card" data-tilt-card>
+      <figure class="book-i-cover">
+        <img
+          src="/images/clandestinus-book-i-cover.webp"
+          alt="Cover of Clandestinus Book I, The First Gate"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+      <div class="book-i-purchase actions">
+        <a
+          class="btn primary"
+          href="https://www.amazon.com/dp/B0GYS7TTGS"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Buy the Clandestinus Book I paperback on Amazon"
+        >
+          Buy the paperback
+        </a>
+      </div>
+      <p class="eyebrow">Book I · Paperback available</p>
+      <h2>The First Gate</h2>
+      <p>The opening symbolic manuscript invites readers to study signs, patterns, placement and structure — and investigate whether a deeper message exists within the work.</p>
+      <p class="note">A future reward and verification framework is being developed but is not activated. Participation, eligibility, verification, funding and any future reward remain subject to official rules and activation notices.</p>
+      <p class="format-note"><strong>Hardcover</strong> Future edition planned.</p>
+      <a class="textLink" href="https://projectclandestinus.com/book">Discover Book I →</a>
+    </article>
+    <article class="panel archiveSide tilt-card" data-tilt-card>
+      <p class="eyebrow">The wider world</p>
+      <h2>A growing creative universe</h2>
+      <p>Future possibilities include further books, deeper coded structures, physical artefacts, collector editions, verified discovery stages and carefully developed interactive or immersive experiences.</p>
+      <p class="note">Each expansion is subject to its own development, feasibility, funding and legal requirements.</p>
+    </article>
+  </section>
 
   <section class="book-ii-preview panel" aria-labelledby="book-ii-preview-title">
     <div class="sectionHead book-ii-heading">
@@ -430,6 +464,67 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       .book-ii-editions {
         grid-template-columns: 1fr;
       }
+    }
+  </style>
+
+  <style>
+    .book-i-card {
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(135deg, rgba(37,99,235,.07), rgba(255,255,255,.88));
+    }
+
+    .book-i-cover {
+      width: min(100%, 360px);
+      margin: 0 0 15px;
+      overflow: hidden;
+      aspect-ratio: 2 / 3;
+      border: 1px solid rgba(122,92,40,.24);
+      background: #17130e;
+      box-shadow: 0 16px 30px rgba(0,0,0,.12), 0 0 0 6px rgba(255,255,255,.32);
+    }
+
+    .book-i-cover img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .book-i-purchase {
+      margin: 0 0 19px;
+    }
+
+    .book-i-purchase .btn {
+      width: fit-content;
+    }
+
+    .book-i-card .eyebrow {
+      margin-bottom: 6px;
+    }
+
+    .format-note {
+      margin-top: 16px !important;
+      padding: 10px 12px;
+      border: 1px solid rgba(37,99,235,.2);
+      background: rgba(37,99,235,.06);
+      color: #45627a !important;
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      letter-spacing: .02em;
+    }
+
+    .format-note strong {
+      color: #1d4ed8;
+      text-transform: uppercase;
+    }
+
+    .book-i-card .textLink {
+      margin-top: 16px;
+    }
+
+    @media (max-width: 800px) {
+      .book-i-cover { width: min(100%, 330px); }
     }
   </style>
 
