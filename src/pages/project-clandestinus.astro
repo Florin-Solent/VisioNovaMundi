@@ -472,6 +472,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       display: flex;
       flex-direction: column;
       background: linear-gradient(135deg, rgba(37,99,235,.07), rgba(255,255,255,.88));
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+
+    .book-i-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(122,92,40,.42);
+      box-shadow: 0 14px 30px rgba(0,0,0,.08);
     }
 
     .book-i-cover {
