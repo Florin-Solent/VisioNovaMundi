@@ -43,6 +43,8 @@ const {
         <a href="/circular-justice">Circular Justice</a>
         <a href="/tree-of-life">Tree of Life</a>
         <a href="/project-clandestinus">Clandestinus</a>
+        <a href="/admintrace">AdminTrace</a>
+        <a href="/tradevault">TradeVault</a>
         <a href="/contact" class="nav-btn">Contact</a>
       </nav>
     </div>
@@ -473,6 +475,10 @@ const {
   main { overflow-wrap: anywhere; }
   .nav .container { flex-wrap: nowrap; gap: 12px; }
   nav[data-site-nav] { flex: 1 1 auto; justify-content: flex-end; flex-wrap: nowrap; gap: 4px; }
+  @media (min-width: 1101px) {
+    header.nav nav[data-site-nav] { gap: 2px; }
+    header.nav nav[data-site-nav] > a { flex: 0 0 auto; padding: 8px 5px; font-size: 14px; white-space: nowrap; }
+  }
   main .meta, main .top { flex-wrap: wrap; }
   main .note, main .eyebrow, main .tag, main .status, main .label, main .statusPill { font-size: .875rem; }
   .vnm-glass-card {
@@ -502,7 +508,7 @@ const {
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
   }
-  @media (max-width: 1100px) {
+  @media (max-width: 1300px) {
     .nav .container { flex-wrap: wrap; }
     nav[data-site-nav] { flex-basis: 100%; justify-content: flex-start; flex-wrap: wrap; }
   }

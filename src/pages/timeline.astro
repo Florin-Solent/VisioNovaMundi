@@ -79,9 +79,54 @@ const clandestinusMilestones = [
     tone: "future",
   },
 ];
+
+const adminTraceMilestones = [
+  {
+    label: "ACTIVE DEVELOPMENT",
+    title: "AdminTrace",
+    text: "A platform is being developed to help people keep administrative steps, evidence and progress easier to understand and follow.",
+    tone: "active",
+  },
+  {
+    label: "VALIDATION",
+    title: "Exploring trusted digital systems",
+    text: "VNM is exploring how AdminTrace could work alongside trusted public-service and digital systems while keeping the user’s administrative trail clear.",
+    tone: "validation",
+  },
+  {
+    label: "NEXT PHASE",
+    title: "Further stakeholder validation",
+    text: "Continue validation with legal, public-sector and technical stakeholders before any wider rollout.",
+    tone: "future",
+  },
+];
+
+const tradeVaultMilestones = [
+  {
+    phase: "Future development",
+    label: "FUTURE DEVELOPMENT",
+    title: "TradeVault",
+    text: "A founder-led product innovation project exploring practical storage, mobility and workflow solutions for construction and skilled trades.",
+    tone: "active",
+  },
+  {
+    phase: "Pre-prototype development",
+    label: "PRE-PROTOTYPE DEVELOPMENT",
+    title: "TradeVault Painter Pro",
+    text: "The first TradeVault concept is being developed around the everyday equipment and mobility challenges faced by professional painters and decorators.",
+    tone: "validation",
+  },
+  {
+    phase: "Future direction",
+    label: "FUTURE RANGE",
+    title: "Solutions for other trades",
+    text: "Future TradeVault concepts may extend the same practical design approach to other construction trades as individual ideas are validated.",
+    tone: "future",
+  },
+];
 ---
 
-<BaseLayout title="Timeline" description="A verified timeline of Visio Nova Mundi CIC's Unity House pilot and the development of Clandestinus.">
+<BaseLayout title="Timeline" description="A verified timeline of the Unity House pilot and the development of Clandestinus, AdminTrace and TradeVault.">
   <section class="heroBlock">
     <div>
       <p class="eyebrow">Public record · 2026–2027</p>
@@ -174,6 +219,64 @@ const clandestinusMilestones = [
     </section>
   </section>
 
+  <section class="section admintraceSection" aria-labelledby="admintrace-heading">
+    <div class="sectionHead">
+      <p class="eyebrow admintraceEyebrow">Project track 03 · AdminTrace</p>
+      <h2 id="admintrace-heading">Making complex administration easier to follow.</h2>
+      <p>AdminTrace is being developed to help people keep important administrative steps, evidence and progress easier to understand and follow.</p>
+    </div>
+
+    <ol class="timeline admintraceTimeline" aria-label="AdminTrace milestones">
+      {adminTraceMilestones.map((milestone) => (
+        <li class={`timelineItem ${milestone.tone}`}>
+          <div class="timelineMarker" aria-hidden="true"></div>
+          <article class="timelineCard">
+            <div class="timelineMeta">
+              <span class="clandestinusPhase">{milestone.label === "ACTIVE DEVELOPMENT" ? "In development" : milestone.label === "VALIDATION" ? "Exploratory work" : "Future step"}</span>
+              <span class={`clandestinusStatus ${milestone.tone}`}>{milestone.label}</span>
+            </div>
+            <h3>{milestone.title}</h3>
+            <p>{milestone.text}</p>
+          </article>
+        </li>
+      ))}
+    </ol>
+
+    <section class="supportBar admintraceSupport">
+      <div><h2>Explore AdminTrace</h2><p>Learn how the project aims to make administrative journeys clearer for people.</p></div>
+      <a class="btn primary" href="/admintrace">Discover AdminTrace</a>
+    </section>
+  </section>
+
+  <section class="section tradevaultSection" aria-labelledby="tradevault-heading">
+    <div class="sectionHead">
+      <p class="eyebrow tradevaultEyebrow">Project track 04 · TradeVault</p>
+      <h2 id="tradevault-heading">Practical tools designed around real working life.</h2>
+      <p>TradeVault is a founder-led product innovation venture being developed alongside the wider Visio Nova Mundi ecosystem. Its first product concept, Painter Pro, is at the pre-prototype development stage for painters and decorators.</p>
+    </div>
+
+    <ol class="timeline tradevaultTimeline" aria-label="TradeVault development milestones">
+      {tradeVaultMilestones.map((milestone) => (
+        <li class={`timelineItem ${milestone.tone}`}>
+          <div class="timelineMarker" aria-hidden="true"></div>
+          <article class="timelineCard">
+            <div class="timelineMeta">
+              <span class="clandestinusPhase">{milestone.phase}</span>
+              <span class={`clandestinusStatus ${milestone.tone}`}>{milestone.label}</span>
+            </div>
+            <h3>{milestone.title}</h3>
+            <p>{milestone.text}</p>
+          </article>
+        </li>
+      ))}
+    </ol>
+
+    <section class="supportBar tradevaultSupport">
+      <div><h2>Explore TradeVault</h2><p>See the Painter Pro concept and the broader direction for practical products for the trades.</p></div>
+      <a class="btn primary" href="/tradevault">Discover TradeVault</a>
+    </section>
+  </section>
+
   <style>
     .heroBlock{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:start}.eyebrow{margin:0 0 9px;color:#0f766e;text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:850}h1{margin:0 0 12px;font-size:clamp(42px,6vw,64px);letter-spacing:-.04em;color:var(--text)}.lead{margin:0;max-width:72ch;color:var(--muted);line-height:1.75;font-size:19px}.statusCard,.timelineCard,.modelGrid article,.supportBar{border:1px solid var(--border);border-radius:18px;padding:18px;background:white;box-shadow:0 8px 28px rgba(0,0,0,.05)}.statusCard{background:linear-gradient(135deg,rgba(37,99,235,.09),rgba(16,185,129,.09));border-color:rgba(37,99,235,.2)}.statusLabel{margin:0 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-size:12px;font-weight:850}.statusCard h2{margin:0 0 9px;color:var(--text);font-size:21px;letter-spacing:-.02em}.statusCard p:not(.statusLabel){margin:0;color:var(--muted);line-height:1.65}.statusPill{display:inline-block;margin-top:14px;padding:7px 10px;border-radius:999px;border:1px solid rgba(15,118,110,.28);color:#0f766e;font-size:12px;font-weight:850;background:rgba(16,185,129,.08)}.section{margin-top:34px}.sectionHead h2{margin:0 0 8px;font-size:29px;letter-spacing:-.025em;color:var(--text)}.sectionHead>p:not(.eyebrow){margin:0;max-width:90ch;color:var(--muted);line-height:1.75}.timeline{list-style:none;margin:24px 0 0;padding:0;position:relative}.timeline::before{content:"";position:absolute;top:10px;bottom:10px;left:12px;width:2px;background:linear-gradient(#2563eb,#10b981);opacity:.3}.timelineItem{position:relative;padding:0 0 18px 42px}.timelineMarker{position:absolute;top:16px;left:5px;width:16px;height:16px;border-radius:50%;border:3px solid #f8fafc;background:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.18)}.timelineItem.delivery .timelineMarker{background:#0f766e}.timelineItem.window .timelineMarker{background:#d97706}.timelineItem.learning .timelineMarker{background:#64748b}.timelineCard{max-width:850px}.timelineMeta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;color:var(--muted);font-size:13px;font-weight:800}.timelineMeta time{color:#1d4ed8}.timelineMeta span{padding:5px 8px;border-radius:999px;background:rgba(37,99,235,.07);border:1px solid rgba(37,99,235,.16)}.timelineCard h3{margin:0 0 7px;color:var(--text);font-size:21px;letter-spacing:-.02em}.timelineCard p{margin:0;color:var(--muted);line-height:1.75}.modelSection{border-top:1px solid var(--border);padding-top:26px}.modelGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}.modelGrid article{padding:15px;background:linear-gradient(135deg,rgba(37,99,235,.06),rgba(16,185,129,.06))}.modelGrid h3{margin:0 0 7px;color:var(--text);font-size:16px}.modelGrid p{margin:0;color:var(--muted);font-size:14px;line-height:1.7}.boundary{margin-top:14px;padding:14px 16px;border-left:3px solid #d97706;background:rgba(245,158,11,.09);color:var(--muted);line-height:1.7;font-size:14px}.boundary strong{color:var(--text)}.supportBar{display:flex;justify-content:space-between;gap:18px;align-items:center;background:linear-gradient(135deg,rgba(37,99,235,.06),rgba(16,185,129,.06))}.supportBar h2{margin:0 0 7px;color:var(--text);font-size:21px}.supportBar p{margin:0;color:var(--muted);line-height:1.7}.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:14px;padding:11px 14px;border:1px solid var(--border);background:white;color:var(--text);text-decoration:none;font-weight:850;white-space:nowrap}.btn.primary{background:linear-gradient(135deg,rgba(39,99,235,.10),rgba(16,185,129,.10));border-color:rgba(39,99,235,.25)}.btn:hover{text-decoration:none;border-color:rgba(0,0,0,.18)}@media(max-width:900px){.heroBlock{grid-template-columns:1fr}.modelGrid{grid-template-columns:1fr 1fr}.supportBar{flex-direction:column;align-items:stretch}}@media(max-width:520px){.modelGrid{grid-template-columns:1fr}.timelineMeta{align-items:flex-start;flex-direction:column}.btn{width:100%}}
   </style>
@@ -196,5 +299,25 @@ const clandestinusMilestones = [
     .ecosystemFlow .flowArrow{color:#0f766e}
     .clandestinusSupport{margin-top:0}
     @media(max-width:520px){.ecosystemFlow{gap:7px;padding:12px}.ecosystemFlow span:not(.flowArrow){font-size:12px;padding:6px 8px}.ecosystemFlow .flowArrow{font-size:12px}}
+    .admintraceSection{padding-top:28px;border-top:1px solid var(--border)}
+    .admintraceEyebrow{color:#0f766e}
+    .admintraceTimeline::before{background:linear-gradient(#0f766e,#2563eb);opacity:.28}
+    .admintraceTimeline .timelineMarker{background:#0f766e;box-shadow:0 0 0 3px rgba(15,118,110,.15)}
+    .admintraceTimeline .timelineItem.validation .timelineMarker{background:#d97706;box-shadow:0 0 0 3px rgba(217,119,6,.15)}
+    .admintraceTimeline .timelineItem.future .timelineMarker{background:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+    .admintraceTimeline .timelineCard{background:linear-gradient(135deg,rgba(16,185,129,.045),#fff 60%)}
+    .timelineMeta .clandestinusStatus.validation{border-color:rgba(217,119,6,.22);background:rgba(245,158,11,.09);color:#9a5b08}
+    .admintraceSupport{margin-top:0}
+    .tradevaultSection{padding-top:28px;border-top:1px solid var(--border)}
+    .tradevaultEyebrow{color:#b45309}
+    .tradevaultTimeline::before{background:linear-gradient(#d97706,#475569);opacity:.28}
+    .tradevaultTimeline .timelineMarker{background:#d97706;box-shadow:0 0 0 3px rgba(217,119,6,.15)}
+    .tradevaultTimeline .timelineItem.validation .timelineMarker{background:#475569;box-shadow:0 0 0 3px rgba(71,85,105,.15)}
+    .tradevaultTimeline .timelineItem.future .timelineMarker{background:#0f766e;box-shadow:0 0 0 3px rgba(15,118,110,.15)}
+    .tradevaultTimeline .timelineCard{background:linear-gradient(135deg,rgba(245,158,11,.045),#fff 60%)}
+    .tradevaultTimeline .clandestinusStatus{border-color:rgba(180,83,9,.2);background:rgba(245,158,11,.08);color:#92400e}
+    .tradevaultTimeline .clandestinusStatus.validation{border-color:rgba(71,85,105,.2);background:rgba(71,85,105,.07);color:#334155}
+    .tradevaultTimeline .clandestinusStatus.future{border-color:rgba(15,118,110,.2);background:rgba(15,118,110,.07);color:#0f766e}
+    .tradevaultSupport{margin-top:0}
   </style>
 </BaseLayout>

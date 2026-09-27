@@ -1,0 +1,98 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const benefits = [
+  {
+    number: "01",
+    title: "Keep the trail clear",
+    text: "Keep important steps and correspondence easier to follow.",
+  },
+  {
+    number: "02",
+    title: "Organise important evidence",
+    text: "Help keep documents, records and supporting information connected to the process they belong to.",
+  },
+  {
+    number: "03",
+    title: "See what is pending",
+    text: "Make it clearer what has been completed, what is waiting and where action may still be required.",
+  },
+  {
+    number: "04",
+    title: "Understand what comes next",
+    text: "Help users understand the current position of an administrative process without searching through disconnected records.",
+  },
+];
+---
+
+<BaseLayout
+  title="AdminTrace"
+  description="AdminTrace is being developed to help people keep administrative steps, evidence and progress easier to understand and follow."
+>
+  <section class="admintraceHero">
+    <div class="heroCopy">
+      <p class="eyebrow">A Visio Nova Mundi project · In development</p>
+      <h1>AdminTrace</h1>
+      <p class="heroMessage">Making complex administration easier to follow.</p>
+      <p class="lead">AdminTrace is being developed to help people follow complex administrative processes more clearly. It aims to keep important steps, evidence and status information easier to organise and understand, helping users see what has happened, what is still outstanding and what may need attention next.</p>
+    </div>
+  </section>
+
+  <section class="section helpSection" aria-labelledby="help-heading">
+    <div class="sectionHead">
+      <p class="eyebrow">Designed around people</p>
+      <h2 id="help-heading">How AdminTrace could help</h2>
+      <p>An administrative process can involve many messages, documents, requests and decisions. AdminTrace aims to make the journey easier to follow.</p>
+    </div>
+
+    <div class="benefitGrid">
+      {benefits.map((benefit) => (
+        <article class="benefitCard vnm-glass-card">
+          <span class="benefitNumber" aria-hidden="true">{benefit.number}</span>
+          <h3>{benefit.title}</h3>
+          <p>{benefit.text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section nextSection">
+    <div>
+      <p class="eyebrow">IN DEVELOPMENT</p>
+      <h2>AdminTrace is in controlled development and validation</h2>
+      <p>VNM is exploring how it could work alongside trusted public-service and digital-identity ecosystems in the future.</p>
+    </div>
+    <a class="btn primary" href="/timeline">View the project timeline</a>
+  </section>
+
+  <section class="closingNote">
+    <p class="eyebrow">The aim</p>
+    <p>The aim is simple: fewer lost steps, clearer evidence and a better understanding of where an administrative process stands.</p>
+  </section>
+
+  <style>
+    .admintraceHero{max-width:900px}
+    .heroCopy{max-width:900px}
+    .eyebrow{margin:0 0 9px;color:#0f766e;text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:850}
+    h1{margin:0 0 10px;color:var(--text);font-size:clamp(44px,7vw,68px);letter-spacing:-.045em}
+    .heroMessage{margin:0 0 13px;color:var(--text);font-size:clamp(22px,3vw,30px);font-weight:750;letter-spacing:-.025em;line-height:1.25}
+    .lead{margin:0;max-width:72ch;color:var(--muted);font-size:18px;line-height:1.8}
+    .section{margin-top:38px}
+    .sectionHead h2,.nextSection h2{margin:0 0 8px;color:var(--text);font-size:30px;letter-spacing:-.025em}
+    .sectionHead>p:not(.eyebrow),.nextSection>div>p:not(.eyebrow){margin:0;max-width:78ch;color:var(--muted);line-height:1.75}
+    .benefitGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
+    .benefitCard{min-height:180px;padding:20px;border:1px solid var(--border);border-radius:18px;background:linear-gradient(135deg,rgba(37,99,235,.055),rgba(16,185,129,.055));box-shadow:0 8px 26px rgba(15,23,42,.045)}
+    .benefitNumber{display:grid;place-items:center;width:34px;height:34px;margin-bottom:13px;border:1px solid rgba(15,118,110,.2);border-radius:50%;background:rgba(16,185,129,.08);color:#0f766e;font-size:12px;font-weight:850}
+    .benefitCard h3{margin:0 0 7px;color:var(--text);font-size:18px;letter-spacing:-.015em}
+    .benefitCard p{margin:0;color:var(--muted);line-height:1.75}
+    .nextSection{display:flex;justify-content:space-between;align-items:center;gap:22px;padding:22px;border:1px solid var(--border);border-radius:20px;background:linear-gradient(135deg,rgba(37,99,235,.07),rgba(16,185,129,.07))}
+    .nextSection .eyebrow{margin-bottom:7px}
+    .nextSection>div{max-width:76ch}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 17px;border:1px solid rgba(37,99,235,.23);border-radius:999px;background:linear-gradient(135deg,rgba(37,99,235,.12),rgba(16,185,129,.12));color:var(--text);font-weight:800;text-decoration:none;white-space:nowrap}
+    .btn:hover{text-decoration:none;border-color:rgba(15,118,110,.35)}
+    .closingNote{margin-top:20px;padding:18px 20px;border-left:3px solid #0f766e;background:rgba(16,185,129,.06)}
+    .closingNote .eyebrow{margin-bottom:6px}
+    .closingNote>p:last-child{margin:0;color:var(--text);font-size:20px;font-weight:750;line-height:1.6;letter-spacing:-.015em}
+    @media(max-width:600px){.benefitGrid{grid-template-columns:1fr}.benefitCard{min-height:0}.nextSection{flex-direction:column;align-items:stretch;padding:18px}.btn{width:100%;white-space:normal;text-align:center}.closingNote>p:last-child{font-size:18px}}
+  </style>
+</BaseLayout>
