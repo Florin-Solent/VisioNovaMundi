@@ -124,9 +124,56 @@ const tradeVaultMilestones = [
     tone: "future",
   },
 ];
+
+const founderLedConceptMilestones = [
+  {
+    phase: "Early concept and feasibility",
+    label: "EARLY CONCEPT / FEASIBILITY",
+    title: "OneLoo Total",
+    text: "OneLoo Total is currently in early concept and feasibility development; formulation, safety and performance remain unvalidated.",
+    link: "/oneloo-total",
+    tone: "oneloo",
+  },
+  {
+    phase: "Concept validation",
+    label: "CONCEPT VALIDATION",
+    title: "Guardian One",
+    text: "A compact personal-shelter concept for solo travel, with physical validation preceding any more advanced features.",
+    link: "/guardian-one",
+    tone: "guardian",
+  },
+  {
+    phase: "Mechanical feasibility",
+    label: "MECHANICAL FEASIBILITY",
+    title: "RoamWing — working name",
+    text: "RoamWing is the current working name for a creator-travel concept exploring wearable hands-free filming.",
+    link: "/roamwing",
+    tone: "roamwing",
+  },
+  {
+    date: "16 July 2026",
+    iso: "2026-07-16",
+    phase: "Early concept development",
+    label: "EARLY CONCEPT DEVELOPMENT",
+    title: "Vialora — Fragrance Concept",
+    text: "Refill-oriented fragrance concept enters early investigation, with product format and public naming still under evaluation.",
+    link: "/vialora/",
+    tone: "vialora",
+  },
+  {
+    date: "22 July 2026",
+    iso: "2026-07-22",
+    phase: "Early concept development",
+    label: "EARLY CONCEPT DEVELOPMENT",
+    title: "Vialora Voyage",
+    text: "Travel-grooming concept and a reduced direction for future practical validation are documented.",
+    link: "/vialora-voyage/",
+    tone: "voyage",
+  },
+];
 ---
 
-<BaseLayout title="Timeline" description="A verified timeline of the Unity House pilot and the development of Clandestinus, AdminTrace and TradeVault.">
+<BaseLayout title="Timeline" description="A timeline of the Unity House pilot and the evidence-led development of Visio Nova Mundi projects.">
   <section class="heroBlock">
     <div>
       <p class="eyebrow">Public record · 2026–2027</p>
@@ -195,7 +242,11 @@ const tradeVaultMilestones = [
           <div class="timelineMarker" aria-hidden="true"></div>
           <article class="timelineCard">
             <div class="timelineMeta">
-              <span class="clandestinusPhase">{milestone.phase}</span>
+              {milestone.date ? (
+                <time class="conceptDate" datetime={milestone.iso}>{milestone.date}</time>
+              ) : (
+                <span class="clandestinusPhase">{milestone.phase}</span>
+              )}
               <span class={`clandestinusStatus ${milestone.tone}`}>{milestone.label}</span>
             </div>
             <h3>{milestone.title}</h3>
@@ -277,6 +328,31 @@ const tradeVaultMilestones = [
     </section>
   </section>
 
+  <section class="section founderConceptsSection" aria-labelledby="founder-concepts-heading">
+    <div class="sectionHead">
+      <p class="eyebrow founderConceptsEyebrow">Additional founder-led concepts</p>
+      <h2 id="founder-concepts-heading">Ideas moving through early validation</h2>
+      <p>These concepts are being explored in stages. Each remains in development, with no commercial availability or unverified performance claims.</p>
+    </div>
+
+    <ol class="timeline founderConceptsTimeline" aria-label="Founder-led concept development tracks">
+      {founderLedConceptMilestones.map((milestone) => (
+        <li class={`timelineItem ${milestone.tone}`}>
+          <div class="timelineMarker" aria-hidden="true"></div>
+          <article class="timelineCard">
+            <div class="timelineMeta">
+              <span class="clandestinusPhase">{milestone.phase}</span>
+              <span class={`clandestinusStatus ${milestone.tone}`}>{milestone.label}</span>
+            </div>
+            <h3>{milestone.title}</h3>
+            <p>{milestone.text}</p>
+            <a class="conceptLink" href={milestone.link}>Explore concept →</a>
+          </article>
+        </li>
+      ))}
+    </ol>
+  </section>
+
   <style>
     .heroBlock{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:start}.eyebrow{margin:0 0 9px;color:#0f766e;text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:850}h1{margin:0 0 12px;font-size:clamp(42px,6vw,64px);letter-spacing:-.04em;color:var(--text)}.lead{margin:0;max-width:72ch;color:var(--muted);line-height:1.75;font-size:19px}.statusCard,.timelineCard,.modelGrid article,.supportBar{border:1px solid var(--border);border-radius:18px;padding:18px;background:white;box-shadow:0 8px 28px rgba(0,0,0,.05)}.statusCard{background:linear-gradient(135deg,rgba(37,99,235,.09),rgba(16,185,129,.09));border-color:rgba(37,99,235,.2)}.statusLabel{margin:0 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-size:12px;font-weight:850}.statusCard h2{margin:0 0 9px;color:var(--text);font-size:21px;letter-spacing:-.02em}.statusCard p:not(.statusLabel){margin:0;color:var(--muted);line-height:1.65}.statusPill{display:inline-block;margin-top:14px;padding:7px 10px;border-radius:999px;border:1px solid rgba(15,118,110,.28);color:#0f766e;font-size:12px;font-weight:850;background:rgba(16,185,129,.08)}.section{margin-top:34px}.sectionHead h2{margin:0 0 8px;font-size:29px;letter-spacing:-.025em;color:var(--text)}.sectionHead>p:not(.eyebrow){margin:0;max-width:90ch;color:var(--muted);line-height:1.75}.timeline{list-style:none;margin:24px 0 0;padding:0;position:relative}.timeline::before{content:"";position:absolute;top:10px;bottom:10px;left:12px;width:2px;background:linear-gradient(#2563eb,#10b981);opacity:.3}.timelineItem{position:relative;padding:0 0 18px 42px}.timelineMarker{position:absolute;top:16px;left:5px;width:16px;height:16px;border-radius:50%;border:3px solid #f8fafc;background:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.18)}.timelineItem.delivery .timelineMarker{background:#0f766e}.timelineItem.window .timelineMarker{background:#d97706}.timelineItem.learning .timelineMarker{background:#64748b}.timelineCard{max-width:850px}.timelineMeta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;color:var(--muted);font-size:13px;font-weight:800}.timelineMeta time{color:#1d4ed8}.timelineMeta span{padding:5px 8px;border-radius:999px;background:rgba(37,99,235,.07);border:1px solid rgba(37,99,235,.16)}.timelineCard h3{margin:0 0 7px;color:var(--text);font-size:21px;letter-spacing:-.02em}.timelineCard p{margin:0;color:var(--muted);line-height:1.75}.modelSection{border-top:1px solid var(--border);padding-top:26px}.modelGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}.modelGrid article{padding:15px;background:linear-gradient(135deg,rgba(37,99,235,.06),rgba(16,185,129,.06))}.modelGrid h3{margin:0 0 7px;color:var(--text);font-size:16px}.modelGrid p{margin:0;color:var(--muted);font-size:14px;line-height:1.7}.boundary{margin-top:14px;padding:14px 16px;border-left:3px solid #d97706;background:rgba(245,158,11,.09);color:var(--muted);line-height:1.7;font-size:14px}.boundary strong{color:var(--text)}.supportBar{display:flex;justify-content:space-between;gap:18px;align-items:center;background:linear-gradient(135deg,rgba(37,99,235,.06),rgba(16,185,129,.06))}.supportBar h2{margin:0 0 7px;color:var(--text);font-size:21px}.supportBar p{margin:0;color:var(--muted);line-height:1.7}.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:14px;padding:11px 14px;border:1px solid var(--border);background:white;color:var(--text);text-decoration:none;font-weight:850;white-space:nowrap}.btn.primary{background:linear-gradient(135deg,rgba(39,99,235,.10),rgba(16,185,129,.10));border-color:rgba(39,99,235,.25)}.btn:hover{text-decoration:none;border-color:rgba(0,0,0,.18)}@media(max-width:900px){.heroBlock{grid-template-columns:1fr}.modelGrid{grid-template-columns:1fr 1fr}.supportBar{flex-direction:column;align-items:stretch}}@media(max-width:520px){.modelGrid{grid-template-columns:1fr}.timelineMeta{align-items:flex-start;flex-direction:column}.btn{width:100%}}
   </style>
@@ -319,5 +395,26 @@ const tradeVaultMilestones = [
     .tradevaultTimeline .clandestinusStatus.validation{border-color:rgba(71,85,105,.2);background:rgba(71,85,105,.07);color:#334155}
     .tradevaultTimeline .clandestinusStatus.future{border-color:rgba(15,118,110,.2);background:rgba(15,118,110,.07);color:#0f766e}
     .tradevaultSupport{margin-top:0}
+    .founderConceptsSection{padding-top:28px;border-top:1px solid var(--border)}
+    .founderConceptsEyebrow{color:#0f766e}
+    .founderConceptsTimeline::before{background:linear-gradient(#0f766e,#2563eb);opacity:.28}
+    .founderConceptsTimeline .timelineMarker{background:#0f766e;box-shadow:0 0 0 3px rgba(15,118,110,.15)}
+    .founderConceptsTimeline .timelineItem.guardian .timelineMarker{background:#475569;box-shadow:0 0 0 3px rgba(71,85,105,.15)}
+    .founderConceptsTimeline .timelineItem.roamwing .timelineMarker{background:#4f46e5;box-shadow:0 0 0 3px rgba(79,70,229,.15)}
+    .founderConceptsTimeline .timelineCard{background:linear-gradient(135deg,rgba(16,185,129,.04),#fff 62%)}
+    .founderConceptsTimeline .timelineItem.guardian .timelineCard{background:linear-gradient(135deg,rgba(148,163,184,.07),#fff 62%)}
+    .founderConceptsTimeline .timelineItem.roamwing .timelineCard{background:linear-gradient(135deg,rgba(79,70,229,.04),#fff 62%)}
+    .founderConceptsTimeline .timelineItem.vialora .timelineMarker{background:#9a6b38;box-shadow:0 0 0 3px rgba(154,107,56,.15)}
+    .founderConceptsTimeline .timelineItem.vialora .timelineCard{background:linear-gradient(135deg,rgba(154,107,56,.055),#fff 62%)}
+    .founderConceptsTimeline .timelineItem.voyage .timelineMarker{background:#0f766e;box-shadow:0 0 0 3px rgba(15,118,110,.15)}
+    .founderConceptsTimeline .timelineItem.voyage .timelineCard{background:linear-gradient(135deg,rgba(15,118,110,.05),#fff 62%)}
+    .founderConceptsTimeline .clandestinusStatus.oneloo{border-color:rgba(15,118,110,.2);background:rgba(16,185,129,.08);color:#0f766e}
+    .founderConceptsTimeline .clandestinusStatus.guardian{border-color:rgba(71,85,105,.2);background:rgba(71,85,105,.07);color:#334155}
+    .founderConceptsTimeline .clandestinusStatus.roamwing{border-color:rgba(79,70,229,.2);background:rgba(79,70,229,.07);color:#4338ca}
+    .founderConceptsTimeline .clandestinusStatus.vialora{border-color:rgba(154,107,56,.22);background:rgba(154,107,56,.08);color:#795324}
+    .founderConceptsTimeline .clandestinusStatus.voyage{border-color:rgba(15,118,110,.2);background:rgba(16,185,129,.08);color:#0f766e}
+    .founderConceptsTimeline .conceptDate{color:var(--muted);font-size:13px;font-weight:800}
+    .conceptLink{display:inline-flex;margin-top:12px;color:#1d4ed8;font-size:13px;font-weight:850;text-decoration:none}
+    .conceptLink:hover{text-decoration:underline}
   </style>
 </BaseLayout>
