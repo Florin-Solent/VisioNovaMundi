@@ -1,0 +1,200 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const milestones = [
+  {
+    date: "28 August 2026",
+    iso: "2026-08-28",
+    label: "Award documented",
+    title: "Community Health Champions Microgrant Fund",
+    text: "Visio Nova Mundi CIC's grant agreement with the London Borough of Waltham Forest records a £2,000 award for the Romanian Healthy Living and Community Kitchen Pilot.",
+    tone: "award",
+  },
+  {
+    date: "September 2026 – March 2027",
+    iso: "2026-09",
+    label: "Funded delivery window",
+    title: "Deliver six bilingual Unity House sessions",
+    text: "The funded pilot covers six Romanian-English community health and wellbeing sessions for adults in South Waltham Forest. Delivery must take place within the September 2026 to March 2027 grant period; individual session dates and the venue remain subject to confirmation.",
+    tone: "window",
+  },
+  {
+    date: "End of grant period",
+    iso: "2027-03",
+    label: "Reporting and learning",
+    title: "Evidence before any wider step",
+    text: "VNM will retain delivery and financial evidence, report to the Council in its requested format, and use the learning to decide whether any future Unity House activity is ready to develop further.",
+    tone: "learning",
+  },
+];
+
+const clandestinusMilestones = [
+  {
+    phase: "Published editions",
+    label: "COMPLETED",
+    title: "Clandestinus books",
+    text: "Book I is available in paperback, and Book II is available in paperback and hardcover.",
+    tone: "completed",
+  },
+  {
+    phase: "In development",
+    label: "ACTIVE DEVELOPMENT",
+    title: "Clandestinus Connected Clothing",
+    text: "The first Clandestinus connected clothing concept is in development, combining fashion with NFC-enabled digital experiences and authenticity features.",
+    tone: "active",
+  },
+  {
+    phase: "Exploratory work",
+    label: "PARTNER DISCUSSIONS",
+    title: "Materials and e-textile development",
+    text: "CPI has indicated that the NFC-first concept could be technically possible, subject to further work and funding. Other organisations remain prospects or outreach contacts; no formal partnership or consortium is confirmed.",
+    tone: "partners",
+  },
+  {
+    phase: "Exploratory work",
+    label: "PARTNER DISCUSSIONS",
+    title: "Connected Tag Technology",
+    text: "Partner discussions are underway around connected-tag technology as part of the wider Clandestinus clothing ecosystem. Further details will be shared when confirmed.",
+    tone: "partners",
+  },
+  {
+    phase: "In development",
+    label: "ACTIVE DEVELOPMENT",
+    title: "Clandestinus Secret App",
+    text: "A private communication experience inspired by the Clandestinus language and world is currently in development. The project remains in private development and has not yet been publicly released.",
+    tone: "active",
+  },
+  {
+    phase: "Early development",
+    label: "EARLY DEVELOPMENT",
+    title: "First Clandestinus Game",
+    text: "The first Clandestinus game is being developed as an interactive extension of the Clandestinus world, combining storytelling, learning and digital experiences.",
+    tone: "active",
+  },
+  {
+    phase: "Future vision",
+    label: "NEXT PHASE",
+    title: "From Story to Living World",
+    text: "Clandestinus is expanding beyond publishing into clothing, private communication, games and digital experiences — all forming part of one evolving Clandestinus universe.",
+    tone: "future",
+  },
+];
+---
+
+<BaseLayout title="Timeline" description="A verified timeline of Visio Nova Mundi CIC's Unity House pilot and the development of Clandestinus.">
+  <section class="heroBlock">
+    <div>
+      <p class="eyebrow">Public record · 2026–2027</p>
+      <h1>Timeline</h1>
+      <p class="lead">A concise record of the council-awarded Unity House pilot and the evidence-led steps around it.</p>
+    </div>
+    <aside class="statusCard">
+      <p class="statusLabel">Current position</p>
+      <h2>Awarded pilot in delivery window</h2>
+      <p>London Borough of Waltham Forest · Community Health Champions Microgrant Fund · September 2026–March 2027</p>
+      <span class="statusPill">Six sessions · £2,000 grant</span>
+    </aside>
+  </section>
+
+  <section class="section timelineSection" aria-labelledby="milestones-heading">
+    <div class="sectionHead">
+      <p class="eyebrow">Verified milestones</p>
+      <h2 id="milestones-heading">From award to accountable delivery</h2>
+      <p>The grant agreement records the award and sets the delivery period. Individual session dates and the venue will be added once confirmed.</p>
+    </div>
+
+    <ol class="timeline">
+      {milestones.map((milestone) => (
+        <li class={`timelineItem ${milestone.tone}`}>
+          <div class="timelineMarker" aria-hidden="true"></div>
+          <article class="timelineCard">
+            <div class="timelineMeta"><time datetime={milestone.iso}>{milestone.date}</time><span>{milestone.label}</span></div>
+            <h3>{milestone.title}</h3>
+            <p>{milestone.text}</p>
+          </article>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="section modelSection">
+    <div class="sectionHead">
+      <p class="eyebrow">Unity House in context</p>
+      <h2>A controlled test of a broader circular-economy model</h2>
+      <p>The six funded sessions are the first controlled, real-world validation phase for the wider Unity House model. Learning from this phase can inform whether and how a permanent neighbourhood hub and a scalable network should be developed.</p>
+    </div>
+    <div class="modelGrid">
+      <article><h3>Safe edible surplus</h3><p>A future centre could explore turning suitable, legally sourced surplus into affordable meals—not treating unsafe or unavoidable waste as food.</p></article>
+      <article><h3>Reuse and repair</h3><p>Reusable materials could be sorted into repair, upcycling, sharing or other routes that keep useful resources in community use.</p></article>
+      <article><h3>Appropriate treatment</h3><p>Unavoidable food waste could be directed to appropriate composting or other authorised treatment through competent partners.</p></article>
+      <article><h3>People and place</h3><p>The wider model aims to support local jobs, training, volunteering and integration by making practical community activity a shared place.</p></article>
+    </div>
+    <div class="boundary"><strong>Statutory boundary:</strong> Any future collection, storage, transport, preparation, redistribution or treatment would require separate scope, responsible partners and the relevant food-safety, waste, environmental-permitting, planning, insurance, safeguarding and data-protection controls.</div>
+  </section>
+
+  <section class="section supportBar">
+    <div><h2>Read the pilot detail</h2><p>See what the funded six-session pilot is testing, what it does not claim, and how it relates to the longer-term Unity House model.</p></div>
+    <a class="btn primary" href="/unity-house">Explore Unity House</a>
+  </section>
+
+  <section class="section clandestinusSection" aria-labelledby="clandestinus-heading">
+    <div class="sectionHead">
+      <p class="eyebrow clandestinusEyebrow">Project track 02 · Clandestinus</p>
+      <h2 id="clandestinus-heading">From Story to Living World</h2>
+      <p>Clandestinus is growing beyond publishing into a connected universe of fashion, technology, private communication and interactive experiences. Each project is being developed independently and carefully, with the long-term aim of allowing the physical and digital parts of the Clandestinus world to connect.</p>
+    </div>
+
+    <ol class="timeline clandestinusTimeline" aria-label="Clandestinus milestones">
+      {clandestinusMilestones.map((milestone) => (
+        <li class={`timelineItem ${milestone.tone}`}>
+          <div class="timelineMarker" aria-hidden="true"></div>
+          <article class="timelineCard">
+            <div class="timelineMeta">
+              <span class="clandestinusPhase">{milestone.phase}</span>
+              <span class={`clandestinusStatus ${milestone.tone}`}>{milestone.label}</span>
+            </div>
+            <h3>{milestone.title}</h3>
+            <p>{milestone.text}</p>
+          </article>
+        </li>
+      ))}
+    </ol>
+
+    <nav class="ecosystemFlow" aria-label="Clandestinus ecosystem roadmap">
+      <span>Books</span><span class="flowArrow" aria-hidden="true">→</span>
+      <span>Connected Clothing</span><span class="flowArrow" aria-hidden="true">→</span>
+      <span>Secret Communication</span><span class="flowArrow" aria-hidden="true">→</span>
+      <span>Games / Digital Experiences</span><span class="flowArrow" aria-hidden="true">→</span>
+      <span>Clandestinus World</span>
+    </nav>
+
+    <section class="supportBar clandestinusSupport">
+      <div><h2>Explore Clandestinus</h2><p>Discover the books and the wider creative world taking shape around them.</p></div>
+      <a class="btn primary" href="/project-clandestinus">Learn more about Clandestinus</a>
+    </section>
+  </section>
+
+  <style>
+    .heroBlock{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:start}.eyebrow{margin:0 0 9px;color:#0f766e;text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:850}h1{margin:0 0 12px;font-size:clamp(42px,6vw,64px);letter-spacing:-.04em;color:var(--text)}.lead{margin:0;max-width:72ch;color:var(--muted);line-height:1.75;font-size:19px}.statusCard,.timelineCard,.modelGrid article,.supportBar{border:1px solid var(--border);border-radius:18px;padding:18px;background:white;box-shadow:0 8px 28px rgba(0,0,0,.05)}.statusCard{background:linear-gradient(135deg,rgba(37,99,235,.09),rgba(16,185,129,.09));border-color:rgba(37,99,235,.2)}.statusLabel{margin:0 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-size:12px;font-weight:850}.statusCard h2{margin:0 0 9px;color:var(--text);font-size:21px;letter-spacing:-.02em}.statusCard p:not(.statusLabel){margin:0;color:var(--muted);line-height:1.65}.statusPill{display:inline-block;margin-top:14px;padding:7px 10px;border-radius:999px;border:1px solid rgba(15,118,110,.28);color:#0f766e;font-size:12px;font-weight:850;background:rgba(16,185,129,.08)}.section{margin-top:34px}.sectionHead h2{margin:0 0 8px;font-size:29px;letter-spacing:-.025em;color:var(--text)}.sectionHead>p:not(.eyebrow){margin:0;max-width:90ch;color:var(--muted);line-height:1.75}.timeline{list-style:none;margin:24px 0 0;padding:0;position:relative}.timeline::before{content:"";position:absolute;top:10px;bottom:10px;left:12px;width:2px;background:linear-gradient(#2563eb,#10b981);opacity:.3}.timelineItem{position:relative;padding:0 0 18px 42px}.timelineMarker{position:absolute;top:16px;left:5px;width:16px;height:16px;border-radius:50%;border:3px solid #f8fafc;background:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.18)}.timelineItem.delivery .timelineMarker{background:#0f766e}.timelineItem.window .timelineMarker{background:#d97706}.timelineItem.learning .timelineMarker{background:#64748b}.timelineCard{max-width:850px}.timelineMeta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;color:var(--muted);font-size:13px;font-weight:800}.timelineMeta time{color:#1d4ed8}.timelineMeta span{padding:5px 8px;border-radius:999px;background:rgba(37,99,235,.07);border:1px solid rgba(37,99,235,.16)}.timelineCard h3{margin:0 0 7px;color:var(--text);font-size:21px;letter-spacing:-.02em}.timelineCard p{margin:0;color:var(--muted);line-height:1.75}.modelSection{border-top:1px solid var(--border);padding-top:26px}.modelGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}.modelGrid article{padding:15px;background:linear-gradient(135deg,rgba(37,99,235,.06),rgba(16,185,129,.06))}.modelGrid h3{margin:0 0 7px;color:var(--text);font-size:16px}.modelGrid p{margin:0;color:var(--muted);font-size:14px;line-height:1.7}.boundary{margin-top:14px;padding:14px 16px;border-left:3px solid #d97706;background:rgba(245,158,11,.09);color:var(--muted);line-height:1.7;font-size:14px}.boundary strong{color:var(--text)}.supportBar{display:flex;justify-content:space-between;gap:18px;align-items:center;background:linear-gradient(135deg,rgba(37,99,235,.06),rgba(16,185,129,.06))}.supportBar h2{margin:0 0 7px;color:var(--text);font-size:21px}.supportBar p{margin:0;color:var(--muted);line-height:1.7}.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:14px;padding:11px 14px;border:1px solid var(--border);background:white;color:var(--text);text-decoration:none;font-weight:850;white-space:nowrap}.btn.primary{background:linear-gradient(135deg,rgba(39,99,235,.10),rgba(16,185,129,.10));border-color:rgba(39,99,235,.25)}.btn:hover{text-decoration:none;border-color:rgba(0,0,0,.18)}@media(max-width:900px){.heroBlock{grid-template-columns:1fr}.modelGrid{grid-template-columns:1fr 1fr}.supportBar{flex-direction:column;align-items:stretch}}@media(max-width:520px){.modelGrid{grid-template-columns:1fr}.timelineMeta{align-items:flex-start;flex-direction:column}.btn{width:100%}}
+  </style>
+
+  <style>
+    .clandestinusSection{padding-top:28px;border-top:1px solid var(--border)}
+    .clandestinusEyebrow{color:#4f46e5}
+    .clandestinusTimeline::before{background:linear-gradient(#4f46e5,#0f766e);opacity:.28}
+    .clandestinusTimeline .timelineMarker{background:#4f46e5;box-shadow:0 0 0 3px rgba(79,70,229,.15)}
+    .clandestinusTimeline .timelineItem.partners .timelineMarker{background:#d97706;box-shadow:0 0 0 3px rgba(217,119,6,.15)}
+    .clandestinusTimeline .timelineItem.future .timelineMarker{background:#0f766e;box-shadow:0 0 0 3px rgba(15,118,110,.15)}
+    .clandestinusTimeline .timelineCard{background:linear-gradient(135deg,rgba(37,99,235,.035),#fff 60%)}
+    .timelineMeta .clandestinusPhase{padding:0;border:0;background:transparent;color:var(--muted)}
+    .timelineMeta .clandestinusStatus{padding:5px 8px;border-radius:999px;border:1px solid rgba(37,99,235,.16);background:rgba(37,99,235,.07);color:#1d4ed8;font-size:11px;letter-spacing:.035em}
+    .timelineMeta .clandestinusStatus.completed{border-color:rgba(15,118,110,.2);background:rgba(16,185,129,.08);color:#0f766e}
+    .timelineMeta .clandestinusStatus.partners{border-color:rgba(217,119,6,.22);background:rgba(245,158,11,.09);color:#9a5b08}
+    .timelineMeta .clandestinusStatus.future{border-color:rgba(15,118,110,.2);background:rgba(15,118,110,.07);color:#0f766e}
+    .ecosystemFlow{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin:8px 0 18px;padding:16px;border:1px solid var(--border);border-radius:18px;background:linear-gradient(135deg,rgba(79,70,229,.055),rgba(16,185,129,.055));color:var(--text);font-size:13px;font-weight:800}
+    .ecosystemFlow span:not(.flowArrow){padding:7px 10px;border:1px solid rgba(37,99,235,.14);border-radius:999px;background:rgba(255,255,255,.76)}
+    .ecosystemFlow .flowArrow{color:#0f766e}
+    .clandestinusSupport{margin-top:0}
+    @media(max-width:520px){.ecosystemFlow{gap:7px;padding:12px}.ecosystemFlow span:not(.flowArrow){font-size:12px;padding:6px 8px}.ecosystemFlow .flowArrow{font-size:12px}}
+  </style>
+</BaseLayout>
