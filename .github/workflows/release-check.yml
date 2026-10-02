@@ -1,0 +1,48 @@
+name: VNM release QA
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vnm-release-qa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release-check:
+    name: 'release:check'
+    if: github.repository == 'Florin-Solent/VisioNovaMundi'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out candidate without persistent credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Use verified Node 22 runtime
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22.14.0'
+          cache: npm
+      - name: Set canonical origin for the target guard
+        run: git remote set-url origin https://github.com/Florin-Solent/VisioNovaMundi.git
+      - name: Install locked project dependencies
+        run: npm ci
+      - name: Provision pinned external browser tooling
+        run: npm exec --yes --package=playwright@1.64.0-alpha-1790635538000 -- playwright install --with-deps chromium
+      - name: Build and verify all required routes
+        run: npm run release:check
+      - name: Preserve QA report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: vnm-release-qa-${{ github.run_id }}-${{ github.run_attempt }}
+          path: output/release-qa/local.json
+          if-no-files-found: warn
+          retention-days: 14
