@@ -7,7 +7,7 @@ Canonical repository: https://github.com/Florin-Solent/VisioNovaMundi.git. Verce
 ## Operational modes
 
 - **Investigation:** external systems are read-only; local builds/tests are allowed. No publishing, production writes, DNS changes, or pushes to branches that trigger production deployment.
-- **Preview:** local previews or Vercel Preview deployments for review. Never alias a preview to a production domain. This hardening task permits local previews only.
+- **Preview:** local or Vercel Preview deployments for review. Never alias a preview to a production domain. The release-hardening pull request was explicitly authorized to create Vercel and Cloudflare Pages Previews; both were non-production.
 - **Production:** canonical Vercel project only, from the canonical repository, following successful QA and explicit user release approval. A Git push may trigger deployment; treat it as publishing.
 - **Other targets:** ChatGPT Sites and all other hosts require separate explicit target approval. Normal VNM releases and investigations must never update Sites.
 
