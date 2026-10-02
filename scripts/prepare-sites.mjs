@@ -1,7 +1,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 
-// Keep the Sites worker entrypoint explicit so the deployment package is rebuilt
-// whenever the static asset-serving contract is repaired or revalidated.
+// LEGACY / NON-PRODUCTION ONLY. Never run as part of a normal VNM release.
+// Sites publishing requires separate explicit approval; see DEPLOYMENT_POLICY.md.
 const entry = `
 const worker = {
   async fetch(request, env) {

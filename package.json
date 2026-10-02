@@ -7,7 +7,10 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/prepare-sites.mjs",
+    "build": "astro build",
+    "release:check": "node scripts/release-check.mjs",
+    "verify:production": "node scripts/release-check.mjs --production",
+    "check:target": "node scripts/check-target.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

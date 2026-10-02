@@ -41,3 +41,7 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+## VNM release workflow
+
+Read [Deployment policy](DEPLOYMENT_POLICY.md), [Production manifest](PRODUCTION.md), and [Release QA](docs/release-qa.md). Use npm run release:check for local build and browser QA, and npm run verify:production for read-only public verification. Neither command deploys.
