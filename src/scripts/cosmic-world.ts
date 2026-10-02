@@ -1,4 +1,36 @@
-import * as THREE from "three";
+import {
+  ACESFilmicToneMapping,
+  AdditiveBlending,
+  AmbientLight,
+  BackSide,
+  BufferAttribute,
+  BufferGeometry,
+  CanvasTexture,
+  Color,
+  DirectionalLight,
+  Group,
+  HemisphereLight,
+  MathUtils,
+  Mesh,
+  MeshBasicMaterial,
+  MeshPhongMaterial,
+  NoColorSpace,
+  NormalBlending,
+  PerspectiveCamera,
+  Points,
+  PointsMaterial,
+  Scene,
+  ShaderMaterial,
+  SphereGeometry,
+  Sprite,
+  SpriteMaterial,
+  SRGBColorSpace,
+  Texture,
+  TextureLoader,
+  Vector2,
+  Vector3,
+  WebGLRenderer,
+} from "three";
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 
@@ -18,8 +50,8 @@ const createRadialTexture = (inner: string, outer: string) => {
   context.fillStyle = gradient;
   context.fillRect(0, 0, 128, 128);
 
-  const texture = new THREE.CanvasTexture(textureCanvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
+  const texture = new CanvasTexture(textureCanvas);
+  texture.colorSpace = SRGBColorSpace;
   return texture;
 };
 
@@ -28,10 +60,10 @@ const createStarfield = () => {
   const positions = new Float32Array(count * 3);
   const colors = new Float32Array(count * 3);
   const palette = [
-    new THREE.Color("#f1f8ff"),
-    new THREE.Color("#1e4c70"),
-    new THREE.Color("#2f8da1"),
-    new THREE.Color("#a77f3d"),
+    new Color("#f1f8ff"),
+    new Color("#1e4c70"),
+    new Color("#2f8da1"),
+    new Color("#a77f3d"),
   ];
 
   for (let index = 0; index < count; index += 1) {
@@ -46,11 +78,11 @@ const createStarfield = () => {
     colors[positionIndex + 2] = color.b;
   }
 
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-  geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+  const geometry = new BufferGeometry();
+  geometry.setAttribute("position", new BufferAttribute(positions, 3));
+  geometry.setAttribute("color", new BufferAttribute(colors, 3));
 
-  const material = new THREE.PointsMaterial({
+  const material = new PointsMaterial({
     size: 0.038,
     sizeAttenuation: true,
     transparent: true,
@@ -59,24 +91,24 @@ const createStarfield = () => {
     depthWrite: false,
   });
 
-  return new THREE.Points(geometry, material);
+  return new Points(geometry, material);
 };
 
 type EarthLayers = {
-  surface: THREE.MeshPhongMaterial;
-  nightLights: THREE.ShaderMaterial;
-  clouds: THREE.MeshPhongMaterial;
+  surface: MeshPhongMaterial;
+  nightLights: ShaderMaterial;
+  clouds: MeshPhongMaterial;
 };
 
-const createNightLightsMaterial = (texture: THREE.Texture) =>
-  new THREE.ShaderMaterial({
+const createNightLightsMaterial = (texture: Texture) =>
+  new ShaderMaterial({
     uniforms: {
       uMap: { value: texture },
-      uColor: { value: new THREE.Color("#ffd39a") },
-      uSunDirection: { value: new THREE.Vector3(-0.65, 0.28, 0.72).normalize() },
+      uColor: { value: new Color("#ffd39a") },
+      uSunDirection: { value: new Vector3(-0.65, 0.28, 0.72).normalize() },
     },
     transparent: true,
-    blending: THREE.AdditiveBlending,
+    blending: AdditiveBlending,
     depthWrite: false,
     vertexShader: `
       varying vec2 vUv;
@@ -107,10 +139,10 @@ const createNightLightsMaterial = (texture: THREE.Texture) =>
     `,
   });
 
-const createEarthLayers = (renderer: THREE.WebGLRenderer): EarthLayers => {
-  const loader = new THREE.TextureLoader();
+const createEarthLayers = (renderer: WebGLRenderer): EarthLayers => {
+  const loader = new TextureLoader();
   const anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
-  const load = (path: string, colorSpace = THREE.SRGBColorSpace) => {
+  const load = (path: string, colorSpace = SRGBColorSpace) => {
     const texture = loader.load(path);
     texture.colorSpace = colorSpace;
     texture.anisotropy = anisotropy;
@@ -120,26 +152,26 @@ const createEarthLayers = (renderer: THREE.WebGLRenderer): EarthLayers => {
   const surfaceMap = load("/images/earth-blue-marble.jpg");
   const nightMap = load("/images/earth-night.png");
   const cloudMap = load("/images/earth-clouds.png");
-  const normalMap = load("/images/earth-normal.jpg", THREE.NoColorSpace);
-  const specularMap = load("/images/earth-specular.jpg", THREE.NoColorSpace);
+  const normalMap = load("/images/earth-normal.jpg", NoColorSpace);
+  const specularMap = load("/images/earth-specular.jpg", NoColorSpace);
 
   return {
-    surface: new THREE.MeshPhongMaterial({
+    surface: new MeshPhongMaterial({
       map: surfaceMap,
       normalMap,
-      normalScale: new THREE.Vector2(0.28, 0.28),
+      normalScale: new Vector2(0.28, 0.28),
       specularMap,
-      specular: new THREE.Color("#31586f"),
+      specular: new Color("#31586f"),
       shininess: 8,
       color: "#ffffff",
     }),
     nightLights: createNightLightsMaterial(nightMap),
-    clouds: new THREE.MeshPhongMaterial({
+    clouds: new MeshPhongMaterial({
       alphaMap: cloudMap,
       color: "#ffffff",
       transparent: true,
       opacity: 0.12,
-      blending: THREE.NormalBlending,
+      blending: NormalBlending,
       depthWrite: false,
       shininess: 2,
     }),
@@ -147,12 +179,12 @@ const createEarthLayers = (renderer: THREE.WebGLRenderer): EarthLayers => {
 };
 
 const createAtmosphereMaterial = () =>
-  new THREE.ShaderMaterial({
+  new ShaderMaterial({
     transparent: true,
-    side: THREE.BackSide,
-    blending: THREE.AdditiveBlending,
+    side: BackSide,
+    blending: AdditiveBlending,
     depthWrite: false,
-    uniforms: { uColor: { value: new THREE.Color("#64bfff") } },
+    uniforms: { uColor: { value: new Color("#64bfff") } },
     vertexShader: `
       varying vec3 vNormal;
       void main() {
@@ -176,10 +208,10 @@ export const mountCosmicWorld = () => {
 
   if (!stage || !canvas) return;
 
-  let renderer: THREE.WebGLRenderer;
+  let renderer: WebGLRenderer;
 
   try {
-    renderer = new THREE.WebGLRenderer({
+    renderer = new WebGLRenderer({
       canvas,
       alpha: true,
       antialias: true,
@@ -191,15 +223,15 @@ export const mountCosmicWorld = () => {
   }
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 40);
-  const cameraTarget = new THREE.Vector3(0, 0, 5.45);
-  const lookTarget = new THREE.Vector3();
-  const world = new THREE.Group();
-  const earthGroup = new THREE.Group();
+  const scene = new Scene();
+  const camera = new PerspectiveCamera(34, 1, 0.1, 40);
+  const cameraTarget = new Vector3(0, 0, 5.45);
+  const lookTarget = new Vector3();
+  const world = new Group();
+  const earthGroup = new Group();
   const starfield = createStarfield();
-  const pointer = new THREE.Vector2();
-  const pointerTarget = new THREE.Vector2();
+  const pointer = new Vector2();
+  const pointerTarget = new Vector2();
   let scrollTarget = 0;
   let scrollProgress = 0;
   let animationFrame = 0;
@@ -218,8 +250,8 @@ export const mountCosmicWorld = () => {
   let cameraDistanceTarget = 5.45;
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-  renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.outputColorSpace = SRGBColorSpace;
+  renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.02;
   renderer.setClearColor(0x000000, 0);
   const earthLayers = createEarthLayers(renderer);
@@ -231,13 +263,13 @@ export const mountCosmicWorld = () => {
 
   const nebulaTexture = createRadialTexture("rgba(84,216,218,.22)", "rgba(25,99,142,.12)");
   if (nebulaTexture) {
-    const nebula = new THREE.Sprite(
-      new THREE.SpriteMaterial({
+    const nebula = new Sprite(
+      new SpriteMaterial({
         map: nebulaTexture,
         transparent: true,
         opacity: 0.18,
         depthWrite: false,
-        blending: THREE.AdditiveBlending,
+        blending: AdditiveBlending,
       }),
     );
     nebula.scale.set(7.2, 7.2, 1);
@@ -245,45 +277,45 @@ export const mountCosmicWorld = () => {
     world.add(nebula);
   }
 
-  const sunDirection = new THREE.Vector3(-0.65, 0.28, 0.72).normalize();
-  const keyLight = new THREE.DirectionalLight("#fff4df", 1.85);
+  const sunDirection = new Vector3(-0.65, 0.28, 0.72).normalize();
+  const keyLight = new DirectionalLight("#fff4df", 1.85);
   keyLight.position.copy(sunDirection).multiplyScalar(8);
   scene.add(keyLight);
   scene.add(keyLight.target);
-  world.add(new THREE.AmbientLight("#426780", 0.34));
-  const earthFill = new THREE.HemisphereLight("#8bc8e6", "#050b14", 0.28);
+  world.add(new AmbientLight("#426780", 0.34));
+  const earthFill = new HemisphereLight("#8bc8e6", "#050b14", 0.28);
   scene.add(earthFill);
-  const rimLight = new THREE.DirectionalLight("#5bb7ff", 0.42);
+  const rimLight = new DirectionalLight("#5bb7ff", 0.42);
   rimLight.position.set(3, -1, -5);
   scene.add(rimLight);
 
-  const planet = new THREE.Mesh(new THREE.SphereGeometry(1.42, 64, 64), earthLayers.surface);
+  const planet = new Mesh(new SphereGeometry(1.42, 64, 64), earthLayers.surface);
   earthGroup.add(planet);
 
-  const nightLights = new THREE.Mesh(new THREE.SphereGeometry(1.435, 48, 48), earthLayers.nightLights);
+  const nightLights = new Mesh(new SphereGeometry(1.435, 48, 48), earthLayers.nightLights);
   earthGroup.add(nightLights);
 
-  const clouds = new THREE.Mesh(new THREE.SphereGeometry(1.455, 48, 48), earthLayers.clouds);
+  const clouds = new Mesh(new SphereGeometry(1.455, 48, 48), earthLayers.clouds);
   earthGroup.add(clouds);
 
-  const atmosphere = new THREE.Mesh(new THREE.SphereGeometry(1.46, 48, 48), createAtmosphereMaterial());
+  const atmosphere = new Mesh(new SphereGeometry(1.46, 48, 48), createAtmosphereMaterial());
   earthGroup.add(atmosphere);
 
-  const outerAura = new THREE.Mesh(
-    new THREE.SphereGeometry(1.58, 48, 48),
-    new THREE.MeshBasicMaterial({
+  const outerAura = new Mesh(
+    new SphereGeometry(1.58, 48, 48),
+    new MeshBasicMaterial({
       color: "#4da9e8",
       transparent: true,
       opacity: 0.05,
       depthWrite: false,
-      side: THREE.BackSide,
-      blending: THREE.AdditiveBlending,
+      side: BackSide,
+      blending: AdditiveBlending,
     }),
   );
   earthGroup.add(outerAura);
 
   const earthBaseRotation = -0.62;
-  const earthAxialTilt = THREE.MathUtils.degToRad(-17);
+  const earthAxialTilt = MathUtils.degToRad(-17);
   earthLayers.nightLights.uniforms.uSunDirection.value.copy(sunDirection);
 
   const resize = () => {
