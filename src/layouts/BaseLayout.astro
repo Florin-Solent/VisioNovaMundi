@@ -31,7 +31,19 @@ const {
         <span class="brand-name">Visio Nova Mundi</span>
       </a>
 
-      <nav data-site-nav aria-label="Main navigation">
+      <button
+        class="mobile-nav-toggle"
+        data-mobile-nav-toggle
+        type="button"
+        aria-controls="primary-navigation"
+        aria-expanded="false"
+        aria-label="Open navigation menu"
+      >
+        <span class="mobile-nav-icon" aria-hidden="true"></span>
+        <span data-mobile-nav-label>Menu</span>
+      </button>
+
+      <nav id="primary-navigation" data-site-nav aria-label="Main navigation">
         <span class="nav-indicator" aria-hidden="true"></span>
         <a href="/">Home</a>
         <a href="/impact">Impact</a>
@@ -315,6 +327,49 @@ const {
     font-weight: 600;
   }
 
+  .mobile-nav-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-width: 88px;
+    min-height: 44px;
+    margin-left: auto;
+    padding: 0 14px;
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    border-radius: 999px;
+    color: #102741;
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0.92), rgba(232, 246, 255, 0.9), rgba(238, 255, 250, 0.92));
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.09);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .mobile-nav-icon {
+    position: relative;
+    display: inline-block;
+    width: 16px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+  }
+
+  .mobile-nav-icon::before,
+  .mobile-nav-icon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 16px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+  }
+
+  .mobile-nav-icon::before { top: -5px; }
+  .mobile-nav-icon::after { top: 5px; }
+
   /* Glass Cards */
   .card {
     background: var(--glass);
@@ -457,6 +512,22 @@ const {
     }
   }
 
+  @media (max-width: 700px) {
+    .nav {
+      position: relative;
+      z-index: 20;
+    }
+
+    .nav .container {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+      gap: 12px;
+      padding: 12px 16px;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -513,6 +584,73 @@ const {
     nav[data-site-nav] { flex-basis: 100%; justify-content: flex-start; flex-wrap: wrap; }
   }
   @media (max-width: 768px) { nav[data-site-nav] { flex-basis: auto; overflow: visible; } }
+  @media (max-width: 700px) {
+    header.nav {
+      position: relative;
+      z-index: 20;
+    }
+
+    .nav .container {
+      position: relative;
+    }
+
+    .nav .container > .mobile-nav-toggle { display: inline-flex; }
+
+    .mobile-nav-toggle[aria-expanded="true"] .mobile-nav-icon { background: transparent; }
+    .mobile-nav-toggle[aria-expanded="true"] .mobile-nav-icon::before { top: 0; transform: rotate(45deg); }
+    .mobile-nav-toggle[aria-expanded="true"] .mobile-nav-icon::after { top: 0; transform: rotate(-45deg); }
+
+    nav[data-site-nav] {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 16px;
+      right: 16px;
+      z-index: 21;
+      width: auto;
+      max-height: min(70vh, 34rem);
+      overflow-x: hidden;
+      overflow-y: auto;
+      flex-basis: auto;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 4px;
+      padding: 8px;
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 18px 44px rgba(15, 23, 42, 0.18);
+      -webkit-backdrop-filter: blur(18px) saturate(135%);
+      backdrop-filter: blur(18px) saturate(135%);
+    }
+
+    nav[data-site-nav][data-open="true"] { display: grid; }
+    nav[data-site-nav] > .nav-indicator { display: none; }
+
+    nav[data-site-nav] > a {
+      min-width: 0;
+      min-height: 44px;
+      justify-content: flex-start;
+      padding: 10px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.25;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    nav[data-site-nav] > a:hover,
+    nav[data-site-nav] > a:focus-visible,
+    nav[data-site-nav] > a[aria-current="page"] {
+      background: linear-gradient(120deg, rgba(37, 99, 235, 0.09), rgba(16, 185, 129, 0.09));
+    }
+
+    nav[data-site-nav] > a.nav-btn {
+      grid-column: 1 / -1;
+      justify-content: center;
+      margin-top: 4px;
+      border: 1px solid rgba(37, 99, 235, 0.18);
+    }
+  }
   .bg-glow {
     background-size: 125% 125%;
     animation: vnm-ambient-drift 18s ease-in-out infinite alternate;
@@ -713,6 +851,56 @@ const {
     });
 
     navigation.addEventListener("pointerleave", resetIndicator);
+  }
+
+  const mobileNavToggle = document.querySelector<HTMLButtonElement>("[data-mobile-nav-toggle]");
+  const mobileNavQuery = window.matchMedia("(max-width: 700px)");
+
+  if (navigation && mobileNavToggle) {
+    const mobileNavLabel = mobileNavToggle.querySelector<HTMLElement>("[data-mobile-nav-label]");
+    const header = mobileNavToggle.closest<HTMLElement>("header");
+    const isMenuOpen = () => mobileNavToggle.getAttribute("aria-expanded") === "true";
+
+    const setMenuOpen = (open: boolean, restoreFocus = false) => {
+      navigation.dataset.open = String(open);
+      mobileNavToggle.setAttribute("aria-expanded", String(open));
+      mobileNavToggle.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
+      if (mobileNavLabel) mobileNavLabel.textContent = open ? "Close" : "Menu";
+      if (restoreFocus) mobileNavToggle.focus();
+    };
+
+    mobileNavToggle.addEventListener("click", () => {
+      const wasOpen = isMenuOpen();
+      setMenuOpen(!wasOpen, wasOpen);
+    });
+
+    navigation.addEventListener("click", (event) => {
+      const target = event.target;
+      if (mobileNavQuery.matches && target instanceof Element && target.closest("a")) {
+        setMenuOpen(false);
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && mobileNavQuery.matches && isMenuOpen()) {
+        setMenuOpen(false, true);
+      }
+    });
+
+    document.addEventListener("pointerdown", (event) => {
+      const target = event.target;
+      if (!mobileNavQuery.matches || !isMenuOpen() || !(target instanceof Node)) return;
+      if (navigation.contains(target) || mobileNavToggle.contains(target)) return;
+      setMenuOpen(false, navigation.contains(document.activeElement));
+    });
+
+    header?.addEventListener("focusout", (event) => {
+      const nextTarget = event.relatedTarget;
+      if (!mobileNavQuery.matches || !isMenuOpen()) return;
+      if (!(nextTarget instanceof Node) || !header.contains(nextTarget)) setMenuOpen(false);
+    });
+
+    mobileNavQuery.addEventListener("change", () => setMenuOpen(false));
   }
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");

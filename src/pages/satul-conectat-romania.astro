@@ -1,0 +1,808 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const hubModules = [
+  {
+    number: "01",
+    name: "Digital access",
+    text: "A place to get online, use a shared terminal and receive practical help with digital information.",
+  },
+  {
+    number: "02",
+    name: "Tourism & local information",
+    text: "A digital gateway to local attractions, routes, accommodation, events, transport and businesses.",
+  },
+  {
+    number: "03",
+    name: "Public information",
+    text: "Guidance and signposting to relevant online public services, subject to the arrangements in place.",
+  },
+  {
+    number: "04",
+    name: "Community connection",
+    text: "A shared point for agreed activities and scheduled connections with participating villages.",
+  },
+  {
+    number: "05",
+    name: "Education",
+    text: "A possible setting for school-approved learning access and supplementary educational activities.",
+  },
+  {
+    number: "06",
+    name: "Video connection",
+    text: "Camera and audio equipment could support scheduled, controlled sessions between participating hubs.",
+  },
+  {
+    number: "07",
+    name: "Local services",
+    text: "Practical community services could be considered where local need, permissions and operating capacity support them.",
+  },
+  {
+    number: "08",
+    name: "Accessibility",
+    text: "Access needs should shape the space, equipment and support from the first stage of local planning.",
+  },
+];
+
+const pilotSteps = [
+  {
+    number: "01",
+    name: "Understand local need",
+    text: "Confirm community priorities, a suitable place, infrastructure, local roles and operating requirements.",
+  },
+  {
+    number: "02",
+    name: "Agree a small pilot",
+    text: "Define a modest service set, permissions, safeguarding, privacy, procurement and a realistic budget.",
+  },
+  {
+    number: "03",
+    name: "Measure and learn",
+    text: "Agree proportionate measures with local participants, using only the information needed to understand use and value.",
+  },
+  {
+    number: "04",
+    name: "Refine the model",
+    text: "Use evidence and community feedback to adjust the service, responsibilities and operating model.",
+  },
+  {
+    number: "05",
+    name: "Consider replication",
+    text: "Explore other localities only if results, local interest, agreements, eligibility and financing support a next step.",
+  },
+];
+
+const ukResponses = [
+  {
+    organisation: "Association for Science Education",
+    acronym: "ASE",
+    status: "Response received",
+    date: "1 October 2026",
+    detail:
+      "ASE outlined paid consultancy and strategic input that could cover pedagogy, curriculum alignment, SEND and accessibility, and focus groups or prototype testing. Any ASE Evaluated route would depend on its standards. ASE states that it does not endorse products; no consultancy or assessment has been agreed.",
+  },
+  {
+    organisation: "Royal Society of Chemistry",
+    acronym: "RSC",
+    status: "Response received",
+    date: "2 October 2026",
+    detail:
+      "RSC described the concept as interesting, explained its case-by-case permissions process for reproducing its materials, and said a formal proposal could be shared internally for consideration. RSC does not review or recommend third-party materials; no review, partnership or endorsement is in place.",
+  },
+  {
+    organisation: "Education Endowment Foundation",
+    acronym: "EEF",
+    status: "Guidance received",
+    date: "29 September 2026",
+    detail:
+      "EEF said the current early-stage project would be most suited to its innovation stage and shared resources on programme development, monitoring and evaluation. This was initial guidance: no funding, independent evaluation, partnership or endorsement was offered.",
+  },
+];
+
+const romaniaResponses = [
+  {
+    organisation: "Secretariatul General al Guvernului",
+    acronym: "SGG",
+    reference: "15D/14040/2026",
+    status: "Referred for consideration",
+    date: "1 October 2026",
+    detail:
+      "SGG forwarded the memorandum for competent consideration by the Ministry of Economy, Digitalization, Entrepreneurship and Tourism (Ministerul Economiei, Digitalizării, Antreprenoriatului și Turismului) and the Ministry of Development, Public Works and Administration (Ministerul Dezvoltării, Lucrărilor Publice și Administrației). Substantive ministry responses are pending.",
+  },
+  {
+    organisation: "Ministry of European Investments and Projects",
+    acronym: "MIPE",
+    reference: "G2026-126328",
+    status: "Formally redirected to MADR",
+    date: "2 October 2026",
+    detail:
+      "MIPE replied with general signposting to funding information and formally forwarded the rural-funding petition to the Ministry of Agriculture and Rural Development (MADR) for resolution. A substantive MADR response is pending; the correspondence is not a funding decision.",
+  },
+];
+---
+
+<BaseLayout
+  title="Satul Conectat România | Connected Village Romania"
+  description="Satul Conectat România is Visio Nova Mundi's proposed Connected Village model combining rural digital inclusion, community connection, tourism, educational access and locally adapted infrastructure."
+>
+  <section class="sc-hero" aria-labelledby="sc-title">
+    <div class="hero-copy">
+      <p class="eyebrow">Rural community infrastructure · Romania</p>
+      <p class="concept-badge"><span aria-hidden="true"></span>Concept / proposed pilot</p>
+      <h1 id="sc-title"><span>SATUL CONECTAT</span><span>ROMÂNIA</span></h1>
+      <p class="translation">Connected Village Romania</p>
+      <p class="hero-lead">
+        A proposed model for connecting rural communities through digital access, local information, education, tourism and human connection.
+      </p>
+      <p class="hero-context">
+        Developed by Visio Nova Mundi as a modular rural inclusion concept. It begins with local needs and a practical community hub—not a promised national rollout.
+      </p>
+      <div class="hero-actions">
+        <a class="sc-button primary" href="#concept">Explore the model <span aria-hidden="true">↓</span></a>
+        <a class="sc-button" href="#dialogue">Dialogue to date <span aria-hidden="true">↘</span></a>
+      </div>
+      <p class="hero-footnote">Proposed first location for discussion: Reci, Covasna County. No pilot agreement, site, funding or deployment is confirmed.</p>
+    </div>
+
+    <figure class="network-visual" aria-labelledby="network-caption">
+      <div class="visual-header"><span>VISIO NOVA MUNDI / FIELD CONCEPT</span><span>SC · 01</span></div>
+      <svg viewBox="70 130 560 330" role="img" aria-labelledby="network-title network-desc">
+        <title id="network-title">Connected Village concept network</title>
+        <desc id="network-desc">An original schematic of a rural community hub linking homes, local information and learning nodes. It represents a proposed model, not a live network.</desc>
+        <defs>
+          <linearGradient id="sc-route" x1="0" x2="1" y1="1" y2="0">
+            <stop offset="0" stop-color="#2563eb" />
+            <stop offset="1" stop-color="#0f9f86" />
+          </linearGradient>
+          <radialGradient id="sc-hub-glow">
+            <stop offset="0" stop-color="#49b9bd" stop-opacity=".3" />
+            <stop offset="1" stop-color="#49b9bd" stop-opacity="0" />
+          </radialGradient>
+        </defs>
+        <path class="contour contour-one" d="M25 330c79-40 132-31 199-8s127 18 190-15 144-46 261-11" />
+        <path class="contour contour-two" d="M6 373c88-39 154-31 218-7s117 16 179-10 163-39 292-4" />
+        <path class="contour contour-three" d="M36 414c76-23 139-17 204 1s118 17 174-4 159-24 258 2" />
+        <path class="road" d="M18 284c93 32 142 11 222 31s130 38 218 13 146-35 218-14" />
+        <path class="route route-one" d="M130 220c70 1 92 72 174 83" />
+        <path class="route route-two" d="M524 181c-78 24-98 76-220 122" />
+        <path class="route route-three" d="M534 337c-85 8-130-14-230-34" />
+        <path class="route route-four" d="M128 220c4 74 29 101 119 109" />
+        <circle class="route-dot dot-a" cx="224" cy="273" r="4" />
+        <circle class="route-dot dot-b" cx="430" cy="253" r="4" />
+        <circle class="route-dot dot-c" cx="411" cy="319" r="4" />
+        <circle class="home-node" cx="127" cy="220" r="32" />
+        <circle class="home-node" cx="525" cy="180" r="31" />
+        <circle class="home-node" cx="536" cy="337" r="31" />
+        <g class="home home-left" transform="translate(112 207)">
+          <path d="M0 13 15 0l15 13v20H0z" />
+          <path d="M11 33V20h8v13M4 15h22" />
+        </g>
+        <g class="home home-upper" transform="translate(510 168)">
+          <path d="M0 13 15 0l15 13v20H0z" />
+          <path d="M11 33V20h8v13M4 15h22" />
+        </g>
+        <g class="home home-lower" transform="translate(521 325)">
+          <path d="M0 13 15 0l15 13v20H0z" />
+          <path d="M11 33V20h8v13M4 15h22" />
+        </g>
+        <circle class="hub-halo" cx="350" cy="309" r="110" fill="url(#sc-hub-glow)" />
+        <circle class="hub-orbit" cx="350" cy="309" r="83" />
+        <circle class="hub-orbit orbit-inner" cx="350" cy="309" r="62" />
+        <circle class="hub-core" cx="350" cy="309" r="44" />
+        <path class="hub-building" d="M331 313v-21l19-15 19 15v34h-38z" />
+        <path class="hub-door" d="M346 326v-13h9v13" />
+        <circle class="module-point point-tourism" cx="350" cy="226" r="7" />
+        <circle class="module-point point-learning" cx="420" cy="309" r="7" />
+        <circle class="module-point point-info" cx="350" cy="392" r="7" />
+        <circle class="module-point point-community" cx="280" cy="309" r="7" />
+        <path class="signal signal-one" d="M325 254c15-15 36-15 51 0" />
+        <path class="signal signal-two" d="M316 245c20-21 50-21 70 0" />
+        <text class="svg-label label-village" x="127" y="274" text-anchor="middle">COMMUNITY</text>
+        <text class="svg-label label-hub" x="350" y="380" text-anchor="middle">PROPOSED HUB</text>
+        <text class="svg-label label-village label-right" x="530" y="390" text-anchor="middle">LOCAL CONNECTION</text>
+      </svg>
+      <figcaption id="network-caption"><span class="legend-dot"></span> Schematic concept · connections depend on future local agreements</figcaption>
+    </figure>
+
+    <div class="hero-flow" aria-label="Concept flow">
+      <span>Village</span><b aria-hidden="true">→</b><span>Hub</span><b aria-hidden="true">→</b><span>People &amp; services</span><b aria-hidden="true">→</b><span>Learning</span><b aria-hidden="true">→</b><span>Connected villages</span>
+    </div>
+  </section>
+
+  <section class="sc-section journey-section" aria-labelledby="journey-title">
+    <div class="section-heading">
+      <p class="eyebrow">The proposed journey</p>
+      <h2 id="journey-title">Pilot first. Validate locally. Expand responsibly.</h2>
+      <p>The idea grows in stages: begin with a place, build only what local partners can support, learn from use and consider wider reach only after evidence and agreement.</p>
+    </div>
+    <ol class="journey-track">
+      <li><span class="journey-number">01</span><h3>A village</h3><p>Understand local priorities and barriers.</p></li>
+      <li><span class="journey-number">02</span><h3>A hub</h3><p>Shape a modest, accessible shared space.</p></li>
+      <li><span class="journey-number">03</span><h3>People &amp; services</h3><p>Connect residents with useful information and support.</p></li>
+      <li><span class="journey-number">04</span><h3>Village to village</h3><p>Explore scheduled connections between participating places.</p></li>
+      <li><span class="journey-number">05</span><h3>Education</h3><p>Consider school-approved routes to shared learning.</p></li>
+      <li><span class="journey-number">06</span><h3>UK + Romania</h3><p>Proposed Phase 1 pilot exploration at equal level.</p></li>
+      <li class="future-step"><span class="journey-number">07</span><h3>Potential Europe</h3><p>A future possibility only after validation.</p></li>
+    </ol>
+  </section>
+
+  <section class="sc-section concept-section" id="concept" aria-labelledby="concept-title">
+    <div class="section-heading">
+      <p class="eyebrow">01 / The community hub</p>
+      <h2 id="concept-title">One local place. Several practical ways to connect.</h2>
+      <p>Satul Conectat România proposes a physical community hub with digital tools and locally relevant information. The first discussion is centred on using an existing public space and a small, clearly defined service set.</p>
+    </div>
+    <div class="hub-layout">
+      <div class="hub-core-panel">
+        <div class="hub-index">HUB MODEL / CONCEPT 01</div>
+        <div class="hub-orbit-art" aria-hidden="true">
+          <span class="orbit orbit-a"></span><span class="orbit orbit-b"></span><span class="orbit orbit-c"></span>
+          <span class="orbit-node node-a"></span><span class="orbit-node node-b"></span><span class="orbit-node node-c"></span><span class="orbit-node node-d"></span>
+          <div class="hub-core-symbol"><span class="core-roof"></span><span class="core-body"></span><span class="core-door"></span></div>
+        </div>
+        <h3>Connected Village Hub</h3>
+        <p>A proposed shared access point—not an assumed building, service or public-system integration.</p>
+        <div class="core-tags"><span>Local need</span><span>Agreed access</span><span>Clear operation</span></div>
+      </div>
+      <div class="hub-module-grid">
+        {hubModules.map((module) => (
+          <article class="hub-module">
+            <span class="module-number">{module.number}</span>
+            <div><h3>{module.name}</h3><p>{module.text}</p></div>
+          </article>
+        ))}
+      </div>
+    </div>
+    <div class="scope-note"><strong>Local configuration matters.</strong> The exact mix would depend on community needs, the chosen location, available infrastructure, permissions, budget, funding rules, procurement and an agreed operating plan. Not every hub would include every module.</div>
+    <div class="optional-strip"><span class="optional-label">Possible later options, if suitable</span><p>Vending, showers, laundry, EV charging or additional visitor facilities are not part of the minimum pilot by default. Each would need separate evidence of need, feasibility, permissions, costs and funding eligibility.</p></div>
+  </section>
+
+  <section class="sc-section connection-section" aria-labelledby="connection-title">
+    <div class="section-heading">
+      <p class="eyebrow">02 / Human connection</p>
+      <h2 id="connection-title">Distance should not mean disconnection.</h2>
+      <p>A distinctive proposal is a “Sat la Sat” connection: people in one participating village could arrange a controlled video session with relatives, friends or community members in another.</p>
+    </div>
+    <ol class="connection-flow" aria-label="Proposed village-to-village video session">
+      <li><span class="flow-icon home-icon" aria-hidden="true">⌂</span><strong>Village A</strong><small>Residents choose to take part</small></li>
+      <li><span class="flow-arrow" aria-hidden="true">→</span></li>
+      <li><span class="flow-icon hub-icon" aria-hidden="true">◎</span><strong>Connected hub</strong><small>Local access point</small></li>
+      <li><span class="flow-arrow" aria-hidden="true">→</span></li>
+      <li class="session-node"><span class="flow-icon video-icon" aria-hidden="true">↔</span><strong>Scheduled video</strong><small>Agreed time · controlled access</small></li>
+      <li><span class="flow-arrow" aria-hidden="true">→</span></li>
+      <li><span class="flow-icon hub-icon" aria-hidden="true">◎</span><strong>Connected hub</strong><small>Participating community</small></li>
+      <li><span class="flow-arrow" aria-hidden="true">→</span></li>
+      <li><span class="flow-icon home-icon" aria-hidden="true">⌂</span><strong>Village B</strong><small>People meet across distance</small></li>
+    </ol>
+    <p class="connection-boundary"><strong>This is a proposed service, not an operating network.</strong> Sessions would be scheduled and access-controlled. The concept does not propose a permanent public livestream or continuous video surveillance.</p>
+  </section>
+
+  <section class="sc-section learning-section" aria-labelledby="learning-title">
+    <div class="section-heading">
+      <p class="eyebrow">03 / Education &amp; continuity</p>
+      <h2 id="learning-title">Keep learning connected when attendance is interrupted.</h2>
+      <p>A possible school-connected model could help a pupil stay linked to learning during a temporary absence, with the school deciding what is appropriate and how it is recognised.</p>
+    </div>
+    <div class="learning-map" aria-label="Possible school-approved learning pathways">
+      <div class="learning-path">
+        <div class="learner-node"><span class="person-icon" aria-hidden="true">●</span><strong>Class at school</strong><small>Teacher-led, school-approved activity</small></div>
+        <span class="learning-link" aria-hidden="true">↔</span>
+        <div class="learning-hub"><span aria-hidden="true">◎</span><strong>Agreed digital access</strong><small>Class space or shared hub, if approved</small></div>
+      </div>
+      <div class="learning-path">
+        <div class="learner-node absent-node"><span class="person-icon" aria-hidden="true">●</span><strong>Pupil temporarily absent</strong><small>At home, in hospital or affected by travel or severe weather</small></div>
+        <span class="learning-link" aria-hidden="true">↔</span>
+        <div class="learning-hub"><span aria-hidden="true">◎</span><strong>Learning connection</strong><small>Subject to school agreement and available access</small></div>
+      </div>
+    </div>
+    <div class="learning-copy-grid">
+      <article class="learning-copy-card">
+        <span class="eyebrow">A possible classroom model</span>
+        <p>Participating schools could explore secure spaces for classes or year groups where pupils may study together, complete assignments, revise, communicate and take part in approved activities.</p>
+      </article>
+      <article class="learning-copy-card safeguard-card">
+        <span class="eyebrow">School-led safeguards</span>
+        <p>Any school connection requires school agreement, appropriate teacher participation, safeguarding, parental or guardian permissions where required, privacy controls and compliance with applicable Romanian education rules. Online activity does not automatically count as attendance or recognised school hours.</p>
+      </article>
+    </div>
+
+    <div class="clandestinus-panel">
+      <div class="education-sequence" aria-hidden="true">
+        <span>HUB</span><b>→</b><span>SCHOOL</span><b>→</b><span>CLANDESTINUS</span><b>→</b><span>LEARNING</span>
+      </div>
+      <div class="clandestinus-copy">
+        <p class="eyebrow">A separate educational programme</p>
+        <h3>Clandestinus Educational Game &amp; World Academy</h3>
+        <p>Being developed as a supplementary learning experience, the proposed programme brings together academic subjects, assignments, tests, examinations, progression, collaborative learning, mystery and investigation. A participating school would decide whether and how any resource is used.</p>
+        <p class="separation-note"><strong>Separate projects, separate decisions.</strong> Satul Conectat România is a rural community-infrastructure concept. Clandestinus is an independent creative and educational venture; any school use would require its own agreement and safeguards.</p>
+        <div class="clandestinus-actions">
+          <a class="sc-button primary" href="https://projectclandestinus.com/project/" target="_blank" rel="noopener noreferrer">Explore Clandestinus Educational Game <span aria-hidden="true">↗</span></a>
+          <span>Opens in a new tab</span>
+        </div>
+      </div>
+      <div class="device-note"><span class="device-symbol" aria-hidden="true">▭</span><p><strong>Devices are not promised.</strong> Laptops, connectivity or accessible learning technology could only be explored through an eligible, available and approved funding or partnership route.</p></div>
+    </div>
+  </section>
+
+  <section class="sc-section pilot-section" aria-labelledby="pilot-title">
+    <div class="section-heading">
+      <p class="eyebrow">04 / Proposed Romania pilot</p>
+      <h2 id="pilot-title">Start small enough to learn well.</h2>
+      <p>The first step is to test whether the model answers a real local need and can operate responsibly. A pilot would proceed only after the necessary local decisions, agreements, funding and safeguards.</p>
+    </div>
+    <div class="pilot-location">
+      <div class="location-mark" aria-hidden="true"><span>R</span><i></i></div>
+      <div><p class="location-kicker">First proposed location for discussion</p><h3>Reci · Covasna County</h3><p>Reci is identified in the concept materials as the first proposed pilot location—not a confirmed site or participating commune.</p></div>
+      <span class="location-status">PROPOSED</span>
+    </div>
+    <ol class="pilot-steps">
+      {pilotSteps.map((step) => (
+        <li class="pilot-step">
+          <span class="pilot-step-number">{step.number}</span>
+          <div><h3>{step.name}</h3><p>{step.text}</p></div>
+        </li>
+      ))}
+    </ol>
+    <p class="expansion-note">A later 3–5 locality exploration appears only as a possible future step, subject to evaluation, local agreements, eligibility and financing. The concept does not confirm a national network, a budget or an approved funding route.</p>
+  </section>
+
+  <section class="sc-section phase-section" aria-labelledby="phase-title">
+    <div class="section-heading">
+      <p class="eyebrow">05 / Shared Phase 1</p>
+      <h2 id="phase-title">United Kingdom + Romania, at the same level.</h2>
+      <p>Clandestinus Educational Game is being explored with a proposed pilot-first approach involving both countries. Neither side is presented as a live or approved pilot.</p>
+    </div>
+    <div class="phase-nodes">
+      <article class="phase-node" data-tilt-card>
+        <span class="phase-node-index">01</span>
+        <p class="phase-label">Phase 1 · proposed pilot exploration</p>
+        <h3>United Kingdom</h3>
+        <p>Explore potential educational use with appropriate schools and partners, subject to agreement, evidence, safeguarding and funding.</p>
+      </article>
+      <div class="phase-join" aria-hidden="true"><span></span><b>SHARED VALIDATION</b><span></span></div>
+      <article class="phase-node" data-tilt-card>
+        <span class="phase-node-index">02</span>
+        <p class="phase-label">Phase 1 · proposed pilot exploration</p>
+        <h3>Romania</h3>
+        <p>Explore education alongside the proposed rural hub model, subject to local participation, school decisions and the required approvals.</p>
+      </article>
+    </div>
+    <div class="validation-journey" aria-label="Proposed approach to expansion">
+      <span>Validate</span><b aria-hidden="true">→</b><span>Refine</span><b aria-hidden="true">→</b><span>Replicable model</span><b aria-hidden="true">→</b><span class="potential">Potential wider EU exploration</span>
+    </div>
+    <p class="phase-caveat">The Romanian rural hub could become one practical setting for later educational testing, but only with local agreement, school approval, safeguarding, privacy, funding and a defined operating model.</p>
+  </section>
+
+  <section class="sc-section dialogue-section" id="dialogue" aria-labelledby="dialogue-title">
+    <div class="section-heading">
+      <p class="eyebrow">06 / Institutional &amp; sector engagement</p>
+      <h2 id="dialogue-title">Dialogue to date</h2>
+      <p>The entries below are limited to documented replies. Outreach without a verified response is not shown as institutional engagement.</p>
+    </div>
+    <div class="response-region">
+      <div class="region-heading"><span class="region-marker uk-marker" aria-hidden="true"></span><h3>United Kingdom</h3><span class="region-count">3 documented replies</span></div>
+      <div class="response-grid">
+        {ukResponses.map((response) => (
+          <article class="response-card">
+            <div class="response-card-top"><span class="response-acronym">{response.acronym}</span><span class="response-status">{response.status}</span></div>
+            <h4>{response.organisation}</h4>
+            <p class="response-date">{response.date}</p>
+            <p>{response.detail}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+    <div class="response-region romania-region">
+      <div class="region-heading"><span class="region-marker ro-marker" aria-hidden="true"></span><h3>Romania</h3><span class="region-count">2 documented replies</span></div>
+      <div class="response-grid romanian-grid">
+        {romaniaResponses.map((response) => (
+          <article class="response-card">
+            <div class="response-card-top"><span class="response-acronym">{response.acronym}</span><span class="response-status referred-status">{response.status}</span></div>
+            <h4>{response.organisation}</h4>
+            <p class="response-reference">Reference {response.reference}</p>
+            <p class="response-date">{response.date}</p>
+            <p>{response.detail}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+    <p class="engagement-boundary">Correspondence, referral, guidance or expressions of interest do not constitute project approval, endorsement, procurement, funding or formal partnership. Formal participation would require separate agreements with the relevant organisations.</p>
+  </section>
+
+  <section class="sc-section outcomes-section" aria-labelledby="outcomes-title">
+    <div class="section-heading">
+      <p class="eyebrow">07 / What a pilot could test</p>
+      <h2 id="outcomes-title">Measure practical value before talking about scale.</h2>
+      <p>These are intended areas of learning, not results already achieved. Measures would be agreed with local partners and designed to collect only the information needed.</p>
+    </div>
+    <div class="outcome-grid">
+      <article><span>01</span><h3>Digital inclusion</h3><p>Can a shared access point help residents find information or use digital tools with greater confidence?</p></article>
+      <article><span>02</span><h3>Connection</h3><p>Do scheduled community links create useful contact without introducing unnecessary data collection?</p></article>
+      <article><span>03</span><h3>Education</h3><p>Can school-approved access support learning continuity for pupils who temporarily cannot attend?</p></article>
+      <article><span>04</span><h3>Local visibility</h3><p>Could accurate visitor information help residents, local businesses and nearby communities?</p></article>
+      <article><span>05</span><h3>Resilient access</h3><p>What access arrangements are useful during severe weather or disruption, and what is feasible to maintain?</p></article>
+      <article><span>06</span><h3>Operating model</h3><p>What staffing, permissions, maintenance and costs are needed for a reliable service?</p></article>
+    </div>
+    <p class="outcome-footnote">Any benefits—including reduced isolation, improved access or stronger tourism visibility—remain aims to test, not claims of proven impact.</p>
+  </section>
+
+  <section class="sc-section partnership-section" aria-labelledby="partners-title">
+    <div class="partnership-copy">
+      <p class="eyebrow">The next step</p>
+      <h2 id="partners-title">Build a pilot with the right local partners.</h2>
+      <p>Visio Nova Mundi welcomes exploratory dialogue with communes, schools, public institutions, universities, NGOs, rural development organisations, digital inclusion groups, connectivity and technology providers, tourism bodies and eligible programme partners.</p>
+      <p class="partnership-note">A workable proposal needs local need, clear responsibilities, a suitable place, proportionate safeguards, a feasible budget and the right approvals before delivery is considered.</p>
+      <div class="hero-actions">
+        <a class="sc-button primary" href="/contact">Discuss the project <span aria-hidden="true">↗</span></a>
+        <a class="sc-button" href="/projects">Back to projects <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+    <div class="partnership-mark" aria-hidden="true">
+      <div class="partnership-ring ring-one"></div><div class="partnership-ring ring-two"></div><div class="partnership-ring ring-three"></div>
+      <span class="partnership-core">VNM</span>
+      <span class="partnership-node node-north">LOCAL</span><span class="partnership-node node-east">SCHOOL</span><span class="partnership-node node-west">COMMUNITY</span><span class="partnership-node node-south">EVIDENCE</span>
+    </div>
+  </section>
+
+  <style>
+    .sc-hero,
+    .sc-section {
+      --sc-blue: #2563eb;
+      --sc-teal: #0f766e;
+      --sc-ink: #10233d;
+      --sc-muted: #475569;
+      --sc-line: rgba(37, 99, 235, 0.16);
+      color: var(--sc-ink);
+    }
+
+    .sc-hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1.03fr) minmax(0, 0.97fr);
+      gap: clamp(22px, 3.2vw, 42px);
+      align-items: center;
+      isolation: isolate;
+      overflow: hidden;
+      min-height: 610px;
+      padding: clamp(28px, 5vw, 58px);
+      border: 1px solid rgba(37, 99, 235, 0.17);
+      border-radius: 30px;
+      background:
+        radial-gradient(ellipse at 83% 14%, rgba(16, 185, 129, 0.18), transparent 34%),
+        radial-gradient(ellipse at 34% 100%, rgba(37, 99, 235, 0.13), transparent 44%),
+        linear-gradient(132deg, rgba(255, 255, 255, 0.93), rgba(239, 248, 255, 0.86) 52%, rgba(238, 255, 249, 0.91));
+      box-shadow: 0 20px 70px rgba(37, 99, 235, 0.09);
+    }
+
+    .sc-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.33;
+      background-image: linear-gradient(rgba(37, 99, 235, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(37, 99, 235, 0.06) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: linear-gradient(90deg, transparent 10%, #000 100%);
+      animation: grid-breathe 14s ease-in-out infinite alternate;
+    }
+
+    .hero-copy { position: relative; z-index: 2; max-width: 590px; }
+    .eyebrow { margin: 0 0 11px; color: var(--sc-teal, #0f766e); text-transform: uppercase; letter-spacing: 0.12em; font-size: 12px; font-weight: 850; }
+    .concept-badge { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 18px; padding: 7px 11px; border: 1px solid rgba(15, 118, 110, 0.23); border-radius: 999px; background: rgba(16, 185, 129, 0.08); color: #0f625c; font-size: 12px; font-weight: 850; letter-spacing: 0.045em; text-transform: uppercase; }
+    .concept-badge span { width: 8px; height: 8px; border-radius: 50%; background: #0f9f86; box-shadow: 0 0 0 4px rgba(15, 159, 134, 0.11); }
+    .sc-hero h1 { margin: 0; color: #102741; font-size: clamp(42px, 5.2vw, 60px); font-weight: 850; letter-spacing: -0.075em; line-height: 0.97; }
+    .sc-hero h1 span { display: block; overflow: hidden; animation: title-rise 0.88s cubic-bezier(0.18, 0.75, 0.24, 1) both; }
+    .sc-hero h1 span:first-child { white-space: nowrap; }
+    .sc-hero h1 span + span { animation-delay: 0.13s; color: #165d8e; }
+    .translation { margin: 13px 0 18px; color: #0f766e; font-size: clamp(15px, 2vw, 19px); font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+    .hero-lead { max-width: 58ch; margin: 0 0 10px; color: #203b56; font-size: clamp(18px, 2.3vw, 21px); line-height: 1.55; }
+    .hero-context { max-width: 61ch; margin: 0; color: var(--sc-muted); line-height: 1.75; }
+    .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 21px; }
+    .sc-button { display: inline-flex; min-height: 46px; align-items: center; justify-content: center; gap: 11px; padding: 11px 15px; border: 1px solid rgba(37, 99, 235, 0.19); border-radius: 14px; background: rgba(255, 255, 255, 0.74); color: #102741; font-size: 14px; font-weight: 800; text-decoration: none; box-shadow: 0 7px 20px rgba(15, 23, 42, 0.045); transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease; }
+    .sc-button:hover { transform: translateY(-2px); border-color: rgba(15, 118, 110, 0.38); box-shadow: 0 12px 24px rgba(37, 99, 235, 0.11); text-decoration: none; }
+    .sc-button.primary { border-color: rgba(37, 99, 235, 0.25); background: linear-gradient(120deg, rgba(37, 99, 235, 0.12), rgba(16, 185, 129, 0.13)); }
+    .hero-footnote { margin: 15px 0 0; color: #596a7f; font-size: 13px; line-height: 1.65; }
+
+    .network-visual { position: relative; align-self: stretch; display: flex; min-width: 0; flex-direction: column; justify-content: center; margin: 0; padding: 21px 18px 15px; border: 1px solid rgba(37, 99, 235, 0.16); border-radius: 25px; background: linear-gradient(145deg, rgba(255, 255, 255, 0.76), rgba(234, 249, 249, 0.54)); box-shadow: inset 0 1px rgba(255, 255, 255, 0.85), 0 16px 50px rgba(25, 94, 130, 0.1); }
+    .network-visual::before { content: ""; position: absolute; inset: 9% 12%; border-radius: 50%; background: radial-gradient(circle, rgba(53, 154, 176, 0.13), transparent 67%); pointer-events: none; }
+    .visual-header { position: absolute; top: 17px; right: 19px; left: 19px; display: flex; justify-content: space-between; gap: 12px; color: #53728b; font-size: 10px; font-weight: 850; letter-spacing: 0.1em; }
+    .network-visual svg { position: relative; z-index: 1; display: block; width: 100%; max-height: 420px; overflow: visible; }
+    .network-visual figcaption { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; color: #577086; font-size: 12px; line-height: 1.45; }
+    .legend-dot { width: 8px; height: 8px; flex: 0 0 8px; border-radius: 50%; background: #0f9f86; box-shadow: 0 0 0 4px rgba(15, 159, 134, 0.09); }
+    .contour { fill: none; stroke: rgba(37, 99, 235, 0.1); stroke-width: 1.3; }
+    .road { fill: none; stroke: rgba(94, 133, 160, 0.2); stroke-width: 2; stroke-dasharray: 2 7; }
+    .route { fill: none; stroke: url(#sc-route); stroke-width: 2.4; stroke-dasharray: 5 8; stroke-linecap: round; animation: route-drift 8s linear infinite; }
+    .route-two { animation-delay: -2s; }.route-three { animation-delay: -4s; }.route-four { animation-delay: -6s; }
+    .route-dot { fill: #0f9f86; filter: drop-shadow(0 0 6px rgba(15, 159, 134, 0.5)); animation: node-pulse 2.8s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+    .dot-b { animation-delay: -0.9s; }.dot-c { animation-delay: -1.8s; }
+    .home-node { fill: rgba(255, 255, 255, 0.84); stroke: rgba(37, 99, 235, 0.4); stroke-width: 1.4; }
+    .home path { fill: rgba(220, 239, 247, 0.96); stroke: #286d99; stroke-width: 1.6; stroke-linejoin: round; }
+    .home path + path { fill: none; stroke: #0f766e; stroke-linecap: round; }
+    .hub-halo { opacity: 0.85; }
+    .hub-orbit { fill: none; stroke: rgba(37, 99, 235, 0.24); stroke-width: 1.2; stroke-dasharray: 3 7; transform-origin: 350px 309px; animation: orbit-turn 45s linear infinite; }
+    .orbit-inner { stroke: rgba(15, 118, 110, 0.2); stroke-dasharray: 2 6; animation-direction: reverse; animation-duration: 31s; }
+    .hub-core { fill: rgba(255, 255, 255, 0.94); stroke: rgba(15, 118, 110, 0.52); stroke-width: 1.6; filter: drop-shadow(0 7px 13px rgba(37, 99, 235, 0.16)); }
+    .hub-building { fill: rgba(221, 241, 246, 0.95); stroke: #176e87; stroke-width: 1.7; stroke-linejoin: round; }
+    .hub-door { fill: none; stroke: #0f766e; stroke-width: 1.7; stroke-linecap: round; }
+    .module-point { fill: #2563eb; stroke: white; stroke-width: 2; animation: node-pulse 3.2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+    .point-learning { fill: #0f9f86; animation-delay: -1s; }.point-info { fill: #7c83ce; animation-delay: -2s; }.point-community { animation-delay: -0.6s; }
+    .signal { fill: none; stroke: #0f766e; stroke-width: 2; stroke-linecap: round; opacity: 0.55; transform-origin: center; animation: signal-breathe 3s ease-in-out infinite; }
+    .signal-two { animation-delay: -1.4s; opacity: 0.27; }
+    .svg-label { fill: #4e7188; font-size: 13px; font-weight: 850; letter-spacing: 1.4px; }
+    .hero-flow { position: absolute; right: 28px; bottom: 15px; left: 28px; display: flex; align-items: center; justify-content: center; gap: clamp(8px, 1.7vw, 18px); color: #476178; font-size: 11px; font-weight: 850; letter-spacing: 0.07em; text-transform: uppercase; }
+    .hero-flow b { color: #0f9f86; font-size: 15px; animation: arrow-nudge 2.2s ease-in-out infinite; }
+    .hero-flow b:nth-of-type(2) { animation-delay: -0.35s; }.hero-flow b:nth-of-type(3) { animation-delay: -0.7s; }.hero-flow b:nth-of-type(4) { animation-delay: -1.05s; }
+
+    .sc-section { margin-top: clamp(52px, 7vw, 82px); }
+    .section-heading { max-width: 860px; margin-bottom: 24px; }
+    .section-heading h2 { margin: 0 0 11px; color: #102741; font-size: clamp(30px, 4vw, 46px); line-height: 1.06; letter-spacing: -0.055em; }
+    .section-heading > p:not(.eyebrow) { max-width: 82ch; margin: 0; color: #475569; font-size: 16px; line-height: 1.78; }
+
+    .journey-section { padding: clamp(24px, 4vw, 38px); border: 1px solid rgba(37, 99, 235, 0.15); border-radius: 26px; background: linear-gradient(140deg, rgba(255, 255, 255, 0.75), rgba(231, 247, 246, 0.52)); }
+    .journey-track { position: relative; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 11px; margin: 28px 0 0; padding: 0; list-style: none; }
+    .journey-track::before { content: ""; position: absolute; top: 19px; right: 6%; left: 6%; height: 1px; background: linear-gradient(90deg, #2563eb, #0f9f86 78%, rgba(15, 118, 110, 0.18)); }
+    .journey-track li { position: relative; z-index: 1; min-width: 0; padding-top: 48px; }
+    .journey-number { position: absolute; top: 0; left: 0; display: grid; width: 39px; height: 39px; place-items: center; border: 1px solid rgba(37, 99, 235, 0.22); border-radius: 50%; background: #f8fcff; color: #1e5d81; font-size: 11px; font-weight: 850; box-shadow: 0 0 0 6px rgba(242, 250, 251, 0.75); }
+    .journey-track h3 { margin: 0 0 6px; color: #143653; font-size: 15px; line-height: 1.25; }
+    .journey-track p { margin: 0; color: #5b6f81; font-size: 13px; line-height: 1.58; }
+    .future-step .journey-number { border-color: rgba(15, 118, 110, 0.18); color: #557a7d; background: rgba(239, 250, 248, 0.9); }
+
+    .hub-layout { display: grid; grid-template-columns: minmax(245px, 0.72fr) minmax(0, 1.28fr); gap: 17px; align-items: stretch; }
+    .hub-core-panel { position: relative; display: flex; min-height: 425px; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding: 24px; border: 1px solid rgba(37, 99, 235, 0.2); border-radius: 24px; background: radial-gradient(circle at 50% 37%, rgba(16, 185, 129, 0.18), transparent 42%), linear-gradient(140deg, rgba(247, 252, 255, 0.93), rgba(232, 248, 247, 0.9)); text-align: center; }
+    .hub-index { position: absolute; top: 18px; left: 20px; color: #648195; font-size: 10px; font-weight: 850; letter-spacing: 0.12em; }
+    .hub-orbit-art { position: relative; display: grid; width: 225px; height: 225px; place-items: center; margin: 0 auto 8px; }
+    .orbit { position: absolute; border: 1px dashed rgba(37, 99, 235, 0.22); border-radius: 50%; }
+    .orbit-a { inset: 12px; animation: orbit-turn 46s linear infinite; }
+    .orbit-b { inset: 34px; border-color: rgba(15, 118, 110, 0.25); animation: orbit-turn 36s linear infinite reverse; }
+    .orbit-c { inset: 59px; border-style: solid; border-color: rgba(37, 99, 235, 0.12); }
+    .orbit-node { position: absolute; width: 10px; height: 10px; border: 2px solid #fff; border-radius: 50%; background: #0f9f86; box-shadow: 0 0 0 4px rgba(15, 159, 134, 0.11); animation: node-pulse 3.5s ease-in-out infinite; }
+    .node-a { top: 28px; left: 49px; }.node-b { top: 45px; right: 31px; background: #2563eb; animation-delay: -1s; }.node-c { right: 47px; bottom: 30px; background: #6479c9; animation-delay: -2s; }.node-d { bottom: 44px; left: 28px; animation-delay: -2.7s; }
+    .hub-core-symbol { position: relative; z-index: 2; display: grid; width: 92px; height: 92px; place-items: center; border: 1px solid rgba(15, 118, 110, 0.37); border-radius: 50%; background: rgba(255, 255, 255, 0.9); box-shadow: 0 12px 30px rgba(37, 99, 235, 0.1); }
+    .core-roof { position: absolute; top: 25px; width: 35px; height: 25px; border-top: 3px solid #176e87; border-left: 3px solid #176e87; transform: rotate(45deg) scale(0.72); border-radius: 2px; }
+    .core-body { position: absolute; top: 38px; width: 35px; height: 27px; border: 2px solid #176e87; border-top: 0; border-radius: 1px 1px 4px 4px; background: rgba(37, 99, 235, 0.08); }
+    .core-door { position: absolute; top: 49px; width: 8px; height: 16px; border: 1.5px solid #0f766e; border-bottom: 0; background: white; }
+    .hub-core-panel h3 { margin: 5px 0 7px; color: #173b55; font-size: 20px; letter-spacing: -0.035em; }
+    .hub-core-panel > p { max-width: 33ch; margin: 0; color: #597184; font-size: 14px; line-height: 1.65; }
+    .core-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 16px; }
+    .core-tags span { padding: 5px 8px; border: 1px solid rgba(37, 99, 235, 0.13); border-radius: 999px; background: rgba(255, 255, 255, 0.65); color: #49687d; font-size: 11px; font-weight: 750; }
+    .hub-module-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; }
+    .hub-module { display: flex; gap: 11px; min-width: 0; padding: 15px; border: 1px solid rgba(37, 99, 235, 0.13); border-radius: 17px; background: rgba(255, 255, 255, 0.78); box-shadow: 0 8px 22px rgba(15, 23, 42, 0.035); }
+    .module-number { display: grid; width: 29px; height: 29px; flex: 0 0 29px; place-items: center; border: 1px solid rgba(15, 118, 110, 0.17); border-radius: 9px; background: rgba(16, 185, 129, 0.075); color: #0f766e; font-size: 10px; font-weight: 850; }
+    .hub-module h3 { margin: 1px 0 5px; color: #183a55; font-size: 15px; letter-spacing: -0.015em; }
+    .hub-module p { margin: 0; color: #566c7e; font-size: 13px; line-height: 1.58; }
+    .scope-note { margin-top: 15px; padding: 14px 17px; border-left: 3px solid #0f9f86; border-radius: 0 14px 14px 0; background: rgba(16, 185, 129, 0.07); color: #435b6d; font-size: 14px; line-height: 1.68; }
+    .scope-note strong { color: #173b55; }
+    .optional-strip { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 14px; align-items: start; margin-top: 10px; padding: 13px 16px; border: 1px dashed rgba(71, 85, 105, 0.25); border-radius: 14px; color: #5b6b79; }
+    .optional-strip p { margin: 0; font-size: 13px; line-height: 1.65; }
+    .optional-label { color: #4c5d6a; font-size: 11px; font-weight: 850; letter-spacing: 0.09em; text-transform: uppercase; }
+
+    .connection-section { padding: clamp(25px, 4vw, 40px); border: 1px solid rgba(15, 118, 110, 0.15); border-radius: 26px; background: linear-gradient(135deg, rgba(238, 250, 248, 0.78), rgba(247, 251, 255, 0.9)); }
+    .connection-flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1.2fr auto 1fr auto 1fr; gap: 8px; align-items: center; margin: 26px 0 18px; padding: 0; list-style: none; }
+    .connection-flow li:not(:nth-child(even)) { display: flex; min-height: 142px; flex-direction: column; align-items: center; justify-content: center; padding: 15px 10px; border: 1px solid rgba(37, 99, 235, 0.15); border-radius: 18px; background: rgba(255, 255, 255, 0.84); text-align: center; }
+    .connection-flow li.session-node { border-color: rgba(15, 118, 110, 0.32); background: linear-gradient(140deg, rgba(37, 99, 235, 0.07), rgba(16, 185, 129, 0.1)); }
+    .flow-icon { display: grid; width: 38px; height: 38px; place-items: center; margin-bottom: 9px; border: 1px solid rgba(37, 99, 235, 0.17); border-radius: 50%; background: rgba(239, 248, 255, 0.85); color: #21658a; font-size: 24px; line-height: 1; }
+    .video-icon { color: #0f766e; }
+    .connection-flow strong { color: #193d58; font-size: 14px; }
+    .connection-flow small { margin-top: 5px; color: #63798b; font-size: 12px; line-height: 1.45; }
+    .flow-arrow { color: #0f9f86; font-size: 20px; font-weight: 700; animation: arrow-nudge 2.2s ease-in-out infinite; }
+    .connection-boundary { margin: 0; padding: 15px 17px; border-radius: 14px; background: rgba(255, 255, 255, 0.7); color: #4b5f70; font-size: 14px; line-height: 1.7; }
+    .connection-boundary strong { color: #163b54; }
+
+    .learning-map { display: grid; gap: 12px; }
+    .learning-path { display: grid; grid-template-columns: minmax(0, 1fr) 54px minmax(0, 1fr); gap: 12px; align-items: center; }
+    .learner-node, .learning-hub { display: flex; min-height: 95px; align-items: center; gap: 13px; padding: 16px 18px; border: 1px solid rgba(37, 99, 235, 0.15); border-radius: 17px; background: rgba(255, 255, 255, 0.78); }
+    .learning-hub { border-color: rgba(15, 118, 110, 0.19); background: linear-gradient(120deg, rgba(37, 99, 235, 0.05), rgba(16, 185, 129, 0.075)); }
+    .person-icon { display: grid; width: 36px; height: 36px; flex: 0 0 36px; place-items: center; border-radius: 50%; background: rgba(37, 99, 235, 0.1); color: #2563eb; font-size: 21px; }
+    .absent-node .person-icon { background: rgba(15, 118, 110, 0.1); color: #0f766e; }
+    .learning-hub > span { display: grid; width: 36px; height: 36px; flex: 0 0 36px; place-items: center; border: 1px solid rgba(15, 118, 110, 0.21); border-radius: 50%; color: #0f766e; font-size: 21px; }
+    .learner-node strong, .learning-hub strong { display: block; color: #193d58; font-size: 15px; }
+    .learner-node small, .learning-hub small { display: block; margin-top: 4px; color: #617586; font-size: 13px; line-height: 1.5; }
+    .learning-link { color: #0f9f86; font-size: 25px; text-align: center; }
+    .learning-copy-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 13px; }
+    .learning-copy-card { padding: 17px 18px; border: 1px solid rgba(37, 99, 235, 0.14); border-radius: 17px; background: rgba(255, 255, 255, 0.75); }
+    .learning-copy-card .eyebrow { margin-bottom: 8px; font-size: 10px; }
+    .learning-copy-card p:last-child { margin: 0; color: #4c6071; font-size: 14px; line-height: 1.72; }
+    .safeguard-card { border-color: rgba(15, 118, 110, 0.2); background: rgba(239, 250, 248, 0.76); }
+    .clandestinus-panel { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 0.34fr); gap: 20px 30px; overflow: hidden; margin-top: 20px; padding: clamp(22px, 4vw, 34px); border: 1px solid rgba(37, 99, 235, 0.2); border-radius: 25px; background: radial-gradient(ellipse at 91% 12%, rgba(16, 185, 129, 0.16), transparent 36%), linear-gradient(135deg, rgba(243, 249, 255, 0.94), rgba(236, 249, 246, 0.91)); }
+    .clandestinus-panel::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.26; background-image: radial-gradient(rgba(37, 99, 235, 0.38) 0.7px, transparent 0.7px); background-size: 20px 20px; mask-image: linear-gradient(90deg, transparent 40%, #000); }
+    .education-sequence { position: relative; z-index: 1; display: flex; grid-column: 1 / -1; flex-wrap: wrap; align-items: center; gap: 8px 12px; color: #45647a; font-size: 10px; font-weight: 850; letter-spacing: 0.11em; }
+    .education-sequence span { padding: 7px 9px; border: 1px solid rgba(37, 99, 235, 0.14); border-radius: 8px; background: rgba(255, 255, 255, 0.65); }
+    .education-sequence b { color: #0f9f86; }
+    .clandestinus-copy { position: relative; z-index: 1; }
+    .clandestinus-copy h3 { max-width: 23ch; margin: 0 0 10px; color: #142f4b; font-size: clamp(23px, 3vw, 31px); line-height: 1.1; letter-spacing: -0.045em; }
+    .clandestinus-copy > p:not(.eyebrow) { max-width: 76ch; margin: 0 0 10px; color: #4a5f72; font-size: 14px; line-height: 1.75; }
+    .separation-note { padding: 11px 13px; border-left: 2px solid #0f766e; background: rgba(255, 255, 255, 0.61); }
+    .separation-note strong { color: #183d57; }
+    .clandestinus-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .clandestinus-actions > span { color: #687b8a; font-size: 12px; }
+    .device-note { position: relative; z-index: 1; align-self: center; padding: 17px; border: 1px solid rgba(15, 118, 110, 0.19); border-radius: 17px; background: rgba(255, 255, 255, 0.69); }
+    .device-symbol { display: grid; width: 40px; height: 40px; place-items: center; margin-bottom: 8px; border-radius: 12px; background: rgba(37, 99, 235, 0.08); color: #21658a; font-size: 25px; }
+    .device-note p { margin: 0; color: #54697b; font-size: 13px; line-height: 1.65; }
+    .device-note strong { color: #173b55; }
+
+    .pilot-section { padding: clamp(25px, 4vw, 40px); border: 1px solid rgba(37, 99, 235, 0.15); border-radius: 26px; background: linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(235, 247, 248, 0.76)); }
+    .pilot-location { display: grid; grid-template-columns: 46px minmax(0, 1fr) auto; gap: 14px; align-items: center; margin: 22px 0 23px; padding: 17px 18px; border: 1px solid rgba(37, 99, 235, 0.19); border-radius: 18px; background: rgba(255, 255, 255, 0.79); }
+    .location-mark { position: relative; display: grid; width: 42px; height: 42px; place-items: center; border: 1px solid rgba(37, 99, 235, 0.19); border-radius: 50% 50% 50% 4px; background: rgba(37, 99, 235, 0.08); transform: rotate(-45deg); }
+    .location-mark span { color: #1e5d81; font-size: 15px; font-weight: 900; transform: rotate(45deg); }
+    .location-mark i { position: absolute; right: -8px; bottom: -5px; width: 11px; height: 11px; border: 2px solid white; border-radius: 50%; background: #0f9f86; }
+    .location-kicker { margin: 0 0 3px; color: #0f766e; font-size: 10px; font-weight: 850; letter-spacing: 0.1em; text-transform: uppercase; }
+    .pilot-location h3 { margin: 0 0 4px; color: #173b55; font-size: 19px; }
+    .pilot-location p:last-child { margin: 0; color: #596e7f; font-size: 13px; line-height: 1.55; }
+    .location-status { padding: 7px 9px; border: 1px solid rgba(217, 119, 6, 0.22); border-radius: 999px; background: rgba(245, 158, 11, 0.08); color: #8a5809; font-size: 10px; font-weight: 900; letter-spacing: 0.1em; }
+    .pilot-steps { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .pilot-steps::before { content: ""; position: absolute; top: 22px; right: 7%; left: 7%; height: 1px; background: linear-gradient(90deg, #2563eb, #0f9f86); opacity: 0.35; }
+    .pilot-step { position: relative; z-index: 1; min-width: 0; padding: 55px 14px 14px; border: 1px solid rgba(37, 99, 235, 0.13); border-radius: 16px; background: rgba(255, 255, 255, 0.77); }
+    .pilot-step-number { position: absolute; top: 6px; left: 12px; display: grid; width: 33px; height: 33px; place-items: center; border: 1px solid rgba(15, 118, 110, 0.25); border-radius: 50%; background: #f3fbfa; color: #0f766e; font-size: 10px; font-weight: 900; box-shadow: 0 0 0 5px rgba(247, 252, 252, 0.9); }
+    .pilot-step h3 { margin: 0 0 7px; color: #183b57; font-size: 15px; line-height: 1.32; }
+    .pilot-step p { margin: 0; color: #5b7080; font-size: 13px; line-height: 1.62; }
+    .expansion-note { margin: 13px 0 0; padding: 13px 15px; border-left: 3px solid #879cb1; border-radius: 0 13px 13px 0; background: rgba(226, 235, 242, 0.43); color: #556a7b; font-size: 13px; line-height: 1.65; }
+
+    .phase-section { padding: clamp(25px, 4vw, 40px); border: 1px solid rgba(37, 99, 235, 0.15); border-radius: 26px; background: radial-gradient(ellipse at 50% 50%, rgba(37, 99, 235, 0.07), transparent 54%), rgba(255, 255, 255, 0.63); }
+    .phase-nodes { display: grid; grid-template-columns: minmax(0, 1fr) minmax(100px, 0.22fr) minmax(0, 1fr); gap: 12px; align-items: center; }
+    .phase-node { position: relative; min-height: 215px; padding: 22px; border: 1px solid rgba(37, 99, 235, 0.23); border-radius: 22px; background: linear-gradient(140deg, rgba(255, 255, 255, 0.95), rgba(239, 247, 255, 0.83)); box-shadow: 0 11px 28px rgba(37, 99, 235, 0.07); }
+    .phase-node:last-child { border-color: rgba(15, 118, 110, 0.23); background: linear-gradient(140deg, rgba(255, 255, 255, 0.95), rgba(237, 250, 246, 0.84)); }
+    .phase-node-index { position: absolute; top: 18px; right: 19px; display: grid; width: 34px; height: 34px; place-items: center; border: 1px solid rgba(37, 99, 235, 0.16); border-radius: 50%; color: #3d7093; font-size: 11px; font-weight: 850; }
+    .phase-label { margin: 3px 45px 14px 0; color: #0f766e; font-size: 10px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
+    .phase-node h3 { margin: 0 0 11px; color: #143c58; font-size: clamp(24px, 3.5vw, 36px); letter-spacing: -0.045em; }
+    .phase-node > p:last-child { max-width: 44ch; margin: 0; color: #536b7d; font-size: 14px; line-height: 1.72; }
+    .phase-join { display: flex; flex-direction: column; align-items: center; gap: 8px; color: #477185; font-size: 9px; font-weight: 900; letter-spacing: 0.1em; text-align: center; }
+    .phase-join span { width: 100%; height: 1px; background: linear-gradient(90deg, rgba(37, 99, 235, 0.6), rgba(15, 159, 134, 0.6)); }
+    .validation-journey { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 9px 15px; margin-top: 20px; padding: 15px; border: 1px solid rgba(15, 118, 110, 0.16); border-radius: 16px; background: rgba(239, 250, 248, 0.7); color: #365e71; font-size: 13px; font-weight: 850; }
+    .validation-journey b { color: #0f9f86; font-size: 16px; }
+    .validation-journey .potential { color: #647588; }
+    .phase-caveat { margin: 12px 0 0; color: #5a6f80; font-size: 13px; line-height: 1.65; text-align: center; }
+
+    .dialogue-section { padding: clamp(25px, 4vw, 40px); border: 1px solid rgba(37, 99, 235, 0.15); border-radius: 26px; background: linear-gradient(140deg, rgba(245, 250, 255, 0.9), rgba(244, 251, 248, 0.85)); }
+    .response-region + .response-region { margin-top: 25px; }
+    .region-heading { display: flex; align-items: center; gap: 9px; margin-bottom: 13px; }
+    .region-heading h3 { margin: 0; color: #153a56; font-size: 19px; letter-spacing: -0.025em; }
+    .region-marker { width: 10px; height: 10px; border-radius: 50%; background: #2563eb; box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.09); }
+    .ro-marker { background: #0f9f86; box-shadow: 0 0 0 5px rgba(15, 159, 134, 0.09); }
+    .region-count { margin-left: auto; color: #647789; font-size: 12px; font-weight: 750; }
+    .response-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .romanian-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .response-card { min-width: 0; padding: 17px; border: 1px solid rgba(37, 99, 235, 0.15); border-radius: 17px; background: rgba(255, 255, 255, 0.86); box-shadow: 0 8px 22px rgba(15, 23, 42, 0.035); }
+    .romanian-grid .response-card { border-color: rgba(15, 118, 110, 0.17); }
+    .response-card-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+    .response-acronym { display: grid; min-width: 39px; height: 34px; place-items: center; padding: 0 8px; border: 1px solid rgba(37, 99, 235, 0.16); border-radius: 10px; background: rgba(37, 99, 235, 0.06); color: #1e5c83; font-size: 12px; font-weight: 900; letter-spacing: 0.05em; }
+    .romanian-grid .response-acronym { border-color: rgba(15, 118, 110, 0.16); background: rgba(16, 185, 129, 0.07); color: #0f6d66; }
+    .response-status { padding: 6px 8px; border: 1px solid rgba(37, 99, 235, 0.17); border-radius: 999px; background: rgba(37, 99, 235, 0.06); color: #375f7a; font-size: 10px; font-weight: 850; line-height: 1.3; }
+    .referred-status { border-color: rgba(15, 118, 110, 0.19); background: rgba(16, 185, 129, 0.07); color: #32685f; }
+    .response-card h4 { margin: 0 0 4px; color: #183a54; font-size: 15px; line-height: 1.38; }
+    .response-date, .response-reference { margin: 0 0 9px; color: #64798a; font-size: 11px; font-weight: 750; letter-spacing: 0.02em; }
+    .response-reference { margin-bottom: 4px; color: #0f766e; }
+    .response-card > p:last-child { margin: 0; color: #536779; font-size: 13px; line-height: 1.68; }
+    .engagement-boundary { margin: 16px 0 0; padding: 15px 17px; border: 1px solid rgba(217, 119, 6, 0.2); border-radius: 14px; background: rgba(255, 249, 235, 0.75); color: #5c5548; font-size: 13px; line-height: 1.7; }
+
+    .outcomes-section { padding: 0 1px; }
+    .outcome-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .outcome-grid article { min-width: 0; padding: 18px; border: 1px solid rgba(37, 99, 235, 0.14); border-radius: 17px; background: rgba(255, 255, 255, 0.77); }
+    .outcome-grid article > span { display: inline-flex; margin-bottom: 11px; color: #0f766e; font-size: 10px; font-weight: 900; letter-spacing: 0.1em; }
+    .outcome-grid h3 { margin: 0 0 6px; color: #173a55; font-size: 16px; }
+    .outcome-grid p { margin: 0; color: #5a6e7e; font-size: 13px; line-height: 1.65; }
+    .outcome-footnote { margin: 14px 0 0; color: #627587; font-size: 13px; line-height: 1.65; }
+
+    .partnership-section { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 0.55fr); gap: 22px; align-items: center; overflow: hidden; padding: clamp(27px, 4.7vw, 48px); border: 1px solid rgba(37, 99, 235, 0.18); border-radius: 27px; background: radial-gradient(ellipse at 79% 55%, rgba(16, 185, 129, 0.16), transparent 43%), linear-gradient(130deg, rgba(255, 255, 255, 0.87), rgba(234, 246, 255, 0.83)); }
+    .partnership-copy { position: relative; z-index: 1; }
+    .partnership-copy h2 { max-width: 18ch; margin: 0 0 11px; color: #102741; font-size: clamp(30px, 4vw, 43px); letter-spacing: -0.055em; line-height: 1.06; }
+    .partnership-copy > p:not(.eyebrow) { max-width: 76ch; margin: 0 0 10px; color: #4c6172; font-size: 15px; line-height: 1.72; }
+    .partnership-copy .partnership-note { color: #5d7181; font-size: 13px; }
+    .partnership-mark { position: relative; display: grid; min-height: 270px; place-items: center; }
+    .partnership-ring { position: absolute; width: 235px; height: 235px; border: 1px solid rgba(37, 99, 235, 0.2); border-radius: 50%; }
+    .ring-two { width: 183px; height: 183px; border-color: rgba(15, 118, 110, 0.26); border-style: dashed; animation: orbit-turn 54s linear infinite; }
+    .ring-three { width: 127px; height: 127px; border-color: rgba(37, 99, 235, 0.12); }
+    .partnership-core { position: relative; z-index: 2; display: grid; width: 73px; height: 73px; place-items: center; border: 1px solid rgba(15, 118, 110, 0.32); border-radius: 50%; background: rgba(255, 255, 255, 0.83); color: #176e87; font-size: 14px; font-weight: 900; letter-spacing: 0.12em; box-shadow: 0 9px 26px rgba(37, 99, 235, 0.1); }
+    .partnership-node { position: absolute; z-index: 3; padding: 6px 8px; border: 1px solid rgba(37, 99, 235, 0.14); border-radius: 999px; background: rgba(255, 255, 255, 0.89); color: #47677d; font-size: 9px; font-weight: 900; letter-spacing: 0.07em; box-shadow: 0 4px 10px rgba(15, 23, 42, 0.04); }
+    .node-north { top: 14px; left: 50%; transform: translateX(-50%); }.node-east { top: 50%; right: 0; transform: translateY(-50%); }.node-west { top: 50%; left: 0; transform: translateY(-50%); }.node-south { bottom: 13px; left: 50%; transform: translateX(-50%); }
+
+    @keyframes title-rise { from { opacity: 0; transform: translateY(34px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes route-drift { to { stroke-dashoffset: -104; } }
+    @keyframes orbit-turn { to { transform: rotate(360deg); } }
+    @keyframes node-pulse { 0%, 100% { opacity: 0.74; transform: scale(0.92); } 50% { opacity: 1; transform: scale(1.12); } }
+    @keyframes signal-breathe { 0%, 100% { opacity: 0.32; transform: scale(0.92); } 50% { opacity: 0.78; transform: scale(1.04); } }
+    @keyframes arrow-nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(3px); } }
+    @keyframes grid-breathe { from { opacity: 0.2; } to { opacity: 0.38; } }
+
+    @media (max-width: 980px) {
+      .sc-hero { grid-template-columns: minmax(0, 1fr); min-height: 0; padding-bottom: 74px; }
+      .hero-copy { max-width: 780px; }
+      .network-visual { min-height: 390px; }
+      .network-visual svg { max-height: 385px; }
+      .journey-track { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: 24px; }
+      .journey-track::before { display: none; }
+      .hub-layout { grid-template-columns: minmax(225px, 0.7fr) minmax(0, 1.3fr); }
+      .hub-module-grid { grid-template-columns: 1fr; }
+      .connection-flow { grid-template-columns: 1fr; gap: 6px; }
+      .connection-flow li:nth-child(even) { display: flex; min-height: 24px; align-items: center; justify-content: center; transform: rotate(90deg); }
+      .response-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .response-grid .response-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 700px) {
+      .sc-hero { gap: 20px; padding: 26px 20px 72px; border-radius: 23px; }
+      .sc-hero h1 { font-size: clamp(33px, 9.2vw, 57px); letter-spacing: -0.078em; }
+      .hero-lead { font-size: 18px; }
+      .network-visual { min-height: 300px; padding: 32px 8px 13px; border-radius: 19px; }
+      .network-visual svg { max-height: 300px; }
+      .visual-header { top: 13px; right: 12px; left: 12px; font-size: 8px; }
+      .network-visual figcaption { padding: 0 7px; font-size: 11px; }
+      .hero-flow { right: 12px; bottom: 13px; left: 12px; flex-wrap: wrap; gap: 5px 7px; font-size: 8px; }
+      .hero-flow b { font-size: 12px; }
+      .sc-section { margin-top: 48px; }
+      .section-heading h2 { font-size: clamp(29px, 8vw, 38px); }
+      .journey-section, .connection-section, .pilot-section, .phase-section, .dialogue-section { padding: 22px 17px; border-radius: 21px; }
+      .journey-track { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+      .journey-track li { padding-top: 44px; }
+      .journey-track h3 { font-size: 14px; }
+      .journey-track p { font-size: 12px; }
+      .hub-layout { grid-template-columns: 1fr; }
+      .hub-core-panel { min-height: 335px; }
+      .hub-module-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .hub-module { padding: 12px 11px; gap: 8px; }
+      .module-number { width: 25px; height: 25px; flex-basis: 25px; font-size: 9px; }
+      .hub-module h3 { font-size: 13px; }
+      .hub-module p { font-size: 12px; line-height: 1.55; }
+      .optional-strip { grid-template-columns: 1fr; gap: 7px; }
+      .connection-flow { grid-template-columns: 1fr; gap: 6px; }
+      .connection-flow li:not(:nth-child(even)) { min-height: 100px; }
+      .connection-flow li:nth-child(even) { display: flex; min-height: 24px; align-items: center; justify-content: center; transform: rotate(90deg); }
+      .connection-flow li:nth-last-child(4), .connection-flow li:nth-last-child(3), .connection-flow li:nth-last-child(2), .connection-flow li:last-child { grid-column: auto; }
+      .flow-arrow { font-size: 17px; }
+      .learning-path { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+      .learning-link { transform: rotate(90deg); line-height: 1.1; }
+      .learner-node, .learning-hub { min-height: 80px; padding: 14px; }
+      .learning-copy-grid { grid-template-columns: 1fr; }
+      .clandestinus-panel { grid-template-columns: 1fr; gap: 16px; padding: 20px 16px; }
+      .education-sequence { gap: 6px; font-size: 8px; letter-spacing: 0.07em; }
+      .education-sequence span { padding: 6px; }
+      .device-note { display: grid; grid-template-columns: 40px 1fr; align-items: center; gap: 10px; }
+      .device-symbol { margin: 0; }
+      .pilot-location { grid-template-columns: 39px minmax(0, 1fr); gap: 10px; padding: 14px; }
+      .location-mark { width: 36px; height: 36px; }
+      .location-status { grid-column: 2; justify-self: start; }
+      .pilot-steps { grid-template-columns: 1fr; gap: 9px; }
+      .pilot-steps::before { top: 25px; bottom: 25px; left: 22px; width: 1px; height: auto; }
+      .pilot-step { min-height: 88px; padding: 14px 13px 14px 57px; }
+      .pilot-step-number { top: 13px; left: 6px; }
+      .phase-nodes { grid-template-columns: 1fr; gap: 8px; }
+      .phase-node { min-height: 0; padding: 20px 18px; }
+      .phase-node h3 { font-size: 29px; }
+      .phase-join { flex-direction: row; gap: 8px; }
+      .phase-join span { width: auto; flex: 1; }
+      .validation-journey { gap: 7px 9px; padding: 12px 9px; font-size: 11px; }
+      .validation-journey b { font-size: 13px; }
+      .response-grid, .romanian-grid { grid-template-columns: 1fr; }
+      .response-grid .response-card:last-child:nth-child(odd) { grid-column: auto; }
+      .response-card { padding: 15px; }
+      .region-heading h3 { font-size: 17px; }
+      .region-count { font-size: 10px; }
+      .outcome-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+      .outcome-grid article { padding: 14px; }
+      .partnership-section { grid-template-columns: 1fr; padding: 24px 19px; border-radius: 22px; }
+      .partnership-mark { min-height: 210px; }
+      .partnership-ring { width: 190px; height: 190px; }
+      .ring-two { width: 148px; height: 148px; }
+      .ring-three { width: 104px; height: 104px; }
+      .node-east { right: 7%; }.node-west { left: 7%; }
+      .hero-actions .sc-button { flex: 1 1 175px; }
+    }
+
+    @media (max-width: 380px) {
+      .sc-hero { padding-right: 15px; padding-left: 15px; }
+      .sc-hero h1 { font-size: 32px; }
+      .hub-module-grid { grid-template-columns: 1fr; }
+      .outcome-grid { grid-template-columns: 1fr; }
+      .journey-track { gap: 11px; }
+      .hero-flow { font-size: 7px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .sc-hero *, .sc-section *, .sc-hero::before {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+      .sc-hero h1 span { opacity: 1; transform: none; }
+    }
+  </style>
+</BaseLayout>
