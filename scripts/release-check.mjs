@@ -145,12 +145,12 @@ async function qa(base, chromium) {
         while (pending.size && Date.now() < deadline) await page.waitForTimeout(100);
         assert.equal(pending.size, 0, 'First-party initial resources did not settle');
         const main = page.locator('main');
-        if (await main.count()) await main.waitFor({ state: 'visible' });
-        else assert(mode === 'FAST' && changedRoutes.includes(route), `Missing main content landmark on ${route}`);
+        assert.equal(await main.count(), 1, `Expected one main content landmark on ${route}`);
+        await main.waitFor({ state: 'visible' });
         await page.waitForTimeout(700);
         assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Horizontal overflow at initial viewport');
         assert(await page.title(), 'Missing title');
-        assert.equal(await page.locator('main h1, body > h1').count(), 1, 'Expected one page heading');
+        assert.equal(await main.locator('h1').count(), 1, 'Expected one page heading');
         assert(await page.locator('meta[name="description"]').getAttribute('content'), 'Missing meta description');
         const attrs = await page.locator('[href],[src]').evaluateAll(elements => elements.flatMap(el => ['href', 'src'].map(attr => el.getAttribute(attr)).filter(Boolean)));
         for (const value of attrs) {
@@ -159,10 +159,9 @@ async function qa(base, chromium) {
         }
         const toggle = page.locator('[data-mobile-nav-toggle]');
         const nav = page.locator('[data-site-nav]');
-        const hasNavigation = await nav.count() > 0;
-        if (hasNavigation) assert.deepEqual(await nav.locator('a').allTextContents(), ['About', 'Our Work', 'Programmes', 'Impact', 'Governance', 'Contact'], 'Unexpected institutional navigation');
-        else assert(mode === 'FAST' && changedRoutes.includes(route), `Missing institutional navigation on ${route}`);
-        if (hasNavigation && viewport.width === 390) {
+        assert.equal(await nav.count(), 1, `Expected one institutional navigation on ${route}`);
+        assert.deepEqual(await nav.locator('a').allTextContents(), ['About', 'Our Work', 'Programmes', 'Impact', 'Governance', 'Contact'], 'Unexpected institutional navigation');
+        if (viewport.width === 390) {
           assert.equal(await toggle.getAttribute('aria-controls'), await nav.getAttribute('id'));
           assert(await toggle.getAttribute('aria-label'));
           await toggle.tap(); assert.equal(await toggle.getAttribute('aria-expanded'), 'true');
@@ -174,7 +173,7 @@ async function qa(base, chromium) {
           await nav.locator('a').first().focus(); await page.keyboard.press('Escape');
           assert.equal(await toggle.getAttribute('aria-expanded'), 'false');
           assert(await toggle.evaluate(el => el === document.activeElement), 'Escape did not return focus');
-        } else if (hasNavigation) assert(await nav.isVisible(), 'Desktop navigation hidden');
+        } else assert(await nav.isVisible(), 'Desktop navigation hidden');
         if (route === '/satul-conectat-romania/') {
           const cta = page.locator('a[href="https://projectclandestinus.com/project/"]');
           assert(await cta.count() > 0, 'Incorrect/missing Clandestinus external CTA');
@@ -205,7 +204,7 @@ async function qa(base, chromium) {
           assert(await page.locator('main').evaluate(el => getComputedStyle(el).opacity === '1'), 'Reduced-motion content hidden');
         }
         // Follow a real navigation destination with keyboard/touch, then check errors.
-        if (hasNavigation) {
+        {
           const home = page.locator('header a.brand[href="/"]');
           if (viewport.width === 390) { await toggle.tap(); await home.tap(); } else { await home.focus(); await page.keyboard.press('Enter'); }
           await page.waitForURL(base + '/', { waitUntil: 'domcontentloaded', timeout: 45000 });
