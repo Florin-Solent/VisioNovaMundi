@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProgrammeCards from "../components/ProgrammeCards.astro";
+import { programmes, discovery } from "../data/institutional";
+---
+<BaseLayout title="Programmes" description="Current CIC-led delivery and clearly separated discovery and proposed work at Visio Nova Mundi CIC.">
+  <section class="institutional-hero"><p class="institutional-eyebrow">Public benefit / current stage</p><h1>Programmes</h1><p class="institutional-lead">Current CIC-led delivery comes first. Research and proposals are shown separately so that an ambition is never mistaken for an operating service.</p></section>
+  <section class="institutional-section"><h2>CIC-led programme</h2><ProgrammeCards items={programmes} /></section>
+  <section class="institutional-section"><h2>Discovery &amp; proposed work</h2><p>Circular Justice is CIC research. Satul Conectat is a VNM-developed proposal; its delivery operator, institutional participation and funding arrangements remain to be agreed. Neither is an operating programme.</p><ProgrammeCards items={discovery} /></section>
+  <section class="institutional-panel"><h2>Future concepts have a different place</h2><p>AdminTrace is a future ecosystem candidate, not part of current delivery. Independent founder ventures have their own responsibilities.</p><div class="institutional-actions"><a href="/research-future/">Research &amp; future concepts →</a><a href="/ventures/">Independent founder ventures →</a><a href="/commissioners-partners/">For Commissioners &amp; Partners →</a></div></section>
+</BaseLayout>

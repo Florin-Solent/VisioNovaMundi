@@ -1,0 +1,36 @@
+---
+interface Props {
+  stage: string;
+  operator: string;
+  delivery: string;
+  partnership?: string;
+  funding: string;
+  boundary: string;
+  facts?: { label: string; value: string }[];
+}
+const { stage, operator, delivery, partnership, funding, boundary, facts = [] } = Astro.props;
+const rows = [
+  { label: "Stage", value: stage },
+  { label: "Operator", value: operator },
+  { label: "Current delivery", value: delivery },
+  ...(partnership ? [{ label: "Institutional relationship", value: partnership }] : []),
+  { label: "Funding", value: funding },
+  ...facts,
+];
+---
+<section class="status-governance vnm-glass-card" aria-label="Status and governance">
+  <p class="status-heading">Status &amp; governance</p>
+  <dl>{rows.map(row => <div><dt>{row.label}</dt><dd>{row.value}</dd></div>)}</dl>
+  <p class="status-boundary"><strong>Key boundary:</strong> {boundary}</p>
+  <a href="/governance/">Governance and responsibilities →</a>
+</section>
+<style>
+  .status-governance { margin: 24px 0; padding: clamp(18px,3vw,28px); }
+  .status-heading { margin: 0 0 16px; color: #0f766e; font-size: .875rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+  dl { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px 24px; margin: 0; }
+  dt { font-weight: 800; color: var(--text); margin-bottom: 4px; }
+  dd { margin: 0; color: var(--muted); line-height: 1.65; }
+  .status-boundary { margin: 20px 0 12px; border-top: 1px solid var(--border); padding-top: 16px; line-height: 1.7; }
+  a { color: #1d4ed8; font-weight: 750; }
+  @media(max-width:600px) { dl { grid-template-columns: 1fr; } }
+</style>

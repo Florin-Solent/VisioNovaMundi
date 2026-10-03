@@ -1,0 +1,16 @@
+---
+interface Props { items: { title: string; stage: string; classification: string; href: string; text: string }[]; }
+const { items } = Astro.props;
+---
+<div class="programme-cards">
+  {items.map(item => <article class="vnm-glass-card">
+    <p class="programme-stage">{item.stage}</p><h3>{item.title}</h3>
+    <p class="programme-type">{item.classification}</p><p>{item.text}</p><a href={item.href}>Read scope and status →</a>
+  </article>)}
+</div>
+<style>
+  .programme-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:18px;margin:20px 0; }
+  article { padding:24px; } h3 { margin:10px 0;font-size:1.5rem;letter-spacing:-.025em; }
+  p { color:var(--muted);line-height:1.7; } .programme-stage { display:inline-block;margin:0;padding:5px 10px;border:1px solid rgba(15,118,110,.3);border-radius:999px;color:#0f766e;font-size:.875rem;font-weight:800;text-transform:uppercase; }
+  .programme-type { font-weight:700; } a { color:#1d4ed8;font-weight:750; }
+</style>

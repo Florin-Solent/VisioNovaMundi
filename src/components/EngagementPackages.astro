@@ -1,0 +1,20 @@
+---
+import { packages } from "../data/institutional";
+---
+<div class="engagement-packages">
+  {packages.map((offer,index) => <article class="vnm-glass-card">
+    <p class="offer-number">0{index+1} / Indicative {offer.duration}</p>
+    <h3>{offer.title}</h3><p>{offer.text}</p>
+    <p><strong>Potential outputs</strong></p><ul>{offer.outputs.map(output => <li>{output}</li>)}</ul>
+  </article>)}
+</div>
+<p class="scope-note">Exact scope, outputs, timetable, capacity, access to evidence, responsibilities and fees or funding are agreed in writing before engagement. Durations are indicative, not availability commitments. Findings depend on the evidence and design; statistically significant outcomes are not promised.</p>
+<p class="scope-note">Specialist food-safety, environmental, waste, legal and engineering advice is obtained separately where required. These packages do not provide regulated professional advice.</p>
+<style>
+  .engagement-packages { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 18px; margin: 20px 0; }
+  article { padding: 24px; } h3 { margin: 8px 0 14px; font-size: 1.4rem; letter-spacing: -.025em; }
+  p,li { line-height: 1.7; color: var(--muted); } ul { padding-left: 20px; } li+li { margin-top: 8px; }
+  .offer-number { color: #0f766e; font-size: .875rem; font-weight: 800; text-transform: uppercase; }
+  .scope-note { max-width: 92ch; }
+  @media(max-width:1000px) { .engagement-packages { grid-template-columns: 1fr; } }
+</style>

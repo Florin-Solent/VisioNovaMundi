@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProgrammeCards from "../components/ProgrammeCards.astro";
+import { discovery } from "../data/institutional";
+---
+<BaseLayout title="Research & Future Concepts" description="Discovery, proposals and future candidates, distinct from current Visio Nova Mundi CIC delivery.">
+  <section class="institutional-hero"><p class="institutional-eyebrow">Explore / validate / decide</p><h1>Research &amp; Future Concepts</h1><p class="institutional-lead">Ideas need evidence, clear operators and governance before they become delivery commitments.</p></section>
+  <ProgrammeCards items={discovery} />
+  <section class="institutional-panel"><p class="institutional-eyebrow">Future concept</p><h2>AdminTrace</h2><p>A future Tree of Life candidate exploring clearer administrative steps and evidence. The classification register leaves its operator, legal vehicle, ownership, funding and data responsibilities to be confirmed.</p><p>It is not an operational CIC delivery programme, available platform or confirmed public-service integration.</p><a href="/admintrace/">Explore the concept →</a></section>
+  <section class="institutional-section"><h2>How a concept moves forward</h2><p>Discovery may lead to stopping, refining, further evaluation or a scoped pilot. Delivery requires a confirmed operator, suitable agreements, safeguards, evidence and resources.</p><a href="/governance/">Governance framework →</a></section>
+</BaseLayout>

@@ -1,37 +1,13 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ProgrammeCards from "../components/ProgrammeCards.astro";
+import { programmes, discovery } from "../data/institutional";
 ---
-
-<BaseLayout title="Impact" description="How Visio Nova Mundi CIC connects proposed public-benefit work with responsible independent innovation through the Tree of Life ecosystem.">
-  <section class="hero">
-    <p class="eyebrow">Tree of Life · impact approach</p>
-    <h1>Impact begins with people — and is strengthened by responsible innovation.</h1>
-    <p class="lead">Tree of Life combines direct public-benefit initiatives with responsible independent innovation, while each initiative and venture retains its own legal and financial identity.</p>
-  </section>
-
-  <section class="statement">
-    <h2>Two complementary pathways</h2>
-    <div class="pathways">
-      <article><span>01</span><h3>Direct public benefit</h3><p>Visio Nova Mundi CIC develops proposed programmes, research and partnerships intended to address practical community and systems challenges. Delivery only follows appropriate partners, governance, safeguards and evidence.</p></article>
-      <article><span>02</span><h3>Independent innovation</h3><p>Founder-led ventures operate independently from Visio Nova Mundi CIC, with their own ownership, finances, intellectual property, contracts and legal responsibilities. They are not CIC programmes, and inclusion within the Tree of Life ecosystem does not create a financial or operational dependency between them and the CIC.</p></article>
-    </div>
-  </section>
-
-  <section>
-    <div class="sectionHead"><p class="eyebrow">Human impact</p><h2>What the Tree of Life initiatives are working towards</h2></div>
-    <div class="cards">
-      <article class="card"><h3>Unity House</h3><p>Unity House is now represented by a council-awarded six-session pilot in South Waltham Forest, exploring health, affordable food, waste/reuse learning and community connection.</p><p class="note">The funded pilot is a controlled learning step within September 2026–March 2027. No permanent centre or full waste hub is operating, and no outcomes are claimed in advance.</p><a href="/unity-house">Explore Unity House →</a></article>
-      <article class="card"><h3>Circular Justice</h3><p>Circular Justice is a discovery-stage social-innovation concept examining whether institutional material flows can be managed more circularly — reducing avoidable waste while exploring responsible opportunities for reuse, skills development, training and rehabilitation.</p><p class="note">The concept is not yet an operating programme and no institutional partnership, savings, environmental outcome or participant benefit is claimed in advance. Its purpose at this stage is to investigate whether a safe, measurable and transferable model can be developed.</p><a href="/circular-justice">Explore Circular Justice →</a></article>
-      <article class="card"><h3>Project Clandestinus</h3><p>Clandestinus is the independent Creative &amp; Cultural Innovation branch: a mystery-publishing world designed around symbols, decoding, curiosity and active reader discovery.</p><p class="note">It is a separate commercial and creative IP venture, not a CIC programme.</p><a href="/project-clandestinus">Explore Project Clandestinus →</a></article>
-    </div>
-  </section>
-
-  <section class="governance">
-    <h2>Clear separation protects the mission</h2>
-    <p>Being part of Tree of Life does not transfer an independent venture’s ownership, intellectual property, finances, contracts, publishing activities, prize or reward obligations, or legal responsibilities to Visio Nova Mundi CIC. The same principle protects CIC-led work from being represented as funding or operating a separate venture.</p>
-    <div class="actions"><a class="btn primary" href="/tree-of-life">Explore Tree of Life</a><a class="btn" href="/governance">Read our governance approach</a></div>
-  </section>
-
+<BaseLayout title="Impact" description="Visio Nova Mundi CIC's approach to proportionate evidence, pilot learning and responsible reporting of public benefit.">
+  <section class="hero"><p class="eyebrow">Public benefit / evidence</p><h1>Measure what happens. Report what the evidence supports.</h1><p class="lead">Our impact approach distinguishes activity, learning and outcomes. Ambition, an award or CIC registration is not proof that a programme has achieved its intended benefits.</p></section>
+  <section class="institutional-panel"><h2>From a baseline to a decision</h2><p>Agree the question and baseline, record delivery and voluntary participant feedback, examine implementation and limitations, then decide whether to stop, refine, continue or evaluate further. Scale is one possible outcome, not a default.</p><p>Methods, consent, data minimisation, context and evidence gaps belong alongside any reported finding. Statistically significant or transferable results depend on an appropriate study design.</p></section>
+  <section class="institutional-section"><h2>Current delivery and learning</h2><ProgrammeCards items={programmes} /><p>No pilot outcomes are claimed in advance. Findings will be reported with methods and limitations when supported by delivery evidence.</p><h2>Research and proposals</h2><ProgrammeCards items={discovery} /></section>
+  <section class="institutional-panel"><h2>Responsibility stays clear</h2><p>Independent founder ventures have their own objectives and responsibilities. They are not evidence of CIC programme outcomes.</p><div class="institutional-actions"><a href="/governance/">Governance and evidence standard →</a><a href="/ventures/">Independent Founder Ventures →</a><a href="/commissioners-partners/">Discuss evaluation or learning →</a></div></section>
   <style>
     .hero{max-width:88ch;padding:12px 0 14px}.eyebrow{margin:0 0 9px;color:#0f766e;text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:850}h1{margin:0 0 14px;font-size:clamp(40px,6vw,62px);letter-spacing:-.04em;line-height:1.05;color:var(--text)}h2{margin:0 0 10px;color:var(--text);font-size:clamp(25px,3vw,32px);letter-spacing:-.025em}h3{margin:0 0 8px;color:var(--text);font-size:18px}.lead,p{color:var(--muted);line-height:1.75}.lead{margin:0;font-size:19px}.statement,.governance{margin-top:30px;border:1px solid var(--border);border-radius:20px;padding:22px;background:linear-gradient(135deg,rgba(37,99,235,.07),rgba(16,185,129,.08));box-shadow:0 8px 28px rgba(0,0,0,.04)}.pathways,.cards{display:grid;gap:14px}.pathways{grid-template-columns:1fr 1fr;margin-top:16px}.pathways article,.card{border:1px solid var(--border);border-radius:18px;padding:17px;background:rgba(255,255,255,.88)}.pathways span{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:rgba(15,118,110,.12);color:#0f766e;font-size:12px;font-weight:850}.pathways h3{margin-top:12px}.pathways p,.card p{margin:0}.pathways article p + p{margin-top:12px}.boundary{margin:16px 0 0!important;padding:13px 15px;border-left:3px solid #d97706;background:rgba(255,255,255,.58);font-size:14px}.sectionHead{margin-top:34px}.sectionHead h2{margin-bottom:0}.cards{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:14px}.card{box-shadow:0 6px 24px rgba(0,0,0,.05)}.card .note{margin-top:12px;color:var(--muted);font-size:13px}.card a{display:inline-block;margin-top:14px;color:#1d4ed8;font-weight:800;text-decoration:none}.card a:hover{text-decoration:underline}.governance p{margin:0;max-width:90ch}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:11px 14px;border:1px solid var(--border);border-radius:14px;background:white;color:var(--text);font-weight:800;text-decoration:none}.btn.primary{border-color:rgba(37,99,235,.25);background:linear-gradient(135deg,rgba(39,99,235,.10),rgba(16,185,129,.10))}@media(max-width:800px){.pathways,.cards{grid-template-columns:1fr}}
   </style>
