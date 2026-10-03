@@ -45,18 +45,11 @@ const {
 
       <nav id="primary-navigation" data-site-nav aria-label="Main navigation">
         <span class="nav-indicator" aria-hidden="true"></span>
-        <a href="/">Home</a>
-        <a href="/impact">Impact</a>
         <a href="/about">About</a>
-        <a href="/services">Services</a>
-        <a href="/projects">Projects</a>
-        <a href="/unity-house">Unity House</a>
-        <a href="/timeline">Timeline</a>
-        <a href="/circular-justice">Circular Justice</a>
-        <a href="/tree-of-life">Tree of Life</a>
-        <a href="/project-clandestinus">Clandestinus</a>
-        <a href="/admintrace">AdminTrace</a>
-        <a href="/tradevault">TradeVault</a>
+        <a href="/work">Our Work</a>
+        <a href="/programmes">Programmes</a>
+        <a href="/impact">Impact</a>
+        <a href="/governance">Governance</a>
         <a href="/contact" class="nav-btn">Contact</a>
       </nav>
     </div>
@@ -67,7 +60,12 @@ const {
   </main>
 
   <footer class="footer">
-    © {new Date().getFullYear()} Visio Nova Mundi CIC
+    <div class="footer-groups">
+      <section><h2>Organisation</h2><a href="/about/">About</a><a href="/governance/">Governance</a><a href="/impact/">Impact</a><a href="/contact/">Contact</a></section>
+      <section><h2>Work</h2><a href="/work/">Our Work</a><a href="/programmes/">Programmes</a><a href="/commissioners-partners/">For Commissioners &amp; Partners</a><a href="/timeline/">Timeline</a></section>
+      <section><h2>Ecosystem &amp; related</h2><a href="/tree-of-life/">Tree of Life framework</a><a href="/ventures/">Independent Founder Ventures</a><a href="/research-future/">Research &amp; Future Concepts</a><a href="/projects/">Project directory</a></section>
+    </div>
+    <p>© {new Date().getFullYear()} Visio Nova Mundi CIC · Company 16947678</p>
   </footer>
 
 <style>
@@ -541,6 +539,20 @@ const {
 </style>
 
 <style is:global>
+  .institutional-hero { padding: 18px 0 30px; max-width: 92ch; }
+  .institutional-hero h1 { font-size: clamp(38px,5.5vw,62px); line-height: 1.1; letter-spacing: -.04em; margin: 10px 0 18px; }
+  .institutional-lead { font-size: 1.2rem; line-height: 1.75; color: var(--muted); }
+  .institutional-eyebrow { color: #0f766e; font-weight: 800; font-size: .875rem; text-transform: uppercase; letter-spacing: .1em; }
+  .institutional-section { margin: 38px 0; }
+  .institutional-section h2, .institutional-panel h2 { font-size: clamp(24px,3vw,34px); letter-spacing: -.025em; }
+  .institutional-section p, .institutional-panel p { line-height: 1.75; color: var(--muted); }
+  .institutional-panel { margin: 26px 0; padding: clamp(20px,3vw,32px); border: 1px solid var(--border); border-radius: 22px; background: linear-gradient(135deg,rgba(37,99,235,.08),rgba(16,185,129,.08)); }
+  .institutional-actions { display: flex; flex-wrap: wrap; gap: 18px; }
+  .institutional-actions a, .institutional-panel a { color: #1d4ed8; font-weight: 750; }
+  .footer-groups { max-width: 1060px; margin: 0 auto 32px; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 28px; text-align: left; }
+  .footer-groups h2 { font-size: .875rem; text-transform: uppercase; letter-spacing: .08em; color: #0f766e; }
+  .footer-groups a { display: block; padding: 8px 0; color: var(--muted); line-height: 1.5; }
+  @media(max-width:600px) { .footer-groups { grid-template-columns: 1fr; } }
   .skip-link { position: absolute; top: -100px; left: 16px; z-index: 100; padding: 12px; background: white; color: #0f172a; }
   .skip-link:focus { top: 12px; }
   main { overflow-wrap: anywhere; }

@@ -1,72 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import EngagementPackages from "../components/EngagementPackages.astro";
 ---
-
-<BaseLayout title="Our Work">
-  <h1>Our Work</h1>
-
-  <p class="lead">
-    We work at the intersection of research, operational insight, and system design — helping institutions deliver
-    better outcomes with measurable impact.
-  </p>
-
-  <div class="grid">
-    <section class="card">
-      <h2>Research &amp; Systems Evaluation</h2>
-      <p>
-        Evidence-led assessment of institutional performance, service delivery, community needs, and operational bottlenecks.
-        We translate findings into clear recommendations and measurable improvement plans.
-      </p>
-      <ul>
-        <li>Service evaluation &amp; needs assessment</li>
-        <li>Baseline measurement and KPI design</li>
-        <li>Cost-efficiency and process mapping</li>
-      </ul>
-    </section>
-
-    <section class="card">
-      <h2>Innovation &amp; Pilot Programmes</h2>
-      <p>
-        Design and testing of scalable models in controlled community environments. Pilots are built to produce evidence
-        for responsible scale — not assumptions.
-      </p>
-      <ul>
-        <li>Feasibility studies and partnership mapping</li>
-        <li>Pilot delivery with defined KPIs</li>
-        <li>Evaluation and scalability assessment</li>
-      </ul>
-      <a class="link" href="/innovation">Explore innovation →</a>
-    </section>
-
-    <section class="card">
-      <h2>Advisory &amp; Capacity Building</h2>
-      <p>
-        Workshops, training, and strategic support to strengthen organisations. We focus on building internal capability,
-        governance clarity, and sustainable implementation.
-      </p>
-      <ul>
-        <li>Training, workshops and facilitation</li>
-        <li>Operational improvement and change support</li>
-        <li>Impact measurement and reporting</li>
-      </ul>
-      <a class="link" href="/contact">Partner with us →</a>
-    </section>
-  </div>
-
-  <section class="bar">
-    <div>
-      <h3>How we work</h3>
-      <p>
-        We start small, measure rigorously, and scale responsibly: <strong>Pilot → Measure → Refine → Scale</strong>.
-        This approach supports credible funding, strong delivery, and long-term sustainability.
-      </p>
-    </div>
-    <div class="actions">
-      <a class="btn primary" href="/projects">View projects</a>
-      <a class="btn" href="/governance">Governance</a>
-    </div>
-  </section>
-
+<BaseLayout title="Our Work" description="Bounded discovery, evaluation and circular-systems feasibility scopes from Visio Nova Mundi CIC.">
+  <section class="institutional-hero"><p class="institutional-eyebrow">Evidence-led institutional engagements</p><h1>Our Work</h1><p class="institutional-lead">Understand a practical problem. Test a proportionate response. Measure what happens and decide what should happen next.</p><a class="btn" href="/commissioners-partners/">For Commissioners &amp; Partners</a></section>
+  <section class="institutional-section"><h2>Three bounded engagement packages</h2><p>We begin with a written discovery conversation and agree a scope that fits the question, evidence, capacity and safeguards.</p><EngagementPackages /></section>
+  <section class="institutional-panel"><h2>Discover → Pilot → Measure → Refine → Decide</h2><p>Evidence can support stopping, refining, continuing, evaluating further or scaling. Not every pilot should grow, and the next step is not predetermined.</p><div class="institutional-actions"><a href="/programmes/">Current programmes and proposed work →</a><a href="/governance/">Governance →</a><a href="/contact/">Discuss a scoped engagement →</a></div></section>
   <style>
     h1 {
       margin: 0 0 12px;

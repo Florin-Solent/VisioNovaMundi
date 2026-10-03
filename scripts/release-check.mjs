@@ -9,7 +9,7 @@ import { checkTarget, production } from './check-target.mjs';
 
 // Reuse the existing external QA runtime; do not change package dependencies.
 const playwrightVersion = '1.64.0-alpha-1790635538000';
-const routes = ['/', '/projects/', '/timeline/', '/satul-conectat-romania/', '/services/', '/project-clandestinus/'];
+const routes = ['/', '/about/', '/work/', '/programmes/', '/commissioners-partners/', '/impact/', '/governance/', '/unity-house/', '/circular-justice/', '/research-future/', '/ventures/', '/tree-of-life/', '/contact/', '/projects/', '/timeline/', '/satul-conectat-romania/', '/services/', '/project-clandestinus/', '/admintrace/', '/tradevault/', '/oneloo-total/', '/guardian-one/', '/roamwing/', '/vialora/', '/vialora-voyage/'];
 const live = process.argv.includes('--production');
 assert(process.argv.slice(2).every(arg => arg === '--production'), 'Unsupported argument; production target cannot be overridden');
 const require = createRequire(import.meta.url);
@@ -75,7 +75,7 @@ async function qa(base, chromium) {
   const report = { target: base, runtime: playwrightVersion, node: process.version, browser: browser.version(), commit: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), started: new Date().toISOString(), cases: [], failures: [] };
   const links = new Set(routes);
   try {
-    for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) for (const reduced of [false, true]) for (const route of routes) {
+    for (const viewport of [{ width: 1440, height: 900 }, { width: 820, height: 900 }, { width: 390, height: 844 }]) for (const reduced of [false, true]) for (const route of routes) {
       const label = `${route} ${viewport.width} ${reduced ? 'reduced' : 'normal'}`;
       const context = await browser.newContext({ viewport, hasTouch: viewport.width === 390, reducedMotion: reduced ? 'reduce' : 'no-preference', serviceWorkers: 'block' });
       const errors = [], scripts = [], pending = new Set();
@@ -118,6 +118,7 @@ async function qa(base, chromium) {
         await page.waitForTimeout(700);
         assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Horizontal overflow at initial viewport');
         assert(await page.title(), 'Missing title');
+        assert.equal(await page.locator('main h1').count(), 1, 'Expected one page heading');
         assert(await page.locator('meta[name="description"]').getAttribute('content'), 'Missing meta description');
         const attrs = await page.locator('[href],[src]').evaluateAll(elements => elements.flatMap(el => ['href', 'src'].map(attr => el.getAttribute(attr)).filter(Boolean)));
         for (const value of attrs) {
@@ -126,6 +127,7 @@ async function qa(base, chromium) {
         }
         const toggle = page.locator('[data-mobile-nav-toggle]');
         const nav = page.locator('[data-site-nav]');
+        assert.deepEqual(await nav.locator('a').allTextContents(), ['About', 'Our Work', 'Programmes', 'Impact', 'Governance', 'Contact'], 'Unexpected institutional navigation');
         if (viewport.width === 390) {
           assert.equal(await toggle.getAttribute('aria-controls'), await nav.getAttribute('id'));
           assert(await toggle.getAttribute('aria-label'));
@@ -170,9 +172,9 @@ async function qa(base, chromium) {
         }
         // Follow a real navigation destination with keyboard/touch, then check errors.
         if (viewport.width === 390) await toggle.tap();
-        const home = nav.locator('a[href="/"]');
-        if (viewport.width === 390) await home.tap(); else { await home.focus(); await page.keyboard.press('Enter'); }
-        await page.waitForURL(base + '/', { waitUntil: 'domcontentloaded' });
+        const home = page.locator('header a.brand[href="/"]');
+        if (viewport.width === 390) { await toggle.tap(); await home.tap(); } else { await home.focus(); await page.keyboard.press('Enter'); }
+        await page.waitForURL(base + '/', { waitUntil: 'domcontentloaded', timeout: 45000 });
         await page.waitForTimeout(200);
         assert.deepEqual(errors, [], errors.join('\n'));
         report.cases.push({ label, passed: true, scripts }); console.log(`PASS ${label}`);
