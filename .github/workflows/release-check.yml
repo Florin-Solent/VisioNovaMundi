@@ -12,14 +12,15 @@ permissions:
 
 concurrency:
   group: vnm-release-qa-${{ github.ref }}
-  cancel-in-progress: true
+  # Keep the running master verification; replace older PR checks with the newest revision.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
 
 jobs:
   release-check:
     name: 'release:check'
     if: github.repository == 'Florin-Solent/VisioNovaMundi'
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - name: Check out candidate without persistent credentials
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
