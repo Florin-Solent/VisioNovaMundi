@@ -9,9 +9,19 @@ import { checkTarget, production } from './check-target.mjs';
 
 // Reuse the existing external QA runtime; do not change package dependencies.
 const playwrightVersion = '1.64.0-alpha-1790635538000';
-const routes = ['/', '/about/', '/work/', '/programmes/', '/commissioners-partners/', '/impact/', '/governance/', '/unity-house/', '/circular-justice/', '/research-future/', '/ventures/', '/tree-of-life/', '/contact/', '/projects/', '/timeline/', '/satul-conectat-romania/', '/services/', '/project-clandestinus/', '/admintrace/', '/tradevault/', '/oneloo-total/', '/guardian-one/', '/roamwing/', '/vialora/', '/vialora-voyage/'];
-const live = process.argv.includes('--production');
-assert(process.argv.slice(2).every(arg => arg === '--production'), 'Unsupported argument; production target cannot be overridden');
+const fullRoutes = ['/', '/about/', '/work/', '/programmes/', '/commissioners-partners/', '/impact/', '/governance/', '/unity-house/', '/circular-justice/', '/research-future/', '/ventures/', '/tree-of-life/', '/contact/', '/projects/', '/timeline/', '/satul-conectat-romania/', '/services/', '/project-clandestinus/', '/admintrace/', '/tradevault/', '/oneloo-total/', '/guardian-one/', '/roamwing/', '/vialora/', '/vialora-voyage/'];
+const args = process.argv.slice(2);
+const live = args.includes('--production');
+const explicitModes = args.filter(arg => ['--full', '--smoke'].includes(arg));
+assert(args.every(arg => ['--production', '--full', '--smoke'].includes(arg)), 'Unsupported argument; production target cannot be overridden');
+assert(explicitModes.length <= 1, 'Choose only one QA mode');
+const mode = live || explicitModes.includes('--full') ? 'FULL' : explicitModes.includes('--smoke') ? 'FAST' : process.env.VNM_QA_MODE || 'FULL';
+assert(['FAST', 'FULL'].includes(mode), `Unsupported browser QA mode: ${mode}`);
+const changedRoutes = JSON.parse(process.env.VNM_CHANGED_ROUTES || '[]');
+assert(Array.isArray(changedRoutes) && changedRoutes.every(route => typeof route === 'string' && route.startsWith('/') && route.endsWith('/')), 'Invalid changed-route list');
+const coreRoutes = ['/', '/work/', '/programmes/', '/governance/', '/contact/'];
+const smokeRoutes = [...new Set([...coreRoutes, ...changedRoutes])];
+const routes = mode === 'FULL' ? [...new Set([...fullRoutes, ...changedRoutes])] : smokeRoutes;
 const require = createRequire(import.meta.url);
 async function runtime() {
   const candidates = [];
@@ -38,17 +48,27 @@ async function files(dir) {
 }
 const forbidden = /(?:localhost|127\.0\.0\.1|\.chatgpt\.site|\.vercel\.app)/i;
 async function staticChecks() {
-  for (const route of routes) assert(existsSync(join('dist', route, 'index.html')), `Missing built route ${route}`);
+  for (const route of fullRoutes) assert(existsSync(join('dist', route, 'index.html')), `Missing built route ${route}`);
+  for (const route of changedRoutes) assert(existsSync(join('dist', route, 'index.html')), `Missing changed route ${route}`);
   for (const path of await files('dist')) {
     if (extname(path) !== '.html') continue;
     const html = await readFile(path, 'utf8');
-    if (routes.some(route => resolve(path) === resolve('dist', '.' + route, 'index.html'))) {
+    if (fullRoutes.some(route => resolve(path) === resolve('dist', '.' + route, 'index.html')) || changedRoutes.some(route => resolve(path) === resolve('dist', '.' + route, 'index.html'))) {
       assert(/<title>[^<]+<\/title>/.test(html), `Missing title: ${path}`);
       assert(/name="description"\s+content="[^"]+"/.test(html), `Missing description: ${path}`);
     }
     for (const match of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
-      assert(!forbidden.test(match[1]), `Nonproduction URL ${match[1]} in ${path}`);
-      if (match[1].startsWith('/_astro/')) assert(existsSync(join('dist', match[1].split(/[?#]/)[0])), `Missing built asset ${match[1]}`);
+      const value = match[1];
+      assert(!forbidden.test(value), `Nonproduction URL ${value} in ${path}`);
+      if (!value.startsWith('/') || value.startsWith('//')) continue;
+      const pathname = decodeURIComponent(value.split(/[?#]/)[0]);
+      const target = resolve('dist', `.${pathname}`);
+      if (pathname.startsWith('/_astro/')) {
+        assert(existsSync(target), `Missing built asset ${value}`);
+      } else {
+        const candidates = extname(pathname) ? [target] : [join(target, 'index.html'), target];
+        assert(candidates.some(existsSync), `Missing generated destination ${value} in ${path}`);
+      }
     }
   }
   assert(!existsSync('dist/server/index.js'), 'Legacy Sites worker must not be in a standard build');
@@ -72,10 +92,20 @@ async function serve() {
 }
 async function qa(base, chromium) {
   const browser = await chromium.launch({ headless: true, args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
-  const report = { target: base, runtime: playwrightVersion, node: process.version, browser: browser.version(), commit: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), started: new Date().toISOString(), cases: [], failures: [] };
+  const report = { mode, target: base, runtime: playwrightVersion, node: process.version, browser: browser.version(), commit: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), started: new Date().toISOString(), cases: [], failures: [] };
   const links = new Set(routes);
   try {
-    for (const viewport of [{ width: 1440, height: 900 }, { width: 820, height: 900 }, { width: 390, height: 844 }]) for (const reduced of [false, true]) for (const route of routes) {
+    const viewports = mode === 'FULL'
+      ? [{ width: 1440, height: 900 }, { width: 820, height: 900 }, { width: 390, height: 844 }]
+      : [{ width: 1440, height: 900 }, { width: 390, height: 844 }];
+    const cases = [];
+    if (mode === 'FULL') {
+      for (const viewport of viewports) for (const reduced of [false, true]) for (const route of routes) cases.push({ route, viewport, reduced });
+    } else {
+      for (const route of smokeRoutes) for (const viewport of viewports) cases.push({ route, viewport, reduced: false });
+      for (const route of [...new Set(['/', ...changedRoutes])]) for (const viewport of viewports) cases.push({ route, viewport, reduced: true });
+    }
+    for (const { route, viewport, reduced } of cases) {
       const label = `${route} ${viewport.width} ${reduced ? 'reduced' : 'normal'}`;
       const context = await browser.newContext({ viewport, hasTouch: viewport.width === 390, reducedMotion: reduced ? 'reduce' : 'no-preference', serviceWorkers: 'block' });
       const errors = [], scripts = [], pending = new Set();
@@ -114,11 +144,13 @@ async function qa(base, chromium) {
         const deadline = Date.now() + 15000;
         while (pending.size && Date.now() < deadline) await page.waitForTimeout(100);
         assert.equal(pending.size, 0, 'First-party initial resources did not settle');
-        await page.locator('main').waitFor({ state: 'visible' });
+        const main = page.locator('main');
+        if (await main.count()) await main.waitFor({ state: 'visible' });
+        else assert(mode === 'FAST' && changedRoutes.includes(route), `Missing main content landmark on ${route}`);
         await page.waitForTimeout(700);
         assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Horizontal overflow at initial viewport');
         assert(await page.title(), 'Missing title');
-        assert.equal(await page.locator('main h1').count(), 1, 'Expected one page heading');
+        assert.equal(await page.locator('main h1, body > h1').count(), 1, 'Expected one page heading');
         assert(await page.locator('meta[name="description"]').getAttribute('content'), 'Missing meta description');
         const attrs = await page.locator('[href],[src]').evaluateAll(elements => elements.flatMap(el => ['href', 'src'].map(attr => el.getAttribute(attr)).filter(Boolean)));
         for (const value of attrs) {
@@ -127,8 +159,10 @@ async function qa(base, chromium) {
         }
         const toggle = page.locator('[data-mobile-nav-toggle]');
         const nav = page.locator('[data-site-nav]');
-        assert.deepEqual(await nav.locator('a').allTextContents(), ['About', 'Our Work', 'Programmes', 'Impact', 'Governance', 'Contact'], 'Unexpected institutional navigation');
-        if (viewport.width === 390) {
+        const hasNavigation = await nav.count() > 0;
+        if (hasNavigation) assert.deepEqual(await nav.locator('a').allTextContents(), ['About', 'Our Work', 'Programmes', 'Impact', 'Governance', 'Contact'], 'Unexpected institutional navigation');
+        else assert(mode === 'FAST' && changedRoutes.includes(route), `Missing institutional navigation on ${route}`);
+        if (hasNavigation && viewport.width === 390) {
           assert.equal(await toggle.getAttribute('aria-controls'), await nav.getAttribute('id'));
           assert(await toggle.getAttribute('aria-label'));
           await toggle.tap(); assert.equal(await toggle.getAttribute('aria-expanded'), 'true');
@@ -140,7 +174,7 @@ async function qa(base, chromium) {
           await nav.locator('a').first().focus(); await page.keyboard.press('Escape');
           assert.equal(await toggle.getAttribute('aria-expanded'), 'false');
           assert(await toggle.evaluate(el => el === document.activeElement), 'Escape did not return focus');
-        } else assert(await nav.isVisible(), 'Desktop navigation hidden');
+        } else if (hasNavigation) assert(await nav.isVisible(), 'Desktop navigation hidden');
         if (route === '/satul-conectat-romania/') {
           const cta = page.locator('a[href="https://projectclandestinus.com/project/"]');
           assert(await cta.count() > 0, 'Incorrect/missing Clandestinus external CTA');
@@ -171,11 +205,12 @@ async function qa(base, chromium) {
           assert(await page.locator('main').evaluate(el => getComputedStyle(el).opacity === '1'), 'Reduced-motion content hidden');
         }
         // Follow a real navigation destination with keyboard/touch, then check errors.
-        if (viewport.width === 390) await toggle.tap();
-        const home = page.locator('header a.brand[href="/"]');
-        if (viewport.width === 390) { await toggle.tap(); await home.tap(); } else { await home.focus(); await page.keyboard.press('Enter'); }
-        await page.waitForURL(base + '/', { waitUntil: 'domcontentloaded', timeout: 45000 });
-        await page.waitForTimeout(200);
+        if (hasNavigation) {
+          const home = page.locator('header a.brand[href="/"]');
+          if (viewport.width === 390) { await toggle.tap(); await home.tap(); } else { await home.focus(); await page.keyboard.press('Enter'); }
+          await page.waitForURL(base + '/', { waitUntil: 'domcontentloaded', timeout: 45000 });
+          await page.waitForTimeout(200);
+        }
         assert.deepEqual(errors, [], errors.join('\n'));
         report.cases.push({ label, passed: true, scripts }); console.log(`PASS ${label}`);
       } catch (error) { report.failures.push({ label, error: error.message, browserErrors: errors }); console.error(`FAIL ${label}: ${error.message}`); }

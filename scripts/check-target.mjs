@@ -12,6 +12,9 @@ export function checkTarget() {
   const scripts = JSON.parse(readFileSync('package.json', 'utf8')).scripts;
   assert.equal(scripts.build, 'astro build');
   assert.equal(scripts['release:check'], 'node scripts/release-check.mjs');
+  assert.equal(scripts['release:smoke'], 'node scripts/release-check.mjs --smoke');
+  assert.equal(scripts['release:full'], 'node scripts/release-check.mjs --full');
+  assert.equal(scripts['release:classify:test'], 'node scripts/release-mode.mjs --self-test');
   assert.equal(scripts['verify:production'], 'node scripts/release-check.mjs --production');
   console.log(`Target guard passed: ${target.projectName} → ${production}`);
 }
