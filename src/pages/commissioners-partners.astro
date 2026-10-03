@@ -1,0 +1,13 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import EngagementPackages from "../components/EngagementPackages.astro";
+import ProgrammeCards from "../components/ProgrammeCards.astro";
+import { programmes, discovery } from "../data/institutional";
+---
+<BaseLayout title="For Commissioners & Partners" description="Bounded discovery, pilot evaluation and circular-systems feasibility engagements with Visio Nova Mundi CIC, with clear status and governance.">
+  <section class="institutional-hero"><p class="institutional-eyebrow">A clear route into collaboration</p><h1>For Commissioners &amp; Partners</h1><p class="institutional-lead">Start with a question, agree a bounded piece of work and use the evidence to decide what happens next.</p><a class="btn" href="/contact/">Discuss a commissioning enquiry</a></section>
+  <section class="institutional-section"><h2>What can VNM be commissioned to do?</h2><p>These proposed engagement scopes bring together needs discovery, pilot design, proportionate evaluation and feasibility work. A discovery engagement produces a documented question, evidence gaps, constraints and a recommendation—not an automatic commitment to deliver or scale.</p><EngagementPackages /></section>
+  <section class="institutional-section"><h2>What is active now?</h2><ProgrammeCards items={programmes} /><h2>What remains exploratory?</h2><ProgrammeCards items={discovery} /></section>
+  <section class="institutional-panel"><h2>Who contracts, and what governance applies?</h2><p>A CIC engagement is scoped with Visio Nova Mundi Community Interest Company (16947678). The written agreement must identify the contracting parties, deliverables, funding, responsibilities, evidence access, safeguarding, data handling and any specialist support before work begins.</p><p>Independent founder ventures are not CIC services. Any future partnership project needs its own operator and responsibility agreements. CIC registration establishes identity, not programme outcomes.</p><a href="/governance/">Read governance and operating classifications →</a></section>
+  <section class="institutional-section"><h2>Begin with a written enquiry</h2><p>Tell us your organisation, the problem or learning question, intended participants, approximate timetable and constraints. Please leave out sensitive or confidential information until an appropriate route is agreed.</p><a class="btn" href="/contact/">Contact the CIC</a></section>
+</BaseLayout>

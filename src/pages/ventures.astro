@@ -1,19 +1,12 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import StatusGovernance from "../components/StatusGovernance.astro";
 ---
-
-<BaseLayout title="Ventures">
-  <h1>Information update</h1>
-  <p class="lead">
-    This website focuses on Visio Nova Mundi CIC. Our governance approach and sustainability model are explained on the
-    <a href="/governance">Governance</a> page.
-  </p>
-
-  <div class="actions">
-    <a class="btn primary" href="/governance">Go to Governance</a>
-    <a class="btn" href="/contact">Contact us</a>
-  </div>
-
+<BaseLayout title="Independent Founder Ventures" description="Separate founder-led creative and product ventures, clearly distinguished from Visio Nova Mundi CIC programmes and commissioning offers.">
+  <section class="institutional-hero"><p class="institutional-eyebrow">Related purpose / separate responsibility</p><h1>Independent Founder Ventures</h1><p class="institutional-lead">These ventures are featured within the Tree of Life framework. They are not CIC programmes or services commissioned from VNM.</p></section>
+  <section class="institutional-section"><h2>Project Clandestinus</h2><p>An independent creative and publishing venture. Its operator is independent of Visio Nova Mundi CIC; the canonical register does not establish a named legal trading entity.</p><StatusGovernance stage="Independent venture" operator="Independent founder-led venture; separate from VNM CIC. Legal trading entity not established in the canonical register." delivery="Books, creative publishing and reader discovery; consult the venture's own site for current offers." funding="Separate finances; CIC grants or sponsorship do not automatically finance it." boundary="Ownership, IP, publishing, contracts, prize or reward obligations and legal responsibility remain separate from VNM." /><div class="institutional-actions"><a href="/project-clandestinus/">Read the venture profile →</a><a href="https://projectclandestinus.com/project/">Visit Project Clandestinus →</a></div></section>
+  <section class="institutional-section"><h2>TradeVault</h2><p>A founder-led workplace product venture, currently focused on Painter Pro. Its own product and commercial responsibilities sit outside the CIC.</p><StatusGovernance stage="Pre-prototype development" operator="Founder-led separate venture; trading entity and product-liability arrangements still require confirmation." delivery="Product concept and staged validation; Painter Pro is not currently available for sale." funding="Separate ownership, IP and finances; no automatic use of CIC grants or sponsorship." boundary="Not a CIC programme. Future manufacturing, sale and contracts require their own responsible operator and arrangements." /><a href="/tradevault/">Read the TradeVault profile →</a></section>
+  <section class="institutional-panel"><h2>Other related ideas</h2><p>The wider directory retains OneLoo Total, Guardian One, RoamWing and Vialora concepts. Their legal/operator details are not established sufficiently here to present them as commissioned CIC programmes or confirmed commercial operators.</p><div class="institutional-actions"><a href="/projects/">Explore the classified directory →</a><a href="/tree-of-life/">Tree of Life relationship framework →</a><a href="/governance/">Legal separation and governance →</a></div></section>
   <style>
     h1 { margin: 0 0 12px; font-size: 40px; letter-spacing: -0.02em; color: var(--text); }
     .lead { margin: 0 0 18px; color: var(--muted); line-height: 1.75; font-size: 18px; max-width: 80ch; }

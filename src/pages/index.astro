@@ -1,28 +1,13 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ProgrammeCards from "../components/ProgrammeCards.astro";
+import { programmes, discovery } from "../data/institutional";
 
-const heroTitle = "Helping organisations test better ways to serve people and communities.";
+
 const heroText =
-  "Visio Nova Mundi is a London-based social innovation CIC helping public, community and research organisations understand practical challenges, test improvements and measure what works.";
+  "Visio Nova Mundi is a London-based social innovation CIC helping public, community and research organisations understand practical challenges, test improvements, measure what happens and decide what should happen next.";
 
-const quickPoints = [
-  {
-    title: "Research & Systems Evaluation",
-    text: "Evidence-led analysis of institutional performance, service delivery, and community needs.",
-  },
-  {
-    title: "Tree of Life Ecosystem",
-    text: "A shared framework for CIC-led programmes, research initiatives and independently operated founder-led ventures.",
-  },
-  {
-    title: "Innovation & Pilot Programmes",
-    text: "Design and testing of scalable models in controlled community environments.",
-  },
-  {
-    title: "Advisory & Capacity Building",
-    text: "Workshops, training, and strategic support to improve outcomes and operational resilience.",
-  },
-];
+
 ---
 
 <BaseLayout title="" description="Visio Nova Mundi CIC is a London-based social innovation organisation advancing research, applied pilots and long-term community impact.">
@@ -43,8 +28,8 @@ const quickPoints = [
           <p class="lead">{heroText}</p>
 
           <div class="actions">
-            <a class="btn primary" href="/services">Explore our services</a>
-            <a class="btn btn-quiet" href="/contact">Partner with us</a>
+            <a class="btn primary" href="/work/">Explore Our Work</a>
+            <a class="btn btn-quiet" href="/commissioners-partners/">For Commissioners &amp; Partners</a>
           </div>
 
           <div class="trust" aria-label="Our working principles">
@@ -58,13 +43,13 @@ const quickPoints = [
           <div class="home-index-topline"><span>Field guide / 01</span></div>
           <div class="home-index-orb" aria-hidden="true"><span>VNM</span></div>
           <div class="home-index-copy">
-            <h2>A civic observatory connected to an archival mystery.</h2>
-            <p>Follow the work from public-benefit research into practical pilots and imaginative story worlds.</p>
+            <h2>A clear path from local need to an informed decision.</h2>
+            <p>Discover, pilot, measure and refine. Continue or scale only where evidence supports it.</p>
           </div>
           <div class="home-index-links">
             <a href="/impact"><span class="index-dot index-dot-teal"></span><span><strong>Civic / Impact</strong><small>Evidence and public benefit</small></span><span class="index-arrow">↗</span></a>
-            <a href="/services"><span class="index-dot index-dot-gold"></span><span><strong>Applied Pilots</strong><small>Responsible ways to test change</small></span><span class="index-arrow">↗</span></a>
-            <a href="/project-clandestinus"><span class="index-dot index-dot-violet"></span><span><strong>Story Worlds</strong><small>Symbols, books and discovery</small></span><span class="index-arrow">↗</span></a>
+            <a href="/programmes/"><span class="index-dot index-dot-gold"></span><span><strong>Current Programmes</strong><small>Awarded delivery and proposals</small></span><span class="index-arrow">↗</span></a>
+            <a href="/governance/"><span class="index-dot index-dot-violet"></span><span><strong>Governance</strong><small>Status, operators and responsibilities</small></span><span class="index-arrow">↗</span></a>
           </div>
         </div>
       </div>
@@ -78,87 +63,14 @@ const quickPoints = [
     </div>
   </section>
 
-  <section class="section ecosystem">
-    <div class="sectionHead">
-      <p class="eyebrow">Our ecosystem</p>
-      <h2>Tree of Life</h2>
-      <p>
-        One shared vision. Distinct projects. Independent identities. Tree of Life presents aligned social programmes,
-        research initiatives and founder-led ventures without blurring their different legal and operational roles.
-      </p>
-    </div>
-    <div class="actions">
-      <a class="btn primary" href="/tree-of-life">Explore the Tree of Life</a>
-    </div>
-  </section>
 
-  <section class="section">
-    <div class="sectionHead">
-      <h2>What we do</h2>
-      <p>Four connected areas that support research-led reform and scalable innovation.</p>
-    </div>
-
-    <div class="cards">
-      {quickPoints.map((p) => (
-        <article class="card tilt-card" data-tilt-card>
-          <h3>{p.title}</h3>
-          <p>{p.text}</p>
-          <a class="link" href="/work">Learn more →</a>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <section class="section subtle">
-    <div class="twoCol">
-      <div>
-        <h2>Innovation spotlight</h2>
-        <p class="lead2">
-          <strong>Unity House</strong> is now a council-awarded six-session pilot under the London Borough of Waltham Forest Community Health Champions Microgrant Fund. It is testing health promotion, local connection, waste/reuse learning and resident feedback within the September 2026–March 2027 grant period.
-        </p>
-        <ul class="list">
-          <li>Low-cost healthy living, meal preparation and physical activity</li>
-          <li>Voluntary resident feedback with agreed privacy and safeguarding</li>
-          <li>Any future evaluation and scalability assessment would be evidence-led</li>
-        </ul>
-        <div class="actions">
-          <a class="btn primary" href="/unity-house">Explore Unity House</a>
-          <a class="btn" href="/projects">View projects</a>
-        </div>
-
-        <p class="note">
-          *The award covers a controlled pilot—not a permanent Unity House centre, a public waste-collection service or the full circular-economy model.
-        </p>
-      </div>
-
-      <figure class="poster pilot-poster">
-        <img src="/images/uhc-poster.png" alt="Illustrative concept for a future Unity House community hub. The council-awarded pilot funds six sessions and supports learning toward the wider model." loading="lazy" />
-        <figcaption>Unity House — pilot concept visual</figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="sectionHead">
-      <h2>Governance & transparency</h2>
-      <p>
-        As a Community Interest Company, we operate for public benefit and reinvest surplus into research,
-        innovation, and community-focused initiatives aligned with our mission.
-      </p>
-    </div>
-
-    <div class="ctaBar">
-      <div>
-        <h3>Work with us</h3>
-        <p>Partnerships, pilots, and advisory — built on evidence and measurable outcomes.</p>
-      </div>
-      <div class="actions">
-        <a class="btn primary" href="/contact">Contact</a>
-        <a class="btn" href="/governance">Governance</a>
-      </div>
-    </div>
-  </section>
-
+  <section class="section"><div class="sectionHead"><p class="eyebrow">Who we help</p><h2>Public, community and research organisations</h2><p>Local authorities, universities, charities, community organisations and responsible private-sector partners seeking a practical, proportionate way to test an improvement. These are intended audiences, not a list of confirmed clients.</p></div></section>
+  <section class="section subtle"><div class="sectionHead"><p class="eyebrow">How we work</p><h2>Discover → Pilot → Measure → Refine → Decide</h2><p>Start with a local need and a bounded question. Agree the pilot and safeguards, record what happens and use the evidence to stop, refine, continue, evaluate further or scale where justified.</p></div><div class="actions"><a class="btn" href="/work/">Explore the three engagement packages</a></div></section>
+  <section class="section"><div class="sectionHead"><p class="eyebrow">Current programmes</p><h2>Delivery first. Proposals clearly labelled.</h2></div><ProgrammeCards items={programmes} /><h3>Discovery and proposed work</h3><ProgrammeCards items={discovery} /><a class="link" href="/programmes/">Read programme scope and status →</a></section>
+  <section class="section subtle"><div class="twoCol"><div><p class="eyebrow">Evidence / current delivery</p><h2>Six hosted sessions, a bounded learning step</h2><p class="lead2">Unity House has a council award under the Waltham Forest Community Health Champions Microgrant Fund for six community health and wellbeing sessions in South Waltham Forest, within September 2026–March 2027.</p><p class="lead2">The award is evidence of funded scope, not proven outcomes. Learning and voluntary resident feedback will inform next steps; the permanent centre and wider circular-economy model remain future concepts.</p><a class="btn" href="/unity-house/">Current delivery and its boundaries</a></div><figure class="poster pilot-poster"><img src="/images/uhc-poster.png" alt="Long-term conceptual study of a Unity House community hub; not a current operating centre." loading="lazy" /><figcaption><strong>Long-term conceptual study.</strong> Phase 1 is hosted in existing community venues.</figcaption></figure></div></section>
+  <section class="section"><div class="sectionHead"><p class="eyebrow">Governance / trust</p><h2>Public benefit with clear responsibility</h2><p>Visio Nova Mundi CIC is a London-based Community Interest Company, number 16947678. The asset lock protects community benefit. Programme scope, operator responsibilities and evidence matter alongside legal identity; registration does not prove outcomes.</p></div><div class="actions"><a class="btn" href="/governance/">Read governance and classifications</a><a class="btn" href="/impact/">Our evidence approach</a></div></section>
+  <section class="section ctaBar"><div><h2>Have a question worth testing?</h2><p>Explore a discovery sprint, pilot evaluation or circular-systems feasibility review. Scope and capacity are agreed before work begins.</p></div><a class="btn primary" href="/commissioners-partners/">For Commissioners &amp; Partners</a></section>
+  <section class="section ecosystem"><div class="sectionHead"><p class="eyebrow">Broader ecosystem</p><h2>Related purpose, distinct operators</h2><p>Tree of Life explains the relationships between public-benefit work, future concepts and independent founder ventures. Independent publishing and product ventures are accessible here without being presented as CIC services.</p></div><div class="actions"><a class="btn" href="/tree-of-life/">Tree of Life framework</a><a class="btn" href="/ventures/">Independent Founder Ventures</a><a class="btn" href="/research-future/">Research &amp; Future Concepts</a></div></section>
   <style>
     .hero { padding: 0 0 10px; }
 
@@ -718,6 +630,7 @@ const quickPoints = [
 
   <style>
     .home-index-panel {
+      box-sizing: border-box;
       position: relative;
       overflow: hidden;
       display: grid;
