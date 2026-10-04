@@ -1,0 +1,57 @@
+---
+import ProjectDetailPage from "../components/ProjectDetailPage.astro";
+
+const sections = [
+  {
+    id: "problem",
+    title: "The problem it explores",
+    text: "For some people, getting groceries home can involve carrying weight, managing mobility and navigating public transport or longer trips without a car. Guardian Glide explores whether shopping transport could be made more manageable and adaptable.",
+  },
+  {
+    id: "intended-users",
+    title: "Intended users",
+    text: "The concept considers older people, people with reduced mobility or strength, injured users, people who do not use a car and people travelling by public transport. These are intended audiences for future research, not groups whose needs have already been validated.",
+  },
+  {
+    id: "concept",
+    title: "The concept",
+    text: "Guardian Glide is an accessible shopping-mobility concept exploring a more stable and adaptable way to transport and organise groceries. Its design direction remains exploratory; no feature is presented as a proven production capability. Public information stays at a high level and excludes unpublished construction and engineering details.",
+  },
+  {
+    id: "accessibility",
+    title: "Accessibility and independence",
+    text: "The objective is to explore whether everyday shopping could feel easier to manage and support greater independence, including for people travelling without a car. Accessibility-focused design and controls are areas to investigate; inclusive usability has not yet been validated.",
+  },
+  {
+    id: "development",
+    title: "Development stage and validation",
+    text: "Status: active development / mechanical validation. Mechanical stability, braking, load-bearing, manufacturability, user validation, cost and willingness-to-pay remain unvalidated. The concept is not presented as ready for use or sale.",
+  },
+  {
+    id: "societal-relevance",
+    title: "Potential societal relevance",
+    text: "If a suitable design can be developed and validated with intended users, Guardian Glide could contribute to more accessible and independent shopping journeys. This is a potential contribution, not an established impact claim.",
+  },
+  {
+    id: "portfolio-relationship",
+    title: "A distinct founder venture",
+    text: "Guardian Glide is an independent/private founder venture within the wider founder portfolio. It is separate from Visio Nova Mundi CIC-led work and does not imply CIC ownership or operation. It is also distinct from Guardian One, the compact one-person safety and shelter concept associated with the TradeVault Guardian System.",
+  },
+];
+
+---
+
+<ProjectDetailPage
+  title="Guardian Glide — Accessible Shopping Mobility System"
+  description="Guardian Glide is an independent founder venture exploring accessible shopping mobility. Active development and mechanical validation; performance and user needs remain unvalidated."
+  statement="An independent founder venture exploring a safer, more adaptable way for people to transport shopping, particularly when mobility, strength or access to a car can be a barrier."
+  category="Independent/private founder venture · Accessible mobility concept"
+  status="Active development / mechanical validation"
+  projectKey="guardian-glide"
+  sections={sections}
+  links={[
+    { label: "Guardian One — separate personal-shelter concept", href: "/guardian-one/" },
+    { label: "Projects portfolio", href: "/projects/" },
+    { label: "View the project timeline", href: "/timeline/" },
+  ]}
+/>

@@ -1,0 +1,56 @@
+---
+import { projectUpdates } from "../data/project-updates";
+
+interface Props {
+  project: string;
+}
+
+const { project } = Astro.props;
+const updates = projectUpdates[project] ?? [];
+const headingId = `updates-${project}`;
+---
+
+<section class="project-updates" aria-labelledby={headingId}>
+  <div class="updates-heading">
+    <p class="eyebrow">Project record</p>
+    <h2 id={headingId}>Updates</h2>
+  </div>
+  {updates.length > 0 ? (
+    <ol class="update-list">
+      {updates.map((update) => (
+        <li class="update-item">
+          <time datetime={update.isoDate}>{update.date}</time>
+          <div>
+            <h3>{update.title}</h3>
+            <p>{update.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  ) : (
+    <p class="no-updates">No dated public updates have been published for this project yet.</p>
+  )}
+</section>
+
+<style>
+  .project-updates {
+    margin-top: clamp(28px, 5vw, 48px);
+    padding: clamp(19px, 3vw, 28px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, .78);
+  }
+
+  .updates-heading .eyebrow { margin: 0 0 5px; color: #0f766e; font-size: .76rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+  h2 { margin: 0; color: var(--text); font-size: clamp(1.35rem, 2.5vw, 1.7rem); letter-spacing: -.025em; }
+  .update-list { display: grid; gap: 19px; margin: 19px 0 0; padding: 0; list-style: none; }
+  .update-item { display: grid; grid-template-columns: minmax(120px, .28fr) minmax(0, 1fr); gap: 18px; padding-top: 18px; border-top: 1px solid var(--border); }
+  time { color: #0f766e; font-size: .9rem; font-weight: 800; }
+  h3 { margin: 0 0 5px; color: var(--text); font-size: 1rem; }
+  .update-item p, .no-updates { margin: 0; color: var(--muted); line-height: 1.7; }
+  .no-updates { margin-top: 13px; }
+
+  @media (max-width: 560px) {
+    .update-item { grid-template-columns: 1fr; gap: 7px; }
+  }
+</style>

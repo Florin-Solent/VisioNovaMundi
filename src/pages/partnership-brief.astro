@@ -1,11 +1,104 @@
 ---
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Visio Nova Mundi — Partnership brief</title><style>body{max-width:760px;margin:40px auto;padding:20px;font:17px/1.7 system-ui;color:#172b45}h1,h2{line-height:1.2}a{color:#1747ad}@media print{body{margin:0;max-width:none}}</style></head><body>
-<h1>Visio Nova Mundi CIC</h1><p>Partnership brief · 6 September 2026</p>
-<p>A London-based social innovation organisation developing research, community programmes and practical approaches to improving services.</p>
-<h2>Ways to collaborate</h2><ul><li>Research and evaluation: needs, service processes and recommendations.</li><li>Pilot design: feasibility, partner responsibilities and readiness.</li><li>Impact measurement: outcome frameworks and evidence plans.</li><li>Advisory and capacity building: workshops, action plans and implementation support.</li></ul>
-<h2>Current programme position</h2><p>Unity House has a council-awarded six-session pilot in South Waltham Forest within the September 2026–March 2027 grant period. No permanent centre, public waste-collection service or full food-surplus operation is operating. Circular Justice remains a discovery-stage concept.</p>
-<h2>What helps an initial discussion</h2><p>Describe your organisation or community, the challenge, the support you need, existing evidence and any timing constraints. Scope, responsibilities, costs and delivery dates are agreed before an engagement begins.</p>
-<h2>Accountability</h2><p>Company number 16947678. <a href="https://find-and-update.company-information.service.gov.uk/company/16947678">Official company record</a>. Independent ventures featured in Tree of Life retain separate ownership and responsibilities.</p>
-<h2>Contact</h2><p><a href="mailto:visionovamundi@outlook.com">visionovamundi@outlook.com</a>. Please send a brief written enquiry without confidential or sensitive data.</p>
-</body></html>
+
+<BaseLayout
+  title="Partnership Brief"
+  description="A concise introduction to Visio Nova Mundi CIC, its collaboration areas, current programme position and contact details."
+>
+  <article class="partnership-brief">
+    <header class="brief-intro">
+      <p class="brief-date">Partnership brief · 6 September 2026</p>
+      <h1>Visio Nova Mundi CIC</h1>
+      <p class="brief-lead">A London-based social innovation organisation developing research, community programmes and practical approaches to improving services.</p>
+    </header>
+
+    <section aria-labelledby="collaborate-title">
+      <h2 id="collaborate-title">Ways to collaborate</h2>
+      <ul>
+        <li><strong>Research and evaluation:</strong> needs, service processes and recommendations.</li>
+        <li><strong>Pilot design:</strong> feasibility, partner responsibilities and readiness.</li>
+        <li><strong>Impact measurement:</strong> outcome frameworks and evidence plans.</li>
+        <li><strong>Advisory and capacity building:</strong> workshops, action plans and implementation support.</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="programme-title">
+      <h2 id="programme-title">Current programme position</h2>
+      <p>Unity House has a council-awarded six-session pilot in South Waltham Forest within the September 2026–March 2027 grant period. No permanent centre, public waste-collection service or full food-surplus operation is operating. Circular Justice remains a discovery-stage concept.</p>
+    </section>
+
+    <section aria-labelledby="discussion-title">
+      <h2 id="discussion-title">What helps an initial discussion</h2>
+      <p>Describe your organisation or community, the challenge, the support you need, existing evidence and any timing constraints. Scope, responsibilities, costs and delivery dates are agreed before an engagement begins.</p>
+    </section>
+
+    <section aria-labelledby="accountability-title">
+      <h2 id="accountability-title">Accountability</h2>
+      <p>Company number 16947678. <a href="https://find-and-update.company-information.service.gov.uk/company/16947678">Official company record</a>. Independent ventures featured in Tree of Life retain separate ownership and responsibilities.</p>
+    </section>
+
+    <section class="brief-contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">Contact</h2>
+      <p><a href="mailto:visionovamundi@outlook.com">visionovamundi@outlook.com</a>. Please send a brief written enquiry without confidential or sensitive data.</p>
+    </section>
+  </article>
+
+  <style>
+    .partnership-brief {
+      max-width: 800px;
+      margin: 0 auto;
+      color: var(--text);
+    }
+
+    .brief-intro {
+      padding: 7px 0 26px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brief-date {
+      margin: 0 0 10px;
+      color: #0f766e;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 11px;
+      font-size: clamp(36px, 5vw, 48px);
+      line-height: 1.1;
+      letter-spacing: -.035em;
+    }
+
+    .brief-lead {
+      max-width: 68ch;
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.75;
+    }
+
+    section { margin-top: 24px; }
+    h2 { margin: 0 0 8px; font-size: 21px; letter-spacing: -.02em; }
+    section p, li { color: var(--muted); line-height: 1.75; }
+    section p { margin: 0; }
+    ul { display: grid; gap: 7px; margin: 0; padding-left: 21px; }
+    li::marker { color: #0f766e; }
+    strong { color: var(--text); }
+    a { color: #1d4ed8; text-underline-offset: 3px; }
+    .brief-contact { padding-top: 20px; border-top: 1px solid var(--border); }
+
+    @media (max-width: 560px) {
+      .brief-intro { padding-top: 0; }
+      .brief-lead { font-size: 16px; }
+      section { margin-top: 21px; }
+      h2 { font-size: 19px; }
+    }
+
+    @media print {
+      .partnership-brief { max-width: none; }
+    }
+  </style>
+</BaseLayout>

@@ -9,7 +9,7 @@ import { checkTarget, production } from './check-target.mjs';
 
 // Reuse the existing external QA runtime; do not change package dependencies.
 const playwrightVersion = '1.64.0-alpha-1790635538000';
-const fullRoutes = ['/', '/about/', '/work/', '/programmes/', '/commissioners-partners/', '/impact/', '/governance/', '/unity-house/', '/circular-justice/', '/research-future/', '/ventures/', '/tree-of-life/', '/contact/', '/projects/', '/timeline/', '/satul-conectat-romania/', '/services/', '/project-clandestinus/', '/admintrace/', '/tradevault/', '/oneloo-total/', '/guardian-one/', '/roamwing/', '/vialora/', '/vialora-voyage/'];
+const fullRoutes = ['/', '/about/', '/work/', '/commissioners-partners/', '/governance/', '/unity-house/', '/circular-justice/', '/research-future/', '/ventures/', '/tree-of-life/', '/contact/', '/projects/', '/timeline/', '/satul-conectat-romania/', '/services/', '/project-clandestinus/', '/clandestinus-secret-app/', '/admintrace/', '/tradevault/', '/oneloo-total/', '/guardian-one/', '/guardian-glide/', '/roamwing/', '/vialora/', '/vialora-voyage/', '/innovation/', '/partnership-brief/'];
 const args = process.argv.slice(2);
 const live = args.includes('--production');
 const explicitModes = args.filter(arg => ['--full', '--smoke'].includes(arg));
@@ -19,7 +19,7 @@ const mode = live || explicitModes.includes('--full') ? 'FULL' : explicitModes.i
 assert(['FAST', 'FULL'].includes(mode), `Unsupported browser QA mode: ${mode}`);
 const changedRoutes = JSON.parse(process.env.VNM_CHANGED_ROUTES || '[]');
 assert(Array.isArray(changedRoutes) && changedRoutes.every(route => typeof route === 'string' && route.startsWith('/') && route.endsWith('/')), 'Invalid changed-route list');
-const coreRoutes = ['/', '/work/', '/programmes/', '/governance/', '/contact/'];
+const coreRoutes = ['/', '/work/', '/projects/', '/governance/', '/contact/'];
 const smokeRoutes = [...new Set([...coreRoutes, ...changedRoutes])];
 const routes = mode === 'FULL' ? [...new Set([...fullRoutes, ...changedRoutes])] : smokeRoutes;
 const require = createRequire(import.meta.url);
@@ -48,6 +48,16 @@ async function files(dir) {
 }
 const forbidden = /(?:localhost|127\.0\.0\.1|\.chatgpt\.site|\.vercel\.app)/i;
 async function staticChecks() {
+  const redirectText = await readFile('public/_redirects', 'utf8');
+  const redirectRules = redirectText.trim().split(/\r?\n/).map(line => line.trim());
+  const expectedRedirects = [
+    '/impact /work/ 308', '/impact/ /work/ 308',
+    '/programmes /projects/ 308', '/programmes/ /projects/ 308',
+  ];
+  for (const rule of expectedRedirects) assert(redirectRules.includes(rule), 'Missing Cloudflare Pages redirect: ' + rule);
+  assert(!existsSync('vercel.json'), 'Vercel-specific redirect configuration must not be present');
+  assert.equal((await readFile('dist/_redirects', 'utf8')).trim(), redirectText.trim(), 'Cloudflare redirects were not copied to the Pages build output');
+  for (const route of ['/impact/', '/programmes/']) assert(!existsSync(join('dist', route, 'index.html')), 'Retired route ' + route + ' must not be generated as an HTML page');
   for (const route of fullRoutes) assert(existsSync(join('dist', route, 'index.html')), `Missing built route ${route}`);
   for (const route of changedRoutes) assert(existsSync(join('dist', route, 'index.html')), `Missing changed route ${route}`);
   for (const path of await files('dist')) {
@@ -72,6 +82,16 @@ async function staticChecks() {
     }
   }
   assert(!existsSync('dist/server/index.js'), 'Legacy Sites worker must not be in a standard build');
+  const projectUpdateKeys = [
+    ['/unity-house/', 'unity-house'], ['/circular-justice/', 'circular-justice'], ['/satul-conectat-romania/', 'satul-conectat-romania'],
+    ['/project-clandestinus/', 'project-clandestinus'], ['/clandestinus-secret-app/', 'clandestinus-secret-app'], ['/tradevault/', 'tradevault'],
+    ['/oneloo-total/', 'oneloo'], ['/guardian-one/', 'guardian-one'], ['/guardian-glide/', 'guardian-glide'], ['/roamwing/', 'roamwing'], ['/vialora/', 'vialora'],
+    ['/vialora-voyage/', 'vialora-voyage'], ['/admintrace/', 'admintrace'],
+  ];
+  for (const [route, key] of projectUpdateKeys) {
+    const html = await readFile(join('dist', route.slice(1), 'index.html'), 'utf8');
+    assert(html.includes('id="updates-' + key + '"'), 'Missing reusable Updates section on ' + route);
+  }
   console.log('Static route, metadata, asset and URL checks passed');
 }
 async function serve() {
