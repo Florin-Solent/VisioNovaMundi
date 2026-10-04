@@ -72,6 +72,8 @@ async function staticChecks() {
       assert(!forbidden.test(value), `Nonproduction URL ${value} in ${path}`);
       if (!value.startsWith('/') || value.startsWith('//')) continue;
       const pathname = decodeURIComponent(value.split(/[?#]/)[0]);
+      const normalizedPath = pathname.replace(/\/+$/, '') || '/';
+      assert(!['/impact', '/programmes'].includes(normalizedPath), 'Internal link still points to a retired route: ' + value + ' in ' + path);
       const target = resolve('dist', `.${pathname}`);
       if (pathname.startsWith('/_astro/')) {
         assert(existsSync(target), `Missing built asset ${value}`);
@@ -180,7 +182,33 @@ async function qa(base, chromium) {
         const toggle = page.locator('[data-mobile-nav-toggle]');
         const nav = page.locator('[data-site-nav]');
         assert.equal(await nav.count(), 1, `Expected one institutional navigation on ${route}`);
-        assert.deepEqual(await nav.locator('a').allTextContents(), ['About', 'Our Work', 'Programmes', 'Impact', 'Governance', 'Contact'], 'Unexpected institutional navigation');
+        assert.deepEqual(await nav.locator('a').allTextContents(), ['About', 'Our Work', 'Projects', 'Governance', 'Contact'], 'Unexpected institutional navigation');
+        const footerGroups = page.locator('[data-footer-group]');
+        assert.equal(await footerGroups.count(), 3, 'Expected the three shared footer groups');
+        assert.deepEqual(await footerGroups.locator('[data-footer-toggle] span:first-child').allTextContents(), ['Organisation', 'Work', 'Ecosystem & Related'], 'Unexpected footer headings');
+        for (const submenu of await footerGroups.locator('.footer-submenu').all()) {
+          assert.equal(await submenu.getAttribute('aria-hidden'), 'true', 'Footer submenu should start closed');
+        }
+        if (viewport.width === 390) {
+          const footerToggle = footerGroups.nth(0).locator('[data-footer-toggle]');
+          await footerToggle.tap();
+          assert.equal(await footerToggle.getAttribute('aria-expanded'), 'true', 'Touch did not open the footer submenu');
+          assert.equal(await footerGroups.nth(0).locator('.footer-submenu').getAttribute('aria-hidden'), 'false');
+          await footerToggle.tap();
+          assert.equal(await footerToggle.getAttribute('aria-expanded'), 'false', 'Touch did not close the footer submenu');
+        } else {
+          const footerGroup = footerGroups.nth(0);
+          const footerToggle = footerGroup.locator('[data-footer-toggle]');
+          await footerGroup.hover();
+          assert.equal(await footerToggle.getAttribute('aria-expanded'), 'true', 'Hover did not open the footer submenu');
+          assert.equal(await footerGroups.nth(1).locator('[data-footer-toggle]').getAttribute('aria-expanded'), 'false', 'Hover opened more than one footer group');
+          await page.mouse.move(5, 5);
+          assert.equal(await footerToggle.getAttribute('aria-expanded'), 'false', 'Footer submenu remained open after pointer leave');
+          await footerToggle.focus();
+          assert.equal(await footerToggle.getAttribute('aria-expanded'), 'true', 'Keyboard focus did not open the footer submenu');
+          await page.evaluate(() => (document.activeElement instanceof HTMLElement) && document.activeElement.blur());
+          assert.equal(await footerToggle.getAttribute('aria-expanded'), 'false', 'Footer submenu remained open after keyboard focus left');
+        }
         if (viewport.width === 390) {
           assert.equal(await toggle.getAttribute('aria-controls'), await nav.getAttribute('id'));
           assert(await toggle.getAttribute('aria-label'));
