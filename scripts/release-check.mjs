@@ -17,8 +17,11 @@ assert(args.every(arg => ['--production', '--full', '--smoke'].includes(arg)), '
 assert(explicitModes.length <= 1, 'Choose only one QA mode');
 const mode = live || explicitModes.includes('--full') ? 'FULL' : explicitModes.includes('--smoke') ? 'FAST' : process.env.VNM_QA_MODE || 'FULL';
 assert(['FAST', 'FULL'].includes(mode), `Unsupported browser QA mode: ${mode}`);
-const changedRoutes = JSON.parse(process.env.VNM_CHANGED_ROUTES || '[]');
-assert(Array.isArray(changedRoutes) && changedRoutes.every(route => typeof route === 'string' && route.startsWith('/') && route.endsWith('/')), 'Invalid changed-route list');
+const changedRouteCandidates = JSON.parse(process.env.VNM_CHANGED_ROUTES || '[]');
+assert(Array.isArray(changedRouteCandidates) && changedRouteCandidates.every(route => typeof route === 'string' && route.startsWith('/') && route.endsWith('/')), 'Invalid changed-route list');
+// Retired pages are verified by their Pages redirect rules below, not served as local HTML routes.
+const redirectedRetiredRoutes = new Set(['/impact/', '/programmes/']);
+const changedRoutes = changedRouteCandidates.filter(route => !redirectedRetiredRoutes.has(route));
 const coreRoutes = ['/', '/work/', '/projects/', '/governance/', '/contact/'];
 const smokeRoutes = [...new Set([...coreRoutes, ...changedRoutes])];
 const routes = mode === 'FULL' ? [...new Set([...fullRoutes, ...changedRoutes])] : smokeRoutes;
