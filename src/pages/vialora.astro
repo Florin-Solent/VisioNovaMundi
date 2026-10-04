@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectUpdates from "../components/ProjectUpdates.astro";
 
 const benefits = [
   {
@@ -44,7 +45,7 @@ const benefits = [
     </aside>
   </section>
 
-  <p class="ownershipNote">Founder-led concepts being developed alongside the wider Visio Nova Mundi ecosystem.</p>
+  <p class="ownershipNote">Founder-led concept developed alongside the wider Visio Nova Mundi ecosystem. It is not presented as a CIC-operated programme; a separate legal or operating entity is not established in the current public project record.</p>
   <p class="separationNote">This fragrance concept is separate from Vialora Voyage, the travel-grooming concept.</p>
 
   <section class="section benefitsSection" aria-labelledby="benefits-heading">
@@ -65,8 +66,8 @@ const benefits = [
 
   <section class="developmentSection" aria-labelledby="next-step-heading">
     <div>
-      <p class="eyebrow">Project updates</p>
-      <h2 id="next-step-heading">See the concept timeline.</h2>
+      <p class="eyebrow">Project timeline</p>
+      <h2 id="next-step-heading">Follow the concept timeline.</h2>
       <p>Follow the documented steps as the fragrance concept develops.</p>
     </div>
     <div class="actions">
@@ -108,4 +109,5 @@ const benefits = [
     @media(max-width:800px){.conceptHero{grid-template-columns:1fr}.developmentSection{flex-direction:column;align-items:stretch}}
     @media(max-width:600px){.benefitGrid{grid-template-columns:1fr}.benefitCard{min-height:0}.developmentSection{padding:18px}.actions{flex-direction:column}.btn{width:100%;white-space:normal;text-align:center}}
   </style>
+  <ProjectUpdates project="vialora" />
 </BaseLayout>

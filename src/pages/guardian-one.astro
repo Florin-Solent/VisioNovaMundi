@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectUpdates from "../components/ProjectUpdates.astro";
 
 const benefits = [
   {
@@ -44,7 +45,9 @@ const benefits = [
     </aside>
   </section>
 
-  <p class="ownershipNote">Founder-led innovation concept developed alongside the wider Visio Nova Mundi ecosystem.</p>
+  <p class="ownershipNote">Founder-led concept developed alongside the wider Visio Nova Mundi ecosystem. It is not presented as a CIC-operated programme; a separate legal or operating entity is not established in the current public project record.</p>
+
+  <p class="separateProjectNote"><strong>Separate project:</strong> Guardian Glide explores accessible shopping mobility. It is not part of Guardian One or the TradeVault Guardian System. <a href="/guardian-glide/">Explore Guardian Glide →</a></p>
 
   <section class="section introSection" aria-labelledby="traveller-heading">
     <div class="sectionHead">
@@ -104,6 +107,9 @@ const benefits = [
     .stageCard>p:not(.stageLabel){margin:0;color:var(--muted);line-height:1.7}
     .stagePill{display:inline-flex;margin-top:14px;padding:7px 10px;border:1px solid rgba(71,85,105,.2);border-radius:999px;background:rgba(148,163,184,.1);color:#334155;font-size:12px;font-weight:850}
     .ownershipNote{margin:22px 0 0;padding:13px 16px;border-left:3px solid #64748b;background:rgba(148,163,184,.08);color:var(--muted);line-height:1.7}
+    .separateProjectNote{margin:12px 0 0;padding:13px 16px;border:1px solid rgba(71,85,105,.13);border-radius:12px;background:rgba(255,255,255,.7);color:var(--muted);line-height:1.7}
+    .separateProjectNote strong{color:var(--text)}
+    .separateProjectNote a{color:#1d4ed8;font-weight:750;text-underline-offset:3px}
     .section{margin-top:38px}
     .sectionHead h2,.developmentSection h2{margin:0 0 8px;color:var(--text);font-size:30px;letter-spacing:-.025em}
     .sectionHead>p:not(.eyebrow),.developmentSection>div>p:not(.eyebrow){margin:0;max-width:82ch;color:var(--muted);line-height:1.8}
@@ -122,4 +128,5 @@ const benefits = [
     @media(max-width:800px){.conceptHero{grid-template-columns:1fr}.developmentSection{flex-direction:column;align-items:stretch}}
     @media(max-width:600px){.benefitGrid{grid-template-columns:1fr}.benefitCard{min-height:0}.futureSection,.developmentSection{padding:18px}.actions{flex-direction:column}.btn{width:100%;white-space:normal;text-align:center}}
   </style>
+  <ProjectUpdates project="guardian-one" />
 </BaseLayout>

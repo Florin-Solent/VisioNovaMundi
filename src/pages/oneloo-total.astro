@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectUpdates from "../components/ProjectUpdates.astro";
 
 const benefits = [
   {
@@ -44,7 +45,7 @@ const benefits = [
     </aside>
   </section>
 
-  <p class="ownershipNote">Founder-led innovation concept developed alongside the wider Visio Nova Mundi ecosystem.</p>
+  <p class="ownershipNote">Founder-led concept developed alongside the wider Visio Nova Mundi ecosystem. It is not presented as a CIC-operated programme; a separate legal or operating entity is not established in the current public project record.</p>
 
   <section class="section introSection" aria-labelledby="routine-heading">
     <div class="sectionHead">
@@ -122,4 +123,5 @@ const benefits = [
     @media(max-width:800px){.conceptHero{grid-template-columns:1fr}.developmentSection{flex-direction:column;align-items:stretch}}
     @media(max-width:600px){.benefitGrid{grid-template-columns:1fr}.benefitCard{min-height:0}.futureSection,.developmentSection{padding:18px}.actions{flex-direction:column}.btn{width:100%;white-space:normal;text-align:center}}
   </style>
+  <ProjectUpdates project="oneloo" />
 </BaseLayout>

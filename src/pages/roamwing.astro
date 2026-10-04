@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectUpdates from "../components/ProjectUpdates.astro";
 
 const benefits = [
   {
@@ -26,16 +27,15 @@ const benefits = [
 ---
 
 <BaseLayout
-  title="RoamWing (working name)"
-  description="RoamWing is the current working name for a founder-led creator-travel concept exploring hands-free filming for people on the move."
+  title="RoamWing"
+  description="RoamWing is an independent creator-travel concept exploring wearable hands-free filming while moving. Mechanical feasibility and user validation remain future work."
 >
   <section class="conceptHero">
     <div class="heroCopy">
       <p class="eyebrow">Founder-led concept · Mechanical feasibility</p>
       <h1>ROAMWING</h1>
-      <p class="workingNameNote">RoamWing is the current working name for the concept.</p>
       <p class="heroMessage">Hands-free filming for people on the move.</p>
-      <p class="lead">RoamWing is a founder-led creator-travel concept exploring a wearable filming system designed to help people capture content hands-free while walking, travelling or creating on location. It is in mechanical-feasibility development and has not been commercially released.</p>
+      <p class="lead">RoamWing is a founder-led creator-travel concept exploring a wearable, robotic-arm-style direction for hands-free filming while walking, travelling or creating on location. It remains in concept and mechanical-feasibility development and has not been commercially released. Public information stays high-level; no unpublished design or performance details are presented.</p>
     </div>
     <aside class="stageCard" aria-label="Current development stage">
       <p class="stageLabel">Current stage</p>
@@ -45,13 +45,21 @@ const benefits = [
     </aside>
   </section>
 
-  <p class="ownershipNote">Founder-led innovation concept developed alongside the wider Visio Nova Mundi ecosystem.</p>
+  <p class="ownershipNote">Founder-led concept developed alongside the wider Visio Nova Mundi ecosystem. It is not presented as a CIC-operated programme; a separate legal or operating entity is not established in the current public project record.</p>
 
   <section class="section introSection" aria-labelledby="creator-heading">
     <div class="sectionHead">
       <p class="eyebrow">For creators on the move</p>
       <h2 id="creator-heading">Move more naturally while capturing a moment.</h2>
-      <p>Travellers and creators often need to choose between recording and taking part in what is happening around them. RoamWing explores whether hands-free filming could make capturing content feel more mobile and natural.</p>
+      <p>Travellers and creators can find it difficult to record while also moving through and taking part in a place. RoamWing explores whether hands-free filming could make content capture feel more mobile and natural.</p>
+    </div>
+  </section>
+
+  <section class="section futureSection" aria-labelledby="relevance-heading">
+    <div class="sectionHead">
+      <p class="eyebrow">Potential creative relevance</p>
+      <h2 id="relevance-heading">More attention for the moment being captured.</h2>
+      <p>Hands-free recording could be relevant to creators who find it difficult to hold a camera while moving. This is a potential use case only; accessibility, comfort and creator needs have not yet been validated with users.</p>
     </div>
   </section>
 
@@ -83,7 +91,7 @@ const benefits = [
     <div>
       <p class="eyebrow">In development</p>
       <h2>Feasibility before advanced features.</h2>
-      <p>RoamWing remains a developing concept and is not commercially available. No validated performance or certification is claimed.</p>
+      <p>RoamWing remains a developing concept and is not commercially available. Mechanical practicality, wearability and user experience require future validation. No performance or certification is claimed.</p>
     </div>
     <div class="actions">
       <a class="btn primary" href="/timeline">View the project timeline</a>
@@ -96,7 +104,6 @@ const benefits = [
     .heroCopy{max-width:820px}
     .eyebrow{margin:0 0 9px;color:#4f46e5;text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:850}
     h1{margin:0 0 10px;color:var(--text);font-size:clamp(42px,7vw,66px);letter-spacing:-.045em}
-    .workingNameNote{margin:0 0 12px;color:var(--muted);font-size:13px;line-height:1.5}
     .heroMessage{margin:0 0 13px;color:var(--text);font-size:clamp(22px,3vw,30px);font-weight:750;letter-spacing:-.025em;line-height:1.25}
     .lead{margin:0;max-width:76ch;color:var(--muted);font-size:18px;line-height:1.8}
     .stageCard,.benefitCard{border:1px solid var(--border);border-radius:20px;background:white;box-shadow:0 8px 28px rgba(15,23,42,.05)}
@@ -124,4 +131,5 @@ const benefits = [
     @media(max-width:800px){.conceptHero{grid-template-columns:1fr}.developmentSection{flex-direction:column;align-items:stretch}}
     @media(max-width:600px){.benefitGrid{grid-template-columns:1fr}.benefitCard{min-height:0}.futureSection,.developmentSection{padding:18px}.actions{flex-direction:column}.btn{width:100%;white-space:normal;text-align:center}}
   </style>
+  <ProjectUpdates project="roamwing" />
 </BaseLayout>

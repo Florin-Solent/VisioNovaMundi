@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import StatusGovernance from "../components/StatusGovernance.astro";
+import ProjectUpdates from "../components/ProjectUpdates.astro";
 
 const benefits = [
   {
@@ -147,4 +148,5 @@ const benefits = [
     @media(max-width:800px){.tradevaultHero{grid-template-columns:1fr}.developmentSection{flex-direction:column;align-items:stretch}}
     @media(max-width:600px){.benefitGrid{grid-template-columns:1fr}.benefitCard{min-height:0}.painterCard{flex-direction:column;padding:18px}.painterCopy h2{font-size:22px}.productStatus{white-space:normal}.futureSection{padding:18px}.developmentSection{padding:18px}.btn{width:100%;white-space:normal;text-align:center}.closingNote{padding:16px}.closingNote>p:not(.eyebrow){font-size:17px}.closingNote .closingLine{font-size:19px}}
   </style>
+  <ProjectUpdates project="tradevault" />
 </BaseLayout>

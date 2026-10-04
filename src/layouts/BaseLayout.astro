@@ -47,8 +47,7 @@ const {
         <span class="nav-indicator" aria-hidden="true"></span>
         <a href="/about">About</a>
         <a href="/work">Our Work</a>
-        <a href="/programmes">Programmes</a>
-        <a href="/impact">Impact</a>
+        <a href="/projects/">Projects</a>
         <a href="/governance">Governance</a>
         <a href="/contact" class="nav-btn">Contact</a>
       </nav>
@@ -61,9 +60,32 @@ const {
 
   <footer class="footer">
     <div class="footer-groups">
-      <section><h2>Organisation</h2><a href="/about/">About</a><a href="/governance/">Governance</a><a href="/impact/">Impact</a><a href="/contact/">Contact</a></section>
-      <section><h2>Work</h2><a href="/work/">Our Work</a><a href="/programmes/">Programmes</a><a href="/commissioners-partners/">For Commissioners &amp; Partners</a><a href="/timeline/">Timeline</a></section>
-      <section><h2>Ecosystem &amp; related</h2><a href="/tree-of-life/">Tree of Life framework</a><a href="/ventures/">Independent Founder Ventures</a><a href="/research-future/">Research &amp; Future Concepts</a><a href="/projects/">Project directory</a></section>
+      <section class="footer-group" data-footer-group>
+        <h2><button class="footer-toggle" type="button" data-footer-toggle aria-controls="footer-organisation-links" aria-expanded="false"><span>Organisation</span><span class="footer-chevron" aria-hidden="true"></span></button></h2>
+        <ul class="footer-submenu" id="footer-organisation-links" aria-hidden="true" inert>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/governance/">Governance</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul>
+      </section>
+      <section class="footer-group" data-footer-group>
+        <h2><button class="footer-toggle" type="button" data-footer-toggle aria-controls="footer-work-links" aria-expanded="false"><span>Work</span><span class="footer-chevron" aria-hidden="true"></span></button></h2>
+        <ul class="footer-submenu" id="footer-work-links" aria-hidden="true" inert>
+          <li><a href="/work/">Our Work</a></li>
+          <li><a href="/projects/">Projects</a></li>
+          <li><a href="/commissioners-partners/">For Commissioners &amp; Partners</a></li>
+          <li><a href="/timeline/">Timeline</a></li>
+        </ul>
+      </section>
+      <section class="footer-group" data-footer-group>
+        <h2><button class="footer-toggle" type="button" data-footer-toggle aria-controls="footer-ecosystem-links" aria-expanded="false"><span>Ecosystem &amp; Related</span><span class="footer-chevron" aria-hidden="true"></span></button></h2>
+        <ul class="footer-submenu" id="footer-ecosystem-links" aria-hidden="true" inert>
+          <li><a href="/tree-of-life/">Tree of Life framework</a></li>
+          <li><a href="/ventures/">Independent Founder Ventures</a></li>
+          <li><a href="/research-future/">Research &amp; Future Concepts</a></li>
+          <li><a href="/projects/">Project directory</a></li>
+        </ul>
+      </section>
     </div>
     <p>© {new Date().getFullYear()} Visio Nova Mundi CIC · Company 16947678</p>
   </footer>
@@ -549,10 +571,17 @@ const {
   .institutional-panel { margin: 26px 0; padding: clamp(20px,3vw,32px); border: 1px solid var(--border); border-radius: 22px; background: linear-gradient(135deg,rgba(37,99,235,.08),rgba(16,185,129,.08)); }
   .institutional-actions { display: flex; flex-wrap: wrap; gap: 18px; }
   .institutional-actions a, .institutional-panel a { color: #1d4ed8; font-weight: 750; }
-  .footer-groups { max-width: 1060px; margin: 0 auto 32px; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 28px; text-align: left; }
-  .footer-groups h2 { font-size: .875rem; text-transform: uppercase; letter-spacing: .08em; color: #0f766e; }
-  .footer-groups a { display: block; padding: 8px 0; color: var(--muted); line-height: 1.5; }
-  @media(max-width:600px) { .footer-groups { grid-template-columns: 1fr; } }
+  .footer-groups { max-width: 1060px; margin: 0 auto 32px; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); align-items: start; gap: 28px; text-align: left; }
+  .footer-group { min-width: 0; }
+  .footer-groups h2 { margin: 0; font-size: .875rem; text-transform: uppercase; letter-spacing: .08em; color: #0f766e; }
+  .footer-toggle { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 0; border: 0; color: inherit; background: transparent; font: inherit; text-align: left; cursor: pointer; }
+  .footer-chevron { width: 7px; height: 7px; flex: 0 0 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .18s ease; }
+  .footer-toggle[aria-expanded="true"] .footer-chevron { transform: translateY(2px) rotate(225deg); }
+  .footer-submenu { max-height: 0; margin: 0; padding: 0; overflow: hidden; opacity: 0; visibility: hidden; transform: translateY(-4px); transition: max-height .22s ease, opacity .18s ease, transform .18s ease, visibility 0s linear .22s; list-style: none; }
+  .footer-group[data-open="true"] .footer-submenu { max-height: 18rem; margin-top: 4px; opacity: 1; visibility: visible; transform: translateY(0); transition-delay: 0s; }
+  .footer-groups .footer-submenu a { display: flex; align-items: center; min-height: 44px; padding: 8px 0; color: var(--muted); line-height: 1.5; }
+  @media(max-width:600px) { .footer-groups { grid-template-columns: 1fr; gap: 8px; } }
+  @media(prefers-reduced-motion: reduce) { .footer-chevron, .footer-submenu { transition: none; } }
   .skip-link { position: absolute; top: -100px; left: 16px; z-index: 100; padding: 12px; background: white; color: #0f172a; }
   .skip-link:focus { top: 12px; }
   main { overflow-wrap: anywhere; }
@@ -914,6 +943,101 @@ const {
 
     mobileNavQuery.addEventListener("change", () => setMenuOpen(false));
   }
+
+  const footerGroups = Array.from(document.querySelectorAll<HTMLElement>("[data-footer-group]"));
+  const footerCanHover = window.matchMedia("(hover: hover) and (pointer: fine)");
+  let lastFooterInput: "keyboard" | "pointer" | "touch" = "keyboard";
+
+  document.addEventListener("keydown", () => {
+    lastFooterInput = "keyboard";
+  }, true);
+  document.addEventListener("pointerdown", (event) => {
+    lastFooterInput = event.pointerType === "touch" ? "touch" : "pointer";
+  }, { capture: true, passive: true });
+
+  const footerControllers: Array<{ group: HTMLElement; close: () => void }> = [];
+
+  footerGroups.forEach((group) => {
+    const toggle = group.querySelector<HTMLButtonElement>("[data-footer-toggle]");
+    const submenuId = toggle?.getAttribute("aria-controls");
+    const submenu = submenuId ? document.getElementById(submenuId) : null;
+    if (!toggle || !(submenu instanceof HTMLElement)) return;
+
+    let pointerOpen = false;
+    let focusOpen = false;
+    let tappedOpen = false;
+    let suppressNextKeyboardFocus = false;
+
+    const setExpanded = (expanded: boolean) => {
+      group.dataset.open = String(expanded);
+      toggle.setAttribute("aria-expanded", String(expanded));
+      submenu.setAttribute("aria-hidden", String(!expanded));
+      submenu.inert = !expanded;
+    };
+
+    const updateExpanded = () => setExpanded(pointerOpen || focusOpen || tappedOpen);
+    const close = () => {
+      pointerOpen = false;
+      focusOpen = false;
+      tappedOpen = false;
+      updateExpanded();
+    };
+    const closeOtherGroups = () => {
+      footerControllers.forEach((controller) => {
+        if (controller.group !== group) controller.close();
+      });
+    };
+
+    footerControllers.push({ group, close });
+    setExpanded(false);
+
+    group.addEventListener("pointerenter", (event) => {
+      if (!footerCanHover.matches || event.pointerType !== "mouse") return;
+      pointerOpen = true;
+      closeOtherGroups();
+      updateExpanded();
+    });
+
+    group.addEventListener("pointerleave", (event) => {
+      if (!footerCanHover.matches || event.pointerType !== "mouse") return;
+      pointerOpen = false;
+      updateExpanded();
+    });
+
+    group.addEventListener("focusin", () => {
+      if (suppressNextKeyboardFocus) {
+        suppressNextKeyboardFocus = false;
+        return;
+      }
+      if (lastFooterInput !== "keyboard") return;
+      focusOpen = true;
+      tappedOpen = false;
+      closeOtherGroups();
+      updateExpanded();
+    });
+
+    group.addEventListener("focusout", (event) => {
+      if (event.relatedTarget instanceof Node && group.contains(event.relatedTarget)) return;
+      focusOpen = false;
+      updateExpanded();
+    });
+
+    toggle.addEventListener("click", () => {
+      if (footerCanHover.matches && lastFooterInput !== "touch") return;
+      tappedOpen = !tappedOpen;
+      if (tappedOpen) closeOtherGroups();
+      updateExpanded();
+    });
+
+    group.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      close();
+      if (submenu.contains(document.activeElement)) {
+        suppressNextKeyboardFocus = true;
+        toggle.focus();
+      }
+    });
+  });
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 

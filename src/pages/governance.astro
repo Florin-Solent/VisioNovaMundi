@@ -73,15 +73,18 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     <p><a class="ecosystemLink" href="/tree-of-life">Read how Tree of Life classifications work →</a> · <a href="/ventures/">Independent Founder Ventures →</a></p>
   </section>
 
-  <section class="evidence card">
+  <section class="evaluation-principles" aria-labelledby="evaluation-principles-title">
     <p class="eyebrow">Evidence standard</p>
-    <h2>Clear about what is known, proposed and measured</h2>
-    <div class="evidenceGrid">
-      <div><strong>Verified facts</strong><p>Confirmed governance, ownership, partner roles and current operating status are stated plainly.</p></div>
-      <div><strong>Proposals</strong><p>Future pilots, concepts and targets are labelled as proposals until the required readiness conditions exist.</p></div>
-      <div><strong>Results</strong><p>Outcomes will be reported only where activity, method and evidence support a credible finding.</p></div>
-    </div>
-    <p class="note">The programme pages describe current proposals and development plans. Evaluation findings will be published with their methods and limitations when supported by delivery evidence.</p>
+    <h2 id="evaluation-principles-title">Evidence &amp; Evaluation Principles</h2>
+    <p class="principles-intro">We aim to evaluate pilots and concepts proportionately and transparently, distinguishing observed findings from assumptions and future hypotheses.</p>
+    <ul class="principles-list">
+      <li><strong>Baseline.</strong> Where appropriate, establish a baseline before an intervention so later observations can be interpreted in context.</li>
+      <li><strong>Transparent methods.</strong> Explain how information was gathered, what was measured and what evidence was unavailable.</li>
+      <li><strong>Evidence gaps.</strong> Report limitations, uncertainties and missing evidence clearly; do not fill gaps with assumptions.</li>
+      <li><strong>Data minimisation.</strong> Collect only information necessary for the evaluation, with appropriate privacy and safeguarding considerations.</li>
+      <li><strong>Proportionate claims.</strong> Claim statistical significance, causation, representativeness or transferability only where the study design and evidence support it.</li>
+      <li><strong>Learning before scaling.</strong> Treat early pilots as opportunities to learn and refine, not automatic proof that an intervention should be scaled.</li>
+    </ul>
   </section>
 
   <section class="bar">
@@ -152,12 +155,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       background: linear-gradient(135deg, rgba(39, 99, 235, 0.06), rgba(16, 185, 129, 0.06));
     }
 
-    .evidence { margin-top: 14px; background: rgba(255,255,255,.78); }
     .eyebrow { margin: 0 0 8px; color: #0f766e; font-size: 12px; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
-    .evidence h2 { font-size: 22px; margin-bottom: 14px; }
-    .evidenceGrid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
-    .evidenceGrid strong { color: var(--text); }
-    .evidenceGrid p { margin: 6px 0 0; }
+    .evaluation-principles { margin-top: 22px; padding: 20px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .evaluation-principles h2 { margin: 0 0 8px; color: var(--text); font-size: 23px; letter-spacing: -.025em; }
+    .principles-intro { max-width: 88ch; margin: 0; color: var(--muted); line-height: 1.7; }
+    .principles-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 28px; margin: 13px 0 0; padding: 0; list-style: none; }
+    .principles-list li { padding: 11px 0; border-top: 1px solid rgba(15, 23, 42, .1); color: var(--muted); line-height: 1.65; }
+    .principles-list strong { color: var(--text); }
 
     .note {
       margin: 0;
@@ -225,7 +229,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     }
 
     @media (max-width: 900px) {
-      .grid, .evidenceGrid { grid-template-columns: 1fr; }
+      .grid, .principles-list { grid-template-columns: 1fr; }
       .bar { flex-direction: column; align-items: stretch; }
     }
   </style>
