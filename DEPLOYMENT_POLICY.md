@@ -4,9 +4,9 @@
 
 - Astro is the site framework and build system.
 - GitHub is the canonical source and release-control repository: https://github.com/Florin-Solent/VisioNovaMundi.git.
-- Cloudflare Pages is the approved intended production host. The Pages project is `visionovamundi`, connected to this repository, with `master` configured as its production branch.
-- Vercel project `vnm-uhc-fallback-20260815` still serves the public production domains. It is the temporary rollback/fallback host during the Cloudflare migration and must remain available through the stabilization period.
-- The approved release candidate is on `release/vnm-site-redesign-2026-10`. Its GitHub-triggered Cloudflare Pages preview passed. It has not been merged to `master`, and the public-domain cutover has not happened.
+- Cloudflare Pages is the current production host. The Pages project is `visionovamundi`, connected to this repository, with `master` configured as its production branch.
+- Vercel project `vnm-uhc-fallback-20260815` is retained temporarily as rollback/fallback infrastructure and must remain available through the stabilization period.
+- The homepage and project visual releases are merged to `master`; the public-domain cutover is complete and recorded in [PRODUCTION.md](PRODUCTION.md).
 - Current production records, observed DNS targets, deployment identifiers and the preview reference are recorded in [PRODUCTION.md](PRODUCTION.md). Reconfirm changeable dashboard states immediately before each migration step.
 
 Cloudflare Pages custom-domain association and certificate readiness must be confirmed before any public DNS change. The intended sequence is: build and verify the approved commit on the Pages production branch; activate and verify `www`; move `www`; observe and verify it while apex remains unchanged; then activate and verify apex and preserve apex-to-`www` canonical routing.
@@ -15,7 +15,7 @@ Cloudflare Pages custom-domain association and certificate readiness must be con
 
 - **Investigation:** external systems are read-only; local documentation edits, builds and tests are allowed. Do not publish, deploy, change DNS, or push to a production-triggering branch without explicit approval.
 - **Preview:** use local previews or GitHub-triggered Cloudflare Pages branch previews. A branch push may also create an incidental Vercel preview; Cloudflare is the migration review target. Never alias a preview to a production domain.
-- **Production:** Cloudflare Pages is the intended production host, served from the configured `master` branch after the production build and smoke checks pass. Vercel remains the active live host until the custom-domain migration is completed and verified.
+- **Production:** Cloudflare Pages is the active production host, served from the configured `master` branch after the production build and smoke checks pass. Vercel remains available as rollback/fallback infrastructure.
 - **Dual deployment gate:** while both Git integrations are active, a `master` update can trigger Cloudflare Pages and Vercel production deployments. Explain this before any merge or push to `master` and obtain confirmation that both production builds are expected. Do not disable or alter Vercel as a shortcut; preserve it as rollback during stabilization.
 - **Other targets:** ChatGPT Sites and other hosts are outside this migration. Do not update the legacy Sites environment during a normal release.
 
