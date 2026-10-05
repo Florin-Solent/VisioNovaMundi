@@ -23,13 +23,22 @@ interface Props {
   projectKey: string;
   sections: ProjectSection[];
   links: ProjectLink[];
+  heroImage?: string;
+  heroImageAlt?: string;
+  heroImageLabel?: string;
 }
 
-const { title, description, statement, category, status, projectKey, sections, links } = Astro.props;
+const { title, description, statement, category, status, projectKey, sections, links, heroImage, heroImageAlt, heroImageLabel } = Astro.props;
 ---
 
 <BaseLayout title={title} description={description}>
   <article class="project-detail">
+    {heroImage && (
+      <figure class="project-concept-visual">
+        <img src={heroImage} alt={heroImageAlt ?? ""} loading="eager" decoding="async" width="1536" height="1024" data-project-image />
+        {heroImageLabel && <figcaption>{heroImageLabel}</figcaption>}
+      </figure>
+    )}
     <header class="detail-hero">
       <p class="detail-category">{category}</p>
       <h1>{title}</h1>

@@ -13,8 +13,9 @@ const reversed = order % 2 === 1;
 <article class="project-card" data-reversed={reversed ? "true" : "false"}>
   <a class="project-visual" href={project.href} aria-label={`Explore ${project.title}`}>
     {project.image ? (
-      <div class="image-frame" data-has-image="true">
-        <img src={project.image} alt={project.imageAlt ?? ""} loading="lazy" decoding="async" />
+      <div class="image-frame" data-has-image="true" data-fit={project.imageFit ?? "contain"}>
+        <img src={project.image} alt={project.imageAlt ?? ""} loading={order === 0 ? "eager" : "lazy"} decoding="async" width={project.imageFit === "cover" ? 1536 : undefined} height={project.imageFit === "cover" ? 1024 : undefined} data-project-image />
+        {project.imageLabel && <span class="image-label" aria-hidden="true">{project.imageLabel}</span>}
       </div>
     ) : (
       <div class="abstract-visual" data-tone={project.relationship.toLowerCase().includes("cic") || project.relationship.toLowerCase().includes("vnm") ? "community" : project.relationship.toLowerCase().includes("future") ? "future" : "venture"} aria-hidden="true">
@@ -62,8 +63,11 @@ const reversed = order % 2 === 1;
     text-decoration: none;
   }
 
-  .image-frame { display: grid; width: 100%; height: 100%; place-items: center; padding: 18px; background: radial-gradient(circle at center, #203651, #091525 76%); }
+  .image-frame { position: relative; display: grid; width: 100%; height: 100%; place-items: center; padding: 18px; background: radial-gradient(circle at center, #203651, #091525 76%); }
   .image-frame img { display: block; width: 100%; height: 100%; object-fit: contain; border-radius: 5px; }
+  .image-frame[data-fit="cover"] { padding: 0; background: #e8f0f2; }
+  .image-frame[data-fit="cover"] img { object-fit: cover; border-radius: 0; }
+  .image-label { position: absolute; right: 14px; bottom: 14px; padding: 6px 10px; border: 1px solid rgba(255,255,255,.62); border-radius: 999px; background: rgba(248,252,252,.88); color: #164e56; font-size: .72rem; font-weight: 800; letter-spacing: .015em; line-height: 1.2; backdrop-filter: blur(8px); }
 
   .abstract-visual {
     position: relative;
@@ -96,7 +100,7 @@ const reversed = order % 2 === 1;
   .project-summary, .project-relevance { max-width: 70ch; margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.72; }
   .project-relevance { margin-top: 12px; font-size: .94rem; }
   .project-relevance strong { color: var(--text); font-weight: 750; }
-  .project-status { display: inline-flex; max-width: 100%; margin-top: 18px; padding: 7px 11px; border: 1px solid rgba(15, 118, 110, .2); border-radius: 999px; background: rgba(15, 118, 110, .055); color: #0f5e58; font-size: .82rem; font-weight: 750; line-height: 1.4; }
+  .project-status { display: inline-flex; max-width: 100%; margin: 18px 12px 0 0; padding: 7px 11px; border: 1px solid rgba(15, 118, 110, .2); border-radius: 999px; background: rgba(15, 118, 110, .055); color: #0f5e58; font-size: .82rem; font-weight: 750; line-height: 1.4; }
   .project-link { display: inline-flex; min-height: 44px; align-items: center; gap: 9px; margin-top: 18px; color: #1d4ed8; font-weight: 800; text-decoration: none; text-underline-offset: 4px; }
   .project-link:hover { text-decoration: underline; }
   .project-link:focus-visible, .project-visual:focus-visible, h3 a:focus-visible { outline: 3px solid #0f766e; outline-offset: 4px; border-radius: 5px; }
