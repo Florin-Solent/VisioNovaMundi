@@ -561,6 +561,40 @@ const {
 </style>
 
 <style is:global>
+  .project-concept-visual {
+    position: relative;
+    width: min(100%, 1120px);
+    aspect-ratio: 1.5;
+    overflow: hidden;
+    margin: 24px auto;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    background: #e8f0f2;
+  }
+  .project-concept-visual img[data-project-image] {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .project-concept-visual figcaption {
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    padding: 6px 10px;
+    border: 1px solid rgba(255,255,255,.62);
+    border-radius: 999px;
+    background: rgba(248,252,252,.9);
+    color: #164e56;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.2;
+    backdrop-filter: blur(8px);
+  }
+  @media (max-width: 600px) {
+    .project-concept-visual { aspect-ratio: 1.3; border-radius: 18px; }
+  }
+
   .institutional-hero { padding: 18px 0 30px; max-width: 92ch; }
   .institutional-hero h1 { font-size: clamp(38px,5.5vw,62px); line-height: 1.1; letter-spacing: -.04em; margin: 10px 0 18px; }
   .institutional-lead { font-size: 1.2rem; line-height: 1.75; color: var(--muted); }
@@ -714,6 +748,29 @@ const {
     transform: translateY(0);
   }
 
+  .motion-ready img[data-project-image].vnm-image-reveal {
+    opacity: .01;
+    transform: translateY(16px) scale(.98);
+    transition:
+      opacity .72s ease-out var(--vnm-image-delay, 0ms),
+      transform .78s cubic-bezier(.22, 1, .36, 1) var(--vnm-image-delay, 0ms);
+  }
+
+  .motion-ready img[data-project-image].vnm-image-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .motion-ready .project-visual:hover img[data-project-image],
+    .motion-ready .project-visual:focus-visible img[data-project-image],
+    .motion-ready .project-concept-visual:hover img[data-project-image],
+    .motion-ready .book-i-cover:hover img[data-project-image],
+    .motion-ready .book-ii-cover:hover img[data-project-image] {
+      transform: translateY(-2px) scale(1.035);
+    }
+  }
+
   .motion-ready .flow > div,
   .motion-ready .pilotFlow > div,
   .motion-ready .branchGrid span {
@@ -850,6 +907,13 @@ const {
 
     .motion-ready .vnm-reveal {
       opacity: 1;
+    }
+
+    img[data-project-image] {
+      opacity: 1 !important;
+      animation: none !important;
+      transition: none !important;
+      transform: none !important;
     }
   }
 </style>
@@ -1068,6 +1132,22 @@ const {
       element.classList.add("vnm-reveal");
       element.style.setProperty("--vnm-reveal-delay", `${Math.min(index % 6, 5) * 45}ms`);
       revealObserver.observe(element);
+    });
+
+    const projectImages = Array.from(document.querySelectorAll<HTMLImageElement>("img[data-project-image]"));
+    const imageRevealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -28px" });
+
+    projectImages.forEach((image, index) => {
+      image.classList.add("vnm-image-reveal");
+      image.style.setProperty("--vnm-image-delay", `${Math.min(index % 3, 2) * 55}ms`);
+      imageRevealObserver.observe(image);
     });
 
     if (window.matchMedia("(pointer: fine)").matches) {
