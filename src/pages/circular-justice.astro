@@ -3,16 +3,81 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import StatusGovernance from "../components/StatusGovernance.astro";
 import ProjectUpdates from "../components/ProjectUpdates.astro";
 ---
-<BaseLayout title="Circular Justice" description="Circular Justice is a discovery-stage social-innovation concept exploring more circular institutional material flows.">
-  <section class="hero"><p class="eyebrow">Discovery-stage social-innovation concept</p><h1>Circular Justice</h1><p class="lead">Circular Justice is a discovery-stage social-innovation concept examining whether institutional material flows can be managed more circularly — reducing avoidable waste while exploring responsible opportunities for reuse, skills development, training and rehabilitation.</p></section>
-  <section class="grid"><article class="card"><h2>What we are exploring</h2><p>Institutional waste measurement, reduction, reuse and recycling opportunities, and the practical conditions needed to evaluate them responsibly.</p></article><article class="card"><h2>Potential social value</h2><p>Where appropriate and subject to safeguards, the concept considers green skills, rehabilitation and credible employment pathways.</p></article><article class="card"><h2>What we are seeking</h2><p>Research, operational and technology partners able to challenge the discovery question, methods, safeguards and evidence requirements.</p></article></section>
-  <section class="statement"><h2>Responsible development</h2><p>Early work may use synthetic, aggregated or appropriately authorised data. The proposed platform would not make automated decisions about individual prisoners. Any future institutional work would require appropriate safeguards, human review and formal permissions.</p></section>
-  <StatusGovernance stage="Discovery · CIC research concept" operator="VNM research positioning; any future delivery operator must be confirmed before activity." delivery="Research and feasibility exploration; no live AI platform or operating programme." partnership="No prison or HMPPS partnership; no approved government pilot or established European consortium." funding="No funding approval." boundary="No access to prisoners or prisoner data. No savings, environmental outcomes or participant benefits are claimed in advance." facts={[{label:"Live prisoner data",value:"None"},{label:"Automated individual decisions",value:"None; the proposed platform would not make automated decisions about individual prisoners."}]} />
-  <figure class="project-concept-visual">
-    <img src="/images/circular-justice-concept.webp" alt="Concept visual of a community repair workshop and open garden path, symbolising circular reuse and pathways to reintegration." loading="eager" decoding="async" width="1536" height="1024" data-project-image />
-    <figcaption>Concept visual · discovery-stage exploration</figcaption>
-  </figure>
-  <p class="contact"><a class="btn" href="/contact">Discuss research or partnership fit</a></p>
-  <style>.hero{max-width:88ch;padding:8px 0 18px}.eyebrow{color:#0f766e;font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin:0 0 9px}h1{margin:0 0 10px;font-size:clamp(40px,6vw,60px);color:var(--text);letter-spacing:-.03em}h2{margin:0 0 9px;color:var(--text);font-size:19px}.lead,p{color:var(--muted);line-height:1.75}.lead{font-size:19px;margin:0}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px}.card,.statement,.clarification{border:1px solid var(--border);border-radius:18px;padding:18px;background:white;box-shadow:0 6px 24px rgba(0,0,0,.05)}.card p,.statement p,.clarification p{margin:0}.statement{margin-top:14px;background:linear-gradient(135deg,rgba(39,99,235,.06),rgba(16,185,129,.07))}.clarification{margin-top:14px}.contact{margin-top:18px}.btn{display:inline-flex;padding:11px 14px;border:1px solid rgba(37,99,235,.25);border-radius:14px;background:linear-gradient(135deg,rgba(39,99,235,.10),rgba(16,185,129,.10));color:var(--text);text-decoration:none;font-weight:800}@media(max-width:800px){.grid{grid-template-columns:1fr}}</style>
+
+<BaseLayout title="Circular Justice" description="An individual research and evidence-building initiative exploring whether safe surplus-food redistribution could support affordable meals through the Unity House community model.">
+  <section class="hero">
+    <p class="eyebrow">Individual research initiative · evidence-building</p>
+    <h1>Circular Justice</h1>
+    <p class="lead">Circular Justice is an individual research initiative exploring whether a coordinated local surplus-food model could reduce avoidable waste and improve access to affordable meals through the Unity House community-centre model. The work is at the research and feasibility stage; an operational pilot has not been approved.</p>
+  </section>
+
+  <StatusGovernance stage="Research / evidence-building" operator="Individual research initiative; a future delivery operator has not been selected." delivery="Desk research and feasibility development. No Circular Justice collection, app or food service is operating." partnership="No supermarket, redistribution-operator, council or government partnership is established for Circular Justice." funding="No Circular Justice pilot funding or approval is confirmed." boundary="The separate Unity House award funds six hosted community health and wellbeing sessions in South Waltham Forest during September 2026–March 2027. It does not fund or approve a Circular Justice surplus-food operation, permanent centre or UK-wide service." facts={[{label:"Pilot status",value:"Not yet approved; no collection or meal operation is claimed."},{label:"VNM logistics assets",value:"No owned vans, donor app or food-handling network are claimed."}]} />
+
+  <section class="section question">
+    <p class="eyebrow">The question we are testing</p>
+    <h2>Can local surplus become safe, affordable community food?</h2>
+    <p>Could suitable surplus from households, shops, supermarkets and other food businesses be coordinated with existing redistribution and logistics partners, then used through a trusted Unity House host for redistribution, shared learning and low-cost meals? Research must establish the need, safe supply, responsible operating model, cost and partner capacity before a bounded pilot is proposed.</p>
+  </section>
+
+  <section class="section pathways">
+    <div class="section-head">
+      <p class="eyebrow">Why food surplus first</p>
+      <h2>Follow food to its safest useful route</h2>
+      <p>Food is the first research pathway because the Unity House pilot already includes healthy meal preparation, low-cost nutrition and food-waste learning. That is a relevant starting point for feasibility work, not evidence that a surplus supply or service is ready.</p>
+    </div>
+    <div class="cards">
+      <article class="card vnm-glass-card"><h3>Suitable edible surplus</h3><p>Research whether food that remains safe, traceable and legally suitable can be redistributed or used in meals under clear donor, storage, transport, preparation and allergen controls.</p></article>
+      <article class="card vnm-glass-card"><h3>Other reusable items</h3><p>Residents may be able to offer suitable reusable items in a future service, subject to separate acceptance criteria, safeguarding, liability and handling arrangements. Food and non-food routes would need distinct rules.</p></article>
+      <article class="card vnm-glass-card"><h3>Unavoidable food waste</h3><p>Material that is not suitable for people to eat must not be presented as food. Any separate treatment route would need an authorised, competent operator and applicable waste controls.</p></article>
+    </div>
+  </section>
+
+  <section class="section pilot">
+    <p class="eyebrow">Proposed bounded pilot · subject to evidence and approval</p>
+    <h2>Coordinate existing capability around a local host</h2>
+    <p>A future pilot could test a local coordination layer that links donors with existing operators. It would explore partners that already have suitable apps, vans, food-handling systems and logistics capacity; VNM does not currently claim to own these assets. The exact operator, host, locality, food stream and service design remain to be identified.</p>
+    <ol class="flow" aria-label="Possible future pilot flow">
+      <li><strong>1</strong><span>Resident or business offers eligible surplus</span></li>
+      <li><strong>2</strong><span>Partner intake checks suitability and availability</span></li>
+      <li><strong>3</strong><span>Existing collection and logistics operator coordinates safe handling</span></li>
+      <li><strong>4</strong><span>Unity House host receives an agreed, traceable supply</span></li>
+      <li><strong>5</strong><span>Suitable food is redistributed or prepared as affordable meals</span></li>
+    </ol>
+    <p class="note"><strong>Illustrative pathway only.</strong> It describes a model to investigate, not current service, partner commitments or approved pilot activity.</p>
+  </section>
+
+  <section class="section measure">
+    <div class="section-head"><p class="eyebrow">Evidence before claims</p><h2>What a pilot would need to measure</h2><p>Measures and collection methods should be agreed with the host, delivery partners and residents, using proportionate and privacy-conscious evaluation.</p></div>
+    <div class="measure-grid">
+      <span>Eligible surplus received and diverted from disposal</span><span>Food safety, traceability and compliance</span><span>Meal cost, affordability and resident access</span><span>Resident and business participation</span><span>Collection cost and partner workload</span><span>Volunteer, training and paid-job opportunities</span><span>Resident experience and community outcomes</span><span>Reliability, unused supply and operating limits</span>
+    </div>
+    <p class="note">These are proposed measures, not achieved results or promised benefits. Any employment or training pathway depends on a viable, funded operating model.</p>
+  </section>
+
+  <section class="section partners">
+    <p class="eyebrow">What partners and public bodies could enable</p>
+    <h2>Resolve responsibilities before collection begins</h2>
+    <p>Councils, government, food businesses, community hosts and experienced redistribution operators could help determine whether a safe, lawful and affordable model is feasible. Relevant public-sector involvement may include permissions, premises, procurement or funding routes, food-safety and public-health coordination, waste and food-classification advice, evaluation and any later scaling decision. No such support is confirmed for Circular Justice.</p>
+    <ul>
+      <li>Agree who is responsible for donors, collection, transport, storage, preparation, redistribution and records.</li>
+      <li>Confirm food hygiene, temperature control, date marking, traceability, allergen information and recall procedures.</li>
+      <li>Check food and waste classification, environmental and local-authority requirements, premises, insurance and procurement.</li>
+      <li>Set proportionate privacy, safeguarding, volunteer, training and incident-reporting arrangements.</li>
+      <li>Secure a viable budget, partner capacity, evaluation plan and resident consent before any pilot launch.</li>
+    </ul>
+  </section>
+
+  <section class="section pathway">
+    <p class="eyebrow">Evidence → pilot → evaluation → replication</p>
+    <h2>One local test at a time</h2>
+    <div class="stages"><article><strong>01 · Research</strong><p>Map local need, existing services, food streams, rules, potential hosts and operators.</p></article><article><strong>02 · Design</strong><p>Co-design a bounded pilot with residents and partners, with named responsibilities and approvals.</p></article><article><strong>03 · Evaluate</strong><p>Measure safety, access, costs, partner workload, participation and outcomes against agreed criteria.</p></article><article><strong>04 · Decide</strong><p>Continue, adapt or stop based on findings. Consider another locality only if evidence, funding and permissions support it.</p></article></div>
+    <p class="status-note"><strong>Current status: Research / evidence-building. Pilot not yet approved.</strong> Circular Justice is not proven, funded, government-backed or operating nationwide. Any UK-scale model is a later hypothesis that would require positive evaluation and separate decisions.</p>
+  </section>
+
+  <p class="contact"><a class="btn primary" href="/contact">Discuss research or partnership fit</a><a class="text-link" href="/unity-house">Read about the Unity House pilot →</a></p>
   <ProjectUpdates project="circular-justice" />
+
+  <style>
+    .hero{max-width:90ch;padding:8px 0 18px}.eyebrow{margin:0 0 9px;color:#0f766e;text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:850}h1{margin:0 0 12px;font-size:clamp(42px,6vw,64px);letter-spacing:-.04em;color:var(--text)}h2{margin:0 0 10px;color:var(--text);font-size:clamp(24px,3.6vw,34px);letter-spacing:-.025em}.lead,.section>p:not(.eyebrow),.section-head>p:not(.eyebrow){max-width:90ch;color:var(--muted);line-height:1.75;font-size:17px}.lead{font-size:19px}.section{margin-top:34px}.question,.pilot,.partners,.pathway{padding:clamp(19px,3vw,28px);border:1px solid var(--border);border-radius:20px;background:linear-gradient(135deg,rgba(39,99,235,.06),rgba(16,185,129,.07))}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-top:15px}.card{padding:17px;border:1px solid var(--border);border-radius:17px;background:var(--glass)}.card h3{margin:0 0 8px;color:var(--text);font-size:17px}.card p{margin:0;color:var(--muted);line-height:1.7}.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;padding:0;margin:20px 0 0;list-style:none}.flow li{display:flex;align-items:flex-start;gap:9px;padding:13px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.68);color:var(--muted);line-height:1.55;font-size:14px}.flow strong{display:grid;place-items:center;flex:0 0 27px;height:27px;border-radius:50%;background:rgba(39,99,235,.12);color:#1d4ed8}.note{margin:15px 0 0;padding:12px 14px;border-left:3px solid #d97706;background:rgba(245,158,11,.09);color:var(--muted);line-height:1.65;font-size:14px}.measure-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:16px}.measure-grid span,.stages article{padding:14px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.72);color:var(--muted);line-height:1.6}.partners ul{padding-left:22px;color:var(--muted);line-height:1.75}.partners li+li{margin-top:6px}.stages{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-top:16px}.stages strong{color:#0f766e}.stages p{margin:7px 0 0;color:var(--muted);line-height:1.65;font-size:14px}.status-note{margin:17px 0 0;padding:14px;border:1px solid rgba(15,118,110,.22);border-radius:14px;background:rgba(16,185,129,.07);color:var(--text);line-height:1.7}.contact{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:22px}.btn{display:inline-flex;padding:11px 15px;border:1px solid rgba(37,99,235,.25);border-radius:14px;background:linear-gradient(135deg,rgba(39,99,235,.10),rgba(16,185,129,.10));color:var(--text);text-decoration:none;font-weight:850}.text-link{color:#1d4ed8;font-weight:750}@media(max-width:950px){.flow{grid-template-columns:repeat(3,minmax(0,1fr))}.measure-grid,.stages{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.cards,.flow,.measure-grid,.stages{grid-template-columns:1fr}.contact{align-items:stretch}.btn{text-align:center;justify-content:center}}
+  </style>
 </BaseLayout>
