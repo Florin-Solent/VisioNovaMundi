@@ -16,8 +16,9 @@ Current production state confirmed on 5 October 2026 after the homepage and proj
 | Latest release-branch preview | Cloudflare Pages deployment `a2d6cf49-9b84-4103-b78c-077ffc669da2`; https://a2d6cf49.visionovamundi.pages.dev/; GitHub-triggered from `9eae7d1` |
 | Current live host for `www` | Cloudflare Pages project `visionovamundi` |
 | Vercel fallback project | `vnm-uhc-fallback-20260815` |
-| Vercel fallback deployment | GitHub deployment `6847843880`, success, source commit `411dfa2e3d57b5461590de36418435a59119eba8`; https://vnm-uhc-fallback-20260815-6hanr4fco.vercel.app/ |
-| Cloudflare Pages production deployment | Success, project visuals source commit `e84d090946124003382a2ac86846e2ddf12b5d47`; deployment `d4d5796a-faeb-4771-930b-c6a953e81435` |
+| Vercel fallback latest observed READY deployment (9 Oct audit) | `dpl_GjZA6yUZfk72TdTm1hh8wNLFZ2vg`, source `master` commit `a8c208401929709fccc70d758be404565edd8b56` (Circular Justice PR #10); https://vnm-uhc-fallback-20260815-9pbmfvaq3.vercel.app/ |
+| Vercel historical rollback reference (5 Oct record) | GitHub deployment `6847843880`, success, source commit `411dfa2e3d57b5461590de36418435a59119eba8`; https://vnm-uhc-fallback-20260815-6hanr4fco.vercel.app/ |
+| Cloudflare Pages production deployment (5 Oct record) | Success, project visuals source commit `e84d090946124003382a2ac86846e2ddf12b5d47`; deployment `d4d5796a-faeb-4771-930b-c6a953e81435` |
 | GitHub release QA | Homepage and project visual release checks succeeded; project visual release QA passed before merge |
 | Legacy URL | https://visio-nova-mundi.floryn-outsider.chatgpt.site/ |
 | Legacy status | NON-PRODUCTION / LEGACY; known version 44 |
@@ -33,9 +34,17 @@ The homepage manifesto and project portfolio visual system are live. The Cloudfl
 
 Cloudflare nameservers observed: `lola.ns.cloudflare.com` and `mark.ns.cloudflare.com`.
 
-`cf-test.visionovamundi.com` remains Active with SSL enabled and its Pages CNAME remains Proxied. Keep the Vercel project and the previous known-good production deployment available through the stabilization period; do not remove or disconnect Vercel.
+`cf-test.visionovamundi.com` was recorded as Active with SSL enabled on 5 October 2026. Keep the Vercel project and a known-good deployment through the stabilization period; do not disconnect or delete Vercel without separate approval. The Cloudflare DNS and HTTP observations in the table above are from 5 October and were not re-run as part of this documentation update.
 
-Rollback caveat: the new Vercel production deployment is built from the same commit, and the main site routes and shared footer work there. Vercel does not apply Cloudflare Pages' `public/_redirects`, so `/impact/` and `/programmes/` return 404 on that deployment. If rollback is required, restore the recorded Vercel CNAME and promote the previous known-good Vercel production deployment rather than relying on those two paths in the new Vercel deployment.
+## Vercel fallback cleanup — verified 9 October 2026
+
+- In Vercel project `vnm-uhc-fallback-20260815` (`prj_N3UBfjQ80G3u6Qj1g1GymAnsYFkj`), the dedicated **Project Domains** endpoint lists only `vnm-uhc-fallback-20260815.vercel.app`. The custom-domain project associations for `visionovamundi.com` and `www.visionovamundi.com` were removed. No Cloudflare DNS or account-level domain registration changes were made during that operation.
+- Vercel's broader project summary still listed the two former custom domains when checked. For current project-domain associations, use the dedicated Project Domains list and recheck before a migration.
+- Vercel project configuration reports **Node 22.x**; the latest READY deployment listed above was created before that setting was changed, so this is **not evidence that the existing deployment was rebuilt under Node 22**.
+- The Vercel GitHub integration remains active; PR updates can create preview builds and `master` updates can trigger production builds on both Cloudflare Pages and Vercel. The dual-deployment approval gate remains in force.
+- The Vercel audit found zero configured project environment variables and zero custom environments. Do not infer parity of build output or redirects solely from a READY status.
+
+**Rollback limitation:** Removing the custom-domain associations means fallback is **not** a one-click DNS rollback. Before directing public traffic to Vercel, select and test an approved deployment, re-associate the custom domains in Vercel, verify domain ownership/TLS readiness, coordinate Cloudflare DNS/redirect changes, and smoke-test the canonical hosts and routes. Historically, Vercel did not honor Cloudflare Pages' `public/_redirects`: `/impact/` and `/programmes/` returned 404 on a tested Vercel deployment. Fix or explicitly account for these routes before any rollback; all production cutover changes require separate approval.
 
 ## Historical Vercel release record — 3 October 2026
 
