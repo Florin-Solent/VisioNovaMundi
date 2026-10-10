@@ -245,9 +245,22 @@ async function qa(base, chromium) {
           assert.deepEqual(cardMetrics, founderMetrics, 'Collapsed MECC card no longer matches Founder Perspective width, padding, and border radius');
           await meccToggle.focus();
           assert(await meccToggle.evaluate(el => el.matches(':focus-visible')), 'MECC control has no visible keyboard focus');
+          await page.evaluate(() => {
+            window.__vnmMeccAnimations = [];
+            const animate = Element.prototype.animate;
+            Element.prototype.animate = function (keyframes, options) {
+              if (this.matches('[data-mecc-details]')) window.__vnmMeccAnimations.push(options);
+              return animate.call(this, keyframes, options);
+            };
+          });
           await page.keyboard.press('Enter');
           assert.equal(await meccToggle.getAttribute('aria-expanded'), 'true', 'Keyboard did not expand MECC details');
           assert.equal(await meccToggle.locator('[data-mecc-toggle-label]').innerText(), 'Show less');
+          if (reduced) {
+            assert.equal(await page.evaluate(() => window.__vnmMeccAnimations.length), 0, 'Reduced-motion MECC expansion started an animation');
+          } else {
+            assert(await page.evaluate(() => window.__vnmMeccAnimations.some(options => options?.duration === 300)), 'MECC expansion is missing its 300ms transition');
+          }
           assert(await meccPanel.isVisible(), 'Expanded MECC details are not visible');
           assert(await meccPanel.evaluate(el => !el.hidden && !el.inert && el.getAttribute('aria-hidden') === 'false'), 'Expanded MECC details remain inaccessible');
           const detailsText = await meccPanel.innerText();
@@ -255,11 +268,6 @@ async function qa(base, chromium) {
             assert(detailsText.toLowerCase().includes(required.toLowerCase()), `MECC details are missing ${required}`);
           }
           assert.equal(await meccPanel.locator('a[href="https://www.walthamforest.gov.uk/health-and-wellbeing/public-health-strategies-and-policies/making-every-contact-count"]').count(), 1, 'Official MECC information link is missing');
-          if (reduced) {
-            assert.equal(await meccPanel.evaluate(el => el.getAnimations().length), 0, 'Reduced-motion MECC expansion started an animation');
-          } else {
-            assert(await meccPanel.evaluate(el => el.getAnimations().some(animation => animation.effect?.getTiming().duration === 300)), 'MECC expansion is missing its 300ms transition');
-          }
           await page.waitForFunction(() => { const panel = document.querySelector('[data-mecc-details]'); return panel && !panel.hidden && !panel.style.height; });
           assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Expanded MECC card causes horizontal overflow');
           await meccToggle.click();
