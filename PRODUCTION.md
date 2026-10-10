@@ -1,6 +1,6 @@
 # Production manifest
 
-Cloudflare Pages is VNM's sole production and preview platform. GitHub `master` is deployed to the Cloudflare Pages project `visionovamundi`, serving `https://www.visionovamundi.com/`. The VNM Vercel project is disconnected from GitHub and is not a supported host or fallback; permanent project deletion is pending separate founder confirmation.
+Cloudflare Pages is VNM's sole production and preview platform. GitHub `master` is deployed to the Cloudflare Pages project `visionovamundi`, serving `https://www.visionovamundi.com/`. The VNM Vercel project was permanently deleted on 10 October 2026 after explicit founder authorization; it is not a supported host or fallback.
 
 The founder accepted the bounded residual risk for `http-cache-semantics@4.2.0` for this static-site release. GHSA-ch52-4w7c-c8xp remains OPEN and must not be described as resolved.
 
@@ -34,15 +34,15 @@ No production issue was observed in these checks. They describe the tested live 
 | Production deployment | Source `f8488d88a6d196111eba3fd932b7911c17b63f2a`; deployment `ff861b45-062b-48ee-966d-b1cd55ab6b72`; successful. The Pages dashboard listed `www.visionovamundi.com`, `cf-test.visionovamundi.com` and the Pages hostname. |
 | Variables and bindings | No project environment variables or bindings were configured in the reviewed dashboard. |
 
-## Vercel disconnection and deletion readiness — verified 10 October 2026
+## Vercel retirement completed — verified 10 October 2026
 
-The exact VNM project, `vnm-uhc-fallback-20260815` (`prj_N3UBfjQ80G3u6Qj1g1GymAnsYFkj`), is no longer connected to a Git repository. Its project-level integrations page is empty, no project Deploy Hooks or environment variables were listed, and the saved Ignored Build Step remains `Don't build anything` (`exit 0`). The only attached project domain is `vnm-uhc-fallback-20260815.vercel.app`; neither public VNM production domain is attached. The Vercel account-level GitHub integration was left unchanged.
+The exact VNM project, `vnm-uhc-fallback-20260815` (`prj_N3UBfjQ80G3u6Qj1g1GymAnsYFkj`), was permanently deleted after the founder's explicit authorization. Vercel redirected to its project list with `projectDeleted=vnm-uhc-fallback-20260815`; a subsequent read-only project lookup by the exact ID returned HTTP 404 `not_found`. The Vercel account-level GitHub integration was left unchanged.
 
-The account contained 39 VNM project deployments, all in READY state when inventoried. The newest record was created before the GitHub merge. No Vercel deployment was created after the 20:21:56 UTC merge. The complete captured deployment inventory, including IDs, creation times, branches, source commits and URLs, is in [docs/vercel-retirement-record.md](docs/vercel-retirement-record.md).
+Before deletion, the account contained 39 VNM project deployments, all in READY state when inventoried. The newest record was created before the GitHub merge. No Vercel deployment was created after the 20:21:56 UTC merge. Their IDs, timestamps, branches, source commits and URLs are preserved in [docs/vercel-retirement-record.md](docs/vercel-retirement-record.md), backed by the pre-deletion commit bundle described there.
 
-Cloudflare serves the public site independently, and the production deployment above is sourced from GitHub `master`; no public site route depends on Vercel. The project is therefore ready for deletion from a technical/dependency perspective. Permanent deletion has not been performed. It requires the founder's explicit confirmation for the exact project and will remove the 39 existing deployment records and their deployment URLs/logs, along with the project and its project-only `vercel.app` address. No Vercel rollback will remain available.
+The Cloudflare deployment above serves the public site independently; no public site route depends on Vercel. Immediately after Vercel deletion, `https://www.visionovamundi.com/` and `/about/` both returned HTTP 200 over validated HTTPS with `Server: cloudflare` and HSTS. No Vercel rollback remains available.
 
-The Vercel account-wide webhook inventory was not independently available through the read API (permission denied). Project-level integrations and Deploy Hooks were checked in the dashboard; no project integration or hook was present. Account-level integration settings were not changed. No Vercel-only secret, environment variable or dependency was identified for preserving the Cloudflare site.
+Before deletion, project-level integrations and Deploy Hooks were absent, and no project environment variables were present. The Vercel account-wide webhook inventory was not independently available through the read API (permission denied); account-level integration settings were not changed. No Vercel-only secret, environment variable or dependency was identified for preserving the Cloudflare site.
 
 ## Remaining open security item
 
