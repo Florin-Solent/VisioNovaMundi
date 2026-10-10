@@ -1,18 +1,16 @@
 # Production manifest
 
-Cloudflare Pages is the sole supported production and preview platform for VNM. Vercel project `vnm-uhc-fallback-20260815` is still present and Git-connected according to the founder's latest account check; its permanent deletion has not been authorized or performed. Do not push while that connection remains active. The founder separately accepted the documented `http-cache-semantics` exposure for this release while leaving GHSA-ch52-4w7c-c8xp OPEN. Production release authorization has not been granted.
+Cloudflare Pages is the sole supported production and preview platform for VNM. Read-only checks on 10 October 2026 confirm that Vercel project `vnm-uhc-fallback-20260815` remains Git-connected; permanent deletion has not been authorized or performed. Do not push while that connection remains active. The founder accepted the documented `http-cache-semantics` residual risk for this release while leaving GHSA-ch52-4w7c-c8xp OPEN. Production release authorization has not been granted.
 
-On 10 October 2026, read-only public checks confirmed the site and existing Cloudflare preview URLs below respond successfully over validated TLS. A fresh Cloudflare dashboard review could not be completed in this session because the project page returned “Page not found”; therefore current dashboard settings and account-level availability are not independently reconfirmed here. Earlier dashboard observations are retained as historical evidence, not represented as fresh verification.
+On 10 October 2026, a read-only dashboard review confirmed the Pages project remains connected to `Florin-Solent/VisioNovaMundi`, uses `master` with automatic deployments enabled, and is configured for `npm run build` with `dist` output. The project lists the production and preview deployments below; public requests to production, key routes, redirects, and existing previews also succeeded over HTTPS. This verification did not change dashboard settings, DNS or deployments.
 
-## Previously recorded Cloudflare Pages configuration
-
-The following dashboard configuration was verified earlier on 10 October 2026. The dashboard could not be re-opened during the later public check, so verify changeable settings before any release action.
+## Cloudflare Pages configuration verified 10 October 2026
 
 | Platform | Verified state |
 | --- | --- |
-| Cloudflare Pages | Project `visionovamundi`; connected repository `Florin-Solent/VisioNovaMundi`; production branch `master`; automatic production deployments enabled; preview setting `All non-Production branches`; build command `npm run build`; output directory `dist`; root directory blank; build system version 3. |
-| Cloudflare Pages production | Current deployment source `master` at `7da90697cc7ca9616e3653c81de2a34b02516f7e`, marked successful at `https://c10c87bf.visionovamundi.pages.dev/`. Project listed `cf-test.visionovamundi.com`, `www.visionovamundi.com` and `visionovamundi.pages.dev` on its production deployment. |
-| Vercel (retirement pending) | Project `vnm-uhc-fallback-20260815` and its Git connection still exist per the founder's latest account check. The details below are retained as historical records only; Vercel is not a supported host or fallback. |
+| Cloudflare Pages | Project `visionovamundi`; connected repository `Florin-Solent/VisioNovaMundi`; production branch `master`; automatic production deployments enabled; build command `npm run build`; output directory `dist`; root directory blank; build system version 3. No project environment variables or bindings are configured. |
+| Cloudflare Pages production | Current production source is `master` at `7da90697cc7ca9616e3653c81de2a34b02516f7e`; the dashboard lists deployment URL `https://c10c87bf.visionovamundi.pages.dev/`. The production deployment lists `cf-test.visionovamundi.com`, `www.visionovamundi.com` and `visionovamundi.pages.dev`. Its recorded build used Node.js 22.23.1 and npm 10.9.2; the current settings show no `NODE_VERSION` override. |
+| Vercel (retirement pending) | The project still exists and is Git-connected. Current project settings show its `Ignored Build Step` remains `Don't build anything` (`exit 0`); the only attached project domain is `vnm-uhc-fallback-20260815.vercel.app`. It is not a supported host or fallback. |
 
 ## Public Cloudflare verification — 10 October 2026
 
@@ -25,15 +23,25 @@ The following dashboard configuration was verified earlier on 10 October 2026. T
 | `https://visionovamundi.pages.dev/` and `https://cf-test.visionovamundi.com/` | Both HTTP 200 over validated TLS. |
 | Existing previews `5080e70f` and `4d77820d` on `visionovamundi.pages.dev/about/` | Both HTTP 200; `X-Robots-Tag: noindex` present. |
 
-These public responses verify current reachability, TLS validation and observed redirect behavior. They do not prove the current dashboard's project settings, Git connection, future build success, or Cloudflare account health. The required Cloudflare-only plan remains conditional on a dashboard verification before publishing.
+These responses and the read-only dashboard record verify current public reachability, TLS validation, observed redirects, the Git connection, build settings and existing preview support. They do not guarantee that a future candidate build will succeed or establish Cloudflare account availability beyond these observations. A preview must still be built and reviewed for the final approved candidate before production release.
 
-Historical note: an earlier dashboard inspection recorded Cloudflare as production and Vercel as a fallback. It also recorded saving Vercel's Ignored Build Step as `Don't build anything` and observed no new deployment records at that time. This setting was not rechecked in the latest session and must not be relied on as current protection.
+## Vercel retirement checks — read-only, 10 October 2026
+
+- The Vercel project is `vnm-uhc-fallback-20260815` (`prj_N3UBfjQ80G3u6Qj1g1GymAnsYFkj`). Its Git settings show the connected repository `Florin-Solent/VisioNovaMundi`; the project has no Vercel Deploy Hooks. The account-level Vercel GitHub integration and event settings are not changed.
+- The Vercel project Domains page lists only `vnm-uhc-fallback-20260815.vercel.app`; neither `visionovamundi.com` nor `www.visionovamundi.com` is attached. The configured Ignored Build Step remains `Don't build anything` / `exit 0`. No project disconnection, build-guard change, deployment or deletion was performed.
+- Cloudflare Pages is independently connected to GitHub and serves production from `master`. It has its own successful production deployment, existing branch/PR previews and the required public domains. The source project is a static Astro site with no Cloudflare project variables or bindings; the current public site and its routes/redirects responded without relying on Vercel.
+- Repository review found no active application or site-output references to a Vercel endpoint. Remaining source references are historical deployment records, a release guard that rejects `.vercel.app` URLs, checks that reject Vercel configuration/linkage, and the ignored `.vercel` local metadata directory. `package-lock.json` contains optional Vercel peer names in upstream dependency metadata; they are not installed Vercel runtime dependencies.
+- No VNM Vercel Deploy Hook exists. External third-party consumers of the `vercel.app` hostname cannot be conclusively enumerated from the repository or these dashboards; no such consumer was identified, and the hostname is no longer a public VNM domain.
+
+**Retirement procedure after separate approval:** (1) In this exact project's Git settings, disconnect only `Florin-Solent/VisioNovaMundi`; do not revoke the account-level GitHub App installation or alter any other Vercel project. (2) Confirm new Git pushes no longer create Vercel deployment records; keep the `Don't build anything` guard in place until disconnection is confirmed. (3) Recheck Cloudflare production and previews. (4) Obtain the founder's explicit confirmation identifying project `vnm-uhc-fallback-20260815` before permanently deleting that project and its deployments. (5) Verify the project is gone while leaving the Vercel account, GitHub repository, Cloudflare project, DNS and unrelated resources intact. These steps have not been executed.
+
+Historical note: an earlier dashboard inspection recorded Cloudflare as production and Vercel as a fallback. A read-only review on 10 October confirmed that Vercel's Ignored Build Step remains saved as `Don't build anything` (`exit 0`); it was left in place while the Vercel Git connection remains active.
 
 ## Historical Vercel automatic-deployment proposal — superseded
 
 An earlier local proposal added a root `vercel.json` setting to suppress Vercel Git deployments while retaining the project. That proposal is superseded by the decision to retire Vercel. The Cloudflare-only release candidate removes this file. Do not publish while Vercel is still connected, because doing so could trigger a Vercel event.
 
-At the time of the proposal, the config had not been pushed. Its first-event behavior was uncertain, which is why publishing was gated. The earlier Ignored Build Step observation is historical only; current Vercel settings have not been rechecked. This proposal is superseded and must not be used as deployment guidance.
+At the time of the proposal, the config had not been pushed. Its first-event behavior was uncertain, which is why publishing was gated. The current local candidate removes the Vercel configuration, but the project remains connected; do not publish until its Git connection is safely disconnected or the project is deleted.
 
 ## Historical deployment architecture and release records
 
