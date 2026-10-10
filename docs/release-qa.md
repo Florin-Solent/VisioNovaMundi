@@ -8,11 +8,11 @@ GitHub keeps one protected status context: **`release:check`**. The workflow cla
 
 - **DOCS** checks the repository target and validates changed documentation files for readable, non-empty text without NUL bytes. It does not install project dependencies or a browser.
 - **FAST** is for up to three isolated static `.astro` page edits. It verifies the required built routes and changed routes, their title/description metadata, generated internal destinations and first-party assets, and staging/local URL leaks across generated HTML. It then runs desktop and mobile browser smoke checks on `/`, `/work/`, `/programmes/`, `/governance/`, `/contact/`, and every changed route. Reduced motion is checked on the homepage and changed routes. Typical suite size is 12 cases before changed routes.
-- **FULL** preserves the 25-route, three-viewport, normal/reduced-motion suite (150 cases), navigation and focus checks, internal destination checks, and Three.js/WebGL behavior checks.
+- **FULL** runs every configured route at three viewports with normal and reduced motion, plus navigation and focus checks, internal destination checks, and Three.js/WebGL behavior checks. The current 27-route set produces 162 cases.
 
 The classifier fails closed to FULL when a path is unknown, route mapping is uncertain, runtime behavior changes, or more than three pages are touched. Shared layouts/components/styles/data, navigation, JavaScript/TypeScript, build/deployment configuration, scripts, tests, dependencies, Markdown pages, and workflow changes require FULL. An isolated Astro page is FAST only when its inline scripts, imports, event handlers, and hydration directives are unchanged from the PR base.
 
-The PR label **`qa:full`** and **Run workflow** manual dispatch can only escalate QA to FULL. Scheduled FULL regressions run Monday, Wednesday, and Friday at 05:17 UTC. Pushes to `master` run FAST build/integrity and critical-route smoke checks; risky changes must pass the PR gate before merge, so master does not repeat the 150 cases automatically. The schedule and manual dispatch retain a full regression path.
+The PR label **`qa:full`** and **Run workflow** manual dispatch can only escalate QA to FULL. Scheduled FULL regressions run Monday, Wednesday, and Friday at 05:17 UTC. Pushes to `master` run FAST build/integrity and critical-route smoke checks; risky changes must pass the PR gate before merge, so master does not repeat the full 162-case suite automatically. The schedule and manual dispatch retain a full regression path.
 
 ## Local commands
 
@@ -36,9 +36,9 @@ QA uses the existing external Playwright version **1.64.0-alpha-1790635538000** 
 npm exec --yes --package=playwright@1.64.0-alpha-1790635538000 -- playwright install chromium
 ```
 
-The current CI run spends about 3 seconds in `npm ci`, about 31 seconds provisioning Playwright/Chromium and system packages, under 2 seconds building the site, and about 11 minutes 25 seconds in browser QA for the 150 cases. Artifact upload takes about 1–2 seconds. Browser execution is the dominant cost; HTTP/static checks are inexpensive and run as part of the build/check process.
+The prior CI timing record for 150 cases was about 3 seconds in `npm ci`, 31 seconds provisioning Playwright/Chromium and system packages, under 2 seconds building, and 11 minutes 25 seconds in browser QA. The 10 October 2026 local 162-case run took 17 minutes 56 seconds; browser execution is the dominant cost, while HTTP/static checks are inexpensive and run as part of the build/check process.
 
-On this branch, Node **22.14.0** with Chromium **155.0.8059.12** passed FAST in **2m52s** (14 cases, `/contact/` changed route, 27 internal destinations) and FULL in **20m06s** (150 cases, 0 failures, 62 internal destinations) on the local Windows environment. The local browser run is slower than the latest hosted CI timing; both pass within the retained 25-minute FULL timeout.
+In the 10 October 2026 local run, Node **22.14.0 ARM64** with Chromium **155.0.8059.12** passed FULL in **17m56s** (**162 cases, zero failures, 78 internal destinations**) on Windows. A previous local record on Node 22.14.0 passed FAST in 2m52s (14 cases, `/contact/` changed route, 27 internal destinations) and FULL in 20m06s (150 cases, zero failures, 62 internal destinations). Both full runs completed within the retained 25-minute timeout.
 
 Browser-binary caching was considered and not added. Playwright advises against browser caching in CI because cache restore time can be comparable to downloading, while OS browser dependencies still need installation. This repository's observed cold provisioning is about 31 seconds, a small share of the run, so caching adds complexity without a meaningful gain. [Playwright CI guidance](https://playwright.dev/docs/ci) · [Browser management](https://playwright.dev/docs/browsers).
 

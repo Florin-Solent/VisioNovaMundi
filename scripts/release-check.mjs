@@ -58,7 +58,14 @@ async function staticChecks() {
     '/programmes /projects/ 308', '/programmes/ /projects/ 308',
   ];
   for (const rule of expectedRedirects) assert(redirectRules.includes(rule), 'Missing Cloudflare Pages redirect: ' + rule);
-  assert(!existsSync('vercel.json'), 'Vercel-specific redirect configuration must not be present');
+  const vercelConfig = JSON.parse(await readFile('vercel.json', 'utf8'));
+  assert.deepEqual(
+    Object.keys(vercelConfig).sort(),
+    ['$schema', 'git'].sort(),
+    'Vercel configuration must remain limited to Git deployment suppression',
+  );
+  assert.equal(vercelConfig.$schema, 'https://openapi.vercel.sh/vercel.json', 'Unexpected Vercel configuration schema');
+  assert.deepEqual(vercelConfig.git, { deploymentEnabled: false }, 'Automatic Vercel Git deployments must stay disabled without adding Vercel routing or build behavior');
   assert.equal((await readFile('dist/_redirects', 'utf8')).trim(), redirectText.trim(), 'Cloudflare redirects were not copied to the Pages build output');
   for (const route of ['/impact/', '/programmes/']) assert(!existsSync(join('dist', route, 'index.html')), 'Retired route ' + route + ' must not be generated as an HTML page');
   for (const route of fullRoutes) assert(existsSync(join('dist', route, 'index.html')), `Missing built route ${route}`);

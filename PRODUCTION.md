@@ -1,6 +1,22 @@
 # Production manifest
 
-Current production state confirmed on 5 October 2026 after the homepage and project visual releases were merged to `master`. The public site is served through Cloudflare Pages, with Vercel retained temporarily as rollback/fallback infrastructure.
+The public site is served through Cloudflare Pages, with Vercel retained as rollback/fallback infrastructure. On 10 October 2026, after PR #12, the connected Cloudflare Pages and Vercel dashboards both showed `master` commit `7da90697cc7ca9616e3653c81de2a34b02516f7e` as the current production source. The Cloudflare deployment was successful. Before guarded PR preparation, Vercel's Ignored Build Step was `Automatic`; it is now temporarily set to `Don't build anything` (`exit 0`) to suppress Git builds while the local `vercel.json` policy is introduced. The Vercel project, existing deployments and `vercel.app` domain remain in place.
+
+## Current deployment configuration verified 10 October 2026
+
+| Platform | Verified state |
+| --- | --- |
+| Cloudflare Pages | Project `visionovamundi`; connected repository `Florin-Solent/VisioNovaMundi`; production branch `master`; automatic production deployments enabled; preview setting `All non-Production branches`; build command `npm run build`; output directory `dist`; root directory blank; build system version 3. |
+| Cloudflare Pages production | Current deployment source `master` at `7da90697cc7ca9616e3653c81de2a34b02516f7e`, marked successful at `https://c10c87bf.visionovamundi.pages.dev/`. Project listed `cf-test.visionovamundi.com`, `www.visionovamundi.com` and `visionovamundi.pages.dev` on its production deployment. |
+| Vercel fallback | Project `vnm-uhc-fallback-20260815`; connected repository `Florin-Solent/VisioNovaMundi`; current production source `master` at `7da90697cc7ca9616e3653c81de2a34b02516f7e`, marked Ready; deployment ID `8ZvFXvNtYmib5WrXtHQcYDUQxFS2`; `vercel.app` deployment URL `https://vnm-uhc-fallback-20260815-4kchxfci1.vercel.app/`; project alias `vnm-uhc-fallback-20260815.vercel.app`; baseline Ignored Build Step `Automatic`, now temporarily `Don't build anything` (`exit 0`, saved and verified after reload); Node.js `22.x`. A preview for the merged MECC PR is also present. |
+
+The dashboard inspection confirmed Cloudflare is the active production host and recorded the known-good Vercel fallback. The only setting subsequently changed was Vercel's Ignored Build Step. After saving it, the deployment list contained zero new records after the previous latest deployment; no build or deployment was initiated by this setting change.
+
+## Proposed Vercel automatic-deployment policy — local only
+
+The local root [`vercel.json`](vercel.json) sets `git.deploymentEnabled` to `false` for all branches. [Vercel documents](https://vercel.com/docs/project-configuration/git-configuration) this as disabling automatic Git deployments while leaving deliberate manual deployments available. The existing Vercel project, Git connection, `vercel.app` domain and deployment history are to be retained.
+
+This config has not been pushed and is not effective on the live Vercel project. Vercel's [public documentation](https://vercel.com/docs/project-configuration/git-configuration) does not guarantee that a newly introduced config file suppresses the first event that carries it; a [Vercel staff response](https://community.vercel.com/t/is-there-no-way-to-block-all-automatic-deployments-from-github/6349/3) says an initial deployment may be needed to establish the setting. As an approved guard for this PR stage, the Ignored Build Step is now saved as `Don't build anything` (`exit 0`). Git events may still create cancelled deployment records and count toward quotas, as [Vercel's project settings documentation](https://vercel.com/docs/project-configuration/project-settings) explains, but this guard suppresses their builds. No build was triggered by changing the guard. Do not restore `Automatic`, merge to `master`, or trigger Cloudflare production until the PR evidence is reviewed and production is separately approved.
 
 ## Approved target architecture
 
@@ -15,8 +31,8 @@ Current production state confirmed on 5 October 2026 after the homepage and proj
 | Project visuals merge commit | `e84d090946124003382a2ac86846e2ddf12b5d47` — PR #8 |
 | Latest release-branch preview | Cloudflare Pages deployment `a2d6cf49-9b84-4103-b78c-077ffc669da2`; https://a2d6cf49.visionovamundi.pages.dev/; GitHub-triggered from `9eae7d1` |
 | Current live host for `www` | Cloudflare Pages project `visionovamundi` |
-| Vercel fallback project | `vnm-uhc-fallback-20260815` |
-| Vercel fallback latest observed READY deployment (9 Oct audit) | `dpl_GjZA6yUZfk72TdTm1hh8wNLFZ2vg`, source `master` commit `a8c208401929709fccc70d758be404565edd8b56` (Circular Justice PR #10); https://vnm-uhc-fallback-20260815-9pbmfvaq3.vercel.app/ |
+| Vercel fallback project | `vnm-uhc-fallback-20260815`; retained for deliberate manual deployment/rollback after the proposed Git suppression policy takes effect |
+| Vercel fallback READY deployment recorded in 9 Oct audit (historical) | `dpl_GjZA6yUZfk72TdTm1hh8wNLFZ2vg`, source `master` commit `a8c208401929709fccc70d758be404565edd8b56` (Circular Justice PR #10); https://vnm-uhc-fallback-20260815-9pbmfvaq3.vercel.app/ |
 | Vercel historical rollback reference (5 Oct record) | GitHub deployment `6847843880`, success, source commit `411dfa2e3d57b5461590de36418435a59119eba8`; https://vnm-uhc-fallback-20260815-6hanr4fco.vercel.app/ |
 | Cloudflare Pages production deployment (5 Oct record) | Success, project visuals source commit `e84d090946124003382a2ac86846e2ddf12b5d47`; deployment `d4d5796a-faeb-4771-930b-c6a953e81435` |
 | GitHub release QA | Homepage and project visual release checks succeeded; project visual release QA passed before merge |
