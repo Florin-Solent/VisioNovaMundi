@@ -14,7 +14,7 @@ Captured read-only on 10 October 2026 for the founder-approved VNM Cloudflare-on
 | Deployment records | 39 captured before deletion; all were `READY` at inventory time and were removed with the project. |
 | Production dependency | None identified. Cloudflare Pages independently serves the public website. |
 
-The project-level Integrations page showed no installed integrations. The project settings showed `Don't build anything` (`exit 0`) for the ignored build step. No project environment variables or project Deploy Hooks were found. The account-level Vercel GitHub integration was not changed. Account-wide webhook enumeration was unavailable through the read API (permission denied), so this record makes no claim about unrelated account-level integrations.
+Before deletion, the project-level Integrations page showed no installed integrations. Its settings showed `Don't build anything` (`exit 0`) for the ignored build step. No project environment variables or project Deploy Hooks were found. The account-level Vercel GitHub integration was not changed. Account-wide webhook enumeration was unavailable through the read API (permission denied), so this record makes no claim about unrelated account-level integrations.
 
 No Vercel deployment was created after the GitHub merge at 20:21:56 UTC on 10 October 2026. The latest captured deployment below predates the merge.
 

@@ -86,17 +86,19 @@ The homepage manifesto and project portfolio visual system are live. The Cloudfl
 
 Cloudflare nameservers observed: `lola.ns.cloudflare.com` and `mark.ns.cloudflare.com`.
 
-`cf-test.visionovamundi.com` was recorded as Active with SSL enabled on 5 October 2026. The DNS observations above are historical and were not re-run in the latest check; the public HTTP/TLS checks from 10 October are recorded separately near the top. Vercel deletion remains pending the founder's explicit confirmation.
+`cf-test.visionovamundi.com` was recorded as Active with SSL enabled on 5 October 2026. The DNS observations above are historical and were not re-run in the latest check; the public HTTP/TLS checks from 10 October are recorded separately near the top. At the time of this DNS record, Vercel deletion was still pending; the VNM project was deleted on 10 October as recorded above.
 
 ## Historical Vercel project audit — 9 October 2026
 
+The following findings describe the project before its Git connection was disconnected and the project was deleted on 10 October 2026. They do not describe current hosting or deployment behavior.
+
 - In Vercel project `vnm-uhc-fallback-20260815` (`prj_N3UBfjQ80G3u6Qj1g1GymAnsYFkj`), the dedicated **Project Domains** endpoint lists only `vnm-uhc-fallback-20260815.vercel.app`. The custom-domain project associations for `visionovamundi.com` and `www.visionovamundi.com` were removed. No Cloudflare DNS or account-level domain registration changes were made during that operation.
-- Vercel's broader project summary still listed the two former custom domains when checked. For current project-domain associations, use the dedicated Project Domains list and recheck before a migration.
-- Vercel project configuration reports **Node 22.x**; the latest READY deployment listed above was created before that setting was changed, so this is **not evidence that the existing deployment was rebuilt under Node 22**.
-- The Vercel GitHub integration remains active; PR updates can create preview builds and `master` updates can trigger production builds on both Cloudflare Pages and Vercel. The dual-deployment approval gate remains in force.
+- Vercel's broader project summary still listed the two former custom domains at that time, while the dedicated Project Domains list showed neither attached. The project was later deleted, as recorded above.
+- Vercel project configuration reported **Node 22.x**; the latest READY deployment listed above was created before that setting was changed, so this was **not evidence that the existing deployment was rebuilt under Node 22**.
+- At the time of this audit, the Vercel GitHub integration was active; PR updates could create preview builds and `master` updates could trigger production builds on both Cloudflare Pages and Vercel. The dual-deployment approval gate applied then and was superseded when the project was disconnected on 10 October.
 - The Vercel audit found zero configured project environment variables and zero custom environments. Do not infer parity of build output or redirects solely from a READY status.
 
-**Historical rollback limitation:** Removing the custom-domain associations meant Vercel was not a one-click DNS rollback. Vercel is now pending retirement, not a supported rollback target. Historically, it did not honor Cloudflare Pages' `public/_redirects`: `/impact/` and `/programmes/` returned 404 on a tested Vercel deployment.
+**Historical rollback limitation:** Removing the custom-domain associations meant Vercel was not a one-click DNS rollback. The VNM Vercel project was later deleted and is not a supported rollback target. Historically, it did not honor Cloudflare Pages' `public/_redirects`: `/impact/` and `/programmes/` returned 404 on a tested Vercel deployment.
 
 ## Historical Vercel release record — 3 October 2026
 
