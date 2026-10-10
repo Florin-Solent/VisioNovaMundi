@@ -52,6 +52,60 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </p>
   </section>
 
+  <section class="card learning" data-mecc-card aria-labelledby="mecc-title">
+    <p class="eyebrow">Founder learning</p>
+    <h2 id="mecc-title">Making Every Contact Count</h2>
+    <p class="mecc-meta">Training completed <span aria-hidden="true">·</span> Waltham Forest <span aria-hidden="true">·</span> October 2026</p>
+    <p class="mecc-intro">At Visio Nova Mundi CIC, we believe positive community change begins with listening, understanding and helping people find the right support. MECC introduced a practical way to have short, supportive conversations, recognise opportunities to support wellbeing and signpost people to appropriate services as our projects develop.</p>
+
+    <div class="mecc-details" id="mecc-details" data-mecc-details hidden inert aria-hidden="true">
+      <p>
+        In October 2026, our founder and director, Marcel Florin Banias, completed Making Every Contact Count (MECC) training through the London Borough of Waltham Forest. The training introduced a practical approach to short, supportive conversations through three steps:
+      </p>
+
+      <ol class="mecc-steps">
+        <li><strong>Ask</strong><span>Listen carefully and understand what matters to the person.</span></li>
+        <li><strong>Advise</strong><span>Share relevant, appropriate information without judgement.</span></li>
+        <li><strong>Assist</strong><span>Help the person find suitable information or support.</span></li>
+      </ol>
+
+      <p>
+        The learning also covered recognising opportunities to support wellbeing and signposting people to appropriate services. Read more on the <a href="https://www.walthamforest.gov.uk/health-and-wellbeing/public-health-strategies-and-policies/making-every-contact-count">London Borough of Waltham Forest MECC page</a>.
+      </p>
+      <p>This learning will help inform how we design and develop our community-focused initiatives.</p>
+
+      <h3 class="application-heading">How we hope to apply the learning</h3>
+      <div class="application-grid">
+        <section class="application">
+          <h4>Unity House Centres</h4>
+          <p>Use welcoming conversations to listen for community needs and, where appropriate, direct people towards suitable support.</p>
+        </section>
+        <section class="application">
+          <h4>Circular Justice</h4>
+          <p>If future work involves community engagement, approach residents experiencing food insecurity or other everyday difficulties with respect and without judgement.</p>
+        </section>
+        <section class="application">
+          <h4>Satul Conectat România</h4>
+          <p>Explore how community information hubs could help residents identify and access useful services. The model remains proposed.</p>
+        </section>
+        <section class="application">
+          <h4>Clandestinus Educational Games</h4>
+          <p>Explore supportive communication and inclusive educational experiences. Project Clandestinus is an independent founder-led venture; specialist education and safeguarding requirements remain separate.</p>
+        </section>
+      </div>
+
+      <p class="application-note">These are intended applications as projects develop, not claims of services already delivered or outcomes measured.</p>
+      <p class="scope-note">
+        <strong>Training scope:</strong> MECC is awareness and communication training. It is not a clinical qualification, medical advice certification or specialist safeguarding accreditation, and the training alone does not establish operational safeguarding readiness. This records the founder's learning only; it does not imply that all staff or volunteers have completed the training.
+      </p>
+    </div>
+
+    <button class="mecc-toggle" type="button" data-mecc-toggle aria-expanded="false" aria-controls="mecc-details">
+      <span data-mecc-toggle-label>Learn more</span>
+      <span class="mecc-toggle-icon" aria-hidden="true">↓</span>
+    </button>
+  </section>
+
   <section class="card verify">
     <p class="eyebrow">Accountability</p>
     <h2>How to verify and work with us</h2>
@@ -115,6 +169,159 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       background: linear-gradient(135deg, rgba(39, 99, 235, 0.05), rgba(16, 185, 129, 0.05));
     }
 
+    .learning {
+      margin-top: 14px;
+      background: linear-gradient(135deg, rgba(39, 99, 235, 0.05), rgba(16, 185, 129, 0.05));
+    }
+
+    .learning > .eyebrow { margin: 0 0 7px; }
+
+    .learning > h2 {
+      margin-bottom: 7px;
+      font-size: 16px;
+    }
+
+    .learning > .mecc-meta {
+      margin: 0;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .learning > .mecc-intro {
+      margin-top: 8px;
+    }
+
+    .learning a {
+      color: #075e58;
+      font-weight: 650;
+      text-underline-offset: 0.18em;
+    }
+
+    .mecc-details[hidden] { display: none; }
+
+    .mecc-details {
+      margin-top: 14px;
+      overflow: hidden;
+      transform-origin: top;
+    }
+
+    .mecc-details > p {
+      max-width: 82ch;
+      margin: 12px 0 0;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .mecc-details > p:first-child { margin-top: 0; }
+
+    .mecc-steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin: 16px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .mecc-steps li {
+      display: grid;
+      gap: 4px;
+      align-content: start;
+      min-width: 0;
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .mecc-steps strong {
+      color: var(--text);
+      font-size: 16px;
+    }
+
+    .application-heading {
+      margin: 18px 0 0;
+      color: var(--text);
+      font-size: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .application-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .application {
+      min-width: 0;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .application h4 {
+      margin: 0 0 6px;
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .learning .application p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .mecc-details > .application-note {
+      margin-top: 14px;
+      font-size: 14px;
+    }
+
+    .mecc-details > .scope-note {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-left: 3px solid #0f766e;
+      border-radius: 0 12px 12px 0;
+      background: rgba(255, 255, 255, 0.68);
+      font-size: 14px;
+    }
+
+    .mecc-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-top: 12px;
+      padding: 8px 0 1px;
+      border: 0;
+      border-bottom: 1px solid rgba(15, 118, 110, 0.38);
+      background: transparent;
+      color: #075e58;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 750;
+      cursor: pointer;
+    }
+
+    .mecc-toggle:hover { color: #064e49; border-bottom-color: currentColor; }
+
+    .mecc-toggle:focus-visible {
+      outline: 3px solid rgba(37, 99, 235, 0.55);
+      outline-offset: 4px;
+      border-radius: 3px;
+    }
+
+    .mecc-toggle-icon {
+      display: inline-block;
+      transition: transform 300ms ease;
+    }
+
+    .mecc-toggle[aria-expanded="true"] .mecc-toggle-icon { transform: rotate(180deg); }
+
     .verify { margin-top: 14px; background: rgba(255,255,255,.78); }
     .eyebrow { margin: 0 0 8px; color: #0f766e; font-size: 12px; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
     .actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
@@ -126,5 +333,66 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         grid-template-columns: 1fr;
       }
     }
+
+    @media (max-width: 640px) {
+      .mecc-steps,
+      .application-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .mecc-toggle-icon { transition: none; }
+    }
   </style>
+
+  <script>
+    const meccCard = document.querySelector("[data-mecc-card]");
+    const meccToggle = meccCard?.querySelector("[data-mecc-toggle]");
+    const meccPanel = meccCard?.querySelector("[data-mecc-details]");
+    const meccLabel = meccToggle?.querySelector("[data-mecc-toggle-label]");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let meccAnimation;
+
+    if (meccToggle instanceof HTMLButtonElement && meccPanel instanceof HTMLElement && meccLabel) {
+      meccToggle.addEventListener("click", () => {
+        const expanded = meccToggle.getAttribute("aria-expanded") !== "true";
+        const currentHeight = meccPanel.hidden ? 0 : meccPanel.getBoundingClientRect().height;
+
+        meccAnimation?.cancel();
+        meccToggle.setAttribute("aria-expanded", String(expanded));
+        meccLabel.textContent = expanded ? "Show less" : "Learn more";
+
+        if (expanded) {
+          meccPanel.hidden = false;
+          meccPanel.inert = false;
+          meccPanel.setAttribute("aria-hidden", "false");
+        } else {
+          meccPanel.inert = true;
+          meccPanel.setAttribute("aria-hidden", "true");
+        }
+
+        if (reducedMotion.matches) {
+          meccPanel.hidden = !expanded;
+          meccPanel.style.removeProperty("height");
+          meccPanel.style.removeProperty("overflow");
+          return;
+        }
+
+        const targetHeight = expanded ? meccPanel.scrollHeight : 0;
+        meccPanel.style.overflow = "hidden";
+        meccPanel.style.height = `${currentHeight}px`;
+        meccAnimation = meccPanel.animate(
+          [{ height: `${currentHeight}px` }, { height: `${targetHeight}px` }],
+          { duration: 300, easing: "cubic-bezier(0.2, 0.7, 0.2, 1)" },
+        );
+        meccAnimation.onfinish = () => {
+          meccPanel.style.removeProperty("height");
+          meccPanel.style.removeProperty("overflow");
+          if (!expanded) meccPanel.hidden = true;
+          meccAnimation = undefined;
+        };
+      });
+    }
+  </script>
 </BaseLayout>
