@@ -61,3 +61,15 @@ Headless Chromium uses software WebGL for repeatable draw checks. Emulated touch
 Normal page publishing uses Cloudflare Pages. A `master` update triggers its production build; any publication or merge requires explicit release approval. Vercel is being retired and must not receive routine Git updates.
 
 The old `scripts/prepare-sites.mjs` is retained only as legacy history and is no longer part of `npm run build`. Do not run it as a standard VNM release step. No Sites project or version is changed by local builds.
+
+## Cloudflare-only candidate verification — 10 October 2026
+
+Candidate branch `release/vnm-cloudflare-only-2026-10-10`, final code/test commit `877169ef961825475d8e3ebdd5727487b9376706`. Its ancestry includes integrated candidate `8f467486b94292e6f2caa1d88795049b22d90937`, risk-record commit `e3914b9879038fcca6bf56fbc355be4c83ae02f6`, Node alignment commit `fb06a05cf76a654a802c5c188e1f848c6e651ae5`, and dependency remediation `bc895827c573a3f171e4de935380cdc03318bc1c`.
+
+- Clean `npm ci` on Node 22.23.1 ARM64 installed 186 packages and audited 187. The lockfile was unchanged.
+- `npm audit` and `npm audit --omit=dev` each reported only the known high GHSA-ch52-4w7c-c8xp on `http-cache-semantics@4.2.0` (exit code 1); no audit finding was suppressed. The advisory remains OPEN under the founder's scoped acceptance above.
+- The Astro static build generated all 27 routes. The release target guard passed for Cloudflare Pages project `visionovamundi` / production branch `master`; all 15 release-classifier examples passed.
+- FULL browser regression passed on Node 22.23.1 with Playwright `1.64.0-alpha-1790635538000` and Chromium `155.0.8059.12`: 162/162 route, viewport and motion cases, zero failures, 78/78 internal destinations. It included 3D draw/input checks and the responsive, keyboard, mouse, ARIA, reduced-motion and content checks for the MECC disclosure.
+- The MECC control was checked at 1440px, 820px and 390px in normal and reduced-motion modes. Its collapsed width, padding and border radius match Founder Perspective; keyboard focus, Enter expansion, mouse toggling, `aria-expanded`, inert/hidden state, 300ms animation, reduced-motion no-animation behavior, Ask–Advise–Assist, all four intended project applications, scope limits and official Waltham Forest link passed.
+
+The tested candidate remains local. No GitHub push or PR update, Cloudflare preview of this exact candidate, merge or production deployment has occurred. Production release authorization remains outstanding.
