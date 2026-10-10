@@ -56,6 +56,6 @@ The FAST smoke checks include HTTP success, page title/description, one H1, prim
 
 Headless Chromium uses software WebGL for repeatable draw checks. Emulated touch/mobile and reduced motion are smoke checks, not physical-device, GPU, visual-design, accessibility-audit, or performance certification. Input delivery does not prove subjective scene usability. Third-party request failures are not treated as first-party failures; console errors fail conservatively. Static URL checks inspect generated HTML href/src attributes and do not audit arbitrary strings in bundled code.
 
-Normal page publishing is independent of hosting migration. Cloudflare/Vercel infrastructure work is a separate project and is never required just to update an ordinary page.
+Normal page publishing uses Cloudflare Pages. A `master` update triggers its production build; any publication or merge requires explicit release approval. Vercel is being retired and must not receive routine Git updates.
 
 The old `scripts/prepare-sites.mjs` is retained only as legacy history and is no longer part of `npm run build`. Do not run it as a standard VNM release step. No Sites project or version is changed by local builds.
