@@ -261,6 +261,7 @@ async function qa(base, chromium) {
           } else {
             assert(await page.evaluate(() => window.__vnmMeccAnimations.some(options => options?.duration === 300)), 'MECC expansion is missing its 300ms transition');
           }
+          await page.waitForFunction(() => { const panel = document.querySelector('[data-mecc-details]'); return panel && !panel.hidden && !panel.style.height; });
           assert(await meccPanel.isVisible(), 'Expanded MECC details are not visible');
           assert(await meccPanel.evaluate(el => !el.hidden && !el.inert && el.getAttribute('aria-hidden') === 'false'), 'Expanded MECC details remain inaccessible');
           const detailsText = await meccPanel.innerText();
