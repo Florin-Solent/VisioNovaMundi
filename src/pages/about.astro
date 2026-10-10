@@ -52,6 +52,57 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </p>
   </section>
 
+  <section class="card learning">
+    <p class="eyebrow">Organisational learning</p>
+    <h2>Learning to Support Communities — Making Every Contact Count</h2>
+    <p>
+      At Visio Nova Mundi CIC, we believe positive community change begins with listening, understanding and helping people find the right support.
+    </p>
+    <p>
+      In October 2026, our founder and director, Marcel Florin Banias, completed Making Every Contact Count (MECC) training through the London Borough of Waltham Forest. The training introduced a practical approach to short, supportive conversations through three steps:
+    </p>
+
+    <ol class="mecc-steps">
+      <li><strong>Ask</strong><span>Listen carefully and understand what matters to the person.</span></li>
+      <li><strong>Advise</strong><span>Share relevant, appropriate information without judgement.</span></li>
+      <li><strong>Assist</strong><span>Help the person find suitable information or support.</span></li>
+    </ol>
+
+    <p>
+      The learning also covered recognising opportunities to support wellbeing and signposting people to appropriate services. Read more on the <a href="https://www.walthamforest.gov.uk/health-and-wellbeing/public-health-strategies-and-policies/making-every-contact-count">London Borough of Waltham Forest MECC page</a>.
+    </p>
+    <p>
+      This learning will help inform how we design and develop our community-focused initiatives.
+    </p>
+
+    <h3 class="application-heading">How we hope to apply the learning</h3>
+    <div class="application-grid">
+      <section class="application">
+        <h4>Unity House Centres</h4>
+        <p>Use welcoming conversations to listen for community needs and, where appropriate, direct people towards suitable support.</p>
+      </section>
+      <section class="application">
+        <h4>Circular Justice</h4>
+        <p>If future work involves community engagement, approach residents experiencing food insecurity or other everyday difficulties with respect and without judgement.</p>
+      </section>
+      <section class="application">
+        <h4>Satul Conectat România</h4>
+        <p>Explore how community information hubs could help residents identify and access useful services. The model remains proposed.</p>
+      </section>
+      <section class="application">
+        <h4>Clandestinus Educational Games</h4>
+        <p>Explore supportive communication and inclusive educational experiences. Project Clandestinus is an independent founder-led venture; specialist education and safeguarding requirements remain separate.</p>
+      </section>
+    </div>
+
+    <p class="application-note">
+      These are intended applications as projects develop, not claims of services already delivered or outcomes measured.
+    </p>
+    <p class="scope-note">
+      <strong>Training scope:</strong> MECC is awareness and communication training. It is not a clinical qualification, medical advice certification or specialist safeguarding accreditation, and the training alone does not establish operational safeguarding readiness.
+    </p>
+  </section>
+
   <section class="card verify">
     <p class="eyebrow">Accountability</p>
     <h2>How to verify and work with us</h2>
@@ -115,6 +166,110 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       background: linear-gradient(135deg, rgba(39, 99, 235, 0.05), rgba(16, 185, 129, 0.05));
     }
 
+    .learning {
+      margin-top: 14px;
+      padding: clamp(18px, 3vw, 28px);
+      background: linear-gradient(135deg, rgba(39, 99, 235, 0.045), rgba(16, 185, 129, 0.075));
+    }
+
+    .learning > p:not(.eyebrow) {
+      max-width: 82ch;
+      margin: 12px 0 0;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .learning > h2 {
+      max-width: 30ch;
+      margin: 0;
+      color: var(--text);
+      font-size: clamp(22px, 2.8vw, 30px);
+      line-height: 1.2;
+      letter-spacing: -0.025em;
+    }
+
+    .learning a {
+      color: #075e58;
+      font-weight: 650;
+      text-underline-offset: 0.18em;
+    }
+
+    .mecc-steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin: 16px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .mecc-steps li {
+      display: grid;
+      gap: 4px;
+      align-content: start;
+      min-width: 0;
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .mecc-steps strong {
+      color: var(--text);
+      font-size: 16px;
+    }
+
+    .application-heading {
+      margin: 22px 0 0;
+      color: var(--text);
+      font-size: 18px;
+      letter-spacing: -0.01em;
+    }
+
+    .application-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .application {
+      min-width: 0;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .application h4 {
+      margin: 0 0 6px;
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .learning .application p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .learning > .application-note {
+      margin-top: 14px;
+      font-size: 14px;
+    }
+
+    .learning > .scope-note {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-left: 3px solid #0f766e;
+      border-radius: 0 12px 12px 0;
+      background: rgba(255, 255, 255, 0.68);
+      font-size: 14px;
+    }
+
     .verify { margin-top: 14px; background: rgba(255,255,255,.78); }
     .eyebrow { margin: 0 0 8px; color: #0f766e; font-size: 12px; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
     .actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
@@ -123,6 +278,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
     @media (max-width: 900px) {
       .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .mecc-steps,
+      .application-grid {
         grid-template-columns: 1fr;
       }
     }
