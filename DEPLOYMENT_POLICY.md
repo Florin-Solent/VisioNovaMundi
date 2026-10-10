@@ -1,42 +1,39 @@
 # VNM deployment policy
 
-## Hosting architecture and migration state
+## Hosting architecture
 
 - Astro is the site framework and build system.
 - GitHub is the canonical source and release-control repository: https://github.com/Florin-Solent/VisioNovaMundi.git.
-- Cloudflare Pages is the current production host. The Pages project is `visionovamundi`, connected to this repository, with `master` configured as its production branch.
-- Vercel project `vnm-uhc-fallback-20260815` is retained temporarily as rollback/fallback infrastructure through stabilization. On 9 October 2026 its **project-domain associations for the public VNM hosts were removed**, leaving its `vercel.app` domain; Node **22.x** is configured for future builds. Retain the project until separately approved for retirement.
-- The homepage and project visual releases are merged to `master`; the public-domain cutover is complete and recorded in [PRODUCTION.md](PRODUCTION.md).
-- Current production records, observed DNS targets, deployment identifiers and the preview reference are recorded in [PRODUCTION.md](PRODUCTION.md). Reconfirm changeable dashboard states immediately before each migration step.
-
-Cloudflare Pages custom-domain association and certificate readiness must be confirmed before any public DNS change. The intended sequence is: build and verify the approved commit on the Pages production branch; activate and verify `www`; move `www`; observe and verify it while apex remains unchanged; then activate and verify apex and preserve apex-to-`www` canonical routing.
+- Cloudflare Pages is the sole supported production and preview platform. The Pages project is `visionovamundi`, and `master` is the production branch. The verified build command is `npm run build`, with `dist` as output.
+- Vercel is not an approved hosting target. Project `vnm-uhc-fallback-20260815` remains connected pending founder confirmation of permanent deletion. Until deletion is complete, do not push Git changes that could trigger Vercel. Do not claim the project or its deployments have been removed.
+- Public production and redirect behavior were checked on 10 October 2026; the Cloudflare dashboard was not accessible for a fresh settings review during this check. See [PRODUCTION.md](PRODUCTION.md) for the evidence and its limits.
+- ChatGPT Sites is legacy/non-production and outside normal releases.
 
 ## Operational modes
 
-- **Investigation:** external systems are read-only; local documentation edits, builds and tests are allowed. Do not publish, deploy, change DNS, or push to a production-triggering branch without explicit approval.
-- **Preview:** use local previews or GitHub-triggered Cloudflare Pages branch previews. A branch push may also create an incidental Vercel preview; Cloudflare is the migration review target. Never alias a preview to a production domain.
-- **Production:** Cloudflare Pages is the active production host, served from the configured `master` branch after the production build and smoke checks pass. Vercel remains available through its `vercel.app` domain as a temporary fallback; the public custom domains are no longer attached to its project.
-- **Dual deployment gate:** while both Git integrations are active, a `master` update can trigger Cloudflare Pages and Vercel production deployments. Explain this before any merge or push to `master` and obtain confirmation that both production builds are expected. Do not disable or alter Vercel as a shortcut; preserve it as rollback during stabilization.
-- **Other targets:** ChatGPT Sites and other hosts are outside this migration. Do not update the legacy Sites environment during a normal release.
+- **Investigation:** local documentation edits, builds, tests and read-only external verification are allowed. Do not publish, deploy, change DNS, change Cloudflare settings, or push to a production-triggering branch without explicit approval.
+- **Preview:** Cloudflare Pages provides pull-request and branch previews. Verify previews on their `pages.dev` URLs; never alias a preview to a production domain. Keep preview indexing controls in place.
+- **Production:** Cloudflare Pages is the only supported production host. A `master` update triggers its production build. Publication, merge and deployment require explicit release authorization.
+- **Vercel retirement:** disconnecting the Git integration and permanently deleting the VNM project and its deployments are destructive actions. They require the founder's explicit confirmation. Until confirmed and completed, do not push changes while the project is connected. No Vercel fallback is part of the supported rollback plan.
+- **Other targets:** ChatGPT Sites and any other host are outside this architecture. Do not update them as part of a normal release.
 
 ## Release procedure
 
 1. Read this policy and [PRODUCTION.md](PRODUCTION.md); inspect the working tree and preserve unrelated work.
-2. Use Node 22.12 or later within major 22. Vercel project configuration also now specifies `22.x`, but the existing READY deployment predates that change; reverify runtime and build parity on the next Vercel build. Run `npm run check:target`, `npm run release:classify:test`, and `npm run release:check` for site-code changes.
-3. GitHub Actions automatically selects one lane while preserving the single required `release:check` status:
-   - **DOCS** for allowlisted documentation files that cannot affect site output.
-   - **FAST** for up to three isolated static Astro page edits. It builds and checks every generated route, metadata, internal destinations, assets and staging/local URLs, then runs desktop/mobile browser smoke checks on critical routes and changed pages.
+2. Use Node >=22.19 and <23, as declared by the project. GitHub Actions pins the verified Node 22.23.1 patch. Run `npm run check:target`, `npm run release:classify:test`, and `npm run release:check` for site-code changes.
+3. GitHub Actions selects one lane while retaining the required `release:check` status:
+   - **DOCS** for allowlisted documentation-only files that cannot affect site output.
+   - **FAST** for up to three isolated static Astro page edits. It builds and checks generated routes, metadata, internal destinations, assets and staging/local URLs, then runs desktop/mobile browser smoke checks on critical routes and changed pages.
    - **FULL** for shared UI/layout/navigation/style/data, scripts/tests, runtime JavaScript/TypeScript, routing/build/deployment configuration, dependencies, workflow files, page runtime behavior, uncertain paths or larger changes. FULL retains the full browser suite across routes, viewport sizes and motion settings, including Three.js checks.
-4. A `qa:full` PR label, manual workflow dispatch, or scheduled regression can only escalate to FULL. A `master` push runs the configured master checks and may deploy both hosting projects; follow the dual deployment gate above.
-5. Review the exact diff, test report, commit and documented hosting state. Obtain explicit release approval before merging to `master`, switching a public domain, or otherwise publishing to production.
-6. Before cutover, verify the Cloudflare Pages deployment built from the approved commit directly on its `pages.dev` deployment URL. Verify the route, asset, redirect and shared-footer checks before associating or switching a custom domain.
-7. Switch `www` first only after its Pages custom-domain association is Active and its certificate is valid. Keep apex unchanged while observing `www`. Switch apex only after `www` is proven, preserve apex-to-`www` paths and query strings, and verify there is no redirect loop.
-8. Keep the Vercel project, its `vercel.app` domain, a known-good deployment and historical DNS rollback information available during stabilization. Do not delete or disconnect Vercel without separate approval. Its public-domain associations were removed on 9 October 2026.
-9. A future rollback requires a **new, separately approved and tested cutover**: verify the specific Vercel deployment, re-associate both custom domains on the Vercel project, check ownership and TLS, then make coordinated DNS/redirect changes. Confirm canonical routing, `/impact/` and `/programmes/` parity, assets and essential routes; record verified deployment/domain state in [PRODUCTION.md](PRODUCTION.md). Do not treat restoring the old Vercel DNS value alone as a complete rollback.
+4. A `qa:full` PR label, manual workflow dispatch, or scheduled regression can only escalate to FULL. A push or merge to `master` triggers Cloudflare Pages production deployment.
+5. Review the exact diff, test report, commit and documented hosting state. Obtain explicit release approval before pushing, opening or updating a PR, merging to `master`, changing Cloudflare settings, switching a public domain, or otherwise publishing. Do not proceed while Vercel remains connected unless its Git deployment trigger has been safely removed or the project has been deleted.
+6. For a preview, verify the Cloudflare Pages deployment built from the reviewed commit directly on its `pages.dev` URL. Verify routes, assets, redirects and shared-footer checks before production authorization.
+7. For production, verify the approved `master` build, canonical routes, assets, redirects, TLS and public response after the authorized deployment. Do not change DNS as part of a code release unless separately approved.
+8. Rollback is a Cloudflare Pages operation using a previously verified Pages deployment and must receive explicit approval. Do not treat Vercel as an available fallback; its project is pending retirement and is outside the supported recovery plan.
 
-For local use, `npm run release:smoke` explicitly runs the FAST browser suite and `npm run release:full` explicitly runs the full suite. `npm run release:check` defaults to FULL locally without trusted PR diff metadata. See [docs/release-qa.md](docs/release-qa.md) for coverage and runtime details.
+For local use, `npm run release:smoke` explicitly runs FAST and `npm run release:full` explicitly runs the full suite. `npm run release:check` defaults to FULL locally without trusted PR diff metadata. See [docs/release-qa.md](docs/release-qa.md) for coverage and runtime details.
 
-The scripts build and test only; they contain no deployment command. Target checks fail on an unexpected Git origin or local Vercel link. These are guardrails, not access-control enforcement: manual CLI and dashboard actions remain governed by this policy.
+The scripts build and test only; they contain no deployment command. The local target guard validates the canonical Git origin, expected Cloudflare Pages target metadata, and absence of Vercel deployment configuration or local Vercel linkage. It cannot verify live Cloudflare dashboard settings. These are guardrails, not access-control enforcement: dashboard and publishing actions remain governed by this policy.
 
 ## Legacy Sites
 

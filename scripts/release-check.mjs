@@ -58,7 +58,7 @@ async function staticChecks() {
     '/programmes /projects/ 308', '/programmes/ /projects/ 308',
   ];
   for (const rule of expectedRedirects) assert(redirectRules.includes(rule), 'Missing Cloudflare Pages redirect: ' + rule);
-  assert(!existsSync('vercel.json'), 'Vercel-specific redirect configuration must not be present');
+  assert.equal(existsSync('vercel.json'), false, 'Cloudflare-only release must not include Vercel deployment configuration');
   assert.equal((await readFile('dist/_redirects', 'utf8')).trim(), redirectText.trim(), 'Cloudflare redirects were not copied to the Pages build output');
   for (const route of ['/impact/', '/programmes/']) assert(!existsSync(join('dist', route, 'index.html')), 'Retired route ' + route + ' must not be generated as an HTML page');
   for (const route of fullRoutes) assert(existsSync(join('dist', route, 'index.html')), `Missing built route ${route}`);
@@ -228,6 +228,59 @@ async function qa(base, chromium) {
         if (route === '/satul-conectat-romania/') {
           const cta = page.locator('a[href="https://projectclandestinus.com/project/"]');
           assert(await cta.count() > 0, 'Incorrect/missing Clandestinus external CTA');
+        }
+        if (route === '/about/') {
+          const meccCard = page.locator('[data-mecc-card]');
+          const founderCard = page.locator('.card.founder');
+          const meccToggle = meccCard.locator('[data-mecc-toggle]');
+          const meccPanel = meccCard.locator('[data-mecc-details]');
+          assert.equal(await meccToggle.locator('[data-mecc-toggle-label]').innerText(), 'Learn more', 'MECC disclosure has the wrong initial label');
+          assert.equal(await meccToggle.getAttribute('aria-expanded'), 'false', 'MECC disclosure must start collapsed');
+          assert.equal(await meccToggle.getAttribute('aria-controls'), await meccPanel.getAttribute('id'), 'MECC disclosure does not identify its panel');
+          assert(await meccPanel.evaluate(el => el.hidden && el.inert && el.getAttribute('aria-hidden') === 'true'), 'Collapsed MECC details are not hidden from interaction and assistive technology');
+          assert.equal(await meccCard.locator('h2').innerText(), 'Making Every Contact Count');
+          assert(await meccCard.locator('.mecc-meta').innerText().then(text => /Waltham Forest.*October 2026/.test(text)), 'MECC provider/date is not visible while collapsed');
+          const cardMetrics = await meccCard.evaluate(el => { const style = getComputedStyle(el); return { width: el.getBoundingClientRect().width, padding: style.padding, radius: style.borderRadius }; });
+          const founderMetrics = await founderCard.evaluate(el => { const style = getComputedStyle(el); return { width: el.getBoundingClientRect().width, padding: style.padding, radius: style.borderRadius }; });
+          assert.deepEqual(cardMetrics, founderMetrics, 'Collapsed MECC card no longer matches Founder Perspective width, padding, and border radius');
+          await meccToggle.focus();
+          assert(await meccToggle.evaluate(el => el.matches(':focus-visible')), 'MECC control has no visible keyboard focus');
+          await page.evaluate(() => {
+            window.__vnmMeccAnimations = [];
+            const animate = Element.prototype.animate;
+            Element.prototype.animate = function (keyframes, options) {
+              if (this.matches('[data-mecc-details]')) window.__vnmMeccAnimations.push(options);
+              return animate.call(this, keyframes, options);
+            };
+          });
+          await page.keyboard.press('Enter');
+          assert.equal(await meccToggle.getAttribute('aria-expanded'), 'true', 'Keyboard did not expand MECC details');
+          assert.equal(await meccToggle.locator('[data-mecc-toggle-label]').innerText(), 'Show less');
+          if (reduced) {
+            assert.equal(await page.evaluate(() => window.__vnmMeccAnimations.length), 0, 'Reduced-motion MECC expansion started an animation');
+          } else {
+            assert(await page.evaluate(() => window.__vnmMeccAnimations.some(options => options?.duration === 300)), 'MECC expansion is missing its 300ms transition');
+          }
+          await page.waitForFunction(() => { const panel = document.querySelector('[data-mecc-details]'); return panel && !panel.hidden && !panel.style.height; });
+          assert(await meccPanel.isVisible(), 'Expanded MECC details are not visible');
+          assert(await meccPanel.evaluate(el => !el.hidden && !el.inert && el.getAttribute('aria-hidden') === 'false'), 'Expanded MECC details remain inaccessible');
+          const detailsText = await meccPanel.innerText();
+          for (const required of ['Ask', 'Advise', 'Assist', 'Unity House Centres', 'Circular Justice', 'Satul Conectat România', 'Clandestinus Educational Games', 'not a clinical qualification', 'safeguarding']) {
+            assert(detailsText.toLowerCase().includes(required.toLowerCase()), `MECC details are missing ${required}`);
+          }
+          assert.equal(await meccPanel.locator('a[href="https://www.walthamforest.gov.uk/health-and-wellbeing/public-health-strategies-and-policies/making-every-contact-count"]').count(), 1, 'Official MECC information link is missing');
+          await page.waitForFunction(() => { const panel = document.querySelector('[data-mecc-details]'); return panel && !panel.hidden && !panel.style.height; });
+          assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Expanded MECC card causes horizontal overflow');
+          await meccToggle.click();
+          assert.equal(await meccToggle.getAttribute('aria-expanded'), 'false', 'Pointer did not close MECC details');
+          await page.waitForFunction(() => document.querySelector('[data-mecc-details]')?.hidden === true);
+          await meccToggle.click();
+          assert.equal(await meccToggle.getAttribute('aria-expanded'), 'true', 'Pointer did not reopen MECC details');
+          await page.waitForFunction(() => { const panel = document.querySelector('[data-mecc-details]'); return panel && !panel.hidden && !panel.style.height; });
+          await meccToggle.focus();
+          await page.keyboard.press('Enter');
+          assert.equal(await meccToggle.getAttribute('aria-expanded'), 'false', 'Keyboard did not close MECC details');
+          await page.waitForFunction(() => document.querySelector('[data-mecc-details]')?.hidden === true);
         }
         if (['/services/', '/project-clandestinus/'].includes(route)) {
           const canvas = page.locator(route === '/services/' ? 'canvas[data-unity-canvas]' : 'canvas[data-cosmic-canvas]');

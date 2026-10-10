@@ -33,7 +33,7 @@ jobs:
       - name: Use verified Node 22 runtime
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: '22.14.0'
+          node-version: '22.23.1'
           cache: npm
       - name: Set canonical origin for the target guard
         run: git remote set-url origin https://github.com/Florin-Solent/VisioNovaMundi.git
