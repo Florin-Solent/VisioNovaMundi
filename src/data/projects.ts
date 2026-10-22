@@ -212,7 +212,7 @@ export const projectGroups: PortfolioGroup[] = [
         relationship: "Internal prototype · potential future ecosystem candidate",
         status: "Controlled synthetic-only evaluation · not an operating service",
         summary: "An early-stage Windows desktop prototype for human review of fictional administrative cases.",
-        relevance: "Build #14 is authorised only for controlled, local, synthetic-only internal evaluation. It is not approved for operational casework, external demonstrations or distribution. Independent professional security and accessibility assessments remain outstanding; operator, legal vehicle and data responsibilities remain unconfirmed.",
+        relevance: "The current prototype is authorised only for controlled, local, synthetic-only internal evaluation. It is not approved for operational casework, external demonstrations or distribution. Independent professional security and accessibility assessments remain outstanding; operator, legal vehicle and data responsibilities remain unconfirmed.",
         image: "/images/admintrace-concept.webp",
         imageAlt: "Concept visual of blank records moving through a sequence of translucent document layers, representing an organised administrative process.",
         imageFit: "cover",
