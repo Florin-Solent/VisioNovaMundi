@@ -203,16 +203,16 @@ export const projectGroups: PortfolioGroup[] = [
   },
   {
     id: "future-concepts",
-    title: "Future concepts",
-    intro: "An early idea, distinct from current delivery.",
+    title: "Future concepts and internal prototypes",
+    intro: "Exploratory projects and internal prototypes that are not part of current operating delivery.",
     projects: [
       {
         title: "AdminTrace",
         href: "/admintrace/",
-        relationship: "Future ecosystem candidate",
-        status: "Concept; not an operating platform",
-        summary: "A future concept exploring clearer administrative steps, evidence and progress for people navigating processes.",
-        relevance: "Could make complex processes easier to follow; operator, legal vehicle and data responsibilities remain unconfirmed.",
+        relationship: "Internal prototype · potential future ecosystem candidate",
+        status: "Controlled synthetic-only evaluation · not an operating service",
+        summary: "An early-stage Windows desktop prototype for human review of fictional administrative cases.",
+        relevance: "Build #14 is authorised only for controlled, local, synthetic-only internal evaluation. It is not approved for operational casework, external demonstrations or distribution. Independent professional security and accessibility assessments remain outstanding; operator, legal vehicle and data responsibilities remain unconfirmed.",
         image: "/images/admintrace-concept.webp",
         imageAlt: "Concept visual of blank records moving through a sequence of translucent document layers, representing an organised administrative process.",
         imageFit: "cover",
