@@ -24,8 +24,6 @@ const latestUpdates = Object.entries(projectUpdates)
   .sort((a, b) => b.isoDate.localeCompare(a.isoDate))
   .slice(0, 5);
 
-const unityHouse = allProjects.find((project) => project.href === "/unity-house/");
-
 const steps = [
   { title: "Identify problems", text: "Start from a real need in a public service or a community." },
   { title: "Test ideas", text: "Run small, bounded pilots with safeguards agreed first." },
@@ -59,19 +57,15 @@ const sectors = [
         </div>
       </div>
 
-      {unityHouse && (
-        <aside class="now" aria-labelledby="now-title">
-          <p class="now-label">Current programme</p>
-          <h2 id="now-title">Unity House, Waltham Forest</h2>
-          <p class="stage-pill pending"><span aria-hidden="true"></span>{unityHouse.status}</p>
-          <p>
-            £2,000 awarded by Waltham Forest Council for six bilingual community health and wellbeing sessions for adults
-            in South Waltham Forest. Funding is released after the Council reviews the facilitation and safeguarding
-            evidence it has asked for.
-          </p>
-          <a class="now-link" href="/unity-house/">Read about the pilot</a>
-        </aside>
-      )}
+      <aside class="now" aria-labelledby="now-title">
+        <p class="now-label">Our framework</p>
+        <h2 id="now-title">The Tree of Life</h2>
+        <p>
+          Tree of Life is how we organise every project. Each one is classified by who runs it, how it is funded, who owns
+          its IP and how it is governed, so CIC programmes stay clearly separate from independent founder ventures.
+        </p>
+        <a class="now-link" href="/tree-of-life/">Explore the framework</a>
+      </aside>
     </section>
 
     <section class="ladders" aria-labelledby="ladder-title">
@@ -241,7 +235,7 @@ const sectors = [
     .now {
       padding: 26px;
       border: 1px solid var(--line);
-      border-top: 4px solid var(--amber);
+      border-top: 4px solid var(--teal);
       border-radius: 14px;
       background: #fff;
     }
@@ -254,7 +248,7 @@ const sectors = [
 
     .now h2 { font-size: 1.4rem; }
 
-    .now > p:not(.now-label):not(.stage-pill) {
+    .now > p:not(.now-label) {
       margin: 14px 0 0;
       color: var(--muted);
       line-height: 1.6;

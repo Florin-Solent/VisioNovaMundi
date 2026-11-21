@@ -12,22 +12,16 @@ export const projectUpdates: Record<string, ProjectUpdate[]> = {
     {
       date: "November 2026",
       isoDate: "2026-11",
-      title: "Pre-delivery evidence requested",
-      text: "The Council confirmed that the pilot's healthy-eating and social-wellbeing focus fits the fund, and asked for facilitation and safeguarding evidence before funding is released. Sessions will be scheduled once that review is complete.",
-    },
-    {
-      date: "28 August 2026",
-      isoDate: "2026-08-28",
-      title: "Council award recorded",
-      text: "The grant agreement records a £2,000 award for the Romanian Healthy Living and Community Kitchen Pilot.",
+      title: "Six-session pilot did not proceed",
+      text: "The 2026 health and wellbeing pilot was closed before any sessions took place, because it could not go ahead under the arrangements available. We are using the planning experience to refine the Unity House model. No new delivery programme has been confirmed.",
     },
   ],
   "satul-conectat-romania": [
     {
-      date: "9 November 2026",
-      isoDate: "2026-11-09",
-      title: "Exploratory education proposal prepared for North-West Romania",
-      text: "A proposal for ADR Nord-Vest's INNO platform sets out staged next steps for the education strand: technically verify a browser lesson first, then a teacher-only evaluation with no pupils involved. It asks for an academic contact and two or three libraries, schools or communes to talk to. No partner, pilot or funding is confirmed, and Reci remains a separate pilot idea.",
+      date: "November 2026",
+      isoDate: "2026-11",
+      title: "Exploratory correspondence with ADR Nord-Vest",
+      text: "We shared information about Satul Conectat România and Clandestinus Educational Games with ADR Nord-Vest, the North-West Romania regional development agency, as exploratory discussions. This is not a funding application. No partner, pilot or funding is confirmed, and Reci remains a separate pilot idea.",
     },
   ],
   vialora: [
