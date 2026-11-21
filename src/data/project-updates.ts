@@ -10,10 +10,18 @@ export const projectUpdates: Record<string, ProjectUpdate[]> = {
   "guardian-glide": [],
   "unity-house": [
     {
-      date: "28 August 2026",
-      isoDate: "2026-08-28",
-      title: "Council award recorded",
-      text: "The grant agreement records a £2,000 award for the Romanian Healthy Living and Community Kitchen Pilot.",
+      date: "November 2026",
+      isoDate: "2026-11",
+      title: "Six-session pilot did not proceed",
+      text: "The 2026 health and wellbeing pilot was closed before any sessions took place, because it could not go ahead under the arrangements available. We are using the planning experience to refine the Unity House model. No new delivery programme has been confirmed.",
+    },
+  ],
+  "satul-conectat-romania": [
+    {
+      date: "November 2026",
+      isoDate: "2026-11",
+      title: "Exploratory correspondence with ADR Nord-Vest",
+      text: "We shared information about Satul Conectat România and Clandestinus Educational Games with ADR Nord-Vest, the North-West Romania regional development agency, as exploratory discussions. This is not a funding application. No partner, pilot or funding is confirmed, and Reci remains a separate pilot idea.",
     },
   ],
   vialora: [

@@ -3,6 +3,9 @@ const {
   title = "Visio Nova Mundi",
   description = "Visio Nova Mundi CIC — Innovation, research and systems reform for long-term community impact.",
 } = Astro.props;
+const siteOrigin = "https://www.visionovamundi.com";
+const canonical = new URL(Astro.url.pathname, siteOrigin).href;
+const pageTitle = title ? `${title} | Visio Nova Mundi` : "Visio Nova Mundi CIC";
 ---
 
 <!DOCTYPE html>
@@ -10,8 +13,19 @@ const {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title ? `${title} | Visio Nova Mundi` : "Visio Nova Mundi CIC"}</title>
+  <title>{pageTitle}</title>
   <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="preload" href="/fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <meta name="theme-color" content="#112b38" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Visio Nova Mundi CIC" />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:locale" content="en_GB" />
 </head>
 
 <body>
@@ -45,11 +59,11 @@ const {
 
       <nav id="primary-navigation" data-site-nav aria-label="Main navigation">
         <span class="nav-indicator" aria-hidden="true"></span>
-        <a href="/about">About</a>
-        <a href="/work">Our Work</a>
+        <a href="/about/">About</a>
+        <a href="/work/">Our Work</a>
         <a href="/projects/">Projects</a>
-        <a href="/governance">Governance</a>
-        <a href="/contact" class="nav-btn">Contact</a>
+        <a href="/governance/">Governance</a>
+        <a href="/contact/" class="nav-btn">Contact</a>
       </nav>
     </div>
   </header>
@@ -83,7 +97,6 @@ const {
           <li><a href="/tree-of-life/">Tree of Life framework</a></li>
           <li><a href="/ventures/">Independent Founder Ventures</a></li>
           <li><a href="/research-future/">Research &amp; Future Concepts</a></li>
-          <li><a href="/projects/">Project directory</a></li>
         </ul>
       </section>
     </div>
@@ -92,13 +105,21 @@ const {
 
 <style>
   :root {
-    --bg: #f8fafc;
-    --glass: rgba(255, 255, 255, 0.78);
-    --border: rgba(15, 23, 42, 0.14);
-    --text: #0f172a;
-    --muted: #334155;
-    --primary: #2563eb;
-    --radius: 22px;
+    /* Core palette */
+    --ink: #112b38;
+    --teal: #0e6b63;
+    --amber: #a65a07;
+    --mist: #e3eef0;
+    --line: #c9d8dd;
+    --bg: #f3f7f8;
+    /* Shared tokens used across page styles */
+    --glass: rgba(255, 255, 255, 0.82);
+    --border: rgba(17, 43, 56, 0.14);
+    --text: var(--ink);
+    --muted: #3e5563;
+    --primary: var(--teal);
+    --radius: 16px;
+    --font-sans: "Atkinson Hyperlegible Next", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
   * {
@@ -113,7 +134,9 @@ const {
 
   body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.55;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
@@ -126,9 +149,8 @@ const {
     position: fixed;
     inset: 0;
     background:
-      radial-gradient(circle at 20% 20%, rgba(37, 99, 235, 0.18), transparent 45%),
-      radial-gradient(circle at 80% 30%, rgba(16, 185, 129, 0.15), transparent 45%),
-      radial-gradient(circle at 50% 80%, rgba(59, 130, 246, 0.12), transparent 50%);
+      radial-gradient(circle at 12% 8%, rgba(37, 99, 235, 0.09), transparent 40%),
+      radial-gradient(circle at 88% 14%, rgba(14, 107, 99, 0.10), transparent 42%);
     z-index: -1;
   }
 
@@ -561,6 +583,23 @@ const {
 </style>
 
 <style is:global>
+  @font-face {
+    font-family: "Atkinson Hyperlegible Next";
+    font-style: normal;
+    font-display: swap;
+    font-weight: 200 800;
+    src: url("/fonts/atkinson-hyperlegible-next-latin-ext-wght-normal.woff2") format("woff2");
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: "Atkinson Hyperlegible Next";
+    font-style: normal;
+    font-display: swap;
+    font-weight: 200 800;
+    src: url("/fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2") format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  :where(button, input, select, textarea) { font-family: inherit; }
   .project-concept-visual {
     position: relative;
     width: min(100%, 1120px);
@@ -604,10 +643,10 @@ const {
   .institutional-section p, .institutional-panel p { line-height: 1.75; color: var(--muted); }
   .institutional-panel { margin: 26px 0; padding: clamp(20px,3vw,32px); border: 1px solid var(--border); border-radius: 22px; background: linear-gradient(135deg,rgba(37,99,235,.08),rgba(16,185,129,.08)); }
   .institutional-actions { display: flex; flex-wrap: wrap; gap: 18px; }
-  .institutional-actions a, .institutional-panel a { color: #1d4ed8; font-weight: 750; }
+  .institutional-actions a, .institutional-panel a { color: #0e6b63; font-weight: 750; }
   .footer-groups { max-width: 1060px; margin: 0 auto 32px; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); align-items: start; gap: 28px; text-align: left; }
   .footer-group { min-width: 0; }
-  .footer-groups h2 { margin: 0; font-size: .875rem; text-transform: uppercase; letter-spacing: .08em; color: #0f766e; }
+  .footer-groups h2 { margin: 0; font-size: .95rem; color: var(--teal); }
   .footer-toggle { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 0; border: 0; color: inherit; background: transparent; font: inherit; text-align: left; cursor: pointer; }
   .footer-chevron { width: 7px; height: 7px; flex: 0 0 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .18s ease; }
   .footer-toggle[aria-expanded="true"] .footer-chevron { transform: translateY(2px) rotate(225deg); }
@@ -646,7 +685,7 @@ const {
     font-size: 11px;
     letter-spacing: .12em;
     text-transform: uppercase;
-    color: #1d4ed8;
+    color: #0e6b63;
     background: rgba(37,99,235,.07);
     border: 1px solid rgba(37,99,235,.22);
     padding: 4px 10px;
@@ -916,6 +955,37 @@ const {
       transform: none !important;
     }
   }
+
+  /* ---- November 2026 refresh layer ----
+     Shared surfaces and labels, applied across pages whose own scoped styles predate the refresh.
+     !important is used only where a page-scoped rule would otherwise win. */
+  main h1, main h2, main h3 { font-family: var(--font-sans); }
+  h1, h2, h3 { line-height: 1.15; }
+  main h1 { font-weight: 780; letter-spacing: -0.035em; }
+  main h2 { font-weight: 760; letter-spacing: -0.02em; }
+  main .eyebrow, .institutional-eyebrow, main .statusLabel {
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    color: var(--teal);
+    font-weight: 700 !important;
+  }
+  .vnm-glass-card {
+    background-image: none !important;
+    background-color: #fff !important;
+    border-color: var(--line) !important;
+    box-shadow: 0 1px 2px rgba(17, 43, 56, 0.05) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .card:hover { transform: none; }
+  main .btn { border-radius: 10px !important; }
+  main .btn.primary {
+    background: var(--ink) !important;
+    border-color: var(--ink) !important;
+    color: #fff !important;
+  }
+  main .btn.primary:hover { background: var(--teal) !important; border-color: var(--teal) !important; }
+  .footer { border-top: 1px solid var(--line); }
 </style>
 
 <script>
@@ -1108,32 +1178,7 @@ const {
   if (!prefersReducedMotion.matches) {
     document.documentElement.classList.add("motion-ready");
 
-    const revealTargets = Array.from(document.querySelectorAll<HTMLElement>([
-      "main > section",
-      "main > .heroBlock",
-      "main > .controlNote",
-      "main .card",
-      "main .smallCard",
-      "main .flow > div",
-      "main .pilotFlow > div",
-      "main .branchGrid span",
-    ].join(", ")));
-
-    const revealObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12, rootMargin: "0px 0px -32px" });
-
-    revealTargets.forEach((element, index) => {
-      element.classList.add("vnm-reveal");
-      element.style.setProperty("--vnm-reveal-delay", `${Math.min(index % 6, 5) * 45}ms`);
-      revealObserver.observe(element);
-    });
-
+    // Content is visible immediately; only project images keep a gentle reveal.
     const projectImages = Array.from(document.querySelectorAll<HTMLImageElement>("img[data-project-image]"));
     const imageRevealObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {

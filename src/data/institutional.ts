@@ -1,9 +1,8 @@
 // Public classifications drawn from canonical programme pages and governance material.
 // Proposed delivery operators and responsibilities remain explicit where unconfirmed.
-export const programmes = [
-  { title: "Unity House", stage: "Awarded pilot", classification: "CIC-led programme", href: "/unity-house/", text: "A council-awarded six-session hosted community health and wellbeing pilot in South Waltham Forest, within September 2026–March 2027." },
-];
+export const programmes: { title: string; stage: string; classification: string; href: string; text: string }[] = [];
 export const discovery = [
+  { title: "Unity House", stage: "Research and development", classification: "CIC-led programme", href: "/unity-house/", text: "A proposed community-centre model for reducing waste, affordable food access, reuse and neighbourly connection. A six-session pilot developed in 2026 did not proceed; no centre or delivery programme is confirmed." },
   { title: "Circular Justice", stage: "Discovery", classification: "CIC research concept", href: "/circular-justice/", text: "Research into institutional material flows, reuse and learning opportunities. No live platform, prison partnership or funded pilot." },
   { title: "Satul Conectat România", stage: "Proposed pilot", classification: "VNM-developed proposal", href: "/satul-conectat-romania/", text: "A rural digital inclusion and community hub proposal. Reci is a proposed location for discussion; delivery roles, participation and funding are not confirmed." },
 ];

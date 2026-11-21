@@ -11,6 +11,8 @@ export interface PortfolioProject {
   imageLabel?: string;
   visualLabel: string;
   visualMark: string;
+  /** Position on the homepage evidence ladder; must match a stage in evidenceLadders. */
+  ladder: string;
 }
 
 export interface PortfolioGroup {
@@ -30,15 +32,16 @@ export const projectGroups: PortfolioGroup[] = [
         title: "Unity House",
         href: "/unity-house/",
         relationship: "Visio Nova Mundi CIC",
-        status: "Awarded six-session pilot",
-        summary: "A hosted community health and wellbeing pilot in South Waltham Forest, within the September 2026–March 2027 grant period.",
-        relevance: "Explores community connection, practical wellbeing and sustainable living; pilot outcomes are not yet established.",
+        status: "Research and development",
+        summary: "A proposed community-centre model focused on reducing waste, supporting affordable food access, encouraging reuse and strengthening connections between neighbours.",
+        relevance: "A six-session health-and-wellbeing pilot was developed in 2026 but did not proceed; the planning experience is being used to refine the model. No permanent centre or new delivery programme is confirmed.",
         image: "/images/unity-house-concept.webp",
-        imageAlt: "Concept visual of a proposed future Unity House community hub, with neighbours cooking and learning together; it does not depict the current hosted pilot or an operating centre.",
+        imageAlt: "Concept visual of a proposed future Unity House community hub, with neighbours cooking and learning together; it does not depict an operating centre.",
         imageFit: "cover",
         imageLabel: "Concept visual",
         visualLabel: "Community · wellbeing",
         visualMark: "UH",
+        ladder: "Discovery",
       },
       {
         title: "Circular Justice",
@@ -53,6 +56,7 @@ export const projectGroups: PortfolioGroup[] = [
         imageLabel: "Concept visual",
         visualLabel: "Reuse · research",
         visualMark: "CJ",
+        ladder: "Discovery",
       },
       {
         title: "Satul Conectat România",
@@ -67,6 +71,7 @@ export const projectGroups: PortfolioGroup[] = [
         imageLabel: "Concept visual",
         visualLabel: "Digital · village",
         visualMark: "SC",
+        ladder: "Proposal",
       },
     ],
   },
@@ -86,6 +91,7 @@ export const projectGroups: PortfolioGroup[] = [
         imageAlt: "Cover of Clandestinus Book I, The First Gate",
         visualLabel: "Creative · publishing",
         visualMark: "PC",
+        ladder: "Released",
       },
       {
         title: "Clandestinus Secret App",
@@ -100,6 +106,7 @@ export const projectGroups: PortfolioGroup[] = [
         imageLabel: "Concept visual",
         visualLabel: "Private · in development",
         visualMark: "CS",
+        ladder: "Prototype",
       },
       {
         title: "TradeVault",
@@ -114,6 +121,7 @@ export const projectGroups: PortfolioGroup[] = [
         imageLabel: "Concept visual",
         visualLabel: "Tools · workflow",
         visualMark: "TV",
+        ladder: "Concept",
       },
       {
         title: "OneLoo",
@@ -128,6 +136,7 @@ export const projectGroups: PortfolioGroup[] = [
         imageLabel: "Concept visual",
         visualLabel: "Household · care",
         visualMark: "OL",
+        ladder: "Feasibility",
       },
       {
         title: "Guardian One",
@@ -142,6 +151,7 @@ export const projectGroups: PortfolioGroup[] = [
         imageLabel: "Concept visual",
         visualLabel: "Personal · shelter",
         visualMark: "G1",
+        ladder: "Feasibility",
       },
       {
         title: "Guardian Glide — Accessible Shopping Mobility System",
@@ -156,6 +166,7 @@ export const projectGroups: PortfolioGroup[] = [
         imageLabel: "Concept visual",
         visualLabel: "Shopping · mobility",
         visualMark: "GG",
+        ladder: "Feasibility",
       },
       {
         title: "RoamWing",
@@ -170,6 +181,7 @@ export const projectGroups: PortfolioGroup[] = [
         imageLabel: "Concept visual",
         visualLabel: "Create · in motion",
         visualMark: "RW",
+        ladder: "Feasibility",
       },
       {
         title: "Vialora",
@@ -184,6 +196,7 @@ export const projectGroups: PortfolioGroup[] = [
         imageLabel: "Concept visual",
         visualLabel: "Fragrance · refill",
         visualMark: "VL",
+        ladder: "Concept",
       },
       {
         title: "Vialora Voyage",
@@ -198,6 +211,7 @@ export const projectGroups: PortfolioGroup[] = [
         imageLabel: "Concept visual",
         visualLabel: "Travel · organisation",
         visualMark: "VV",
+        ladder: "Concept",
       },
     ],
   },
@@ -219,7 +233,46 @@ export const projectGroups: PortfolioGroup[] = [
         imageLabel: "Concept visual",
         visualLabel: "Process · clarity",
         visualMark: "AT",
+        ladder: "Prototype",
       },
+    ],
+  },
+];
+
+export interface EvidenceLadder {
+  id: string;
+  title: string;
+  note: string;
+  groups: string[];
+  stages: { name: string; meaning: string }[];
+}
+
+// Stages are deliberately conservative: a project moves up only when documented evidence supports it.
+export const evidenceLadders: EvidenceLadder[] = [
+  {
+    id: "programmes",
+    title: "Public-benefit programmes",
+    note: "Led by Visio Nova Mundi CIC.",
+    groups: ["public-benefit"],
+    stages: [
+      { name: "Concept", meaning: "An idea being shaped" },
+      { name: "Discovery", meaning: "Researching the problem" },
+      { name: "Proposal", meaning: "A plan seeking partners" },
+      { name: "Award agreed", meaning: "Funding agreed, not yet delivering" },
+      { name: "Delivering", meaning: "Activity under way" },
+      { name: "Evaluated", meaning: "Results reported" },
+    ],
+  },
+  {
+    id: "ventures",
+    title: "Founder ventures and internal prototypes",
+    note: "Separate from the CIC, with their own finances and IP.",
+    groups: ["independent-ventures", "future-concepts"],
+    stages: [
+      { name: "Concept", meaning: "An idea being shaped" },
+      { name: "Feasibility", meaning: "Testing whether it can work" },
+      { name: "Prototype", meaning: "A working version in private testing" },
+      { name: "Released", meaning: "Available to the public" },
     ],
   },
 ];
