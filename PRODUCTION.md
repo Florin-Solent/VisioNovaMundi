@@ -4,6 +4,27 @@ Cloudflare Pages is VNM's sole production and preview platform. GitHub `master` 
 
 The founder accepted the bounded residual risk for `http-cache-semantics@4.2.0` for this static-site release. GHSA-ch52-4w7c-c8xp remains OPEN and must not be described as resolved.
 
+## Production release — 21 November 2026 (PR #18)
+
+Site refresh: new homepage with the project evidence ladder, site-wide design update (self-hosted Atkinson Hyperlegible Next, ink/teal tokens), and project statuses corrected after founder review. Unity House is shown as research and development (the 2026 six-session pilot did not proceed), and ADR Nord-Vest contact is shown as exploratory correspondence. No dependency or lockfile changes.
+
+| Item | Evidence |
+| --- | --- |
+| Approval | Founder approved the merge explicitly in chat on 21 November 2026 at 22:01 GMT, after reviewing the Cloudflare branch preview. |
+| Approved candidate | `dbadec930a22321a05078619c0809650320e7821` (PR #18 head, branch `site-refresh-2026-11`) |
+| GitHub production merge | `7d1328f7b456da6eeacb7a14edbce0dd6d58c43f`, merged 2026-11-21 22:02:11 UTC (merge commit). |
+| Cloudflare Pages deployment | `809e7cb0-ca4c-41fd-9aaa-056fe1a174dd`, status `success`, source `7d1328f`; [deployment](https://809e7cb0.visionovamundi.pages.dev/) |
+| Pre-merge checks | Local `npm run release:check` (FULL): 162 cases and 69 internal destinations passed. GitHub `release:check` on the PR head passed (workflow run 44951998987). Cloudflare preview deployed successfully. |
+| Post-merge checks | GitHub `release:check` on `master` passed (workflow run 44954610424). Cloudflare Pages check succeeded. |
+
+### Live verification — 21 November 2026
+
+Direct HTTPS checks after deployment: `/`, `/unity-house/`, `/timeline/`, `/about/` and `/projects/` returned 200; the self-hosted font loaded; `/impact/` redirected permanently to `/work/`; the apex redirected to `https://www.visionovamundi.com/`. The homepage showed the evidence ladder and Tree of Life panel, and Unity House showed "Research and development" with no grant figures or council name.
+
+The first `npm run verify:production` run reported 162 failures. Every one had the same cause: Cloudflare Web Analytics, enabled on the production zone, injects a beacon that POSTs to `/cdn-cgi/rum`, and browser QA blocks all write requests. Each case had already passed its structural, navigation, footer, overflow, motion and scene checks before the final browser-error assertion. The beacon is not part of the site build and does not appear on `pages.dev` previews.
+
+The founder decided on 21 November 2026 to keep Web Analytics enabled and to add a narrowly scoped QA exception for that beacon only (see [docs/release-qa.md](docs/release-qa.md)). The exception was added in a separate pull request; production verification with it is recorded in that pull request.
+
 ## Production release verified — 10 October 2026
 
 | Item | Verified evidence |

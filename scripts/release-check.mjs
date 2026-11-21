@@ -6,6 +6,7 @@ import { createRequire } from 'node:module';
 import { execFileSync } from 'node:child_process';
 import { createServer } from 'node:http';
 import { checkTarget, production } from './check-target.mjs';
+import { isCloudflareAnalyticsBeacon, selfTestQaExceptions } from './qa-exceptions.mjs';
 
 // Reuse the existing external QA runtime; do not change package dependencies.
 const playwrightVersion = '1.64.0-alpha-1790635538000';
@@ -117,7 +118,7 @@ async function serve() {
 }
 async function qa(base, chromium) {
   const browser = await chromium.launch({ headless: true, args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
-  const report = { mode, target: base, runtime: playwrightVersion, node: process.version, browser: browser.version(), commit: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), started: new Date().toISOString(), cases: [], failures: [] };
+  const report = { mode, target: base, runtime: playwrightVersion, node: process.version, browser: browser.version(), commit: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), started: new Date().toISOString(), cases: [], failures: [], analyticsBeaconsAnswered: 0 };
   const links = new Set(routes);
   try {
     const viewports = mode === 'FULL'
@@ -134,6 +135,7 @@ async function qa(base, chromium) {
       const label = `${route} ${viewport.width} ${reduced ? 'reduced' : 'normal'}`;
       const context = await browser.newContext({ viewport, hasTouch: viewport.width === 390, reducedMotion: reduced ? 'reduce' : 'no-preference', serviceWorkers: 'block' });
       const errors = [], scripts = [], pending = new Set();
+      let analyticsBeacons = 0;
       const page = await context.newPage();
       page.on('request', request => { if (new URL(request.url()).origin === base) pending.add(request); });
       page.on('requestfinished', request => pending.delete(request));
@@ -147,7 +149,8 @@ async function qa(base, chromium) {
       });
       await context.route('**/*', async intercepted => {
         const request = intercepted.request();
-        if (!['GET', 'HEAD'].includes(request.method())) { errors.push(`Blocked write ${request.method()} ${request.url()}`); await intercepted.abort(); }
+        if (isCloudflareAnalyticsBeacon(request.method(), request.url(), live)) { analyticsBeacons++; await intercepted.fulfill({ status: 204, body: '' }); }
+        else if (!['GET', 'HEAD'].includes(request.method())) { errors.push(`Blocked write ${request.method()} ${request.url()}`); await intercepted.abort(); }
         else await intercepted.continue();
       });
       await page.addInitScript(() => {
@@ -315,9 +318,9 @@ async function qa(base, chromium) {
           await page.waitForTimeout(200);
         }
         assert.deepEqual(errors, [], errors.join('\n'));
-        report.cases.push({ label, passed: true, scripts }); console.log(`PASS ${label}`);
+        report.cases.push({ label, passed: true, scripts, analyticsBeacons }); console.log(`PASS ${label}`);
       } catch (error) { report.failures.push({ label, error: error.message, browserErrors: errors }); console.error(`FAIL ${label}: ${error.message}`); }
-      finally { await context.close(); }
+      finally { report.analyticsBeaconsAnswered += analyticsBeacons; await context.close(); }
     }
     const request = await browser.newContext();
     try {
@@ -335,10 +338,12 @@ async function qa(base, chromium) {
   }
   assert.equal(report.failures.length, 0, `${report.failures.length} QA checks failed; inspect output/release-qa/${live ? 'production' : 'local'}.json`);
   console.log(`QA passed: ${report.cases.length} route/viewport/motion cases; ${links.size} internal destinations checked`);
+  if (report.analyticsBeaconsAnswered) console.log(`Cloudflare Web Analytics beacons answered locally (not forwarded): ${report.analyticsBeaconsAnswered}`);
 }
 let local;
 try {
   checkTarget();
+  selfTestQaExceptions();
   const { chromium } = await runtime();
   if (!live) {
     execFileSync(process.execPath, ['node_modules/astro/bin/astro.mjs', 'build'], { stdio: 'inherit' });

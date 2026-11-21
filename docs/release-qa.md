@@ -28,6 +28,21 @@ npm run release:check
 
 Reports are written to `output/release-qa/local.json` and `output/release-qa/production.json`. Browser requests other than GET/HEAD are blocked and fail the run; forms are not submitted and no publishing API is called.
 
+### Cloudflare Web Analytics exception
+
+Cloudflare Web Analytics is enabled on the production zone (founder decision, 21 November 2026). On `https://www.visionovamundi.com/` it injects a beacon script that POSTs page-view data to `/cdn-cgi/rum`. The beacon is added by Cloudflare at the edge; it is not in the site build and does not appear on `pages.dev` previews.
+
+`scripts/qa-exceptions.mjs` exempts exactly one request shape from the write block:
+
+- production verification only (`npm run verify:production`), never local or preview QA;
+- method `POST` only;
+- origin `https://www.visionovamundi.com` only;
+- path `/cdn-cgi/rum` only.
+
+A matching request is answered inside the browser with an empty 204 and is never forwarded, so QA visits are not counted as traffic. The number answered is recorded per case (`analyticsBeacons`) and in total (`analyticsBeaconsAnswered`) in the production report. Every other write request, console error, uncaught exception, failed first-party resource and HTTP error still fails QA. The exception's examples (13 allowed and blocked cases) run at the start of every QA run, so a broadened rule fails before any browser starts.
+
+If Web Analytics is switched off later, the exception simply stops matching; remove it in a separate change.
+
 ## Browser runtime and timing
 
 QA uses the existing external Playwright version **1.64.0-alpha-1790635538000** without changing package.json or the lockfile. On a clean machine, provision the transient tool and Chromium with:
