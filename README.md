@@ -1,47 +1,30 @@
-# Astro Starter Kit: Minimal
+# Visio Nova Mundi CIC website
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Source for https://www.visionovamundi.com/, the public website of Visio Nova Mundi Community Interest Company (company no. 16947678).
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Built with [Astro](https://astro.build/) and hosted on Cloudflare Pages. A push or merge to `master` deploys to production, so work on a branch and get release approval first.
 
-## 🚀 Project Structure
+## Commands
 
-Inside of your Astro project, you'll see the following folders and files:
+Use Node.js 22 (`>=22.19 <23`).
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+| Command | What it does |
+| :-- | :-- |
+| `npm ci` | Install the exact dependency versions from the lockfile |
+| `npm run dev` | Start a local dev server at `localhost:4321` |
+| `npm run build` | Build the static site into `./dist/` |
+| `npm run preview` | Serve the built site locally |
+| `npm run release:check` | Build and run browser QA (no deployment) |
+| `npm run verify:production` | Read-only checks against the live site |
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Where things live
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- `src/pages/` has one `.astro` file per route.
+- `src/layouts/BaseLayout.astro` holds the shared header, footer, design tokens, fonts and page scripts.
+- `src/data/projects.ts` lists every project, its public status and its stage on the homepage evidence ladder.
+- `src/data/project-updates.ts` holds dated project updates. Add only updates backed by project records or published evidence.
+- `public/fonts/` contains Atkinson Hyperlegible Next (SIL Open Font License, see `OFL.txt`).
 
 ## VNM release workflow
 
-Read [Deployment policy](DEPLOYMENT_POLICY.md), [Production manifest](PRODUCTION.md), and [Release QA](docs/release-qa.md). Use npm run release:check for local build and browser QA, and npm run verify:production for read-only public verification. Neither command deploys.
+Read [Deployment policy](DEPLOYMENT_POLICY.md), [Production manifest](PRODUCTION.md), and [Release QA](docs/release-qa.md). Use `npm run release:check` for local build and browser QA, and `npm run verify:production` for read-only public verification. Neither command deploys.

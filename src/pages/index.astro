@@ -1,604 +1,605 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { projectGroups, evidenceLadders, type PortfolioProject } from "../data/projects";
+import { projectUpdates } from "../data/project-updates";
+
+const allProjects = projectGroups.flatMap((group) => group.projects.map((project) => ({ ...project, group: group.id })));
+const shortTitle = (project: PortfolioProject) => project.title.split(" — ")[0];
+
+const ladders = evidenceLadders.map((ladder) => {
+  const projects = allProjects.filter((project) => ladder.groups.includes(project.group));
+  const stages = ladder.stages.map((stage) => ({
+    ...stage,
+    projects: projects.filter((project) => project.ladder === stage.name),
+  }));
+  const reached = stages.reduce((last, stage, index) => (stage.projects.length ? index : last), 0);
+  return { ...ladder, stages, reached };
+});
+
+const latestUpdates = Object.entries(projectUpdates)
+  .flatMap(([key, updates]) => {
+    const project = allProjects.find((item) => item.href === `/${key}/`);
+    return updates.map((update) => ({ ...update, projectTitle: project ? shortTitle(project) : key, href: project?.href ?? "/projects/" }));
+  })
+  .sort((a, b) => b.isoDate.localeCompare(a.isoDate))
+  .slice(0, 5);
+
+const unityHouse = allProjects.find((project) => project.href === "/unity-house/");
+
+const steps = [
+  { title: "Identify problems", text: "Start from a real need in a public service or a community." },
+  { title: "Test ideas", text: "Run small, bounded pilots with safeguards agreed first." },
+  { title: "Learn from evidence", text: "Report what happened, including what did not work." },
+  { title: "Build what works", text: "Grow only what the evidence supports." },
+];
 
 const sectors = [
-  "Education",
-  "Health",
-  "Tourism",
-  "Culture",
-  "Finance",
-  "Justice",
-  "Defence",
-  "Transport",
-  "Agriculture",
-  "Labour & Employment",
-  "Trade",
-  "Housing",
-  "Environment",
-  "Social Services",
-  "Digital Government",
-  "Public Administration",
-  "Energy",
-  "Emergency Services",
+  "Education", "Health", "Tourism", "Culture", "Finance", "Justice", "Defence", "Transport", "Agriculture",
+  "Labour & Employment", "Trade", "Housing", "Environment", "Social Services", "Digital Government",
+  "Public Administration", "Energy", "Emergency Services",
 ];
 ---
 
 <BaseLayout
   title=""
-  description="Visio Nova Mundi develops and tests ideas that aim to help public institutions and communities improve how essential services work."
+  description="Visio Nova Mundi CIC develops and tests ideas that aim to help public institutions and communities improve how essential services work, and reports honestly on what each project has shown."
 >
-  <div class="manifesto-home">
-    <section class="home-hero" aria-labelledby="home-title">
-      <p class="home-kicker"><span aria-hidden="true"></span> Visio Nova Mundi</p>
-      <h1 id="home-title">
-        Building better systems{" "}<span>for people, communities and the future.</span>
-      </h1>
-      <div class="home-introduction">
-        <p>
-          Visio Nova Mundi is a social innovation organisation developing and testing ideas that aim to help governments,
-          public institutions and communities improve how essential services work.
+  <div class="home">
+    <section class="hero" aria-labelledby="home-title">
+      <div class="hero-copy">
+        <p class="hero-org">Visio Nova Mundi CIC · Community Interest Company 16947678</p>
+        <h1 id="home-title">Building better systems for people, communities and the future.</h1>
+        <p class="hero-lead">
+          We develop and test ideas that could help public institutions and communities improve how essential services
+          work. Every project below is shown at the stage its evidence supports, and no further.
         </p>
-        <p>
-          Through research, pilots, technology and collaboration, our long-term ambition is to contribute to stronger
-          public systems across the world.
-        </p>
-      </div>
-      <a class="home-scroll-cue" href="#systems-window">
-        <span>Scroll to explore</span>
-        <span class="home-scroll-arrow" aria-hidden="true">↓</span>
-      </a>
-    </section>
-
-    <section
-      class="home-window-scroll"
-      id="systems-window"
-      data-scroll-window
-      aria-labelledby="window-title"
-    >
-      <div class="home-window-sticky">
-        <div class="home-window-panel" data-window-panel>
-          <div class="home-window-content">
-            <div class="window-intro">
-              <p class="window-kicker">A shared horizon</p>
-              <h2 id="window-title">One vision. Every part of society.</h2>
-              <p class="window-support">
-                We explore how better ideas, evidence and technology could contribute to stronger public services and
-                institutions.
-              </p>
-            </div>
-
-            <ul class="sector-list" aria-label="Sectors and public systems">
-              {sectors.map((sector) => <li>{sector}</li>)}
-            </ul>
-
-            <p class="window-closing">and the systems that connect them.</p>
-          </div>
+        <div class="hero-actions">
+          <a class="button primary" href="/work/">How we work</a>
+          <a class="button" href="/contact/">Contact us</a>
         </div>
       </div>
+
+      {unityHouse && (
+        <aside class="now" aria-labelledby="now-title">
+          <p class="now-label">Current programme</p>
+          <h2 id="now-title">Unity House, Waltham Forest</h2>
+          <p class="stage-pill pending"><span aria-hidden="true"></span>{unityHouse.status}</p>
+          <p>
+            £2,000 awarded by Waltham Forest Council for six bilingual community health and wellbeing sessions for adults
+            in South Waltham Forest. Funding is released after the Council reviews the facilitation and safeguarding
+            evidence it has asked for.
+          </p>
+          <a class="now-link" href="/unity-house/">Read about the pilot</a>
+        </aside>
+      )}
     </section>
 
-    <section class="home-next" aria-labelledby="next-title">
-      <div class="home-next-content">
-        <p class="home-kicker"><span aria-hidden="true"></span> How we move forward</p>
-        <h2 id="next-title">We identify problems. We test ideas. We learn from evidence. We build what works.</h2>
-        <nav class="home-destinations" aria-label="Explore Visio Nova Mundi">
-          <a href="/work/">Our Work <span aria-hidden="true">↗</span></a>
-          <a href="/projects/">Projects <span aria-hidden="true">↗</span></a>
-        </nav>
-        <a class="home-about-link" href="/about/">About Visio Nova Mundi</a>
+    <section class="ladders" aria-labelledby="ladder-title">
+      <div class="section-head">
+        <h2 id="ladder-title">Where each project stands</h2>
+        <p>A project moves up only when there is documented evidence for it. Empty stages are empty on purpose.</p>
+      </div>
+
+      {ladders.map((ladder) => (
+        <div class="ladder" style={`--stages:${ladder.stages.length};--reached:${ladder.reached}`}>
+          <div class="ladder-head">
+            <h3>{ladder.title}</h3>
+            <p>{ladder.note}</p>
+          </div>
+          <ol class="ladder-track" aria-label={`${ladder.title}, by stage`}>
+            {ladder.stages.map((stage, index) => (
+              <li class:list={["rung", { reached: index <= ladder.reached, toward: index < ladder.reached, filled: stage.projects.length > 0 }]}>
+                <span class="rung-dot" aria-hidden="true"></span>
+                <p class="rung-name">{stage.name}</p>
+                <p class="rung-meaning">{stage.meaning}</p>
+                {stage.projects.length > 0 ? (
+                  <ul class="rung-projects">
+                    {stage.projects.map((project) => (
+                      <li><a href={project.href}>{shortTitle(project)}</a></li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p class="rung-empty">None yet</p>
+                )}
+              </li>
+            ))}
+          </ol>
+        </div>
+      ))}
+      <p class="ladder-more"><a href="/projects/">See every project in detail</a></p>
+    </section>
+
+    <section class="pair">
+      <div class="updates" aria-labelledby="updates-title">
+        <h2 id="updates-title">Latest updates</h2>
+        <ol class="update-list">
+          {latestUpdates.map((update) => (
+            <li>
+              <time datetime={update.isoDate}>{update.date}</time>
+              <h3><a href={update.href}>{update.projectTitle}</a>: {update.title}</h3>
+              <p>{update.text}</p>
+            </li>
+          ))}
+        </ol>
+        <p class="pair-more"><a href="/timeline/">Unity House timeline</a></p>
+      </div>
+
+      <div class="method" aria-labelledby="method-title">
+        <h2 id="method-title">How we move forward</h2>
+        <ol class="steps">
+          {steps.map((step) => (
+            <li>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </li>
+          ))}
+        </ol>
+        <p class="pair-more"><a href="/governance/">Governance and evidence principles</a></p>
+      </div>
+    </section>
+
+    <section class="sectors" aria-labelledby="sectors-title">
+      <h2 id="sectors-title">Eighteen public sectors, and the systems that connect them</h2>
+      <ul class="sector-list">
+        {sectors.map((sector) => <li>{sector}</li>)}
+      </ul>
+    </section>
+
+    <section class="closing" aria-labelledby="closing-title">
+      <div>
+        <h2 id="closing-title">Working on a public service problem?</h2>
+        <p>Councils, researchers, charities and community groups can reach us by email. We usually reply in writing first.</p>
+      </div>
+      <div class="closing-actions">
+        <a class="button primary" href="/contact/">Contact us</a>
+        <a class="button" href="/commissioners-partners/">Engagement packages</a>
       </div>
     </section>
   </div>
 
   <style>
-    .manifesto-home {
-      --home-ink: #123448;
-      --home-teal: #0f766e;
-      color: var(--home-ink);
+    .home {
+      --gap: clamp(56px, 8vw, 104px);
+      color: var(--text);
     }
 
-    .home-hero {
-      min-height: clamp(600px, 78svh, 880px);
-      padding-block: clamp(38px, 6vh, 72px);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .home-kicker,
-    .window-kicker {
+    .home h2 {
       margin: 0;
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      color: var(--home-teal);
-      font-size: 0.78rem;
-      font-weight: 750;
-      letter-spacing: 0.15em;
-      line-height: 1.3;
-      text-transform: uppercase;
+      font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+      font-weight: 760;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
     }
 
-    .home-kicker > span {
-      width: 28px;
-      height: 1px;
-      flex: 0 0 28px;
-      background: currentColor;
+    .home a:not(.button) {
+      color: var(--teal);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
     }
 
-    .home-hero h1 {
-      max-width: 980px;
-      margin: clamp(22px, 3.2vw, 42px) 0 0;
-      color: var(--home-ink);
-      font-size: clamp(3.35rem, 6.4vw, 6.8rem);
-      font-weight: 640;
-      letter-spacing: -0.075em;
-      line-height: 0.94;
-      text-wrap: balance;
-    }
+    .home a:not(.button):hover { text-decoration-thickness: 2px; }
 
-    .home-hero h1 span {
-      color: #176d73;
-    }
-
-    .home-introduction {
-      max-width: 76ch;
+    /* Hero */
+    .hero {
       display: grid;
-      gap: 11px;
-      margin-top: clamp(24px, 3vw, 38px);
+      grid-template-columns: minmax(0, 1.55fr) minmax(280px, 1fr);
+      gap: clamp(28px, 5vw, 64px);
+      align-items: end;
+      padding-block: clamp(24px, 6vw, 72px) 0;
     }
 
-    .home-introduction p {
+    .hero-org {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .hero h1 {
       margin: 0;
-      color: #385363;
-      font-size: clamp(1rem, 1.25vw, 1.18rem);
-      line-height: 1.65;
-      text-wrap: pretty;
-    }
-
-    .home-scroll-cue {
-      width: fit-content;
-      display: inline-flex;
-      align-items: center;
-      gap: 13px;
-      margin-top: clamp(28px, 4.5vh, 46px);
-      color: var(--home-ink);
-      font-size: 0.83rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-decoration: none;
-      text-transform: uppercase;
-    }
-
-    .home-scroll-arrow {
-      display: grid;
-      width: 34px;
-      height: 34px;
-      place-items: center;
-      border: 1px solid rgba(18, 52, 72, 0.22);
-      border-radius: 50%;
-      font-size: 1.1rem;
-      transition: transform 180ms ease, border-color 180ms ease;
-    }
-
-    .home-scroll-cue:hover .home-scroll-arrow {
-      transform: translateY(3px);
-      border-color: var(--home-teal);
-    }
-
-    .home-window-scroll {
-      width: 100vw;
-      margin-left: calc(50% - 50vw);
-      position: relative;
-    }
-
-    .home-window-sticky {
-      min-height: 78svh;
-      padding: clamp(12px, 3vw, 38px);
-      display: grid;
-      place-items: center;
-    }
-
-    .home-window-panel {
-      position: relative;
-      isolation: isolate;
-      width: 100%;
-      min-height: 76svh;
-      overflow: hidden;
-      border-radius: clamp(22px, 3vw, 42px);
-      border: 1px solid rgba(15, 118, 110, 0.16);
-      color: var(--home-ink);
-      background:
-        radial-gradient(ellipse at 51% 48%, rgba(69, 166, 153, 0.2), transparent 53%),
-        radial-gradient(ellipse at 12% 88%, rgba(69, 130, 183, 0.13), transparent 39%),
-        linear-gradient(138deg, rgba(246, 251, 255, 0.94) 0%, rgba(222, 241, 243, 0.88) 53%, rgba(232, 247, 239, 0.94) 100%);
-      box-shadow: 0 18px 56px rgba(31, 91, 105, 0.09);
-      -webkit-backdrop-filter: blur(12px) saturate(118%);
-      backdrop-filter: blur(12px) saturate(118%);
-    }
-
-    .home-window-panel::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      opacity: 0.36;
-      background:
-        linear-gradient(rgba(31, 92, 107, 0.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(31, 92, 107, 0.045) 1px, transparent 1px);
-      background-size: 64px 64px;
-      mask-image: linear-gradient(135deg, #000, transparent 72%);
-    }
-
-    .home-window-content {
-      box-sizing: border-box;
-      width: min(100%, 1500px);
-      min-height: 76svh;
-      margin-inline: auto;
-      padding: clamp(27px, 5.4vw, 82px);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: clamp(20px, 3.2vh, 34px);
-    }
-
-    .window-intro {
-      max-width: 1040px;
-    }
-
-    .window-kicker {
-      color: #0b5e58;
-      font-size: 0.72rem;
-    }
-
-    .window-intro h2 {
-      max-width: 14ch;
-      margin: 17px 0 13px;
-      color: #123448;
-      font-size: clamp(2.8rem, 5.7vw, 5.7rem);
-      font-weight: 560;
-      letter-spacing: -0.065em;
+      max-width: 17ch;
+      font-size: clamp(2.6rem, 5.6vw, 4.9rem);
+      font-weight: 780;
+      letter-spacing: -0.045em;
       line-height: 0.98;
       text-wrap: balance;
     }
 
-    .window-support {
-      max-width: 64ch;
-      margin: 0;
-      color: #385363;
-      font-size: clamp(0.96rem, 1.2vw, 1.15rem);
+    .hero-lead {
+      max-width: 58ch;
+      margin: 28px 0 0;
+      color: var(--muted);
+      font-size: 1.15rem;
       line-height: 1.65;
+    }
+
+    .hero-actions,
+    .closing-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 20px;
+      border: 1.5px solid var(--ink);
+      border-radius: 10px;
+      color: var(--ink);
+      background: transparent;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .button:hover { background: rgba(17, 43, 56, 0.06); }
+    .button.primary { color: #fff; background: var(--ink); }
+    .button.primary:hover { background: var(--teal); border-color: var(--teal); }
+
+    .now {
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--amber);
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .now-label {
+      margin: 0 0 6px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .now h2 { font-size: 1.4rem; }
+
+    .now > p:not(.now-label):not(.stage-pill) {
+      margin: 14px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .now-link {
+      display: inline-block;
+      margin-top: 16px;
+      font-weight: 700;
+    }
+
+    .stage-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 14px 0 0;
+      padding: 5px 12px 5px 10px;
+      border-radius: 999px;
+      background: rgba(166, 90, 7, 0.1);
+      color: #7a4205;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .stage-pill span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--amber);
+    }
+
+    /* Evidence ladders */
+    .ladders { margin-top: var(--gap); }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 24px;
+      align-items: end;
+      padding-bottom: 22px;
+      border-bottom: 1.5px solid var(--ink);
+    }
+
+    .section-head p {
+      max-width: 52ch;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .ladder {
+      display: grid;
+      grid-template-columns: minmax(180px, 0.9fr) minmax(0, 4fr);
+      gap: 24px;
+      padding-block: 30px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .ladder-head h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 760;
+      line-height: 1.3;
+    }
+
+    .ladder-head p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .ladder-track {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(var(--stages), minmax(0, 1fr));
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    /* The line connecting the stages, filled up to the highest stage reached. */
+    .ladder-track::before,
+    .ladder-track::after {
+      content: "";
+      position: absolute;
+      top: 7px;
+      left: 7px;
+      height: 2px;
+      border-radius: 2px;
+    }
+
+    .ladder-track::before {
+      right: 0;
+      background: var(--line);
+    }
+
+    .ladder-track::after {
+      width: calc((100% + 12px) * var(--reached) / var(--stages));
+      background: var(--teal);
+      transform-origin: left;
+      animation: ladder-fill 900ms cubic-bezier(0.22, 0.61, 0.36, 1) 200ms both;
+    }
+
+    @keyframes ladder-fill {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+
+    .rung {
+      position: relative;
+      min-width: 0;
+      padding-top: 30px;
+    }
+
+    .rung-dot {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--line);
+      border-radius: 50%;
+      background: var(--bg);
+    }
+
+    .rung.reached .rung-dot { border-color: var(--teal); }
+    .rung.filled .rung-dot { background: var(--teal); }
+
+    .rung-name {
+      margin: 0;
+      font-weight: 760;
+      line-height: 1.25;
+    }
+
+    .rung-meaning {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+
+    .rung-projects {
+      display: grid;
+      gap: 6px;
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .rung-projects a {
+      display: block;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink) !important;
+      font-size: 0.95rem;
+      font-weight: 650;
+      line-height: 1.3;
+      text-decoration: none;
+    }
+
+    .rung-projects a:hover { border-color: var(--teal); }
+
+    .rung-empty {
+      margin: 14px 0 0;
+      padding: 8px 10px;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .ladder-more { margin: 22px 0 0; font-weight: 700; }
+
+    /* Updates and method */
+    .pair {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+      gap: clamp(32px, 6vw, 80px);
+      margin-top: var(--gap);
+    }
+
+    .pair h2 {
+      padding-bottom: 18px;
+      border-bottom: 1.5px solid var(--ink);
+    }
+
+    .update-list,
+    .steps {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .update-list li {
+      padding-block: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .update-list time {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .update-list h3,
+    .steps h3 {
+      margin: 6px 0 0;
+      font-size: 1.05rem;
+      font-weight: 760;
+      line-height: 1.35;
+    }
+
+    .update-list p,
+    .steps p {
+      max-width: 64ch;
+      margin: 6px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .steps { counter-reset: step; }
+
+    .steps li {
+      position: relative;
+      padding: 20px 0 20px 48px;
+      border-bottom: 1px solid var(--line);
+      counter-increment: step;
+    }
+
+    .steps li::before {
+      content: counter(step);
+      position: absolute;
+      top: 22px;
+      left: 0;
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--mist);
+      color: var(--teal);
+      font-weight: 780;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .steps h3 { margin-top: 0; }
+
+    .pair-more { margin: 18px 0 0; font-weight: 700; }
+
+    /* Sectors */
+    .sectors {
+      margin-top: var(--gap);
+      padding: clamp(28px, 4vw, 44px);
+      border-radius: 16px;
+      background: var(--ink);
+      color: #e6f0f2;
+    }
+
+    .sectors h2 {
+      max-width: 22ch;
+      color: #fff;
     }
 
     .sector-list {
       display: flex;
       flex-wrap: wrap;
-      align-items: baseline;
-      gap: 5px 15px;
-      margin: 0;
+      gap: 8px 10px;
+      margin: 26px 0 0;
       padding: 0;
       list-style: none;
-      color: #244858;
-      font-size: clamp(1.05rem, 2vw, 1.9rem);
-      font-weight: 480;
-      letter-spacing: -0.035em;
-      line-height: 1.28;
     }
 
     .sector-list li {
-      white-space: nowrap;
+      padding: 6px 12px;
+      border: 1px solid rgba(230, 240, 242, 0.28);
+      border-radius: 999px;
+      font-size: 0.95rem;
     }
 
-    .sector-list li:not(:first-child)::before {
-      content: "·";
-      margin-right: 15px;
-      color: #0f766e;
-    }
-
-    .window-closing {
-      align-self: flex-end;
-      max-width: 22ch;
-      margin: auto 0 0;
-      color: #0b5e58;
-      font-size: clamp(1.35rem, 2.35vw, 2.15rem);
-      font-weight: 520;
-      letter-spacing: -0.04em;
-      line-height: 1.12;
-      text-align: right;
-      text-wrap: balance;
-    }
-
-    .home-window-scroll[data-scroll-enhanced] {
-      height: 230svh;
-    }
-
-    .home-window-scroll[data-scroll-enhanced] .home-window-sticky {
-      position: sticky;
-      top: 0;
-      height: 100svh;
-      min-height: 0;
-      padding: 0;
-      overflow: clip;
-    }
-
-    .home-window-scroll[data-scroll-enhanced] .home-window-panel {
-      position: absolute;
-      inset: 0;
-      width: auto;
-      height: 100%;
-      min-height: 0;
-      border-radius: 0;
-      clip-path: inset(var(--window-inset-y, 14%) var(--window-inset-x, 9%) round var(--window-radius, 38px));
-    }
-
-    .home-window-scroll[data-scroll-enhanced] .home-window-content {
-      width: 100%;
-      height: 100%;
-      min-height: 0;
-      opacity: var(--window-content-opacity, 1);
-    }
-
-    .home-next {
-      min-height: 74svh;
-      padding-block: clamp(88px, 14vh, 170px);
-      display: grid;
-      align-items: center;
-    }
-
-    .home-next-content {
-      width: 100%;
-    }
-
-    .home-next h2 {
-      max-width: 17ch;
-      margin: 25px 0 0;
-      color: var(--home-ink);
-      font-size: clamp(2.8rem, 5.8vw, 5.8rem);
-      font-weight: 560;
-      letter-spacing: -0.065em;
-      line-height: 0.99;
-      text-wrap: balance;
-    }
-
-    .home-destinations {
+    /* Closing */
+    .closing {
       display: flex;
       flex-wrap: wrap;
-      gap: clamp(24px, 4.5vw, 62px);
-      margin-top: clamp(36px, 5vh, 58px);
-    }
-
-    .home-destinations a {
-      display: inline-flex;
+      gap: 20px 40px;
       align-items: center;
-      gap: 12px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid rgba(15, 118, 110, 0.4);
-      color: var(--home-ink);
-      font-size: clamp(1.2rem, 1.8vw, 1.55rem);
-      font-weight: 690;
-      text-decoration: none;
-      transition: color 180ms ease, border-color 180ms ease;
+      justify-content: space-between;
+      margin-block: var(--gap) 16px;
     }
 
-    .home-destinations a:hover {
-      color: var(--home-teal);
-      border-color: currentColor;
+    .closing p {
+      max-width: 56ch;
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
     }
 
-    .home-destinations a span {
-      color: var(--home-teal);
-      font-size: 0.92em;
+    .closing-actions { margin-top: 0; }
+
+    @media (max-width: 960px) {
+      .hero,
+      .pair,
+      .section-head,
+      .ladder { grid-template-columns: 1fr; }
+      .hero { align-items: start; }
+      .ladder { gap: 18px; }
     }
 
-    .home-about-link {
-      display: inline-block;
-      margin-top: 26px;
-      color: #4d6874;
-      font-size: 0.93rem;
-      text-underline-offset: 4px;
-    }
-
+    /* On narrow screens the ladder runs top to bottom. */
     @media (max-width: 700px) {
-      .home-hero {
-        min-height: clamp(610px, 80svh, 760px);
+      .ladder-track {
+        grid-template-columns: 1fr;
+        gap: 0;
       }
 
-      .home-hero h1 {
-        max-width: 12.5ch;
-        font-size: clamp(3.15rem, 12.8vw, 4.55rem);
-        line-height: 0.98;
+      .ladder-track::before,
+      .ladder-track::after { display: none; }
+
+      /* Each rung draws the segment down to the next one. */
+      .rung:not(:last-child)::before {
+        content: "";
+        position: absolute;
+        top: 16px;
+        bottom: 0;
+        left: 7px;
+        width: 2px;
+        background: var(--line);
       }
 
-      .home-introduction {
-        margin-top: 23px;
-        gap: 9px;
+      .rung.toward::before { background: var(--teal); }
+
+      .rung {
+        padding: 0 0 22px 32px;
       }
 
-      .home-introduction p {
-        font-size: 1rem;
-        line-height: 1.55;
-      }
-
-      .home-scroll-cue {
-        margin-top: 25px;
-      }
-
-      .home-window-sticky {
-        min-height: 0;
-        padding: 0;
-      }
-
-      .home-window-panel {
-        min-height: 82svh;
-        border-radius: 0;
-      }
-
-      .home-window-content {
-        min-height: 82svh;
-        padding: 26px 23px;
-        gap: 18px;
-      }
-
-      .window-intro h2 {
-        max-width: 12ch;
-        margin: 13px 0 9px;
-        font-size: clamp(2.15rem, 9.1vw, 3.1rem);
-        line-height: 0.99;
-      }
-
-      .window-support {
-        font-size: 0.91rem;
-        line-height: 1.48;
-      }
-
-      .sector-list {
-        gap: 4px 10px;
-        font-size: clamp(0.93rem, 4.2vw, 1.15rem);
-        line-height: 1.28;
-      }
-
-      .sector-list li:not(:first-child)::before {
-        margin-right: 10px;
-      }
-
-      .window-closing {
-        align-self: flex-start;
-        max-width: 24ch;
-        font-size: 1.3rem;
-        text-align: left;
-      }
-
-      .home-window-scroll[data-scroll-enhanced] .home-window-content {
-        padding: 25px 22px;
-        gap: 13px;
-      }
-
-      .home-next {
-        min-height: 68svh;
-        padding-block: 88px;
-      }
-
-      .home-next h2 {
-        max-width: 15ch;
-        margin-top: 21px;
-        font-size: clamp(2.55rem, 11vw, 4.15rem);
-        line-height: 1.01;
-      }
-
-      .home-destinations {
-        gap: 22px 30px;
-        margin-top: 32px;
-      }
-    }
-
-    @media (max-width: 360px) {
-      .home-window-content {
-        padding-inline: 18px;
-      }
-
-      .home-window-scroll[data-scroll-enhanced] .home-window-content {
-        padding-inline: 18px;
-      }
-
-      .window-intro h2 {
-        font-size: 2rem;
-      }
-
-      .sector-list {
-        font-size: 0.88rem;
-        gap: 3px 8px;
-      }
-
-      .sector-list li:not(:first-child)::before {
-        margin-right: 8px;
-      }
+      .rung-projects,
+      .rung-empty { margin-top: 10px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .home-scroll-arrow,
-      .home-destinations a {
-        transition: none;
-      }
-
-      .home-window-scroll[data-scroll-enhanced] {
-        height: auto;
-      }
-
-      .home-window-scroll[data-scroll-enhanced] .home-window-sticky {
-        position: relative;
-        height: auto;
-        min-height: 0;
-        overflow: visible;
-        padding: 0;
-      }
-
-      .home-window-scroll[data-scroll-enhanced] .home-window-panel {
-        position: relative;
-        inset: auto;
-        height: auto;
-        min-height: 82svh;
-        clip-path: none;
-      }
-
-      .home-window-scroll[data-scroll-enhanced] .home-window-content {
-        height: auto;
-        min-height: 82svh;
-        opacity: 1;
-      }
+      .ladder-track::after { animation: none; }
     }
   </style>
-
-  <script>
-    const scrollWindow = document.querySelector<HTMLElement>("[data-scroll-window]");
-    const windowPanel = scrollWindow?.querySelector<HTMLElement>("[data-window-panel]");
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    if (scrollWindow && windowPanel) {
-      let frame = 0;
-
-      const clamp = (value: number) => Math.max(0, Math.min(1, value));
-      const clearProgress = () => {
-        windowPanel.style.removeProperty("--window-inset-y");
-        windowPanel.style.removeProperty("--window-inset-x");
-        windowPanel.style.removeProperty("--window-radius");
-        windowPanel.style.removeProperty("--window-content-opacity");
-      };
-
-      const updateProgress = () => {
-        frame = 0;
-        if (reducedMotion.matches) return;
-
-        const bounds = scrollWindow.getBoundingClientRect();
-        const travel = Math.max(1, scrollWindow.offsetHeight - window.innerHeight);
-        const progress = clamp(-bounds.top / travel);
-
-        windowPanel.style.setProperty("--window-inset-y", (14 * (1 - progress)).toFixed(2) + "%");
-        windowPanel.style.setProperty("--window-inset-x", (9 * (1 - progress)).toFixed(2) + "%");
-        windowPanel.style.setProperty("--window-radius", (38 * (1 - progress)).toFixed(1) + "px");
-        windowPanel.style.setProperty("--window-content-opacity", clamp(progress / 0.76).toFixed(3));
-      };
-
-      const scheduleUpdate = () => {
-        if (frame) return;
-        frame = window.requestAnimationFrame(updateProgress);
-      };
-
-      const applyMotionPreference = () => {
-        if (reducedMotion.matches) {
-          scrollWindow.removeAttribute("data-scroll-enhanced");
-          clearProgress();
-          return;
-        }
-
-        scrollWindow.setAttribute("data-scroll-enhanced", "");
-        scheduleUpdate();
-      };
-
-      window.addEventListener("scroll", scheduleUpdate, { passive: true });
-      window.addEventListener("resize", scheduleUpdate, { passive: true });
-      reducedMotion.addEventListener("change", applyMotionPreference);
-      applyMotionPreference();
-    }
-  </script>
 </BaseLayout>
