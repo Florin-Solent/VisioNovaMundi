@@ -37,6 +37,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </section>
   </div>
 
+  <section class="card framework" aria-labelledby="framework-title">
+    <p class="eyebrow">Visio Nova Mundi · Tree of Life framework</p>
+    <h2 id="framework-title">Our work grows from one framework</h2>
+    <p>The Tree of Life is Visio Nova Mundi’s overarching social-impact framework. It connects projects, research and practical pilots around a shared objective: finding better ways for communities, public services and institutions to work together.</p>
+    <p>Its branches can explore challenges across areas such as education, health, culture, tourism, justice, transport, agriculture, employment, trade, finance, community development and other public-service systems.</p>
+    <p>Visio Nova Mundi does not claim to replace governments or existing institutions. Our role is to identify problems, develop practical concepts, test them on a controlled scale, measure what happens and work with appropriate partners where the evidence supports further development.</p>
+    <div class="actions"><a class="btn primary" href="/commissioners-partners/">For Commissioners &amp; Partners</a><a class="btn" href="/tree-of-life/">Explore the Tree of Life</a></div>
+  </section>
+
   <section class="card founder">
     <h2>Founder perspective</h2>
     <p><strong>Marcel Florin Banias · Founder and Director.</strong> <a href="https://find-and-update.company-information.service.gov.uk/company/16947678/officers">View the official director record</a>.</p>
@@ -114,6 +123,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   </section>
 
   <style>
+    .framework { margin-top: 18px; }
+    .framework h2 { margin: 6px 0 14px; font-size: clamp(24px, 3vw, 32px); letter-spacing: -0.025em; }
+    .framework p:not(.eyebrow) { max-width: 78ch; }
+    .framework p + p { margin-top: 12px; }
+
     h1 {
       margin: 0 0 12px;
       font-size: 40px;

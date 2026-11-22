@@ -15,6 +15,7 @@ import {
   MathUtils,
   Mesh,
   MeshBasicMaterial,
+  NormalBlending,
   PerspectiveCamera,
   QuadraticBezierCurve3,
   Scene,
@@ -69,16 +70,16 @@ const toVector = ([lat, lon]: readonly [number, number], radius: number) => {
   return new Vector3(-radius * Math.sin(phi) * Math.cos(theta), radius * Math.cos(phi), radius * Math.sin(phi) * Math.sin(theta));
 };
 
-const createArcMaterial = (offset: number, speed: number) =>
+const createArcMaterial = (offset: number, speed: number, light: boolean) =>
   new ShaderMaterial({
     transparent: true,
     depthWrite: false,
-    blending: AdditiveBlending,
+    blending: light ? NormalBlending : AdditiveBlending,
     uniforms: {
       uTime: { value: 0 },
       uOffset: { value: offset },
       uSpeed: { value: speed },
-      uColor: { value: new Color("#5fe3d6") },
+      uColor: { value: new Color(light ? "#2dd4bf" : "#5fe3d6") },
     },
     vertexShader: `
       varying vec2 vUv;
@@ -111,7 +112,8 @@ const createArc = (from: Vector3, to: Vector3) => {
   return new QuadraticBezierCurve3(from, mid, to);
 };
 
-export const mountHomeWorld = () => {
+export const mountHomeWorld = ({ theme = "light" }: { theme?: "light" | "dark" } = {}) => {
+  const light = theme === "light";
   const stage = document.querySelector<HTMLElement>("[data-home-world]");
   const canvas = stage?.querySelector<HTMLCanvasElement>("[data-home-canvas]");
   if (!stage || !canvas) return;
@@ -148,8 +150,10 @@ export const mountHomeWorld = () => {
   renderer.setClearColor(0x000000, 0);
 
   // Scene graph: rig (position on screen) > tilt (axial tilt) > spin (rotation) > earth layers and network.
+  // Stars only read on a dark sky.
   const starfield = createStarfield();
   starfield.scale.set(2.4, 2.4, 1.6);
+  starfield.visible = !light;
   scene.add(starfield);
 
   const rig = new Group();
@@ -177,7 +181,7 @@ export const mountHomeWorld = () => {
   const arcMaterials: ShaderMaterial[] = [];
   routes.forEach(([from, to], index) => {
     const curve = createArc(toVector(places[from], EARTH_RADIUS + 0.01), toVector(places[to], EARTH_RADIUS + 0.01));
-    const material = createArcMaterial(index * 0.37, 0.11 + (index % 3) * 0.025);
+    const material = createArcMaterial(index * 0.37, 0.11 + (index % 3) * 0.025, light);
     arcMaterials.push(material);
     spin.add(new Mesh(new TubeGeometry(curve, 96, 0.007, 6, false), material));
   });
@@ -200,29 +204,33 @@ export const mountHomeWorld = () => {
   const orbitCurve = new EllipseCurve(0, 0, 2.15, 2.15, 0, Math.PI * 2, false, 0);
   const orbitLine = new Line(
     new BufferGeometry().setFromPoints(orbitCurve.getPoints(160).map((point) => new Vector3(point.x, 0, point.y))),
-    new LineBasicMaterial({ color: "#7fd4ff", transparent: true, opacity: 0.18, depthWrite: false, blending: AdditiveBlending }),
+    new LineBasicMaterial({ color: light ? "#2563eb" : "#7fd4ff", transparent: true, opacity: light ? 0.22 : 0.18, depthWrite: false, blending: light ? NormalBlending : AdditiveBlending }),
   );
   orbit.add(orbitLine);
   const satelliteTexture = createRadialTexture("rgba(255,255,255,1)", "rgba(127,212,255,.5)");
-  const satellite = new Sprite(new SpriteMaterial({ map: satelliteTexture ?? undefined, transparent: true, depthWrite: false, blending: AdditiveBlending }));
+  const satellite = new Sprite(new SpriteMaterial({ map: satelliteTexture ?? undefined, transparent: true, depthWrite: false, blending: light ? NormalBlending : AdditiveBlending, color: light ? "#2563eb" : "#ffffff" }));
   satellite.scale.setScalar(0.12);
   orbit.add(satellite);
   orbit.rotation.set(MathUtils.degToRad(72), MathUtils.degToRad(-18), MathUtils.degToRad(14));
   rig.add(orbit);
 
-  const nebulaTexture = createRadialTexture("rgba(60,170,230,.28)", "rgba(20,90,140,.12)");
+  // A soft halo behind the globe: additive glow on dark, a blue-teal haze on light.
+  const nebulaTexture = light
+    ? createRadialTexture("rgba(59,130,246,.34)", "rgba(16,185,129,.14)")
+    : createRadialTexture("rgba(60,170,230,.28)", "rgba(20,90,140,.12)");
   if (nebulaTexture) {
-    const nebula = new Sprite(new SpriteMaterial({ map: nebulaTexture, transparent: true, opacity: 0.32, depthWrite: false, blending: AdditiveBlending }));
-    nebula.scale.set(9, 9, 1);
+    const nebula = new Sprite(new SpriteMaterial({ map: nebulaTexture, transparent: true, opacity: light ? 0.55 : 0.32, depthWrite: false, blending: light ? NormalBlending : AdditiveBlending }));
+    nebula.scale.set(light ? 6.2 : 9, light ? 6.2 : 9, 1);
     nebula.position.set(0, 0, -2.5);
     rig.add(nebula);
   }
 
-  const sun = new Vector3(-0.55, 0.32, 0.78).normalize();
+  // On the light theme the sun sits more in front, so more of the day side shows.
+  const sun = light ? new Vector3(-0.35, 0.3, 0.9).normalize() : new Vector3(-0.55, 0.32, 0.78).normalize();
   const keyLight = new DirectionalLight("#fff3dc", 2.0);
   keyLight.position.copy(sun).multiplyScalar(8);
   scene.add(keyLight);
-  scene.add(new AmbientLight("#3a6a86", 0.3));
+  scene.add(new AmbientLight(light ? "#9cc7e0" : "#3a6a86", light ? 0.55 : 0.3));
   scene.add(new HemisphereLight("#8bd0ee", "#040a14", 0.3));
   const rim = new DirectionalLight("#4fc3ff", 0.55);
   rim.position.set(3, -1, -5);
@@ -267,10 +275,15 @@ export const mountHomeWorld = () => {
     // Hero: globe to the right on wide screens, low and large behind the headline on narrow ones.
     // Scrolling past the hero brings it to the centre and slightly back, behind the glass panels.
     const h = smooth(heroProgress);
-    const restX = narrow ? 0 : 1.45;
+    const restX = narrow ? 0 : 1.6;
     const restY = narrow ? -1.5 : -0.12;
-    rig.position.set(MathUtils.lerp(restX, 0, h), MathUtils.lerp(restY, 0.1, h), MathUtils.lerp(0, -1.1, h));
-    const cameraZ = narrow ? 7.0 : 6.5;
+    // Dark theme: the globe comes to the centre. Light theme: it drifts further right and back, out of the text's way.
+    const awayX = light ? (narrow ? 0 : 2.1) : 0;
+    const awayY = light && narrow ? -2.9 : 0.1;
+    rig.position.set(MathUtils.lerp(restX, awayX, h), MathUtils.lerp(restY, awayY, h), MathUtils.lerp(0, light ? -1.6 : -1.1, h));
+    // On the light theme the globe steps back once the hero has passed, so panels stay easy to read.
+    if (light) stage.style.setProperty("--world-fade", (1 - h * (narrow ? 0.7 : 0.55)).toFixed(3));
+    const cameraZ = narrow ? 7.2 : 7.0;
     camera.position.set(pointer.x * 0.35, -pointer.y * 0.22, cameraZ + pageProgress * 0.6);
     lookTarget.set(0, 0, 0);
     camera.lookAt(lookTarget);
@@ -311,6 +324,8 @@ export const mountHomeWorld = () => {
   };
 
   window.addEventListener("resize", resize);
+  // Also track the stage itself, in case layout changes its size without a window resize.
+  if ("ResizeObserver" in window) new ResizeObserver(() => resize()).observe(stage);
   window.addEventListener("scroll", updateScroll, { passive: true });
   window.addEventListener("pointermove", updatePointer, { passive: true });
   document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));

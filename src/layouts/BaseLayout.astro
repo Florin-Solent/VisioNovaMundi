@@ -2,7 +2,6 @@
 const {
   title = "Visio Nova Mundi",
   description = "Visio Nova Mundi CIC — Innovation, research and systems reform for long-term community impact.",
-  theme = "light",
 } = Astro.props;
 const siteOrigin = "https://www.visionovamundi.com";
 const canonical = new URL(Astro.url.pathname, siteOrigin).href;
@@ -20,7 +19,7 @@ const pageTitle = title ? `${title} | Visio Nova Mundi` : "Visio Nova Mundi CIC"
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="/favicon.ico" sizes="any" />
   <link rel="preload" href="/fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
-  <meta name="theme-color" content={theme === "dark" ? "#050c16" : "#f8fafc"} />
+  <meta name="theme-color" content="#f8fafc" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Visio Nova Mundi CIC" />
   <meta property="og:title" content={pageTitle} />
@@ -29,7 +28,7 @@ const pageTitle = title ? `${title} | Visio Nova Mundi` : "Visio Nova Mundi CIC"
   <meta property="og:locale" content="en_GB" />
 </head>
 
-<body class:list={[{ "theme-dark": theme === "dark" }]}>
+<body>
   <a class="skip-link" href="#main-content">Skip to content</a>
   <div class="bg-glow"></div>
 
@@ -61,7 +60,6 @@ const pageTitle = title ? `${title} | Visio Nova Mundi` : "Visio Nova Mundi CIC"
       <nav id="primary-navigation" data-site-nav aria-label="Main navigation">
         <span class="nav-indicator" aria-hidden="true"></span>
         <a href="/about/">About</a>
-        <a href="/work/">Our Work</a>
         <a href="/projects/">Projects</a>
         <a href="/governance/">Governance</a>
         <a href="/contact/" class="nav-btn">Contact</a>
@@ -86,7 +84,6 @@ const pageTitle = title ? `${title} | Visio Nova Mundi` : "Visio Nova Mundi CIC"
       <section class="footer-group" data-footer-group>
         <h2><button class="footer-toggle" type="button" data-footer-toggle aria-controls="footer-work-links" aria-expanded="false"><span>Work</span><span class="footer-chevron" aria-hidden="true"></span></button></h2>
         <ul class="footer-submenu" id="footer-work-links" aria-hidden="true" inert>
-          <li><a href="/work/">Our Work</a></li>
           <li><a href="/projects/">Projects</a></li>
           <li><a href="/commissioners-partners/">For Commissioners &amp; Partners</a></li>
           <li><a href="/timeline/">Timeline</a></li>
@@ -583,55 +580,6 @@ const pageTitle = title ? `${title} | Visio Nova Mundi` : "Visio Nova Mundi CIC"
     }
   }
 
-  /* Dark cinematic theme (homepage). */
-  :global(body.theme-dark) {
-    --bg: #050c16;
-    --text: #eaf4f7;
-    --muted: #a9c2cc;
-    --border: rgba(170, 220, 235, 0.16);
-    --line: rgba(170, 220, 235, 0.18);
-    --glass: rgba(10, 26, 42, 0.55);
-    --teal: #6fe0d3;
-    --ink: #eaf4f7;
-    background: var(--bg);
-    color: var(--text);
-  }
-
-  :global(body.theme-dark) .bg-glow {
-    background:
-      radial-gradient(circle at 12% 8%, rgba(37, 99, 235, 0.22), transparent 42%),
-      radial-gradient(circle at 88% 18%, rgba(20, 184, 166, 0.14), transparent 40%),
-      radial-gradient(circle at 50% 100%, rgba(14, 116, 144, 0.18), transparent 55%),
-      #050c16;
-  }
-
-  :global(body.theme-dark) .nav {
-    background: rgba(5, 12, 22, 0.5);
-    border-bottom-color: rgba(170, 220, 235, 0.1);
-  }
-
-  :global(body.theme-dark) nav a { color: #b8cfd8; }
-
-  :global(body.theme-dark) nav a:hover,
-  :global(body.theme-dark) nav a:focus-visible,
-  :global(body.theme-dark) nav a[aria-current="page"] { color: #ffffff; }
-
-  :global(body.theme-dark) .nav-indicator {
-    border-color: rgba(111, 224, 211, 0.3);
-    background: linear-gradient(135deg, rgba(37, 99, 235, 0.22), rgba(20, 184, 166, 0.2));
-  }
-
-  :global(body.theme-dark) .mobile-nav-toggle {
-    color: #eaf4f7;
-    border-color: rgba(170, 220, 235, 0.22);
-    background: rgba(255, 255, 255, 0.06);
-    box-shadow: none;
-  }
-
-  :global(body.theme-dark) .footer { color: var(--muted); }
-
-  /* The homepage hero has its own entrance; keep main untransformed so the fixed 3D layer fills the viewport. */
-  :global(body.theme-dark main) { animation: none; }
 </style>
 
 <style is:global>
@@ -1009,13 +957,6 @@ const pageTitle = title ? `${title} | Visio Nova Mundi` : "Visio Nova Mundi CIC"
     }
   }
 
-  @media (max-width: 700px) {
-    body.theme-dark nav[data-site-nav] {
-      border-color: rgba(170, 220, 235, 0.2);
-      background: rgba(8, 20, 34, 0.97);
-      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.45);
-    }
-  }
   /* Shared heading family (VNM 2.0). */
   main h1, main h2, main h3 { font-family: var(--font-sans); }
   h1, h2, h3 { line-height: 1.15; }

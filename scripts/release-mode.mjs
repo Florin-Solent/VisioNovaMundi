@@ -10,7 +10,7 @@ const DOCS_FILES = new Set([
   'PRODUCTION.md',
   'DEPLOYMENT_POLICY.md',
 ]);
-const CORE_ROUTES = ['/', '/work/', '/programmes/', '/governance/', '/contact/'];
+const CORE_ROUTES = ['/', '/about/', '/programmes/', '/governance/', '/contact/'];
 const STRUCTURAL_PAGES = new Set([
   'src/pages/index.astro',
   'src/pages/work.astro',
