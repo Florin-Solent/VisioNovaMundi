@@ -1,36 +1,5 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { projectGroups, evidenceLadders, type PortfolioProject } from "../data/projects";
-import { projectUpdates } from "../data/project-updates";
-
-const allProjects = projectGroups.flatMap((group) => group.projects.map((project) => ({ ...project, group: group.id })));
-const shortTitle = (project: PortfolioProject) => project.title.split(" — ")[0];
-
-const ladders = evidenceLadders.map((ladder) => {
-  const projects = allProjects.filter((project) => ladder.groups.includes(project.group));
-  const stages = ladder.stages.map((stage) => ({
-    ...stage,
-    projects: projects.filter((project) => project.ladder === stage.name),
-  }));
-  const reached = stages.reduce((last, stage, index) => (stage.projects.length ? index : last), 0);
-  return { ...ladder, stages, reached };
-});
-
-const latestUpdates = Object.entries(projectUpdates)
-  .flatMap(([key, updates]) => {
-    const project = allProjects.find((item) => item.href === `/${key}/`);
-    return updates.map((update) => ({ ...update, projectTitle: project ? shortTitle(project) : key, href: project?.href ?? "/projects/" }));
-  })
-  .sort((a, b) => b.isoDate.localeCompare(a.isoDate))
-  .slice(0, 5);
-
-const steps = [
-  { title: "Identify problems", text: "Start from a real need in a public service or a community." },
-  { title: "Test ideas", text: "Run small, bounded pilots with safeguards agreed first." },
-  { title: "Learn from evidence", text: "Report what happened, including what did not work." },
-  { title: "Build what works", text: "Grow only what the evidence supports." },
-];
-
 const sectors = [
   "Education", "Health", "Tourism", "Culture", "Finance", "Justice", "Defence", "Transport", "Agriculture",
   "Labour & Employment", "Trade", "Housing", "Environment", "Social Services", "Digital Government",
@@ -43,557 +12,545 @@ const sectors = [
   description="Visio Nova Mundi CIC develops and tests ideas that aim to help public institutions and communities improve how essential services work, and reports honestly on what each project has shown."
 >
   <div class="home">
-    <section class="hero" aria-labelledby="home-title">
-      <div class="hero-copy">
-        <p class="hero-org">Visio Nova Mundi CIC · Community Interest Company 16947678</p>
-        <h1 id="home-title">Building better systems for people, communities and the future.</h1>
-        <p class="hero-lead">
-          We develop and test ideas that could help public institutions and communities improve how essential services
-          work. Every project below is shown at the stage its evidence supports, and no further.
-        </p>
-        <div class="hero-actions">
-          <a class="button primary" href="/work/">How we work</a>
-          <a class="button" href="/contact/">Contact us</a>
-        </div>
-      </div>
+    <div class="world" data-home-world aria-hidden="true">
+      <canvas class="world-canvas" data-home-canvas></canvas>
+    </div>
 
-      <aside class="now" aria-labelledby="now-title">
-        <p class="now-label">Our framework</p>
-        <h2 id="now-title">The Tree of Life</h2>
-        <p>
-          Tree of Life is how we organise every project. Each one is classified by who runs it, how it is funded, who owns
-          its IP and how it is governed, so CIC programmes stay clearly separate from independent founder ventures.
-        </p>
-        <a class="now-link" href="/tree-of-life/">Explore the framework</a>
-      </aside>
+    <section class="home-hero" aria-labelledby="home-title">
+      <p class="home-kicker"><span aria-hidden="true"></span> Visio Nova Mundi CIC</p>
+      <h1 id="home-title">Building better systems{" "}<span>for people, communities and the future.</span></h1>
+      <div class="hero-actions">
+        <a class="cta primary" href="/projects/">Explore our projects</a>
+        <a class="cta glass" href="/contact/">Contact us</a>
+      </div>
+      <a class="home-scroll-cue" href="#systems-window">
+        <span>Scroll to explore</span>
+        <span class="home-scroll-arrow" aria-hidden="true">↓</span>
+      </a>
     </section>
 
-    <section class="ladders" aria-labelledby="ladder-title">
-      <div class="section-head">
-        <h2 id="ladder-title">Where each project stands</h2>
-        <p>A project moves up only when there is documented evidence for it. Empty stages are empty on purpose.</p>
-      </div>
-
-      {ladders.map((ladder) => (
-        <div class="ladder" style={`--stages:${ladder.stages.length};--reached:${ladder.reached}`}>
-          <div class="ladder-head">
-            <h3>{ladder.title}</h3>
-            <p>{ladder.note}</p>
+    <section class="home-window-scroll" id="systems-window" data-scroll-window aria-labelledby="window-title">
+      <div class="home-window-sticky">
+        <div class="home-window-panel" data-window-panel>
+          <div class="home-window-content">
+            <p class="window-kicker rise" style="--i:0">How we move forward</p>
+            <h2 id="window-title" class="window-statement">
+              <span class="rise" style="--i:1">We identify problems.</span>
+              <span class="rise" style="--i:2">We test ideas.</span>
+              <span class="rise" style="--i:3">We learn from evidence.</span>
+              <span class="rise" style="--i:4">We build what works.</span>
+            </h2>
+            <nav class="home-destinations rise" style="--i:5" aria-label="Explore Visio Nova Mundi">
+              <a href="/about/">About</a>
+              <a href="/projects/">Projects</a>
+              <a href="/governance/">Governance</a>
+            </nav>
           </div>
-          <ol class="ladder-track" aria-label={`${ladder.title}, by stage`}>
-            {ladder.stages.map((stage, index) => (
-              <li class:list={["rung", { reached: index <= ladder.reached, toward: index < ladder.reached, filled: stage.projects.length > 0 }]}>
-                <span class="rung-dot" aria-hidden="true"></span>
-                <p class="rung-name">{stage.name}</p>
-                <p class="rung-meaning">{stage.meaning}</p>
-                {stage.projects.length > 0 ? (
-                  <ul class="rung-projects">
-                    {stage.projects.map((project) => (
-                      <li><a href={project.href}>{shortTitle(project)}</a></li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p class="rung-empty">None yet</p>
-                )}
-              </li>
-            ))}
-          </ol>
         </div>
-      ))}
-      <p class="ladder-more"><a href="/projects/">See every project in detail</a></p>
-    </section>
-
-    <section class="pair">
-      <div class="updates" aria-labelledby="updates-title">
-        <h2 id="updates-title">Latest updates</h2>
-        <ol class="update-list">
-          {latestUpdates.map((update) => (
-            <li>
-              <time datetime={update.isoDate}>{update.date}</time>
-              <h3><a href={update.href}>{update.projectTitle}</a>: {update.title}</h3>
-              <p>{update.text}</p>
-            </li>
-          ))}
-        </ol>
-        <p class="pair-more"><a href="/timeline/">Unity House timeline</a></p>
-      </div>
-
-      <div class="method" aria-labelledby="method-title">
-        <h2 id="method-title">How we move forward</h2>
-        <ol class="steps">
-          {steps.map((step) => (
-            <li>
-              <h3>{step.title}</h3>
-              <p>{step.text}</p>
-            </li>
-          ))}
-        </ol>
-        <p class="pair-more"><a href="/governance/">Governance and evidence principles</a></p>
       </div>
     </section>
 
-    <section class="sectors" aria-labelledby="sectors-title">
-      <h2 id="sectors-title">Eighteen public sectors, and the systems that connect them</h2>
-      <ul class="sector-list">
-        {sectors.map((sector) => <li>{sector}</li>)}
-      </ul>
+    <section class="sectors" aria-labelledby="sectors-title" data-reveal>
+      <p class="home-kicker"><span aria-hidden="true"></span> A shared horizon</p>
+      <h2 id="sectors-title">One vision. Every part of society.</h2>
+      <p class="sectors-support">We explore how better ideas, evidence and technology could contribute to stronger public services and institutions.</p>
+      <div class="marquee">
+        <ul class="marquee-track">
+          {sectors.map((sector) => <li>{sector}</li>)}
+        </ul>
+        <ul class="marquee-track" aria-hidden="true">
+          {sectors.map((sector) => <li>{sector}</li>)}
+        </ul>
+      </div>
     </section>
 
-    <section class="closing" aria-labelledby="closing-title">
-      <div>
-        <h2 id="closing-title">Working on a public service problem?</h2>
-        <p>Councils, researchers, charities and community groups can reach us by email. We usually reply in writing first.</p>
-      </div>
-      <div class="closing-actions">
-        <a class="button primary" href="/contact/">Contact us</a>
-        <a class="button" href="/commissioners-partners/">Engagement packages</a>
-      </div>
+    <section class="vnm-glass-card closing" aria-labelledby="closing-title" data-reveal>
+      <h2 id="closing-title">Working on a public service problem?</h2>
+      <a class="cta primary" href="/contact/">Talk to us</a>
     </section>
   </div>
 
+  <script>
+    import { mountHomeWorld } from "../scripts/home-world";
+    mountHomeWorld({ theme: "light" });
+
+    // The window opens as you scroll, and its words rise in one after another.
+    const scrollWindow = document.querySelector<HTMLElement>("[data-scroll-window]");
+    const windowPanel = scrollWindow?.querySelector<HTMLElement>("[data-window-panel]");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (scrollWindow && windowPanel) {
+      let frame = 0;
+      const clamp = (value: number) => Math.max(0, Math.min(1, value));
+      const clearProgress = () => {
+        for (const name of ["--window-inset-y", "--window-inset-x", "--window-radius", "--wp"]) windowPanel.style.removeProperty(name);
+      };
+
+      const updateProgress = () => {
+        frame = 0;
+        if (reducedMotion.matches) return;
+        const bounds = scrollWindow.getBoundingClientRect();
+        const travel = Math.max(1, scrollWindow.offsetHeight - window.innerHeight);
+        const progress = clamp(-bounds.top / travel);
+        // The panel starts opening a little before it reaches the top of the screen.
+        const lead = clamp((window.innerHeight - bounds.top) / (window.innerHeight * 1.6));
+        const open = Math.max(progress, lead * 0.35);
+        windowPanel.style.setProperty("--window-inset-y", (14 * (1 - open)).toFixed(2) + "%");
+        windowPanel.style.setProperty("--window-inset-x", (9 * (1 - open)).toFixed(2) + "%");
+        windowPanel.style.setProperty("--window-radius", (38 * (1 - open)).toFixed(1) + "px");
+        windowPanel.style.setProperty("--wp", progress.toFixed(3));
+      };
+
+      const scheduleUpdate = () => {
+        if (!frame) frame = window.requestAnimationFrame(updateProgress);
+      };
+
+      const applyMotionPreference = () => {
+        if (reducedMotion.matches) {
+          scrollWindow.removeAttribute("data-scroll-enhanced");
+          clearProgress();
+          return;
+        }
+        scrollWindow.setAttribute("data-scroll-enhanced", "");
+        scheduleUpdate();
+      };
+
+      window.addEventListener("scroll", scheduleUpdate, { passive: true });
+      window.addEventListener("resize", scheduleUpdate, { passive: true });
+      reducedMotion.addEventListener("change", applyMotionPreference);
+      applyMotionPreference();
+    }
+  </script>
+
   <style>
     .home {
-      --gap: clamp(56px, 8vw, 104px);
-      color: var(--text);
+      --home-ink: #123448;
+      --home-teal: #0f766e;
+      color: var(--home-ink);
     }
 
-    .home h2 {
-      margin: 0;
-      font-size: clamp(1.6rem, 2.6vw, 2.1rem);
-      font-weight: 760;
-      letter-spacing: -0.025em;
-      line-height: 1.15;
+    /* main normally fades in with a transform; that would trap the fixed 3D layer inside it. */
+    :global(main:has(> .home)) { animation: none; }
+
+    /* The 3D world sits behind the page. */
+    .world {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: var(--world-fade, 1);
     }
 
-    .home a:not(.button) {
-      color: var(--teal);
-      text-decoration-thickness: 1px;
-      text-underline-offset: 3px;
+    .world-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 1.6s ease-out;
     }
 
-    .home a:not(.button):hover { text-decoration-thickness: 2px; }
+    .world.is-ready .world-canvas { opacity: 1; }
+
+    .world.webgl-unavailable {
+      background:
+        radial-gradient(circle at 74% 46%, rgba(59, 130, 246, 0.22), transparent 26%),
+        radial-gradient(circle at 74% 46%, rgba(16, 185, 129, 0.14), transparent 40%);
+    }
 
     /* Hero */
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.55fr) minmax(280px, 1fr);
-      gap: clamp(28px, 5vw, 64px);
-      align-items: end;
-      padding-block: clamp(24px, 6vw, 72px) 0;
+    .home-hero {
+      position: relative;
+      min-height: clamp(600px, 80svh, 880px);
+      padding-block: clamp(38px, 6vh, 72px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
-    .hero-org {
-      margin: 0 0 22px;
-      color: var(--muted);
-      font-size: 0.95rem;
+    .home-hero > * { animation: hero-in 1.1s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .home-hero > :nth-child(2) { animation-delay: 0.12s; }
+    .home-hero > :nth-child(3) { animation-delay: 0.28s; }
+    .home-hero > :nth-child(4) { animation-delay: 0.7s; }
+
+    @keyframes hero-in {
+      from { opacity: 0; transform: translateY(26px); filter: blur(6px); }
+      to { opacity: 1; transform: none; filter: none; }
     }
 
-    .hero h1 {
+    .home-kicker,
+    .window-kicker {
       margin: 0;
-      max-width: 17ch;
-      font-size: clamp(2.6rem, 5.6vw, 4.9rem);
-      font-weight: 780;
-      letter-spacing: -0.045em;
-      line-height: 0.98;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      color: var(--home-teal);
+      font-size: 0.78rem;
+      font-weight: 750;
+      letter-spacing: 0.15em;
+      line-height: 1.3;
+      text-transform: uppercase;
+    }
+
+    .home-kicker > span {
+      width: 28px;
+      height: 1px;
+      flex: 0 0 28px;
+      background: currentColor;
+    }
+
+    .home-hero h1 {
+      max-width: 11.5ch;
+      margin: clamp(22px, 3.2vw, 40px) 0 0;
+      color: var(--home-ink);
+      font-size: clamp(3.1rem, 6.2vw, 6.2rem);
+      font-weight: 700;
+      letter-spacing: -0.06em;
+      line-height: 0.95;
       text-wrap: balance;
+      text-shadow: 0 2px 30px rgba(248, 250, 252, 0.8);
     }
 
-    .hero-lead {
-      max-width: 58ch;
-      margin: 28px 0 0;
-      color: var(--muted);
-      font-size: 1.15rem;
-      line-height: 1.65;
-    }
+    .home-hero h1 span { color: #176d73; }
 
-    .hero-actions,
-    .closing-actions {
+    .hero-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin-top: 30px;
+      margin-top: clamp(28px, 4vh, 40px);
     }
 
-    .button {
+    .cta {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 46px;
-      padding: 0 20px;
-      border: 1.5px solid var(--ink);
-      border-radius: 10px;
-      color: var(--ink);
-      background: transparent;
-      font-weight: 700;
+      min-height: 50px;
+      padding: 0 24px;
+      border-radius: 999px;
+      font-weight: 750;
       text-decoration: none;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
     }
 
-    .button:hover { background: rgba(17, 43, 56, 0.06); }
-    .button.primary { color: #fff; background: var(--ink); }
-    .button.primary:hover { background: var(--teal); border-color: var(--teal); }
-
-    .now {
-      padding: 26px;
-      border: 1px solid var(--line);
-      border-top: 4px solid var(--teal);
-      border-radius: 14px;
-      background: #fff;
+    .cta.primary {
+      color: #fff;
+      background: linear-gradient(120deg, #2563eb, #0f9f8f);
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
 
-    .now-label {
-      margin: 0 0 6px;
-      color: var(--muted);
-      font-size: 0.9rem;
+    .cta.glass {
+      color: var(--home-ink);
+      border: 1px solid rgba(37, 99, 235, 0.22);
+      background: rgba(255, 255, 255, 0.62);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
     }
 
-    .now h2 { font-size: 1.4rem; }
+    .cta:hover { transform: translateY(-2px); }
+    .cta.primary:hover { box-shadow: 0 14px 38px rgba(37, 99, 235, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
+    .cta.glass:hover { background: rgba(255, 255, 255, 0.85); }
 
-    .now > p:not(.now-label) {
-      margin: 14px 0 0;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .now-link {
-      display: inline-block;
-      margin-top: 16px;
-      font-weight: 700;
-    }
-
-    .stage-pill {
+    .home-scroll-cue {
+      width: fit-content;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      margin: 14px 0 0;
-      padding: 5px 12px 5px 10px;
-      border-radius: 999px;
-      background: rgba(166, 90, 7, 0.1);
-      color: #7a4205;
-      font-size: 0.9rem;
+      gap: 13px;
+      margin-top: clamp(28px, 4.5vh, 46px);
+      color: var(--home-ink);
+      font-size: 0.83rem;
       font-weight: 700;
-    }
-
-    .stage-pill span {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--amber);
-    }
-
-    /* Evidence ladders */
-    .ladders { margin-top: var(--gap); }
-
-    .section-head {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: 24px;
-      align-items: end;
-      padding-bottom: 22px;
-      border-bottom: 1.5px solid var(--ink);
-    }
-
-    .section-head p {
-      max-width: 52ch;
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .ladder {
-      display: grid;
-      grid-template-columns: minmax(180px, 0.9fr) minmax(0, 4fr);
-      gap: 24px;
-      padding-block: 30px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .ladder-head h3 {
-      margin: 0;
-      font-size: 1.1rem;
-      font-weight: 760;
-      line-height: 1.3;
-    }
-
-    .ladder-head p {
-      margin: 6px 0 0;
-      color: var(--muted);
-      font-size: 0.92rem;
-      line-height: 1.5;
-    }
-
-    .ladder-track {
-      position: relative;
-      display: grid;
-      grid-template-columns: repeat(var(--stages), minmax(0, 1fr));
-      gap: 12px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    /* The line connecting the stages, filled up to the highest stage reached. */
-    .ladder-track::before,
-    .ladder-track::after {
-      content: "";
-      position: absolute;
-      top: 7px;
-      left: 7px;
-      height: 2px;
-      border-radius: 2px;
-    }
-
-    .ladder-track::before {
-      right: 0;
-      background: var(--line);
-    }
-
-    .ladder-track::after {
-      width: calc((100% + 12px) * var(--reached) / var(--stages));
-      background: var(--teal);
-      transform-origin: left;
-      animation: ladder-fill 900ms cubic-bezier(0.22, 0.61, 0.36, 1) 200ms both;
-    }
-
-    @keyframes ladder-fill {
-      from { transform: scaleX(0); }
-      to { transform: scaleX(1); }
-    }
-
-    .rung {
-      position: relative;
-      min-width: 0;
-      padding-top: 30px;
-    }
-
-    .rung-dot {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1;
-      width: 16px;
-      height: 16px;
-      border: 2px solid var(--line);
-      border-radius: 50%;
-      background: var(--bg);
-    }
-
-    .rung.reached .rung-dot { border-color: var(--teal); }
-    .rung.filled .rung-dot { background: var(--teal); }
-
-    .rung-name {
-      margin: 0;
-      font-weight: 760;
-      line-height: 1.25;
-    }
-
-    .rung-meaning {
-      margin: 3px 0 0;
-      color: var(--muted);
-      font-size: 0.85rem;
-      line-height: 1.4;
-    }
-
-    .rung-projects {
-      display: grid;
-      gap: 6px;
-      margin: 14px 0 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .rung-projects a {
-      display: block;
-      padding: 8px 10px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fff;
-      color: var(--ink) !important;
-      font-size: 0.95rem;
-      font-weight: 650;
-      line-height: 1.3;
+      letter-spacing: 0.08em;
       text-decoration: none;
+      text-transform: uppercase;
     }
 
-    .rung-projects a:hover { border-color: var(--teal); }
-
-    .rung-empty {
-      margin: 14px 0 0;
-      padding: 8px 10px;
-      border: 1px dashed var(--line);
-      border-radius: 8px;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    .ladder-more { margin: 22px 0 0; font-weight: 700; }
-
-    /* Updates and method */
-    .pair {
+    .home-scroll-arrow {
       display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-      gap: clamp(32px, 6vw, 80px);
-      margin-top: var(--gap);
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 1px solid rgba(18, 52, 72, 0.22);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.6);
+      font-size: 1.1rem;
+      animation: cue-bob 2.4s ease-in-out infinite;
     }
 
-    .pair h2 {
-      padding-bottom: 18px;
-      border-bottom: 1.5px solid var(--ink);
+    @keyframes cue-bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(4px); }
     }
 
-    .update-list,
-    .steps {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .update-list li {
-      padding-block: 20px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .update-list time {
-      color: var(--muted);
-      font-size: 0.9rem;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .update-list h3,
-    .steps h3 {
-      margin: 6px 0 0;
-      font-size: 1.05rem;
-      font-weight: 760;
-      line-height: 1.35;
-    }
-
-    .update-list p,
-    .steps p {
-      max-width: 64ch;
-      margin: 6px 0 0;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .steps { counter-reset: step; }
-
-    .steps li {
+    .home-window-scroll {
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
       position: relative;
-      padding: 20px 0 20px 48px;
-      border-bottom: 1px solid var(--line);
-      counter-increment: step;
     }
 
-    .steps li::before {
-      content: counter(step);
-      position: absolute;
-      top: 22px;
-      left: 0;
+    .home-window-sticky {
+      min-height: 78svh;
+      padding: clamp(12px, 3vw, 38px);
       display: grid;
       place-items: center;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: var(--mist);
-      color: var(--teal);
-      font-weight: 780;
-      font-variant-numeric: tabular-nums;
     }
 
-    .steps h3 { margin-top: 0; }
+    .home-window-panel {
+      position: relative;
+      isolation: isolate;
+      width: 100%;
+      min-height: 76svh;
+      overflow: hidden;
+      border-radius: clamp(22px, 3vw, 42px);
+      border: 1px solid rgba(15, 118, 110, 0.16);
+      color: var(--home-ink);
+      background:
+        radial-gradient(ellipse at 51% 48%, rgba(69, 166, 153, 0.2), transparent 53%),
+        radial-gradient(ellipse at 12% 88%, rgba(69, 130, 183, 0.13), transparent 39%),
+        linear-gradient(138deg, rgba(246, 251, 255, 0.94) 0%, rgba(222, 241, 243, 0.88) 53%, rgba(232, 247, 239, 0.94) 100%);
+      box-shadow: 0 18px 56px rgba(31, 91, 105, 0.09);
+      -webkit-backdrop-filter: blur(12px) saturate(118%);
+      backdrop-filter: blur(12px) saturate(118%);
+    }
 
-    .pair-more { margin: 18px 0 0; font-weight: 700; }
+    .home-window-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.36;
+      background:
+        linear-gradient(rgba(31, 92, 107, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(31, 92, 107, 0.045) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: linear-gradient(135deg, #000, transparent 72%);
+    }
 
-    /* Sectors */
+    .home-window-content {
+      box-sizing: border-box;
+      width: min(100%, 1500px);
+      min-height: 76svh;
+      margin-inline: auto;
+      padding: clamp(27px, 5.4vw, 82px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: clamp(24px, 4vh, 44px);
+    }
+
+    .window-statement {
+      max-width: 17ch;
+      margin: 0;
+      color: #123448;
+      font-size: clamp(2.6rem, 5.6vw, 5.6rem);
+      font-weight: 600;
+      letter-spacing: -0.06em;
+      line-height: 1;
+      text-wrap: balance;
+    }
+
+    .window-statement span { display: inline-block; margin-right: 0.22em; }
+
+    .window-kicker {
+      color: #0b5e58;
+      font-size: 0.72rem;
+    }
+
+    .home-window-scroll[data-scroll-enhanced] {
+      height: 230svh;
+    }
+
+    .home-window-scroll[data-scroll-enhanced] .home-window-sticky {
+      position: sticky;
+      top: 0;
+      height: 100svh;
+      min-height: 0;
+      padding: 0;
+      overflow: clip;
+    }
+
+    .home-window-scroll[data-scroll-enhanced] .home-window-panel {
+      position: absolute;
+      inset: 0;
+      width: auto;
+      height: 100%;
+      min-height: 0;
+      border-radius: 0;
+      clip-path: inset(var(--window-inset-y, 14%) var(--window-inset-x, 9%) round var(--window-radius, 38px));
+    }
+
+    .home-window-scroll[data-scroll-enhanced] .home-window-content {
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+    }
+
+    /* Words rise in one after another as the window opens. */
+    .home-window-scroll[data-scroll-enhanced] .rise {
+      --t: clamp(0, calc((var(--wp, 1) - var(--i, 0) * 0.08) * 3.2), 1);
+      opacity: var(--t);
+      transform: translateY(calc((1 - var(--t)) * 28px));
+      will-change: opacity, transform;
+    }
+
+
+    .home h2 { margin: 0; color: var(--home-ink); }
+
+    /* Moving band of sectors */
     .sectors {
-      margin-top: var(--gap);
-      padding: clamp(28px, 4vw, 44px);
-      border-radius: 16px;
-      background: var(--ink);
-      color: #e6f0f2;
+      margin-block: clamp(72px, 11vw, 132px);
+      text-align: center;
     }
+
+    .sectors .home-kicker { justify-content: center; }
 
     .sectors h2 {
-      max-width: 22ch;
-      color: #fff;
+      max-width: 16ch;
+      margin: 18px auto 0;
+      font-size: clamp(2.4rem, 5.2vw, 4.8rem);
+      font-weight: 600;
+      letter-spacing: -0.06em;
+      line-height: 1;
+      text-wrap: balance;
     }
 
-    .sector-list {
+    .sectors-support {
+      max-width: 60ch;
+      margin: 18px auto 0;
+      color: #385363;
+      font-size: clamp(1rem, 1.25vw, 1.15rem);
+      line-height: 1.65;
+    }
+
+    .marquee {
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px 10px;
-      margin: 26px 0 0;
-      padding: 0;
+      overflow: hidden;
+      margin-top: clamp(30px, 4vw, 44px);
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    }
+
+    .marquee-track {
+      display: flex;
+      flex: 0 0 auto;
+      gap: 10px;
+      margin: 0;
+      padding: 0 10px 0 0;
       list-style: none;
+      animation: marquee 60s linear infinite;
     }
 
-    .sector-list li {
-      padding: 6px 12px;
-      border: 1px solid rgba(230, 240, 242, 0.28);
+    .marquee:hover .marquee-track { animation-play-state: paused; }
+
+    .marquee-track li {
+      padding: 9px 16px;
+      border: 1px solid rgba(37, 99, 235, 0.18);
       border-radius: 999px;
-      font-size: 0.95rem;
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.06);
+      color: #244858;
+      white-space: nowrap;
     }
 
-    /* Closing */
+    @keyframes marquee {
+      to { transform: translateX(-100%); }
+    }
+
+    /* Contact panel */
     .closing {
       display: flex;
       flex-wrap: wrap;
-      gap: 20px 40px;
+      gap: 20px 32px;
       align-items: center;
       justify-content: space-between;
-      margin-block: var(--gap) 16px;
+      margin-block: 0 24px;
+      padding: clamp(24px, 4vw, 40px);
     }
 
-    .closing p {
-      max-width: 56ch;
-      margin: 10px 0 0;
-      color: var(--muted);
-      line-height: 1.6;
+    .closing h2 {
+      font-size: clamp(1.4rem, 2.6vw, 2rem);
+      letter-spacing: -0.025em;
     }
 
-    .closing-actions { margin-top: 0; }
-
-    @media (max-width: 960px) {
-      .hero,
-      .pair,
-      .section-head,
-      .ladder { grid-template-columns: 1fr; }
-      .hero { align-items: start; }
-      .ladder { gap: 18px; }
+    .home-destinations {
+      display: flex;
+      flex-wrap: wrap;
+      gap: clamp(24px, 4.5vw, 62px);
+      margin-top: clamp(36px, 5vh, 58px);
     }
 
-    /* On narrow screens the ladder runs top to bottom. */
+    .home-destinations a {
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(15, 118, 110, 0.4);
+      color: var(--home-ink);
+      font-size: clamp(1.2rem, 1.8vw, 1.55rem);
+      font-weight: 690;
+      text-decoration: none;
+      transition: color 180ms ease, border-color 180ms ease;
+    }
+
+    .home-destinations a:hover { color: var(--home-teal); border-color: currentColor; }
+
     @media (max-width: 700px) {
-      .ladder-track {
-        grid-template-columns: 1fr;
-        gap: 0;
+      .home-hero {
+        min-height: clamp(600px, 86svh, 760px);
+        justify-content: flex-start;
+        padding-top: 8vh;
       }
 
-      .ladder-track::before,
-      .ladder-track::after { display: none; }
-
-      /* Each rung draws the segment down to the next one. */
-      .rung:not(:last-child)::before {
-        content: "";
-        position: absolute;
-        top: 16px;
-        bottom: 0;
-        left: 7px;
-        width: 2px;
-        background: var(--line);
+      .home-hero h1 {
+        max-width: 12.5ch;
+        font-size: clamp(2.9rem, 12vw, 4.2rem);
       }
 
-      .rung.toward::before { background: var(--teal); }
+      .home-window-sticky { min-height: 0; padding: 0; }
+      .home-window-panel { min-height: 82svh; border-radius: 0; }
 
-      .rung {
-        padding: 0 0 22px 32px;
+      .home-window-content {
+        min-height: 82svh;
+        padding: 26px 23px;
+        gap: 18px;
       }
 
-      .rung-projects,
-      .rung-empty { margin-top: 10px; }
+      .home-window-scroll[data-scroll-enhanced] .home-window-content { padding: 25px 22px; gap: 13px; }
+      .home-destinations { gap: 22px 30px; margin-top: 32px; }
+    }
+
+    @media (max-width: 360px) {
+      .home-window-content,
+      .home-window-scroll[data-scroll-enhanced] .home-window-content { padding-inline: 18px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .ladder-track::after { animation: none; }
+      .home-hero > *,
+      .home-scroll-arrow,
+      .marquee-track { animation: none; }
+      .marquee { flex-wrap: wrap; justify-content: center; -webkit-mask-image: none; mask-image: none; }
+      .marquee-track { flex-wrap: wrap; justify-content: center; row-gap: 10px; padding: 0; }
+      .marquee-track[aria-hidden="true"] { display: none; }
+      .world-canvas { transition: none; }
+      .cta,
+      .home-destinations a { transition: none; }
+
+      .home-window-scroll[data-scroll-enhanced] { height: auto; }
+
+      .home-window-scroll[data-scroll-enhanced] .home-window-sticky {
+        position: relative;
+        height: auto;
+        min-height: 0;
+        overflow: visible;
+        padding: 0;
+      }
+
+      .home-window-scroll[data-scroll-enhanced] .home-window-panel {
+        position: relative;
+        inset: auto;
+        height: auto;
+        min-height: 82svh;
+        clip-path: none;
+      }
+
+      .home-window-scroll[data-scroll-enhanced] .home-window-content { height: auto; min-height: 82svh; }
+      .home-window-scroll .rise { opacity: 1; transform: none; }
     }
   </style>
 </BaseLayout>

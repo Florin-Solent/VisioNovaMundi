@@ -10,6 +10,7 @@ import {
   DirectionalLight,
   Group,
   HemisphereLight,
+  LoadingManager,
   MathUtils,
   Mesh,
   MeshBasicMaterial,
@@ -34,7 +35,7 @@ import {
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 
-const createRadialTexture = (inner: string, outer: string) => {
+export const createRadialTexture = (inner: string, outer: string) => {
   const textureCanvas = document.createElement("canvas");
   textureCanvas.width = 128;
   textureCanvas.height = 128;
@@ -55,7 +56,7 @@ const createRadialTexture = (inner: string, outer: string) => {
   return texture;
 };
 
-const createStarfield = () => {
+export const createStarfield = () => {
   const count = 1550;
   const positions = new Float32Array(count * 3);
   const colors = new Float32Array(count * 3);
@@ -139,8 +140,8 @@ const createNightLightsMaterial = (texture: Texture) =>
     `,
   });
 
-const createEarthLayers = (renderer: WebGLRenderer): EarthLayers => {
-  const loader = new TextureLoader();
+export const createEarthLayers = (renderer: WebGLRenderer, manager?: LoadingManager): EarthLayers => {
+  const loader = new TextureLoader(manager);
   const anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
   const load = (path: string, colorSpace = SRGBColorSpace) => {
     const texture = loader.load(path);
@@ -178,7 +179,7 @@ const createEarthLayers = (renderer: WebGLRenderer): EarthLayers => {
   };
 };
 
-const createAtmosphereMaterial = () =>
+export const createAtmosphereMaterial = () =>
   new ShaderMaterial({
     transparent: true,
     side: BackSide,

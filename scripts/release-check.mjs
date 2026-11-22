@@ -10,7 +10,7 @@ import { isCloudflareAnalyticsBeacon, selfTestQaExceptions } from './qa-exceptio
 
 // Reuse the existing external QA runtime; do not change package dependencies.
 const playwrightVersion = '1.64.0-alpha-1790635538000';
-const fullRoutes = ['/', '/about/', '/work/', '/commissioners-partners/', '/governance/', '/unity-house/', '/circular-justice/', '/research-future/', '/ventures/', '/tree-of-life/', '/contact/', '/projects/', '/timeline/', '/satul-conectat-romania/', '/services/', '/project-clandestinus/', '/clandestinus-secret-app/', '/admintrace/', '/tradevault/', '/oneloo-total/', '/guardian-one/', '/guardian-glide/', '/roamwing/', '/vialora/', '/vialora-voyage/', '/innovation/', '/partnership-brief/'];
+const fullRoutes = ['/', '/about/', '/commissioners-partners/', '/governance/', '/unity-house/', '/circular-justice/', '/research-future/', '/ventures/', '/tree-of-life/', '/contact/', '/projects/', '/timeline/', '/satul-conectat-romania/', '/services/', '/project-clandestinus/', '/clandestinus-secret-app/', '/admintrace/', '/tradevault/', '/oneloo-total/', '/guardian-one/', '/guardian-glide/', '/roamwing/', '/vialora/', '/vialora-voyage/', '/innovation/', '/partnership-brief/'];
 const args = process.argv.slice(2);
 const live = args.includes('--production');
 const explicitModes = args.filter(arg => ['--full', '--smoke'].includes(arg));
@@ -21,9 +21,9 @@ assert(['FAST', 'FULL'].includes(mode), `Unsupported browser QA mode: ${mode}`);
 const changedRouteCandidates = JSON.parse(process.env.VNM_CHANGED_ROUTES || '[]');
 assert(Array.isArray(changedRouteCandidates) && changedRouteCandidates.every(route => typeof route === 'string' && route.startsWith('/') && route.endsWith('/')), 'Invalid changed-route list');
 // Retired pages are verified by their Pages redirect rules below, not served as local HTML routes.
-const redirectedRetiredRoutes = new Set(['/impact/', '/programmes/']);
+const redirectedRetiredRoutes = new Set(['/impact/', '/programmes/', '/work/']);
 const changedRoutes = changedRouteCandidates.filter(route => !redirectedRetiredRoutes.has(route));
-const coreRoutes = ['/', '/work/', '/projects/', '/governance/', '/contact/'];
+const coreRoutes = ['/', '/about/', '/projects/', '/governance/', '/contact/'];
 const smokeRoutes = [...new Set([...coreRoutes, ...changedRoutes])];
 const routes = mode === 'FULL' ? [...new Set([...fullRoutes, ...changedRoutes])] : smokeRoutes;
 const require = createRequire(import.meta.url);
@@ -55,13 +55,13 @@ async function staticChecks() {
   const redirectText = await readFile('public/_redirects', 'utf8');
   const redirectRules = redirectText.trim().split(/\r?\n/).map(line => line.trim());
   const expectedRedirects = [
-    '/impact /work/ 308', '/impact/ /work/ 308',
+    '/impact /about/ 308', '/impact/ /about/ 308', '/work /about/ 308', '/work/ /about/ 308',
     '/programmes /projects/ 308', '/programmes/ /projects/ 308',
   ];
   for (const rule of expectedRedirects) assert(redirectRules.includes(rule), 'Missing Cloudflare Pages redirect: ' + rule);
   assert.equal(existsSync('vercel.json'), false, 'Cloudflare-only release must not include Vercel deployment configuration');
   assert.equal((await readFile('dist/_redirects', 'utf8')).trim(), redirectText.trim(), 'Cloudflare redirects were not copied to the Pages build output');
-  for (const route of ['/impact/', '/programmes/']) assert(!existsSync(join('dist', route, 'index.html')), 'Retired route ' + route + ' must not be generated as an HTML page');
+  for (const route of ['/impact/', '/programmes/', '/work/']) assert(!existsSync(join('dist', route, 'index.html')), 'Retired route ' + route + ' must not be generated as an HTML page');
   for (const route of fullRoutes) assert(existsSync(join('dist', route, 'index.html')), `Missing built route ${route}`);
   for (const route of changedRoutes) assert(existsSync(join('dist', route, 'index.html')), `Missing changed route ${route}`);
   for (const path of await files('dist')) {
@@ -77,7 +77,7 @@ async function staticChecks() {
       if (!value.startsWith('/') || value.startsWith('//')) continue;
       const pathname = decodeURIComponent(value.split(/[?#]/)[0]);
       const normalizedPath = pathname.replace(/\/+$/, '') || '/';
-      assert(!['/impact', '/programmes'].includes(normalizedPath), 'Internal link still points to a retired route: ' + value + ' in ' + path);
+      assert(!['/impact', '/programmes', '/work'].includes(normalizedPath), 'Internal link still points to a retired route: ' + value + ' in ' + path);
       const target = resolve('dist', `.${pathname}`);
       if (pathname.startsWith('/_astro/')) {
         assert(existsSync(target), `Missing built asset ${value}`);
@@ -188,7 +188,7 @@ async function qa(base, chromium) {
         const toggle = page.locator('[data-mobile-nav-toggle]');
         const nav = page.locator('[data-site-nav]');
         assert.equal(await nav.count(), 1, `Expected one institutional navigation on ${route}`);
-        assert.deepEqual(await nav.locator('a').allTextContents(), ['About', 'Our Work', 'Projects', 'Governance', 'Contact'], 'Unexpected institutional navigation');
+        assert.deepEqual(await nav.locator('a').allTextContents(), ['About', 'Projects', 'Governance', 'Contact'], 'Unexpected institutional navigation');
         const footerGroups = page.locator('[data-footer-group]');
         assert.equal(await footerGroups.count(), 3, 'Expected the three shared footer groups');
         assert.deepEqual(await footerGroups.locator('[data-footer-toggle] span:first-child').allTextContents(), ['Organisation', 'Work', 'Ecosystem & Related'], 'Unexpected footer headings');
