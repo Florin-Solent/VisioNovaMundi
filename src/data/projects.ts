@@ -24,7 +24,7 @@ export const projectGroups: PortfolioGroup[] = [
   {
     id: "public-benefit",
     title: "Public-benefit work and research",
-    intro: "CIC-led delivery and research, with proposals clearly labelled by stage.",
+    intro: "CIC-led research and proposals, each clearly labelled by stage.",
     projects: [
       {
         title: "Unity House",
@@ -32,7 +32,7 @@ export const projectGroups: PortfolioGroup[] = [
         relationship: "Visio Nova Mundi CIC",
         status: "Research and development",
         summary: "A proposed community-centre model focused on reducing waste, supporting affordable food access, encouraging reuse and strengthening connections between neighbours.",
-        relevance: "A six-session health-and-wellbeing pilot was developed in 2026 but did not proceed; the planning experience is being used to refine the model. No permanent centre or new delivery programme is confirmed.",
+        relevance: "Could support affordable food, reuse and neighbourly connection. A six-session pilot developed in 2026 did not proceed, and its planning is shaping the model; no centre or delivery programme is confirmed.",
         image: "/images/unity-house-concept.webp",
         imageAlt: "Concept visual of a proposed future Unity House community hub, with neighbours cooking and learning together; it does not depict an operating centre.",
         imageFit: "cover",
