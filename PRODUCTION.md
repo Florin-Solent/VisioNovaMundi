@@ -4,6 +4,20 @@ Cloudflare Pages is VNM's sole production and preview platform. GitHub `master` 
 
 The founder accepted the bounded residual risk for `http-cache-semantics@4.2.0` for this static-site release. GHSA-ch52-4w7c-c8xp remains OPEN and must not be described as resolved.
 
+## Production release — 22 November 2026 (PR #20, VNM 2.0)
+
+Homepage rebuilt in the site's light glass style with a Three.js Earth (`src/scripts/home-world.ts`), the original scroll window (statement lines rising as it opens), a "shared horizon" section with moving sectors and a contact panel. Glass cards, glow gradients, original buttons and scroll reveals restored site-wide. The Our Work page was removed: its framework introduction moved to About, navigation is About · Projects · Governance · Contact, and `/work` and `/impact` redirect to `/about/` (308). A wording review was applied across all pages; Circular Justice is described as CIC research (founder confirmed). No dependency or lockfile changes.
+
+| Item | Evidence |
+| --- | --- |
+| Approval | Founder asked for a wording check and approved deployment in chat on 22 November 2026 at 00:53 GMT, after reviewing the branch preview through several iterations. |
+| Approved candidate | `994bdabd` (PR #20 head, branch `vnm-2-cinematic`) |
+| GitHub production merge | `34b8fd92a47566d1029fee3f9409051868cd7a70`, merged 2026-11-22 01:33:42 UTC (merge commit). |
+| Cloudflare Pages deployment | `60fd4a56-f88e-4499-8810-11f814984731`, status `success`, source `34b8fd9`. |
+| Pre-merge checks | Local `npm run release:check` (FULL): 156 cases, 68 internal destinations passed; FAST smoke on `/circular-justice/` after its final wording change passed. GitHub `release:check` on the PR head passed (workflow run 44970880685). |
+| Post-merge checks | GitHub `release:check` on `master` passed (workflow run 44972033050). Cloudflare Pages check succeeded. |
+| Live verification | Direct HTTPS checks: core pages 200, font and Earth textures 200, `/work/` and `/impact/` 308 to `/about/`, no remaining links to `/work/`. `npm run verify:production` with the Cloudflare Web Analytics exception: **156/156 cases passed**, 68 internal destinations; 156 beacons answered locally, none forwarded. |
+
 ## Production release — 21 November 2026 (PR #18)
 
 Site refresh: new homepage with the project evidence ladder, site-wide design update (self-hosted Atkinson Hyperlegible Next, ink/teal tokens), and project statuses corrected after founder review. Unity House is shown as research and development (the 2026 six-session pilot did not proceed), and ADR Nord-Vest contact is shown as exploratory correspondence. No dependency or lockfile changes.
@@ -23,7 +37,7 @@ Direct HTTPS checks after deployment: `/`, `/unity-house/`, `/timeline/`, `/abou
 
 The first `npm run verify:production` run reported 162 failures. Every one had the same cause: Cloudflare Web Analytics, enabled on the production zone, injects a beacon that POSTs to `/cdn-cgi/rum`, and browser QA blocks all write requests. Each case had already passed its structural, navigation, footer, overflow, motion and scene checks before the final browser-error assertion. The beacon is not part of the site build and does not appear on `pages.dev` previews.
 
-The founder decided on 21 November 2026 to keep Web Analytics enabled and to add a narrowly scoped QA exception for that beacon only (see [docs/release-qa.md](docs/release-qa.md)). The exception was added in a separate pull request; production verification with it is recorded in that pull request.
+The founder decided on 21 November 2026 to keep Web Analytics enabled and to add a narrowly scoped QA exception for that beacon only (see [docs/release-qa.md](docs/release-qa.md)). The exception was added in PR #19; with it, production verification of this release passed 162/162 cases on 21 November 2026.
 
 ## Production release verified — 10 October 2026
 
