@@ -21,7 +21,8 @@ Use Node.js 22 (`>=22.19 <23`).
 
 - `src/pages/` has one `.astro` file per route.
 - `src/layouts/BaseLayout.astro` holds the shared header, footer, design tokens, fonts and page scripts.
-- `src/data/projects.ts` lists every project, its public status and its stage on the homepage evidence ladder.
+- `src/scripts/home-world.ts` is the homepage 3D Earth (Three.js); `src/scripts/cosmic-world.ts` and `unity-house-world.ts` power the Clandestinus and Services scenes.
+- `src/data/projects.ts` lists every project and its public status.
 - `src/data/project-updates.ts` holds dated project updates. Add only updates backed by project records or published evidence.
 - `public/fonts/` contains Atkinson Hyperlegible Next (SIL Open Font License, see `OFL.txt`).
 

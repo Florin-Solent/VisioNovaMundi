@@ -19,7 +19,7 @@ const pageTitle = title ? `${title} | Visio Nova Mundi` : "Visio Nova Mundi CIC"
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="/favicon.ico" sizes="any" />
   <link rel="preload" href="/fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
-  <meta name="theme-color" content="#112b38" />
+  <meta name="theme-color" content="#f8fafc" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Visio Nova Mundi CIC" />
   <meta property="og:title" content={pageTitle} />
@@ -60,7 +60,6 @@ const pageTitle = title ? `${title} | Visio Nova Mundi` : "Visio Nova Mundi CIC"
       <nav id="primary-navigation" data-site-nav aria-label="Main navigation">
         <span class="nav-indicator" aria-hidden="true"></span>
         <a href="/about/">About</a>
-        <a href="/work/">Our Work</a>
         <a href="/projects/">Projects</a>
         <a href="/governance/">Governance</a>
         <a href="/contact/" class="nav-btn">Contact</a>
@@ -85,7 +84,6 @@ const pageTitle = title ? `${title} | Visio Nova Mundi` : "Visio Nova Mundi CIC"
       <section class="footer-group" data-footer-group>
         <h2><button class="footer-toggle" type="button" data-footer-toggle aria-controls="footer-work-links" aria-expanded="false"><span>Work</span><span class="footer-chevron" aria-hidden="true"></span></button></h2>
         <ul class="footer-submenu" id="footer-work-links" aria-hidden="true" inert>
-          <li><a href="/work/">Our Work</a></li>
           <li><a href="/projects/">Projects</a></li>
           <li><a href="/commissioners-partners/">For Commissioners &amp; Partners</a></li>
           <li><a href="/timeline/">Timeline</a></li>
@@ -111,14 +109,14 @@ const pageTitle = title ? `${title} | Visio Nova Mundi` : "Visio Nova Mundi CIC"
     --amber: #a65a07;
     --mist: #e3eef0;
     --line: #c9d8dd;
-    --bg: #f3f7f8;
+    --bg: #f8fafc;
     /* Shared tokens used across page styles */
-    --glass: rgba(255, 255, 255, 0.82);
+    --glass: rgba(255, 255, 255, 0.78);
     --border: rgba(17, 43, 56, 0.14);
     --text: var(--ink);
     --muted: #3e5563;
     --primary: var(--teal);
-    --radius: 16px;
+    --radius: 22px;
     --font-sans: "Atkinson Hyperlegible Next", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
@@ -149,8 +147,9 @@ const pageTitle = title ? `${title} | Visio Nova Mundi` : "Visio Nova Mundi CIC"
     position: fixed;
     inset: 0;
     background:
-      radial-gradient(circle at 12% 8%, rgba(37, 99, 235, 0.09), transparent 40%),
-      radial-gradient(circle at 88% 14%, rgba(14, 107, 99, 0.10), transparent 42%);
+      radial-gradient(circle at 20% 20%, rgba(37, 99, 235, 0.18), transparent 45%),
+      radial-gradient(circle at 80% 30%, rgba(16, 185, 129, 0.15), transparent 45%),
+      radial-gradient(circle at 50% 80%, rgba(59, 130, 246, 0.12), transparent 50%);
     z-index: -1;
   }
 
@@ -580,6 +579,7 @@ const pageTitle = title ? `${title} | Visio Nova Mundi` : "Visio Nova Mundi CIC"
       transition-duration: 0.01ms !important;
     }
   }
+
 </style>
 
 <style is:global>
@@ -771,15 +771,15 @@ const pageTitle = title ? `${title} | Visio Nova Mundi` : "Visio Nova Mundi CIC"
   }
 
   main {
-    animation: vnm-page-arrive 0.55s ease-out both;
+    animation: vnm-page-arrive 0.55s ease-out backwards;
   }
 
   .motion-ready .vnm-reveal {
-    opacity: 1;
-    transform: none;
+    opacity: 0;
+    transform: translateY(22px);
     transition:
-      opacity 0.56s ease-out var(--vnm-reveal-delay, 0ms),
-      transform 0.56s cubic-bezier(0.22, 1, 0.36, 1) var(--vnm-reveal-delay, 0ms);
+      opacity 0.7s ease-out var(--vnm-reveal-delay, 0ms),
+      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--vnm-reveal-delay, 0ms);
   }
 
   .motion-ready .vnm-reveal.is-visible {
@@ -907,7 +907,8 @@ const pageTitle = title ? `${title} | Visio Nova Mundi` : "Visio Nova Mundi CIC"
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      /* none (not translateY(0)) so main never becomes a containing block for fixed layers. */
+      transform: none;
     }
   }
 
@@ -956,36 +957,10 @@ const pageTitle = title ? `${title} | Visio Nova Mundi` : "Visio Nova Mundi CIC"
     }
   }
 
-  /* ---- November 2026 refresh layer ----
-     Shared surfaces and labels, applied across pages whose own scoped styles predate the refresh.
-     !important is used only where a page-scoped rule would otherwise win. */
+  /* Shared heading family (VNM 2.0). */
   main h1, main h2, main h3 { font-family: var(--font-sans); }
   h1, h2, h3 { line-height: 1.15; }
-  main h1 { font-weight: 780; letter-spacing: -0.035em; }
-  main h2 { font-weight: 760; letter-spacing: -0.02em; }
-  main .eyebrow, .institutional-eyebrow, main .statusLabel {
-    text-transform: none !important;
-    letter-spacing: 0 !important;
-    color: var(--teal);
-    font-weight: 700 !important;
-  }
-  .vnm-glass-card {
-    background-image: none !important;
-    background-color: #fff !important;
-    border-color: var(--line) !important;
-    box-shadow: 0 1px 2px rgba(17, 43, 56, 0.05) !important;
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
-  }
-  .card:hover { transform: none; }
-  main .btn { border-radius: 10px !important; }
-  main .btn.primary {
-    background: var(--ink) !important;
-    border-color: var(--ink) !important;
-    color: #fff !important;
-  }
-  main .btn.primary:hover { background: var(--teal) !important; border-color: var(--teal) !important; }
-  .footer { border-top: 1px solid var(--line); }
+  .footer { border-top: 1px solid var(--border); }
 </style>
 
 <script>
@@ -1178,7 +1153,33 @@ const pageTitle = title ? `${title} | Visio Nova Mundi` : "Visio Nova Mundi CIC"
   if (!prefersReducedMotion.matches) {
     document.documentElement.classList.add("motion-ready");
 
-    // Content is visible immediately; only project images keep a gentle reveal.
+    const revealTargets = Array.from(document.querySelectorAll<HTMLElement>([
+      "main > section",
+      "main > .heroBlock",
+      "main > .controlNote",
+      "main .card",
+      "main .smallCard",
+      "main .flow > div",
+      "main .pilotFlow > div",
+      "main .branchGrid span",
+      "main [data-reveal]",
+    ].join(", ")));
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -32px" });
+
+    revealTargets.forEach((element, index) => {
+      element.classList.add("vnm-reveal");
+      element.style.setProperty("--vnm-reveal-delay", `${Math.min(index % 6, 5) * 45}ms`);
+      revealObserver.observe(element);
+    });
+
     const projectImages = Array.from(document.querySelectorAll<HTMLImageElement>("img[data-project-image]"));
     const imageRevealObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {
