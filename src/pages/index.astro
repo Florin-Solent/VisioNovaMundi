@@ -33,22 +33,27 @@ const sectors = [
       <div class="home-window-sticky">
         <div class="home-window-panel" data-window-panel>
           <div class="home-window-content">
-            <div class="window-intro">
-              <p class="window-kicker rise" style="--i:0">A shared horizon</p>
-              <h2 id="window-title" class="rise" style="--i:1">One vision. Every part of society.</h2>
-              <p class="window-support rise" style="--i:2">We explore how better ideas, evidence and technology could contribute to stronger public services and institutions.</p>
-            </div>
-            <ul class="sector-list" aria-label="Sectors and public systems">
-              {sectors.map((sector, index) => <li class="rise" style={`--i:${index + 3}`}>{sector}</li>)}
-            </ul>
-            <p class="window-closing rise" style="--i:22">and the systems that connect them.</p>
+            <p class="window-kicker rise" style="--i:0">How we move forward</p>
+            <h2 id="window-title" class="window-statement">
+              <span class="rise" style="--i:1">We identify problems.</span>
+              <span class="rise" style="--i:2">We test ideas.</span>
+              <span class="rise" style="--i:3">We learn from evidence.</span>
+              <span class="rise" style="--i:4">We build what works.</span>
+            </h2>
+            <nav class="home-destinations rise" style="--i:5" aria-label="Explore Visio Nova Mundi">
+              <a href="/about/">About</a>
+              <a href="/projects/">Projects</a>
+              <a href="/governance/">Governance</a>
+            </nav>
           </div>
         </div>
       </div>
     </section>
 
     <section class="sectors" aria-labelledby="sectors-title" data-reveal>
-      <h2 id="sectors-title">Eighteen public sectors. One connected vision.</h2>
+      <p class="home-kicker"><span aria-hidden="true"></span> A shared horizon</p>
+      <h2 id="sectors-title">One vision. Every part of society.</h2>
+      <p class="sectors-support">We explore how better ideas, evidence and technology could contribute to stronger public services and institutions.</p>
       <div class="marquee">
         <ul class="marquee-track">
           {sectors.map((sector) => <li>{sector}</li>)}
@@ -57,16 +62,6 @@ const sectors = [
           {sectors.map((sector) => <li>{sector}</li>)}
         </ul>
       </div>
-    </section>
-
-    <section class="home-next" aria-labelledby="next-title" data-reveal>
-      <p class="home-kicker"><span aria-hidden="true"></span> How we move forward</p>
-      <h2 id="next-title">We identify problems. We test ideas. We learn from evidence. We build what works.</h2>
-      <nav class="home-destinations" aria-label="Explore Visio Nova Mundi">
-        <a href="/about/">About</a>
-        <a href="/projects/">Projects</a>
-        <a href="/governance/">Governance</a>
-      </nav>
     </section>
 
     <section class="vnm-glass-card closing" aria-labelledby="closing-title" data-reveal>
@@ -338,74 +333,26 @@ const sectors = [
       padding: clamp(27px, 5.4vw, 82px);
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: clamp(20px, 3.2vh, 34px);
+      justify-content: center;
+      gap: clamp(24px, 4vh, 44px);
     }
 
-    .window-intro {
-      max-width: 1040px;
+    .window-statement {
+      max-width: 17ch;
+      margin: 0;
+      color: #123448;
+      font-size: clamp(2.6rem, 5.6vw, 5.6rem);
+      font-weight: 600;
+      letter-spacing: -0.06em;
+      line-height: 1;
+      text-wrap: balance;
     }
+
+    .window-statement span { display: inline-block; margin-right: 0.22em; }
 
     .window-kicker {
       color: #0b5e58;
       font-size: 0.72rem;
-    }
-
-    .window-intro h2 {
-      max-width: 14ch;
-      margin: 17px 0 13px;
-      color: #123448;
-      font-size: clamp(2.8rem, 5.7vw, 5.7rem);
-      font-weight: 560;
-      letter-spacing: -0.065em;
-      line-height: 0.98;
-      text-wrap: balance;
-    }
-
-    .window-support {
-      max-width: 64ch;
-      margin: 0;
-      color: #385363;
-      font-size: clamp(0.96rem, 1.2vw, 1.15rem);
-      line-height: 1.65;
-    }
-
-    .sector-list {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      gap: 5px 15px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      color: #244858;
-      font-size: clamp(1.05rem, 2vw, 1.9rem);
-      font-weight: 480;
-      letter-spacing: -0.035em;
-      line-height: 1.28;
-    }
-
-    .sector-list li {
-      white-space: nowrap;
-    }
-
-    .sector-list li:not(:first-child)::before {
-      content: "·";
-      margin-right: 15px;
-      color: #0f766e;
-    }
-
-    .window-closing {
-      align-self: flex-end;
-      max-width: 22ch;
-      margin: auto 0 0;
-      color: #0b5e58;
-      font-size: clamp(1.35rem, 2.35vw, 2.15rem);
-      font-weight: 520;
-      letter-spacing: -0.04em;
-      line-height: 1.12;
-      text-align: right;
-      text-wrap: balance;
     }
 
     .home-window-scroll[data-scroll-enhanced] {
@@ -439,7 +386,7 @@ const sectors = [
 
     /* Words rise in one after another as the window opens. */
     .home-window-scroll[data-scroll-enhanced] .rise {
-      --t: clamp(0, calc((var(--wp, 1) - var(--i, 0) * 0.025) * 3), 1);
+      --t: clamp(0, calc((var(--wp, 1) - var(--i, 0) * 0.08) * 3.2), 1);
       opacity: var(--t);
       transform: translateY(calc((1 - var(--t)) * 28px));
       will-change: opacity, transform;
@@ -450,19 +397,34 @@ const sectors = [
 
     /* Moving band of sectors */
     .sectors {
-      margin-top: clamp(64px, 10vw, 120px);
+      margin-block: clamp(72px, 11vw, 132px);
       text-align: center;
     }
 
+    .sectors .home-kicker { justify-content: center; }
+
     .sectors h2 {
-      font-size: clamp(1.6rem, 3vw, 2.4rem);
-      letter-spacing: -0.03em;
+      max-width: 16ch;
+      margin: 18px auto 0;
+      font-size: clamp(2.4rem, 5.2vw, 4.8rem);
+      font-weight: 600;
+      letter-spacing: -0.06em;
+      line-height: 1;
+      text-wrap: balance;
+    }
+
+    .sectors-support {
+      max-width: 60ch;
+      margin: 18px auto 0;
+      color: #385363;
+      font-size: clamp(1rem, 1.25vw, 1.15rem);
+      line-height: 1.65;
     }
 
     .marquee {
       display: flex;
       overflow: hidden;
-      margin-top: 26px;
+      margin-top: clamp(30px, 4vw, 44px);
       -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
       mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
     }
@@ -509,21 +471,6 @@ const sectors = [
       letter-spacing: -0.025em;
     }
 
-    /* Closing statement */
-    .home-next {
-      padding-block: clamp(88px, 14vh, 160px) clamp(40px, 8vh, 80px);
-    }
-
-    .home-next h2 {
-      max-width: 17ch;
-      margin: 25px 0 0;
-      font-size: clamp(2.6rem, 5.4vw, 5.4rem);
-      font-weight: 600;
-      letter-spacing: -0.06em;
-      line-height: 0.99;
-      text-wrap: balance;
-    }
-
     .home-destinations {
       display: flex;
       flex-wrap: wrap;
@@ -564,41 +511,13 @@ const sectors = [
         gap: 18px;
       }
 
-      .window-intro h2 {
-        max-width: 12ch;
-        margin: 13px 0 9px;
-        font-size: clamp(2.15rem, 9.1vw, 3.1rem);
-        line-height: 0.99;
-      }
-
-      .window-support { font-size: 0.91rem; line-height: 1.48; }
-
-      .sector-list {
-        gap: 4px 10px;
-        font-size: clamp(0.93rem, 4.2vw, 1.15rem);
-      }
-
-      .sector-list li:not(:first-child)::before { margin-right: 10px; }
-
-      .window-closing {
-        align-self: flex-start;
-        max-width: 24ch;
-        font-size: 1.3rem;
-        text-align: left;
-      }
-
       .home-window-scroll[data-scroll-enhanced] .home-window-content { padding: 25px 22px; gap: 13px; }
-
-      .home-next h2 { font-size: clamp(2.4rem, 10.5vw, 3.9rem); }
       .home-destinations { gap: 22px 30px; margin-top: 32px; }
     }
 
     @media (max-width: 360px) {
       .home-window-content,
       .home-window-scroll[data-scroll-enhanced] .home-window-content { padding-inline: 18px; }
-      .window-intro h2 { font-size: 2rem; }
-      .sector-list { font-size: 0.88rem; gap: 3px 8px; }
-      .sector-list li:not(:first-child)::before { margin-right: 8px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
