@@ -269,7 +269,7 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
       report.playback.push({ index: index + 1, ...state, advanced: true });
 
       if (index === 0) {
-        assert.equal(await button.innerText(), 'Pause clips', 'Autoplay control did not reflect active playback');
+        assert.equal((await button.textContent()).trim().toLowerCase(), 'pause clips', 'Autoplay control did not reflect active playback');
         await button.click();
         await page.waitForFunction(i => document.querySelectorAll('video[data-clip]')[i]?.paused === true, index);
         const pausedAt = await video.evaluate(element => element.currentTime);
@@ -346,7 +346,7 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
       report.reducedMotion = { autoplayDisabled: true, userOptInSupported: false };
       const toggle = reducedPage.locator('[data-motion-toggle]');
       await toggle.scrollIntoViewIfNeeded();
-      assert.equal(await toggle.innerText(), 'Play clips');
+      assert.equal((await toggle.textContent()).trim().toLowerCase(), 'play clips');
       await toggle.click();
       await reducedPage.waitForFunction(() => {
         const video = document.querySelector('video[data-clip]');
@@ -357,13 +357,13 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
 
     const firstVideo = clips.first();
     await firstVideo.scrollIntoViewIfNeeded();
-    const motionButtonText = await button.innerText();
-    if (motionButtonText === 'Pause clips') await button.click();
+    const motionButtonText = (await button.textContent()).trim().toLowerCase();
+    if (motionButtonText === 'pause clips') await button.click();
     await firstVideo.evaluate(video => {
       video.__journeyNativePlay = HTMLMediaElement.prototype.play;
       video.play = () => Promise.reject(new DOMException('Simulated blocked playback for release QA', 'NotAllowedError'));
     });
-    if (await button.innerText() === 'Play clips') await button.click();
+    if ((await button.textContent()).trim().toLowerCase() === 'play clips') await button.click();
     const status = page.locator('[data-clip-status]').first();
     await page.waitForFunction(() => {
       const video = document.querySelector('video[data-clip]');
