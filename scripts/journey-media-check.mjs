@@ -250,7 +250,15 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
         return current?.dataset.loaded === 'true' && current.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA && current.videoWidth > 0 && !current.paused && !current.error;
       }, index, { timeout: 15000 });
       const before = await video.evaluate(element => element.currentTime);
-      await page.waitForTimeout(650);
+      await page.waitForFunction(({ index: i, previous }) => {
+        const current = document.querySelectorAll('video[data-clip]')[i];
+        if (!current || current.paused || current.error) return false;
+        return current.currentTime > previous + 0.08
+          || (previous > current.duration - 0.35 && current.currentTime < 0.35);
+      }, { index, previous: before }, { timeout: 5000 }).catch(async error => {
+        const finalState = await video.evaluate(element => ({ time: element.currentTime, paused: element.paused, error: element.error?.message || null, readyState: element.readyState }));
+        throw new Error(`${error.message}; clip ${index + 1} timing state: ${JSON.stringify({ before, ...finalState })}`);
+      });
       const state = await video.evaluate(element => ({
         source: element.currentSrc,
         readyState: element.readyState,
