@@ -281,12 +281,17 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
   const page = await context.newPage();
   await page.addInitScript(() => {
     window.__journeyPlayErrors = [];
+    window.__journeyPlayAborts = [];
     window.__journeyErrorEvents = [];
     document.addEventListener('journey:playback-error', event => window.__journeyErrorEvents.push(event.detail));
     const play = HTMLMediaElement.prototype.play;
     HTMLMediaElement.prototype.play = function (...args) {
       const result = play.apply(this, args);
-      result.catch(error => window.__journeyPlayErrors.push({ source: this.currentSrc, name: error.name || 'PlaybackError' }));
+      result.catch(error => {
+        const entry = { source: this.currentSrc, name: error.name || 'PlaybackError' };
+        if (entry.name === 'AbortError') window.__journeyPlayAborts.push(entry);
+        else window.__journeyPlayErrors.push(entry);
+      });
       return result;
     };
   });
@@ -305,6 +310,7 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
     const button = page.locator('[data-motion-toggle]');
     await verifyPageClips(page, report, { width: 1440, height: 900 }, true);
     assert.deepEqual(await page.evaluate(() => window.__journeyPlayErrors), [], 'A play() promise was rejected during normal Journey playback');
+    report.expectedPlaybackAborts = await page.evaluate(() => window.__journeyPlayAborts.length);
     assert.deepEqual(pageErrors, [], `Journey page had uncaught errors: ${pageErrors.join('; ')}`);
 
     const mobileContext = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'no-preference', serviceWorkers: 'block' });
