@@ -12,6 +12,8 @@ Target master; enforce actively with no bypass list. Require a pull request, req
 
 Verified on 2026-10-02: [VNM release gate, ruleset 24395263](https://github.com/Florin-Solent/VisioNovaMundi/settings/rules/24395263) is **Active**, targets exactly `refs/heads/master`, and has no bypass actors. It requires a pull request and the up-to-date `release:check` status from GitHub Actions, blocks force pushes, and restricts branch deletion. No separate reviewer approval is required by the ruleset.
 
+Rechecked read-only on 2026-11-27 through GitHub's repository ruleset API: ruleset 24395263 remains active on `refs/heads/master`, has no bypass actors, and requires the up-to-date `release:check` status. The Journey hosted playback/recovery gate now runs inside that protected job for Journey-relevant pull requests, so its success is required by the existing branch rule without adding another status context or changing repository protection.
+
 The release workflow passed on pull request [#1](https://github.com/Florin-Solent/VisioNovaMundi/pull/1), run [37074728291](https://github.com/Florin-Solent/VisioNovaMundi/actions/runs/37074728291). The exact required job name was `release:check`; the run used Node 22.14.0. The PR remains open and unmerged. The review-branch Vercel Preview status succeeded; this is not a production deployment.
 
 At verification, remote `master` remained at `278500b7166f4ad1f8bafca03eaaa002cb8a4a39`. Production therefore remains at the approved baseline, `278500b` / deployment `dpl_2mCXaUsoHDgMVsKa6vo4GX1PHT12`. Do not merge the PR or push a production-triggering change without explicit release approval. The user authorized a Vercel Preview for this review branch; Preview is not production.

@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: read
+  checks: read
 
 concurrency:
   group: vnm-release-qa-${{ github.event_name }}-${{ github.ref }}
@@ -59,11 +60,27 @@ jobs:
           VNM_QA_MODE: ${{ steps.classify.outputs.mode }}
           VNM_CHANGED_ROUTES: ${{ steps.classify.outputs.changed_routes }}
         run: npm run release:check
+      - name: Resolve exact Cloudflare Journey preview
+        if: github.event_name == 'pull_request' && steps.classify.outputs.mode != 'DOCS'
+        id: journey-preview
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          VNM_PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          VNM_PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: node scripts/journey-preview-url.mjs
+      - name: Verify hosted Journey media playback and recovery
+        if: steps.journey-preview.outputs.required == 'true'
+        run: >-
+          npm run journey:media-check --
+          --url "${{ steps.journey-preview.outputs.url }}"
+          --browser chromium
+          --deployment-id "${{ steps.journey-preview.outputs.deployment_id }}"
+          --commit "${{ steps.journey-preview.outputs.commit }}"
       - name: Preserve QA report
         if: always() && steps.classify.outputs.mode != 'DOCS'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: vnm-release-qa-${{ github.run_id }}-${{ github.run_attempt }}
-          path: output/release-qa/local.json
+          path: output/release-qa/*.json
           if-no-files-found: warn
           retention-days: 14
