@@ -4,11 +4,11 @@ Read ../DEPLOYMENT_POLICY.md and ../PRODUCTION.md first. These commands build an
 
 ## QA lanes
 
-GitHub keeps one protected status context: **`release:check`**. The workflow classifies each change and completes the selected lane before that check succeeds.
+GitHub keeps one protected status context: **`release:check`**. The workflow classifies each change and completes the selected lane before that check succeeds. For a pull request that changes the Journey page, its public media, media QA tooling or release workflow, this same protected job also waits for the exact Cloudflare Pages preview and runs hosted video playback and temporary network-failure recovery checks. A Journey change cannot pass the required status on static asset checks alone.
 
 - **DOCS** checks the repository target and validates changed documentation files for readable, non-empty text without NUL bytes. It does not install project dependencies or a browser.
 - **FAST** is for up to three isolated static `.astro` page edits. It verifies the required built routes and changed routes, their title/description metadata, generated internal destinations and first-party assets, and staging/local URL leaks across generated HTML. It then runs desktop and mobile browser smoke checks on `/`, `/about/`, `/programmes/`, `/governance/`, `/contact/`, and every changed route. Reduced motion is checked on the homepage and changed routes. Typical suite size is 12 cases before changed routes.
-- **FULL** runs every configured route at three viewports with normal and reduced motion, plus navigation and focus checks, internal destination checks, and Three.js/WebGL behavior checks. The current 26-route set produces 156 cases.
+- **FULL** runs every configured route at three viewports with normal and reduced motion, plus navigation and focus checks, internal destination checks, and Three.js/WebGL behavior checks. The current 27-route set produces 162 cases.
 
 The classifier fails closed to FULL when a path is unknown, route mapping is uncertain, runtime behavior changes, or more than three pages are touched. Shared layouts/components/styles/data, navigation, JavaScript/TypeScript, build/deployment configuration, scripts, tests, dependencies, Markdown pages, and workflow changes require FULL. An isolated Astro page is FAST only when its inline scripts, imports, event handlers, and hydration directives are unchanged from the PR base.
 
@@ -27,6 +27,18 @@ npm run release:check
 `release:smoke` explicitly runs FAST; `release:full` explicitly runs the complete suite. `release:check` defaults to FULL locally because it has no trusted pull request diff metadata. In GitHub Actions, the classifier selects DOCS, FAST, or FULL automatically. For changed-route local testing, set `VNM_CHANGED_ROUTES` to a JSON array of route paths. All modes use the fixed production target guard; production verification cannot be redirected to an arbitrary URL.
 
 Reports are written to `output/release-qa/local.json` and `output/release-qa/production.json`. Browser requests other than GET/HEAD are blocked and fail the run; forms are not submitted and no publishing API is called.
+
+### Hosted Journey media acceptance
+
+The protected `release:check` job detects changes to `src/pages/journey.astro`, Journey map/image data, Journey public media, the Journey media/preview scripts, release checker/workflow, or package manifests. For those pull requests it waits for a successful Cloudflare Pages check on the exact PR head SHA, validates that the deployment-specific `pages.dev` hostname matches Cloudflare's deployment ID, and then runs `npm run journey:media-check` on that hosted candidate before `release:check` can succeed. The result JSON is uploaded with the other QA reports and records the tested source commit and Cloudflare deployment ID.
+
+Hosted acceptance verifies all eight page clips at desktop and mobile widths by checking metadata, decoded dimensions and advancing playback time; it directly decodes all 16 MP4/WebM sources where the selected browser supports them; and it checks pause/resume, reduced-motion behavior, MIME, length, source hashes, and silent audio-free tracks. It also aborts actual media requests for one clip, requires the page to expose its fallback, clicks that clip's own retry control, and requires fresh media requests and playback recovery. The GitHub workflow uses Chromium for this hosted gate; the local acceptance command can run Edge, Chromium, or both. A successful static build or media URL check alone is not a successful Journey media acceptance.
+
+Example hosted run after a successful Cloudflare preview:
+
+```sh
+npm run journey:media-check -- --url https://<deployment-id-prefix>.visionovamundi.pages.dev --browser both --deployment-id <cloudflare-deployment-id> --commit <tested-commit-sha>
+```
 
 ### Cloudflare Web Analytics exception
 

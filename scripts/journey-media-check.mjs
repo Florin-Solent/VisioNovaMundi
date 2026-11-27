@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { readFile } from 'node:fs/promises';
+import { appendFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { join, resolve, sep } from 'node:path';
@@ -165,6 +165,63 @@ function timeAdvanced(before, after) {
   return after > before + 0.08 || (before > 4.5 && after < 0.35);
 }
 
+async function verifyPageClips(page, report, viewport, verifyGlobalControls = false) {
+  const clips = page.locator('video[data-clip]');
+  const button = page.locator('[data-motion-toggle]');
+  assert.equal(await clips.count(), journeyClipNames.length, 'Journey page must expose all eight cinematic clips');
+  for (let index = 0; index < journeyClipNames.length; index += 1) {
+    const video = clips.nth(index);
+    await video.scrollIntoViewIfNeeded();
+    await page.waitForFunction(i => {
+      const current = document.querySelectorAll('video[data-clip]')[i];
+      return current?.dataset.loaded === 'true' && current.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA && current.videoWidth > 0 && !current.paused && !current.error;
+    }, index, { timeout: 15000 });
+    const before = await video.evaluate(element => element.currentTime);
+    await page.waitForFunction(({ index: i, previous }) => {
+      const current = document.querySelectorAll('video[data-clip]')[i];
+      if (!current || current.paused || current.error) return false;
+      return current.currentTime > previous + 0.08
+        || (previous > current.duration - 0.35 && current.currentTime < 0.35);
+    }, { index, previous: before }, { timeout: 5000 }).catch(async error => {
+      const finalState = await video.evaluate(element => ({ time: element.currentTime, paused: element.paused, error: element.error?.message || null, readyState: element.readyState }));
+      throw new Error(`${error.message}; ${viewport.width}px clip ${index + 1} timing state: ${JSON.stringify({ before, ...finalState })}`);
+    });
+    const state = await video.evaluate(element => ({
+      source: element.currentSrc,
+      readyState: element.readyState,
+      width: element.videoWidth,
+      height: element.videoHeight,
+      duration: element.duration,
+      paused: element.paused,
+      time: element.currentTime,
+      error: element.error?.message || null,
+    }));
+    assert(state.source.endsWith('.webm') || state.source.endsWith('.mp4'), `No video source selected for clip ${index + 1}`);
+    assert(state.width > 0 && state.height > 0, `Clip ${index + 1} produced no decoded frame dimensions at ${viewport.width}px`);
+    assert(timeAdvanced(before, state.time), `Clip ${index + 1} playback time did not advance at ${viewport.width}px`);
+    assert.equal(state.paused, false, `Clip ${index + 1} is paused while visible at ${viewport.width}px`);
+    assert.equal(state.error, null, `Clip ${index + 1} has a media error at ${viewport.width}px`);
+    report.playback.push({ viewport: `${viewport.width}x${viewport.height}`, index: index + 1, ...state, advanced: true });
+
+    if (verifyGlobalControls && index === 0) {
+      assert.equal((await button.textContent()).trim().toLowerCase(), 'pause clips', 'Autoplay control did not reflect active playback');
+      await button.click();
+      await page.waitForFunction(i => document.querySelectorAll('video[data-clip]')[i]?.paused === true, index);
+      const pausedAt = await video.evaluate(element => element.currentTime);
+      await page.waitForTimeout(300);
+      const stillAt = await video.evaluate(element => element.currentTime);
+      assert(Math.abs(stillAt - pausedAt) < 0.08, 'Pause clips control did not stop playback');
+      await button.click();
+      await page.waitForFunction(i => {
+        const current = document.querySelectorAll('video[data-clip]')[i];
+        return current && !current.paused && current.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA;
+      }, index);
+      await page.waitForTimeout(500);
+      assert(timeAdvanced(stillAt, await video.evaluate(element => element.currentTime)), 'Play clips control did not resume playback');
+    }
+  }
+}
+
 async function decodeInBrowser(page, url) {
   return page.evaluate(async sourceUrl => {
     const video = document.createElement('video');
@@ -209,13 +266,17 @@ async function decodeInBrowser(page, url) {
   }, url);
 }
 
-export async function checkJourneyMedia({ base, browser, root = resolve('dist'), requirePagesPreview = false }) {
+export async function checkJourneyMedia({ base, browser, root = resolve('dist'), requirePagesPreview = false, commit, deploymentId }) {
   const url = new URL(base);
   assert(['http:', 'https:'].includes(url.protocol), 'Journey media test requires HTTP or HTTPS');
   assert.equal(url.pathname, '/', 'Pass the preview origin only, without a route path');
-  if (requirePagesPreview) assert(/^[a-z0-9-]+\.visionovamundi\.pages\.dev$/i.test(url.hostname), 'Hosted Journey acceptance must use the non-production Cloudflare Pages preview hostname');
+  if (requirePagesPreview) {
+    assert(/^[a-z0-9-]+\.visionovamundi\.pages\.dev$/i.test(url.hostname), 'Hosted Journey acceptance must use the non-production Cloudflare Pages preview hostname');
+    assert.match(deploymentId || '', /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i, 'Hosted Journey acceptance must record the full Cloudflare deployment ID');
+    assert(url.hostname.startsWith(`${deploymentId.slice(0, 8)}.`), 'Preview hostname does not match the supplied Cloudflare deployment ID');
+  }
   const local = await inspectJourneyAssets(root);
-  const report = { target: url.origin, browser: browser.version(), clipCount: local.clipCount, assetCount: local.sourceCount, assets: [], viewports: [], playback: [], reducedMotion: null, errorFallback: null };
+  const report = { outcome: 'passed', testedCommit: commit || execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), previewDeploymentId: deploymentId || null, target: url.origin, browser: browser.version(), clipCount: local.clipCount, assetCount: local.sourceCount, assets: [], viewports: [], playback: [], reducedMotion: null, networkRecovery: null, errorFallback: null };
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'no-preference', serviceWorkers: 'block' });
   const page = await context.newPage();
   await page.addInitScript(() => {
@@ -242,59 +303,18 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
 
     const clips = page.locator('video[data-clip]');
     const button = page.locator('[data-motion-toggle]');
-    for (let index = 0; index < 8; index += 1) {
-      const video = clips.nth(index);
-      await video.scrollIntoViewIfNeeded();
-      await page.waitForFunction(i => {
-        const current = document.querySelectorAll('video[data-clip]')[i];
-        return current?.dataset.loaded === 'true' && current.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA && current.videoWidth > 0 && !current.paused && !current.error;
-      }, index, { timeout: 15000 });
-      const before = await video.evaluate(element => element.currentTime);
-      await page.waitForFunction(({ index: i, previous }) => {
-        const current = document.querySelectorAll('video[data-clip]')[i];
-        if (!current || current.paused || current.error) return false;
-        return current.currentTime > previous + 0.08
-          || (previous > current.duration - 0.35 && current.currentTime < 0.35);
-      }, { index, previous: before }, { timeout: 5000 }).catch(async error => {
-        const finalState = await video.evaluate(element => ({ time: element.currentTime, paused: element.paused, error: element.error?.message || null, readyState: element.readyState }));
-        throw new Error(`${error.message}; clip ${index + 1} timing state: ${JSON.stringify({ before, ...finalState })}`);
-      });
-      const state = await video.evaluate(element => ({
-        source: element.currentSrc,
-        readyState: element.readyState,
-        width: element.videoWidth,
-        height: element.videoHeight,
-        duration: element.duration,
-        paused: element.paused,
-        time: element.currentTime,
-        error: element.error?.message || null,
-      }));
-      assert(state.source.endsWith('.webm') || state.source.endsWith('.mp4'), `No video source selected for clip ${index + 1}`);
-      assert(state.width > 0 && state.height > 0, `Clip ${index + 1} produced no decoded frame dimensions`);
-      assert(timeAdvanced(before, state.time), `Clip ${index + 1} playback time did not advance`);
-      assert.equal(state.paused, false, `Clip ${index + 1} is paused while visible and motion is allowed`);
-      assert.equal(state.error, null, `Clip ${index + 1} has a media error`);
-      report.playback.push({ index: index + 1, ...state, advanced: true });
-
-      if (index === 0) {
-        assert.equal((await button.textContent()).trim().toLowerCase(), 'pause clips', 'Autoplay control did not reflect active playback');
-        await button.click();
-        await page.waitForFunction(i => document.querySelectorAll('video[data-clip]')[i]?.paused === true, index);
-        const pausedAt = await video.evaluate(element => element.currentTime);
-        await page.waitForTimeout(300);
-        const stillAt = await video.evaluate(element => element.currentTime);
-        assert(Math.abs(stillAt - pausedAt) < 0.08, 'Pause clips control did not stop playback');
-        await button.click();
-        await page.waitForFunction(i => {
-          const current = document.querySelectorAll('video[data-clip]')[i];
-          return current && !current.paused && current.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA;
-        }, index);
-        await page.waitForTimeout(500);
-        assert(timeAdvanced(stillAt, await video.evaluate(element => element.currentTime)), 'Play clips control did not resume playback');
-      }
-    }
+    await verifyPageClips(page, report, { width: 1440, height: 900 }, true);
     assert.deepEqual(await page.evaluate(() => window.__journeyPlayErrors), [], 'A play() promise was rejected during normal Journey playback');
     assert.deepEqual(pageErrors, [], `Journey page had uncaught errors: ${pageErrors.join('; ')}`);
+
+    const mobileContext = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'no-preference', serviceWorkers: 'block' });
+    try {
+      const mobilePage = await mobileContext.newPage();
+      const mobileResponse = await mobilePage.goto(`${url.origin}/journey/`, { waitUntil: 'domcontentloaded', timeout: 45000 });
+      assert.equal(mobileResponse?.status(), 200, 'Mobile Journey route did not return HTTP 200');
+      await verifyPageClips(mobilePage, report, { width: 390, height: 844 });
+      assert(await mobilePage.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Mobile Journey has horizontal overflow during clip playback');
+    } finally { await mobileContext.close(); }
 
     for (const viewport of [{ width: 1440, height: 900 }, { width: 820, height: 900 }, { width: 390, height: 844 }]) {
       await page.setViewportSize(viewport);
@@ -363,6 +383,57 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
       report.reducedMotion.userOptInSupported = true;
     } finally { await reduced.close(); }
 
+    const networkRecovery = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'no-preference', serviceWorkers: 'block' });
+    try {
+      const networkPage = await networkRecovery.newPage();
+      const mediaRequests = [];
+      const failedMediaRequests = [];
+      let allowMedia = false;
+      await networkPage.route('**/media/journey/cinematic/edinburgh-06.*', async route => {
+        const requestUrl = route.request().url();
+        mediaRequests.push({ url: requestUrl, phase: allowMedia ? 'retry' : 'temporary failure' });
+        if (allowMedia) await route.continue();
+        else await route.abort('failed');
+      });
+      networkPage.on('requestfailed', request => {
+        if (/\/media\/journey\/cinematic\/edinburgh-06\.(?:webm|mp4)$/.test(request.url())) failedMediaRequests.push(request.url());
+      });
+      const networkResponse = await networkPage.goto(`${url.origin}/journey/`, { waitUntil: 'domcontentloaded', timeout: 45000 });
+      assert.equal(networkResponse?.status(), 200, 'Journey route failed before media network-retry test');
+      const failedVideo = networkPage.locator('video[data-clip]').first();
+      await failedVideo.scrollIntoViewIfNeeded();
+      await networkPage.waitForFunction(() => {
+        const video = document.querySelector('video[data-clip]');
+        const figure = video?.closest('figure');
+        const status = figure?.querySelector('[data-clip-status]');
+        const retry = figure?.querySelector('[data-clip-retry]');
+        return video?.dataset.playbackError && status && !status.hidden && retry && !retry.hidden;
+      }, undefined, { timeout: 15000 });
+      assert(failedMediaRequests.length > 0, 'Temporary network failure did not fail an actual hosted media request');
+      const requestsBeforeRetry = mediaRequests.length;
+      assert(requestsBeforeRetry > 0, 'No hosted media request was intercepted during the temporary failure');
+      allowMedia = true;
+      const retryButton = networkPage.locator('[data-clip-retry]').first();
+      await retryButton.scrollIntoViewIfNeeded();
+      await retryButton.click();
+      await networkPage.waitForFunction(() => {
+        const video = document.querySelector('video[data-clip]');
+        const status = video?.closest('figure')?.querySelector('[data-clip-status]');
+        return video && video.dataset.playbackError === undefined && video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA
+          && video.videoWidth > 0 && !video.paused && video.currentTime > 0.08 && status?.hidden;
+      }, undefined, { timeout: 20000 });
+      const retryRequests = mediaRequests.slice(requestsBeforeRetry);
+      assert(retryRequests.length > 0, 'Individual retry did not request the failed media resource again');
+      report.networkRecovery = {
+        clip: journeyClipNames[0],
+        failedNetworkRequests: failedMediaRequests.length,
+        firstAttemptRequests: requestsBeforeRetry,
+        retriedNetworkRequests: retryRequests.length,
+        retriedUrls: [...new Set(retryRequests.map(request => request.url))],
+        playbackRestored: true,
+      };
+    } finally { await networkRecovery.close(); }
+
     const firstVideo = clips.first();
     await firstVideo.scrollIntoViewIfNeeded();
     const motionButtonText = (await button.textContent()).trim().toLowerCase();
@@ -400,7 +471,10 @@ async function loadPlaywright() {
   const require = createRequire(import.meta.url);
   const candidates = [];
   try { candidates.push(require.resolve('playwright')); } catch {}
-  const cache = join(execFileSync('cmd.exe', ['/d', '/s', '/c', 'npm config get cache'], { encoding: 'utf8' }).trim(), '_npx');
+  const cacheCommand = process.platform === 'win32'
+    ? ['cmd.exe', ['/d', '/s', '/c', 'npm config get cache']]
+    : ['npm', ['config', 'get', 'cache']];
+  const cache = join(execFileSync(cacheCommand[0], cacheCommand[1], { encoding: 'utf8' }).trim(), '_npx');
   if (existsSync(cache)) for (const folder of await import('node:fs/promises').then(fs => fs.readdir(cache))) candidates.push(join(cache, folder, 'node_modules', 'playwright', 'index.js'));
   for (const candidate of candidates) {
     try {
@@ -413,16 +487,38 @@ async function loadPlaywright() {
 
 async function main() {
   const args = process.argv.slice(2);
-  const urlIndex = args.indexOf('--url');
-  const url = urlIndex >= 0 ? args[urlIndex + 1] : process.env.VNM_JOURNEY_PREVIEW;
+  const values = new Map();
+  for (let index = 0; index < args.length; index += 1) {
+    const flag = args[index];
+    assert(['--url', '--browser', '--deployment-id', '--commit'].includes(flag), `Unsupported Journey media-check argument: ${flag}`);
+    assert(args[index + 1] && !args[index + 1].startsWith('--'), `Missing value for ${flag}`);
+    values.set(flag, args[++index]);
+  }
+  const url = values.get('--url') || process.env.VNM_JOURNEY_PREVIEW;
   assert(url, 'Provide --url <Cloudflare pages.dev preview origin> or VNM_JOURNEY_PREVIEW');
-  assert(args.every((arg, index) => arg === '--url' || (urlIndex >= 0 && index === urlIndex + 1)), 'Unsupported Journey media-check argument');
+  const browserChoice = values.get('--browser') || 'edge';
+  assert(['edge', 'chromium', 'both'].includes(browserChoice), 'Choose --browser edge, chromium, or both');
+  const deploymentId = values.get('--deployment-id');
+  const commit = values.get('--commit') || process.env.GITHUB_SHA || execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
   const { chromium } = await loadPlaywright();
-  const browser = await chromium.launch({ channel: 'msedge', headless: true });
-  try {
-    const report = await checkJourneyMedia({ base: url, browser, root: resolve('dist'), requirePagesPreview: true });
+  const browsers = browserChoice === 'both' ? ['edge', 'chromium'] : [browserChoice];
+  await mkdir('output/release-qa', { recursive: true });
+  for (const name of browsers) {
+    const browser = await chromium.launch({ ...(name === 'edge' ? { channel: 'msedge' } : {}), headless: true });
+    const reportPath = resolve('output/release-qa', `journey-hosted-${name}.json`);
+    let report;
+    try {
+      report = await checkJourneyMedia({ base: url, browser, root: resolve('dist'), requirePagesPreview: true, commit, deploymentId });
+    } catch (error) {
+      report = { outcome: 'failed', testedCommit: commit, previewDeploymentId: deploymentId || null, target: new URL(url).origin, browser: browser.version(), error: error.message };
+      await writeFile(reportPath, JSON.stringify(report, null, 2));
+      throw error;
+    } finally { await browser.close(); }
+    await writeFile(reportPath, JSON.stringify(report, null, 2));
+    const summary = `### Hosted Journey media check: ${name}\n\n- Outcome: ${report.outcome}\n- Tested commit: \`${report.testedCommit}\`\n- Cloudflare deployment: \`${report.previewDeploymentId}\`\n- Preview: ${report.target}\n- Page playback: ${report.playback.length}/${journeyClipNames.length * 2} clip/viewport runs\n- Media files decoded: ${report.assets.filter(asset => asset.decoded && !asset.decoded.skipped).length}/16\n- Network failure recovery: ${report.networkRecovery ? 'passed' : 'missing'}\n\n`;
+    if (process.env.GITHUB_STEP_SUMMARY) await appendFile(process.env.GITHUB_STEP_SUMMARY, summary);
     console.log(JSON.stringify(report, null, 2));
-  } finally { await browser.close(); }
+  }
 }
 
 if (process.argv[1]?.endsWith('journey-media-check.mjs')) {

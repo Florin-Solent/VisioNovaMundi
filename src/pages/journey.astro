@@ -760,7 +760,7 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
         const status = figure?.querySelector<HTMLElement>("[data-clip-status]");
         const retry = figure?.querySelector<HTMLButtonElement>("[data-clip-retry]");
         if (status) status.hidden = true;
-        if (retry) retry.hidden = true;
+        if (retry) { retry.hidden = true; retry.disabled = false; }
       }).catch((error: unknown) => {
         if (error instanceof DOMException && error.name === "AbortError") return;
         const name = error instanceof DOMException ? error.name : "PlaybackError";
@@ -768,8 +768,8 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
         const figure = video.closest("figure");
         const status = figure?.querySelector<HTMLElement>("[data-clip-status]");
         const retry = figure?.querySelector<HTMLButtonElement>("[data-clip-retry]");
-        if (status) status.hidden = false;
-        if (retry) retry.hidden = false;
+        if (status) { status.textContent = "This clip could not be played. The still image remains available."; status.hidden = false; }
+        if (retry) { retry.hidden = false; retry.disabled = false; }
         document.dispatchEvent(new CustomEvent("journey:playback-error", {
           detail: { source: video.currentSrc || Array.from(video.querySelectorAll("source")).map(source => source.getAttribute("src")).find(Boolean) || "", name },
         }));
@@ -777,20 +777,31 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
         pendingPlays.delete(video);
       });
     };
+    const retryClip = (video: HTMLVideoElement) => {
+      const figure = video.closest("figure");
+      const status = figure?.querySelector<HTMLElement>("[data-clip-status]");
+      const retry = figure?.querySelector<HTMLButtonElement>("[data-clip-retry]");
+      pendingPlays.delete(video);
+      video.pause();
+      video.load();
+      if (status) { status.textContent = "Retrying this clip…"; status.hidden = false; }
+      if (retry) retry.disabled = true;
+      playClip(video);
+    };
     for (const video of videos) {
       video.addEventListener("error", () => {
         const figure = video.closest("figure");
         const status = figure?.querySelector<HTMLElement>("[data-clip-status]");
         const retry = figure?.querySelector<HTMLButtonElement>("[data-clip-retry]");
         video.dataset.playbackError = `MediaError-${video.error?.code || 0}`;
-        if (status) status.hidden = false;
-        if (retry) retry.hidden = false;
+        if (status) { status.textContent = "This clip could not be played. The still image remains available."; status.hidden = false; }
+        if (retry) { retry.hidden = false; retry.disabled = false; }
         document.dispatchEvent(new CustomEvent("journey:playback-error", {
           detail: { source: video.currentSrc || "", name: video.dataset.playbackError },
         }));
       });
       const retry = video.closest("figure")?.querySelector<HTMLButtonElement>("[data-clip-retry]");
-      retry?.addEventListener("click", () => playClip(video));
+      retry?.addEventListener("click", () => retryClip(video));
     }
     const syncClips = () => {
       for (const video of videos) {
