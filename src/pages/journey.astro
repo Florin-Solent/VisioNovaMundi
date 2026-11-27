@@ -765,6 +765,11 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
       loadClip(video);
       if (!video.paused || pendingPlays.has(video)) return;
       pendingPlays.add(video);
+      window.setTimeout(() => {
+        if (!video.paused && video.readyState === HTMLMediaElement.HAVE_NOTHING && video.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) {
+          showPlaybackFailure(video, "MediaNetworkError");
+        }
+      }, 1200);
       video.play().then(() => {
         delete video.dataset.playbackError;
         const figure = video.closest("figure");
@@ -772,11 +777,6 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
         const retry = figure?.querySelector<HTMLButtonElement>("[data-clip-retry]");
         if (status) status.hidden = true;
         if (retry) { retry.hidden = true; retry.disabled = false; }
-        window.setTimeout(() => {
-          if (!video.paused && video.readyState === HTMLMediaElement.HAVE_NOTHING && video.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) {
-            showPlaybackFailure(video, "MediaNetworkError");
-          }
-        }, 1200);
       }).catch((error: unknown) => {
         if (error instanceof DOMException && error.name === "AbortError") return;
         const name = error instanceof DOMException ? error.name : "PlaybackError";
