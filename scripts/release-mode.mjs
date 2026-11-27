@@ -108,6 +108,9 @@ function nonImportFrontmatter(source) {
 
 function pageRuntimeChanged(base, path) {
   const previous = gitText(`${base}:${path}`);
+  // A deleted page is a runtime change too. Avoid reading the missing working
+  // tree file so PR classification can safely select the full route checks.
+  if (!existsSync(path)) return true;
   const current = readFileSync(path, 'utf8');
   return nonImportFrontmatter(previous) !== nonImportFrontmatter(current) ||
     region(previous, /<script\b[^>]*>[\s\S]*?<\/script\s*>/gi).join('\n') !==
