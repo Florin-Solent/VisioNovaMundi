@@ -399,7 +399,7 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
         const requestUrl = route.request().url();
         mediaRequests.push({ url: requestUrl, phase: retryInitiated ? 'retry' : 'temporary failure' });
         if (retryInitiated) await route.continue();
-        else await route.abort('failed');
+        else await route.abort('internetdisconnected');
       });
       networkPage.on('requestfailed', request => {
         if (/\/media\/journey\/cinematic\/edinburgh-06\.(?:webm|mp4)$/.test(request.url())) failedMediaRequests.push(request.url());
@@ -414,7 +414,10 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
         const status = figure?.querySelector('[data-clip-status]');
         const retry = figure?.querySelector('[data-clip-retry]');
         return video?.dataset.playbackError && status && !status.hidden && retry && !retry.hidden;
-      }, undefined, { timeout: 15000 });
+      }, undefined, { timeout: 15000 }).catch(async error => {
+        const state = await failedVideo.evaluate(video => ({ loaded: video.dataset.loaded, playbackError: video.dataset.playbackError, mediaError: video.error?.code || null, networkState: video.networkState, readyState: video.readyState, currentSrc: video.currentSrc, paused: video.paused, currentTime: video.currentTime, statusHidden: video.closest('figure')?.querySelector('[data-clip-status]')?.hidden, retryHidden: video.closest('figure')?.querySelector('[data-clip-retry]')?.hidden }));
+        throw new Error(`${error.message}; network failure diagnostics: ${JSON.stringify({ mediaRequests, failedMediaRequests, state })}`);
+      });
       assert(failedMediaRequests.length > 0, 'Temporary network failure did not fail an actual hosted media request');
       const requestsBeforeRetry = mediaRequests.length;
       assert(requestsBeforeRetry > 0, 'No hosted media request was intercepted during the temporary failure');
