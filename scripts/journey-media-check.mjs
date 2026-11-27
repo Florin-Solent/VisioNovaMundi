@@ -388,11 +388,11 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
       const networkPage = await networkRecovery.newPage();
       const mediaRequests = [];
       const failedMediaRequests = [];
-      let allowMedia = false;
+      let retryInitiated = false;
       await networkPage.route('**/media/journey/cinematic/edinburgh-06.*', async route => {
         const requestUrl = route.request().url();
-        mediaRequests.push({ url: requestUrl, phase: allowMedia ? 'retry' : 'temporary failure' });
-        if (allowMedia) await route.continue();
+        mediaRequests.push({ url: requestUrl, phase: retryInitiated ? 'retry' : 'temporary failure' });
+        if (retryInitiated) await route.continue();
         else await route.abort('failed');
       });
       networkPage.on('requestfailed', request => {
@@ -412,7 +412,7 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
       assert(failedMediaRequests.length > 0, 'Temporary network failure did not fail an actual hosted media request');
       const requestsBeforeRetry = mediaRequests.length;
       assert(requestsBeforeRetry > 0, 'No hosted media request was intercepted during the temporary failure');
-      allowMedia = true;
+      retryInitiated = true;
       const retryButton = networkPage.locator('[data-clip-retry]').first();
       await retryButton.scrollIntoViewIfNeeded();
       await retryButton.click();
@@ -424,6 +424,7 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
       }, undefined, { timeout: 20000 });
       const retryRequests = mediaRequests.slice(requestsBeforeRetry);
       assert(retryRequests.length > 0, 'Individual retry did not request the failed media resource again');
+      assert(retryRequests.every(request => request.phase === 'retry'), 'A media request was incorrectly counted as retry traffic before the user clicked retry');
       report.networkRecovery = {
         clip: journeyClipNames[0],
         failedNetworkRequests: failedMediaRequests.length,
