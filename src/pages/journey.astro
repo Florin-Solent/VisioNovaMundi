@@ -222,7 +222,6 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
     <div class="ts-grain" aria-hidden="true"></div>
     <div class="ts-letterbox ts-letterbox--top" aria-hidden="true"></div>
     <div class="ts-inner">
-      <p class="ts-preview">Private preview · wording and media permissions pending approval</p>
       <div class="ts-copy">
         <p class="ts-kicker">Visio Nova Mundi presents · Beyond Borders</p>
         <h1 id="journey-page-title"><span>The World</span> <span>Through My Eyes</span></h1>
@@ -430,6 +429,8 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
             <source data-src={`/media/journey/cinematic/${clip.name}.webm`} type="video/webm" />
             <source data-src={`/media/journey/cinematic/${clip.name}.mp4`} type="video/mp4" />
           </video>
+          <p class="clip-status" data-clip-status role="status" aria-live="polite" hidden>This clip could not be played. The still image remains available.</p>
+          <button class="clip-retry" data-clip-retry type="button" hidden>Try this clip again</button>
           <figcaption><strong>{clip.title}</strong><span>{clip.cap}</span></figcaption>
         </figure>
       ))}
@@ -742,16 +743,59 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
     let clipsWanted = !reduceMotion.matches;
     let clipsVisible = false;
     const visibleVideos = new Set<HTMLVideoElement>();
+    const pendingPlays = new WeakSet<HTMLVideoElement>();
     const loadClip = (video: HTMLVideoElement) => {
       if (video.dataset.loaded) return;
       for (const source of Array.from(video.querySelectorAll<HTMLSourceElement>("source[data-src]"))) source.src = source.dataset.src || "";
       video.dataset.loaded = "true";
       video.load();
     };
+    const playClip = (video: HTMLVideoElement) => {
+      loadClip(video);
+      if (!video.paused || pendingPlays.has(video)) return;
+      pendingPlays.add(video);
+      video.play().then(() => {
+        delete video.dataset.playbackError;
+        const figure = video.closest("figure");
+        const status = figure?.querySelector<HTMLElement>("[data-clip-status]");
+        const retry = figure?.querySelector<HTMLButtonElement>("[data-clip-retry]");
+        if (status) status.hidden = true;
+        if (retry) retry.hidden = true;
+      }).catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        const name = error instanceof DOMException ? error.name : "PlaybackError";
+        video.dataset.playbackError = name;
+        const figure = video.closest("figure");
+        const status = figure?.querySelector<HTMLElement>("[data-clip-status]");
+        const retry = figure?.querySelector<HTMLButtonElement>("[data-clip-retry]");
+        if (status) status.hidden = false;
+        if (retry) retry.hidden = false;
+        document.dispatchEvent(new CustomEvent("journey:playback-error", {
+          detail: { source: video.currentSrc || Array.from(video.querySelectorAll("source")).map(source => source.getAttribute("src")).find(Boolean) || "", name },
+        }));
+      }).finally(() => {
+        pendingPlays.delete(video);
+      });
+    };
+    for (const video of videos) {
+      video.addEventListener("error", () => {
+        const figure = video.closest("figure");
+        const status = figure?.querySelector<HTMLElement>("[data-clip-status]");
+        const retry = figure?.querySelector<HTMLButtonElement>("[data-clip-retry]");
+        video.dataset.playbackError = `MediaError-${video.error?.code || 0}`;
+        if (status) status.hidden = false;
+        if (retry) retry.hidden = false;
+        document.dispatchEvent(new CustomEvent("journey:playback-error", {
+          detail: { source: video.currentSrc || "", name: video.dataset.playbackError },
+        }));
+      });
+      const retry = video.closest("figure")?.querySelector<HTMLButtonElement>("[data-clip-retry]");
+      retry?.addEventListener("click", () => playClip(video));
+    }
     const syncClips = () => {
       for (const video of videos) {
         const play = clipsWanted && clipsVisible && visibleVideos.has(video);
-        if (play) { loadClip(video); video.play().catch(() => undefined); } else video.pause();
+        if (play) playClip(video); else video.pause();
       }
       motionToggle?.setAttribute("aria-pressed", String(clipsWanted));
       if (motionToggle) motionToggle.textContent = clipsWanted ? "Pause clips" : "Play clips";
@@ -894,7 +938,6 @@ body:has(.film) main#main-content{transform:none!important;}
 .ts-letterbox{position:relative;z-index:1;}
 .ts-letterbox--top{height:clamp(10px,2.4vh,26px);background:#000;}
 .ts-inner{position:relative;display:grid;grid-template-columns:minmax(0,1fr);align-items:end;padding:clamp(28px,6vh,72px) var(--gutter) clamp(26px,5vh,56px);}
-.ts-preview{position:absolute;max-width:calc(100% - 2 * var(--gutter));top:clamp(14px,2.6vh,26px);left:var(--gutter);margin:0;padding:6px 11px;border:1px solid #ffffff38;border-radius:999px;background:#00000040;color:#efe6d3;font:600 11px/1.3 var(--sans);letter-spacing:.05em;backdrop-filter:blur(6px);}
 .ts-copy{max-width:1080px;padding-top:56px;}
 .ts-kicker{margin:0 0 20px;color:var(--sand);font:700 11px/1.4 var(--sans);letter-spacing:.32em;text-transform:uppercase;}
 .title-sequence h1{margin:0;color:#fffaf0;font:400 clamp(46px,7.4vw,112px)/.94 var(--serif);letter-spacing:-.035em;}
@@ -1157,6 +1200,9 @@ body:has(.film) main#main-content{transform:none!important;}
 .motion-window{margin:0;}
 .motion-window:nth-child(even){margin-top:clamp(30px,8vh,90px);}
 .motion-window video{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:3px;background:#0a1412;box-shadow:0 30px 60px #0007;}
+.clip-status{margin:10px 0 0;color:#f3c7a7;font:13px/1.45 var(--sans);}
+.clip-retry{margin:8px 0 0;padding:7px 11px;border:1px solid #b9c4bd80;border-radius:2px;background:#15221d;color:#fbf6ea;font:600 12px/1.2 var(--sans);cursor:pointer;}
+.clip-retry:focus-visible{outline:2px solid #e6c68d;outline-offset:3px;}
 .motion-window figcaption{display:grid;gap:4px;margin-top:12px;}
 .motion-window strong{font:400 19px/1.2 var(--serif);color:#fbf6ea;}
 .motion-window span{color:#b9c4bd;font:12.5px/1.5 var(--sans);}

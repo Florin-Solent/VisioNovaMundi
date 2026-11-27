@@ -7,10 +7,11 @@ import { execFileSync } from 'node:child_process';
 import { createServer } from 'node:http';
 import { checkTarget, production } from './check-target.mjs';
 import { isCloudflareAnalyticsBeacon, selfTestQaExceptions } from './qa-exceptions.mjs';
+import { inspectJourneyAssets } from './journey-media-check.mjs';
 
 // Reuse the existing external QA runtime; do not change package dependencies.
 const playwrightVersion = '1.64.0-alpha-1790635538000';
-const fullRoutes = ['/', '/about/', '/commissioners-partners/', '/governance/', '/unity-house/', '/circular-justice/', '/research-future/', '/ventures/', '/tree-of-life/', '/contact/', '/projects/', '/timeline/', '/satul-conectat-romania/', '/services/', '/project-clandestinus/', '/clandestinus-secret-app/', '/admintrace/', '/tradevault/', '/oneloo-total/', '/guardian-one/', '/guardian-glide/', '/roamwing/', '/vialora/', '/vialora-voyage/', '/innovation/', '/partnership-brief/'];
+const fullRoutes = ['/', '/about/', '/journey/', '/commissioners-partners/', '/governance/', '/unity-house/', '/circular-justice/', '/research-future/', '/ventures/', '/tree-of-life/', '/contact/', '/projects/', '/timeline/', '/satul-conectat-romania/', '/services/', '/project-clandestinus/', '/clandestinus-secret-app/', '/admintrace/', '/tradevault/', '/oneloo-total/', '/guardian-one/', '/guardian-glide/', '/roamwing/', '/vialora/', '/vialora-voyage/', '/innovation/', '/partnership-brief/'];
 const args = process.argv.slice(2);
 const live = args.includes('--production');
 const explicitModes = args.filter(arg => ['--full', '--smoke'].includes(arg));
@@ -21,9 +22,9 @@ assert(['FAST', 'FULL'].includes(mode), `Unsupported browser QA mode: ${mode}`);
 const changedRouteCandidates = JSON.parse(process.env.VNM_CHANGED_ROUTES || '[]');
 assert(Array.isArray(changedRouteCandidates) && changedRouteCandidates.every(route => typeof route === 'string' && route.startsWith('/') && route.endsWith('/')), 'Invalid changed-route list');
 // Retired pages are verified by their Pages redirect rules below, not served as local HTML routes.
-const redirectedRetiredRoutes = new Set(['/impact/', '/programmes/', '/work/', '/journey/']);
+const redirectedRetiredRoutes = new Set(['/impact/', '/programmes/', '/work/']);
 const changedRoutes = changedRouteCandidates.filter(route => !redirectedRetiredRoutes.has(route));
-const coreRoutes = ['/', '/about/', '/projects/', '/governance/', '/contact/'];
+const coreRoutes = ['/', '/about/', '/journey/', '/projects/', '/governance/', '/contact/'];
 const smokeRoutes = [...new Set([...coreRoutes, ...changedRoutes])];
 const routes = mode === 'FULL' ? [...new Set([...fullRoutes, ...changedRoutes])] : smokeRoutes;
 const require = createRequire(import.meta.url);
@@ -57,12 +58,11 @@ async function staticChecks() {
   const expectedRedirects = [
     '/impact /about/ 308', '/impact/ /about/ 308', '/work /about/ 308', '/work/ /about/ 308',
     '/programmes /projects/ 308', '/programmes/ /projects/ 308',
-    '/journey /about/ 302', '/journey/ /about/ 302',
   ];
   for (const rule of expectedRedirects) assert(redirectRules.includes(rule), 'Missing Cloudflare Pages redirect: ' + rule);
   assert.equal(existsSync('vercel.json'), false, 'Cloudflare-only release must not include Vercel deployment configuration');
   assert.equal((await readFile('dist/_redirects', 'utf8')).trim(), redirectText.trim(), 'Cloudflare redirects were not copied to the Pages build output');
-  for (const route of ['/impact/', '/programmes/', '/work/', '/journey/']) assert(!existsSync(join('dist', route, 'index.html')), 'Retired route ' + route + ' must not be generated as an HTML page');
+  for (const route of ['/impact/', '/programmes/', '/work/']) assert(!existsSync(join('dist', route, 'index.html')), 'Retired route ' + route + ' must not be generated as an HTML page');
   for (const route of fullRoutes) assert(existsSync(join('dist', route, 'index.html')), `Missing built route ${route}`);
   for (const route of changedRoutes) assert(existsSync(join('dist', route, 'index.html')), `Missing changed route ${route}`);
   for (const path of await files('dist')) {
@@ -99,11 +99,13 @@ async function staticChecks() {
     const html = await readFile(join('dist', route.slice(1), 'index.html'), 'utf8');
     assert(html.includes('id="updates-' + key + '"'), 'Missing reusable Updates section on ' + route);
   }
+  const journeyAssets = await inspectJourneyAssets(resolve('dist'));
+  console.log(`Journey release gate: ${journeyAssets.clipCount} silent clips and ${journeyAssets.sourceCount} exact MP4/WebM assets verified`);
   console.log('Static route, metadata, asset and URL checks passed');
 }
 async function serve() {
   const root = resolve('dist');
-  const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.woff2': 'font/woff2' };
+  const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.mp4': 'video/mp4', '.webm': 'video/webm' };
   const server = createServer(async (req, res) => {
     try {
       const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
