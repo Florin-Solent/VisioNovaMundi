@@ -21,7 +21,7 @@ assert(['FAST', 'FULL'].includes(mode), `Unsupported browser QA mode: ${mode}`);
 const changedRouteCandidates = JSON.parse(process.env.VNM_CHANGED_ROUTES || '[]');
 assert(Array.isArray(changedRouteCandidates) && changedRouteCandidates.every(route => typeof route === 'string' && route.startsWith('/') && route.endsWith('/')), 'Invalid changed-route list');
 // Retired pages are verified by their Pages redirect rules below, not served as local HTML routes.
-const redirectedRetiredRoutes = new Set(['/impact/', '/programmes/', '/work/']);
+const redirectedRetiredRoutes = new Set(['/impact/', '/programmes/', '/work/', '/journey/']);
 const changedRoutes = changedRouteCandidates.filter(route => !redirectedRetiredRoutes.has(route));
 const coreRoutes = ['/', '/about/', '/projects/', '/governance/', '/contact/'];
 const smokeRoutes = [...new Set([...coreRoutes, ...changedRoutes])];
@@ -57,11 +57,12 @@ async function staticChecks() {
   const expectedRedirects = [
     '/impact /about/ 308', '/impact/ /about/ 308', '/work /about/ 308', '/work/ /about/ 308',
     '/programmes /projects/ 308', '/programmes/ /projects/ 308',
+    '/journey /about/ 302', '/journey/ /about/ 302',
   ];
   for (const rule of expectedRedirects) assert(redirectRules.includes(rule), 'Missing Cloudflare Pages redirect: ' + rule);
   assert.equal(existsSync('vercel.json'), false, 'Cloudflare-only release must not include Vercel deployment configuration');
   assert.equal((await readFile('dist/_redirects', 'utf8')).trim(), redirectText.trim(), 'Cloudflare redirects were not copied to the Pages build output');
-  for (const route of ['/impact/', '/programmes/', '/work/']) assert(!existsSync(join('dist', route, 'index.html')), 'Retired route ' + route + ' must not be generated as an HTML page');
+  for (const route of ['/impact/', '/programmes/', '/work/', '/journey/']) assert(!existsSync(join('dist', route, 'index.html')), 'Retired route ' + route + ' must not be generated as an HTML page');
   for (const route of fullRoutes) assert(existsSync(join('dist', route, 'index.html')), `Missing built route ${route}`);
   for (const route of changedRoutes) assert(existsSync(join('dist', route, 'index.html')), `Missing changed route ${route}`);
   for (const path of await files('dist')) {
