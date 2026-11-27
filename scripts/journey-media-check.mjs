@@ -435,7 +435,7 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
       assert(retryRequests.length > 0, 'Individual retry did not request the failed media resource again');
       assert(retryRequests.every(request => request.phase === 'retry'), 'A media request was incorrectly counted as retry traffic before the user clicked retry');
       report.networkRecovery = {
-        clip: journeyClipNames[0],
+        clip: 'edinburgh-06',
         failedNetworkRequests: failedMediaRequests.length,
         firstAttemptRequests: requestsBeforeRetry,
         retriedNetworkRequests: retryRequests.length,
