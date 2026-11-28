@@ -62,7 +62,7 @@ if (eventName === 'pull_request') {
     }
     assert(accepted, 'Timed out waiting for a successful Cloudflare preview for this exact PR head');
     lines.push(`url=${accepted.previewUrl}`, `deployment_id=${accepted.deploymentId}`, `commit=${accepted.commit}`);
-    if (summaryFile) await appendFile(summaryFile, `### Journey hosted acceptance gate\n\nWaiting for or found preview for \`${accepted.commit}\`: ${accepted.previewUrl} (deployment \`${accepted.deploymentId}\`). This preview is the subject of the required Journey interface, accessibility, media playback and recovery checks.\n\n`);
+    if (summaryFile) await appendFile(summaryFile, `### Journey hosted media gate\n\nWaiting for or found preview for \`${accepted.commit}\`: ${accepted.previewUrl} (deployment \`${accepted.deploymentId}\`).\n\n`);
   }
 } else {
   lines.push('required=false');

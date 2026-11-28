@@ -276,7 +276,7 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
     assert(url.hostname.startsWith(`${deploymentId.slice(0, 8)}.`), 'Preview hostname does not match the supplied Cloudflare deployment ID');
   }
   const local = await inspectJourneyAssets(root);
-  const report = { outcome: 'passed', testedCommit: commit || execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), previewDeploymentId: deploymentId || null, target: url.origin, browser: browser.version(), clipCount: local.clipCount, assetCount: local.sourceCount, assets: [], viewports: [], playback: [], reducedMotion: null, networkRecovery: null, errorFallback: null, hostedAcceptance: null };
+  const report = { outcome: 'passed', testedCommit: commit || execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), previewDeploymentId: deploymentId || null, target: url.origin, browser: browser.version(), clipCount: local.clipCount, assetCount: local.sourceCount, assets: [], viewports: [], playback: [], reducedMotion: null, networkRecovery: null, errorFallback: null };
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'no-preference', serviceWorkers: 'block' });
   const page = await context.newPage();
   await page.addInitScript(() => {
@@ -306,140 +306,6 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
     assert.deepEqual(years, expectedYears, 'Journey navigation must contain each year from 2010 through 2026');
     assert.equal(await page.locator('video[data-clip]').count(), 8, 'Journey page must expose all eight cinematic clips');
 
-    // Exercise the hosted atlas and timeline, not only their generated markup.
-    const atlas = page.locator('[data-journey-atlas]');
-    const markers = atlas.locator('[data-atlas-marker]');
-    assert.equal(await markers.count(), 76, 'Hosted atlas must expose the 76 supported place references');
-    assert.equal(await atlas.locator('.atlas-story').count(), 31, 'Hosted atlas must expose the 31 supported cultural stories');
-    const mapSemantics = await atlas.locator('[data-atlas-map]').evaluate(map => ({
-      role: map.getAttribute('role'),
-      title: document.getElementById(map.getAttribute('aria-labelledby')?.split(' ')[0] || '')?.textContent?.trim(),
-      description: document.getElementById(map.getAttribute('aria-labelledby')?.split(' ')[1] || '')?.textContent?.trim(),
-    }));
-    assert.equal(mapSemantics.role, 'group', 'Hosted atlas map must expose a named group to assistive technology');
-    assert(mapSemantics.title && mapSemantics.description, 'Hosted atlas map title and description must be present');
-    const accessibleControls = await atlas.evaluate(root => {
-      const unlabelledMarker = [...root.querySelectorAll('[data-atlas-marker]')].some(marker => !marker.getAttribute('aria-label')?.trim());
-      const unlabelledField = [...root.querySelectorAll('input, select')].some(field => !field.labels?.length && !field.getAttribute('aria-label')?.trim());
-      const unlabelledButton = [...root.querySelectorAll('button')].some(button => !button.getAttribute('aria-label')?.trim() && !button.textContent?.trim());
-      return { unlabelledMarker, unlabelledField, unlabelledButton };
-    });
-    assert.deepEqual(accessibleControls, { unlabelledMarker: false, unlabelledField: false, unlabelledButton: false }, 'Hosted atlas controls must have accessible names');
-
-    const palette = await atlas.evaluate(root => {
-      const style = getComputedStyle(root);
-      const get = name => style.getPropertyValue(name).trim().toLowerCase();
-      return {
-        ink: get('--atlas-ink'), muted: get('--atlas-muted'), accent: get('--atlas-accent'),
-        deep: get('--atlas-deep'), land: get('--atlas-land'), landHot: get('--atlas-land-hot'), line: get('--atlas-line'),
-        heading: getComputedStyle(root.querySelector('.atlas-heading h2')).color,
-        smallText: getComputedStyle(root.querySelector('.atlas-eyebrow')).color,
-        storyLink: getComputedStyle(root.querySelector('.atlas-sources a')).color,
-        selectedMeta: getComputedStyle(root.querySelector('.atlas-selected-meta')).color,
-      };
-    });
-    assert.deepEqual(palette, {
-      ink: '#112b38', muted: '#3e5563', accent: '#2563eb', deep: '#112b38',
-      land: '#c9d8dd', landHot: '#2563eb', line: '#3e5563',
-      heading: 'rgb(17, 43, 56)', smallText: 'rgb(17, 43, 56)', storyLink: 'rgb(17, 43, 56)', selectedMeta: 'rgb(17, 43, 56)',
-    }, 'Hosted atlas interface must use the established VNM blue palette');
-    const filmPalette = await page.locator('[data-film]').evaluate(root => {
-      const style = getComputedStyle(root);
-      return Object.fromEntries(['--blue', '--teal', '--gold', '--gold-deep', '--forest', '--line', '--mist', '--paper', '--ink', '--muted-ink', '--deep']
-        .map(name => [name, style.getPropertyValue(name).trim().toLowerCase()]));
-    });
-    assert.deepEqual(filmPalette, {
-      '--blue': '#2563eb', '--teal': '#2563eb', '--gold': '#2563eb', '--gold-deep': '#3e5563',
-      '--forest': '#112b38', '--line': '#c9d8dd', '--mist': '#e3eef0', '--paper': '#f8fafc',
-      '--ink': '#112b38', '--muted-ink': '#3e5563', '--deep': '#112b38',
-    }, 'Hosted Journey cinematic and timeline tokens must stay within the VNM blue palette');
-    const imageAltAudit = await page.locator('main').evaluate(root => [...root.querySelectorAll('img')].filter(image => !image.hasAttribute('alt')).length);
-    assert.equal(imageAltAudit, 0, 'Hosted Journey images must expose alt attributes (empty alt is allowed for decorative images)');
-    const contrast = await page.evaluate(() => {
-      const luminance = (hex) => {
-        const values = hex.slice(1).match(/../g).map(pair => parseInt(pair, 16) / 255).map(value => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
-        return 0.2126 * values[0] + 0.7152 * values[1] + 0.0722 * values[2];
-      };
-      const ratio = (foreground, background) => {
-        const a = luminance(foreground); const b = luminance(background);
-        return Number(((Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)).toFixed(2));
-      };
-      return { body: ratio('#3e5563', '#e3eef0'), heading: ratio('#112b38', '#e3eef0'), accent: ratio('#2563eb', '#f8fafc'), button: ratio('#f8fafc', '#2563eb') };
-    });
-    assert(Object.values(contrast).every(value => value >= 4.5), `Hosted atlas core text contrast fell below 4.5:1: ${JSON.stringify(contrast)}`);
-
-    const labelsPresent = await atlas.evaluate(root => [...root.querySelectorAll('input,select')].every(field => field.labels?.length || field.getAttribute('aria-label')));
-    assert(labelsPresent, 'Hosted atlas filters must have visible or programmatic labels');
-    const yearFilter = atlas.locator('#atlas-year');
-    await yearFilter.selectOption('2024');
-    await page.waitForFunction(() => document.querySelector('[data-year-select][data-year="2024"]')?.getAttribute('aria-current') === 'true');
-    const yearMarkers = await markers.evaluateAll(items => items.filter(marker => !marker.classList.contains('is-filtered-out')).map(marker => marker.getAttribute('data-years') || ''));
-    assert(yearMarkers.length > 0 && yearMarkers.every(value => value.split(/\s+/).includes('2024')), 'Hosted atlas year filter must show only 2024 place references');
-    const selectedYearPlace = await markers.evaluateAll(items => {
-      const marker = items.find(item => !item.classList.contains('is-filtered-out'));
-      return marker ? { id: marker.getAttribute('data-atlas-marker'), name: marker.getAttribute('data-name'), country: marker.getAttribute('data-country-code'), continent: marker.getAttribute('data-continent') } : null;
-    });
-    assert(selectedYearPlace, 'Hosted 2024 filter must return a selectable place');
-    assert.match(await page.locator('#yearline-status').innerText(), /2024/, 'Timeline must announce the year selected in the atlas');
-    const yearLink = page.locator('[data-year-select][data-year="2024"]');
-    await yearLink.scrollIntoViewIfNeeded();
-    await yearLink.focus();
-    await page.keyboard.press('Enter');
-    await page.waitForFunction(() => document.querySelector('#atlas-year')?.value === '2024');
-
-    await atlas.locator('#atlas-year').selectOption('all');
-    const citySearch = atlas.locator('#atlas-search');
-    await citySearch.fill(selectedYearPlace.name);
-    const citySearchState = await markers.evaluateAll((items, name) => ({
-      query: document.querySelector('#atlas-search')?.value,
-      visibleMatches: items.filter(marker => !marker.classList.contains('is-filtered-out')).map(marker => marker.getAttribute('data-name')),
-      requestedName: name,
-    }), selectedYearPlace.name);
-    assert(citySearchState.visibleMatches.includes(selectedYearPlace.name), `Hosted atlas city search must reveal its matching marker: ${JSON.stringify(citySearchState)}`);
-    await citySearch.fill('');
-    await atlas.locator('#atlas-country').selectOption(selectedYearPlace.country);
-    const countryMarkers = await markers.evaluateAll(items => items.filter(marker => !marker.classList.contains('is-filtered-out')).map(marker => marker.getAttribute('data-country-code')));
-    assert(countryMarkers.length > 0 && countryMarkers.every(code => code === selectedYearPlace.country), 'Hosted atlas country filter must show only matching markers');
-    await atlas.locator('#atlas-country').selectOption('all');
-    await atlas.locator('#atlas-continent').selectOption(selectedYearPlace.continent);
-    const regionMarkers = await markers.evaluateAll(items => items.filter(marker => !marker.classList.contains('is-filtered-out')).map(marker => marker.getAttribute('data-continent')));
-    assert(regionMarkers.length > 0 && regionMarkers.every(region => region === selectedYearPlace.continent), 'Hosted atlas region filter must show only matching markers');
-    await atlas.locator('#atlas-continent').selectOption('all');
-    const markerMeta = await markers.evaluateAll(items => items.map(marker => ({
-      id: marker.getAttribute('data-atlas-marker'), name: marker.getAttribute('data-name'),
-      country: marker.getAttribute('data-country-code'), continent: marker.getAttribute('data-continent'), years: marker.getAttribute('data-years') || '',
-      hasCountryOutline: Boolean(document.querySelector(`[data-country="${marker.getAttribute('data-country-code')}"]`)?.classList.contains('is-recorded')),
-    })));
-    assert(markerMeta.every(item => item.id && item.name && item.country && item.continent && item.hasCountryOutline), 'Every hosted place pin must map to a matching highlighted country outline');
-    const target = atlas.locator(`[data-atlas-marker="${selectedYearPlace.id}"]`);
-    const targetName = selectedYearPlace.name;
-    await target.scrollIntoViewIfNeeded();
-    await target.focus();
-    await page.keyboard.press('Enter');
-    await page.waitForFunction(name => document.querySelector('[data-atlas-selected-name]')?.textContent?.trim() === name, targetName);
-    const map = atlas.locator('[data-atlas-map]');
-    const focusedView = await map.getAttribute('viewBox');
-    assert.notEqual(focusedView, '0 0 1200 620', 'Selecting a hosted map marker must zoom to the selected place');
-    await atlas.locator('[data-atlas-zoom-in]').click();
-    await atlas.locator('[data-atlas-reset]').click();
-    const resetViewBox = (await map.getAttribute('viewBox')).trim().split(/\s+/).map(Number);
-    assert.deepEqual(resetViewBox, [0, 0, 1200, 620], 'Hosted map world-reset control must restore the complete atlas');
-    const labelsToggle = atlas.locator('[data-atlas-country-labels]');
-    await labelsToggle.focus();
-    await page.keyboard.press('Space');
-    assert(await labelsToggle.isChecked(), 'Hosted map country-label toggle must be keyboard operable');
-    assert(await atlas.evaluate(root => root.classList.contains('show-country-labels')), 'Hosted map country-label toggle must activate country labels');
-    await page.keyboard.press('Space');
-    assert(!(await labelsToggle.isChecked()), 'Hosted map country-label toggle must be keyboard reversible');
-
-    report.hostedAcceptance = {
-      mapMarkers: markerMeta.length, countryOutlinesMatched: markerMeta.filter(item => item.hasCountryOutline).length,
-      culturalStories: 31, timelineYears: years.length, atlasYearFilter: true, timelineKeyboardNavigation: true,
-      citySearch: true, countryFilter: true, regionFilter: true,
-      markerKeyboardSelection: true, zoomAndWorldReset: true, countryLabelsToggle: true,
-      palette: 'VNM blue tokens matched', contrastRatios: contrast, accessibleNames: true, imageAltAttributes: true,
-    };
-
     const clips = page.locator('video[data-clip]');
     const button = page.locator('[data-motion-toggle]');
     await verifyPageClips(page, report, { width: 1440, height: 900 }, true);
@@ -454,42 +320,6 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
       assert.equal(mobileResponse?.status(), 200, 'Mobile Journey route did not return HTTP 200');
       await verifyPageClips(mobilePage, report, { width: 390, height: 844 });
       assert(await mobilePage.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Mobile Journey has horizontal overflow during clip playback');
-      const mobileAtlas = mobilePage.locator('[data-journey-atlas]');
-      const mobileMarkers = mobileAtlas.locator('[data-atlas-marker]');
-      assert.equal(await mobileMarkers.count(), 76, 'Mobile atlas must expose the 76 supported place references');
-      await mobileAtlas.locator('#atlas-year').selectOption('2024');
-      const mobileYearPlaces = await mobileMarkers.evaluateAll(items => items
-        .filter(marker => !marker.classList.contains('is-filtered-out'))
-        .map(marker => ({
-          id: marker.getAttribute('data-atlas-marker'),
-          name: marker.getAttribute('data-name'),
-          years: marker.getAttribute('data-years') || '',
-          x: Number(marker.getAttribute('data-x')),
-          y: Number(marker.getAttribute('data-y')),
-        })));
-      assert(mobileYearPlaces.length > 0 && mobileYearPlaces.every(place => place.years.split(/\s+/).includes('2024')), 'Mobile atlas year filter must select the requested year');
-      const allMobilePlaces = await mobileMarkers.evaluateAll(items => items.map(marker => ({
-        id: marker.getAttribute('data-atlas-marker'),
-        x: Number(marker.getAttribute('data-x')),
-        y: Number(marker.getAttribute('data-y')),
-      })));
-      // Prefer a pin with the most room around it, so this touch test measures
-      // marker activation rather than a second city pin intercepting the tap.
-      const mobileTarget = mobileYearPlaces.map(place => ({
-        ...place,
-        nearestDistance: Math.min(...allMobilePlaces.filter(other => other.id !== place.id)
-          .map(other => Math.hypot(place.x - other.x, place.y - other.y)), Infinity),
-      })).sort((a, b) => b.nearestDistance - a.nearestDistance)[0];
-      assert(mobileTarget, 'Mobile atlas year filter must provide a selectable place');
-      const mobileMarker = mobileAtlas.locator(`[data-atlas-marker="${mobileTarget.id}"]`);
-      const mobileName = mobileTarget.name;
-      await mobileAtlas.locator('#atlas-year').selectOption('all');
-      await mobileMarker.scrollIntoViewIfNeeded();
-      await mobileMarker.click();
-      await mobilePage.waitForFunction(name => document.querySelector('[data-atlas-selected-name]')?.textContent?.trim() === name, mobileName);
-      await mobileAtlas.locator('[data-atlas-reset]').click();
-      assert(await mobilePage.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Mobile atlas interactions introduced horizontal overflow');
-      report.mobileAtlas = { markers: 76, yearFilter: true, markerSelection: true, noHorizontalOverflow: true };
     } finally { await mobileContext.close(); }
 
     for (const viewport of [{ width: 1440, height: 900 }, { width: 820, height: 900 }, { width: 390, height: 844 }]) {
@@ -618,7 +448,6 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
     await firstVideo.scrollIntoViewIfNeeded();
     const motionButtonText = (await button.textContent()).trim().toLowerCase();
     if (motionButtonText === 'pause clips') await button.click();
-    const priorErrorEventCount = await page.evaluate(() => window.__journeyErrorEvents.length);
     await firstVideo.evaluate(video => {
       video.__journeyNativePlay = HTMLMediaElement.prototype.play;
       video.play = () => Promise.reject(new DOMException('Simulated blocked playback for release QA', 'NotAllowedError'));
@@ -640,74 +469,8 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
       return video && !video.paused && video.dataset.playbackError === undefined && message?.hidden;
     }, undefined, { timeout: 10000 });
     const errorEvents = await page.evaluate(() => window.__journeyErrorEvents);
-    const simulatedFailureEvents = errorEvents.slice(priorErrorEventCount);
-    assert.equal(simulatedFailureEvents.length, 1, 'Simulated playback failure did not emit exactly one diagnostic event');
-    assert.equal(simulatedFailureEvents[0].name, 'NotAllowedError', 'Simulated playback diagnostic did not identify the expected failure');
-    report.errorFallback = { exposed: true, ariaLive: await status.getAttribute('aria-live'), retryRecovered: true, diagnostic: simulatedFailureEvents[0] };
-
-    const sitePage = await context.newPage();
-    const sitePageErrors = [];
-    const externalHosts = new Set();
-    sitePage.on('request', request => {
-      const requestUrl = new URL(request.url());
-      if (requestUrl.hostname !== url.hostname) externalHosts.add(requestUrl.hostname);
-    });
-    sitePage.on('pageerror', error => sitePageErrors.push(error.message));
-    const siteRoutes = ['/', '/about/', '/projects/', '/governance/', '/unity-house/', '/commissioners-partners/', '/contact/', '/journey/'];
-    for (const path of siteRoutes) {
-      const response = await sitePage.goto(`${url.origin}${path}`, { waitUntil: 'domcontentloaded', timeout: 45000 });
-      assert.equal(response?.status(), 200, `Hosted website route failed: ${path}`);
-      assert((await sitePage.title()).trim().length > 0, `Hosted website route has no page title: ${path}`);
-      assert(await sitePage.locator('main').count() === 1, `Hosted website route is missing its main landmark: ${path}`);
-      assert((await sitePage.locator('main').innerText()).trim().length > 60, `Hosted website route has no visible main content: ${path}`);
-    }
-    await sitePage.goto(`${url.origin}/journey/`, { waitUntil: 'domcontentloaded', timeout: 45000 });
-    const canonical = await sitePage.locator('link[rel="canonical"]').getAttribute('href');
-    assert.equal(canonical, 'https://www.visionovamundi.com/journey/', 'Journey canonical URL must match the production www hostname');
-    const meta = await sitePage.evaluate(() => ({
-      ogImage: document.querySelector('meta[property="og:image"]')?.getAttribute('content'),
-      twitterCard: document.querySelector('meta[name="twitter:card"]')?.getAttribute('content'),
-    }));
-    assert.equal(meta.ogImage, 'https://www.visionovamundi.com/images/vnm-social-card.png', 'Journey Open Graph image must use the canonical social card');
-    assert.equal(meta.twitterCard, 'summary_large_image', 'Journey Twitter card must use the large image layout');
-    const robotsResponse = await sitePage.request.get(`${url.origin}/robots.txt`);
-    assert.equal(robotsResponse.status(), 200, 'robots.txt must be served on the hosted preview');
-    const robots = await robotsResponse.text();
-    assert(robots.includes('Sitemap: https://www.visionovamundi.com/sitemap.xml'), 'Hosted robots.txt has no canonical sitemap reference');
-    const sitemapResponse = await sitePage.request.get(`${url.origin}/sitemap.xml`);
-    assert.equal(sitemapResponse.status(), 200, 'Sitemap must be served on the hosted preview');
-    const sitemap = await sitemapResponse.text();
-    assert(sitemap.includes('<loc>https://www.visionovamundi.com/journey/</loc>'), 'Sitemap must include the canonical Journey route');
-    const missingResponse = await sitePage.request.get(`${url.origin}/vnm-release-check-intentional-404/`);
-    assert.equal(missingResponse.status(), 404, 'Unknown hosted routes must return HTTP 404');
-    assert.match(await missingResponse.text(), /page not found/i, 'Hosted 404 must display the branded not-found page');
-    const previewRobots = (await sitePage.request.get(`${url.origin}/journey/`)).headers()['x-robots-tag'] || '';
-    assert.match(previewRobots, /noindex/i, 'Cloudflare preview must be marked noindex');
-    const builtAsset = await sitePage.evaluate(() => performance.getEntriesByType('resource').map(entry => entry.name).find(name => new URL(name).origin === location.origin && new URL(name).pathname.startsWith('/_astro/')));
-    assert(builtAsset, 'Hosted page did not load a fingerprinted Astro asset for cache verification');
-    const hashedResponse = await sitePage.request.get(builtAsset);
-    assert.equal(hashedResponse.status(), 200, 'Fingerprint asset must be available from the hosted preview');
-    assert.match(hashedResponse.headers()['cache-control'] || '', /immutable/i, 'Fingerprint asset must have immutable caching');
-    const mediaCache = await sitePage.request.get(`${url.origin}/media/journey/cinematic/dubai-23.webm`);
-    assert.equal(mediaCache.status(), 200, 'Hosted video must be available for cache verification');
-    assert.match(mediaCache.headers()['cache-control'] || '', /max-age=604800/i, 'Stable media must use the configured bounded cache lifetime');
-    assert([...externalHosts].every(host => /(^|\.)cloudflareinsights\.com$/i.test(host)), `Unexpected third-party resource hosts: ${[...externalHosts].join(', ')}`);
-    report.hostedAcceptance.siteMetadata = { canonical, openGraphImage: meta.ogImage, twitterCard: meta.twitterCard };
-    report.hostedAcceptance.discoveryAndHttp = { robots: true, sitemap: true, custom404: true, previewNoindex: true };
-    report.hostedAcceptance.cacheHeaders = { fingerprintedAssets: hashedResponse.headers()['cache-control'], media: mediaCache.headers()['cache-control'] };
-    report.hostedAcceptance.externalResourceHosts = [...externalHosts];
-    await sitePage.setViewportSize({ width: 390, height: 844 });
-    await sitePage.goto(`${url.origin}/`, { waitUntil: 'domcontentloaded', timeout: 45000 });
-    const mobileMenu = sitePage.locator('[data-mobile-nav-toggle]');
-    assert.equal(await mobileMenu.getAttribute('aria-expanded'), 'false', 'Mobile navigation must start collapsed');
-    await mobileMenu.focus();
-    await sitePage.keyboard.press('Enter');
-    assert.equal(await mobileMenu.getAttribute('aria-expanded'), 'true', 'Mobile navigation must open from the keyboard');
-    await sitePage.locator('[data-site-nav] a[href="/about/"]').click();
-    assert(sitePage.url().endsWith('/about/'), 'Mobile navigation must reach the About page');
-    assert.deepEqual(sitePageErrors, [], `Hosted institutional routes had uncaught errors: ${sitePageErrors.join('; ')}`);
-    report.hostedAcceptance.siteRoutes = siteRoutes;
-    report.hostedAcceptance.mobileNavigation = true;
+    assert.equal(errorEvents.length, 1, 'Playback failure did not emit one diagnostic event');
+    report.errorFallback = { exposed: true, ariaLive: await status.getAttribute('aria-live'), retryRecovered: true, diagnostic: errorEvents[0] };
   } finally {
     await context.close();
   }

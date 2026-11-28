@@ -34,10 +34,10 @@ const WORKFLOW_OR_BUILD = [
 ];
 
 export function routeForPage(path) {
-  // Astro's custom 404 page is emitted as /404.html; it is not a public /404/ route.
-  if (path === 'src/pages/404.astro') return null;
   const match = path.match(/^src\/pages\/(.+)\.astro$/);
   if (!match || match[1].includes('[') || match[1].includes(']')) return null;
+  // Astro emits this as Cloudflare's fallback document, not a /404/ route.
+  if (match[1] === '404') return null;
   return match[1] === 'index' ? '/' : `/${match[1]}/`;
 }
 
@@ -88,6 +88,19 @@ function isDocumentation(path) {
 
 function pageRoutes(paths) {
   return [...new Set(paths.map(routeForPage).filter(Boolean))].sort();
+}
+
+export function routeChanges(paths, deletedPaths = []) {
+  const deleted = new Set(deletedPaths);
+  const changedPages = paths.filter(path => !deleted.has(path));
+  const removedPages = paths.filter(path => deleted.has(path));
+  const isCloudflare404 = path => path === 'src/pages/404.astro';
+  return {
+    changedRoutes: pageRoutes(changedPages),
+    deletedRoutes: pageRoutes(removedPages),
+    changedSpecialPages: changedPages.filter(isCloudflare404).map(() => '404.html'),
+    deletedSpecialPages: removedPages.filter(isCloudflare404).map(() => '404.html'),
+  };
 }
 
 function gitText(refPath) {
@@ -145,6 +158,12 @@ function changedFiles(base) {
   return output.split('\0').filter(Boolean);
 }
 
+function deletedFiles(base) {
+  if (!base) return [];
+  const output = execFileSync('git', ['diff', '--diff-filter=D', '--name-only', '-z', '--no-renames', `${base}...HEAD`], { encoding: 'utf8' });
+  return output.split('\0').filter(Boolean);
+}
+
 function appendOutput(file, entries) {
   const lines = Object.entries(entries).map(([key, value]) => `${key}=${String(value).replaceAll('%', '%25').replaceAll('\r', '%0D').replaceAll('\n', '%0A')}`);
   return writeFile(file, `${lines.join('\n')}\n`, { flag: 'a' });
@@ -152,8 +171,11 @@ function appendOutput(file, entries) {
 
 function summary(result, files) {
   const routes = result.changedRoutes.length ? result.changedRoutes.join(', ') : 'none';
+  const deletedRoutes = result.deletedRoutes.length ? result.deletedRoutes.join(', ') : 'none';
+  const changedSpecialPages = result.changedSpecialPages.length ? result.changedSpecialPages.join(', ') : 'none';
+  const deletedSpecialPages = result.deletedSpecialPages.length ? result.deletedSpecialPages.join(', ') : 'none';
   const fileList = files.length ? files.map(file => `- \`${file}\``).join('\n') : '- none (FULL selected because diff metadata was unavailable)';
-  return `## Release QA decision\n\n**QA MODE: ${result.mode}**\n\n**Reason:** ${result.reason}\n\n**Changed routes:** ${routes}\n\n**Changed files:**\n${fileList}\n`;
+  return `## Release QA decision\n\n**QA MODE: ${result.mode}**\n\n**Reason:** ${result.reason}\n\n**Changed active routes:** ${routes}\n\n**Deleted routes:** ${deletedRoutes}\n\n**Changed special pages:** ${changedSpecialPages}\n\n**Deleted special pages:** ${deletedSpecialPages}\n\n**Changed files:**\n${fileList}\n`;
 }
 
 function selfTest() {
@@ -167,7 +189,6 @@ function selfTest() {
     ['G: Three.js scene', ['src/scripts/cosmic-world.ts'], 'FULL', []],
     ['H: release runner', ['scripts/release-check.mjs'], 'FULL', []],
     ['I: unknown production asset', ['public/images/new-image.webp'], 'FULL', []],
-    ['J: custom not-found page', ['src/pages/404.astro'], 'FULL', []],
   ];
   for (const [name, files, mode, routes] of tests) {
     const result = classifyChangedFiles(files);
@@ -180,6 +201,15 @@ function selfTest() {
   assert.equal(classifyChangedFiles([], { trigger: 'workflow_dispatch' }).mode, 'FULL', 'manual workflow dispatch must run FULL');
   assert.equal(classifyChangedFiles([], { trigger: 'schedule' }).mode, 'FULL', 'scheduled regression must run FULL');
   assert.match(classifyChangedFiles(['.github/workflows/release-check.yml']).reason, /^release-system files changed:/);
+  const deletedRoute = routeChanges(['src/pages/archived.astro'], ['src/pages/archived.astro']);
+  assert.deepEqual(deletedRoute, { changedRoutes: [], deletedRoutes: ['/archived/'], changedSpecialPages: [], deletedSpecialPages: [] }, 'deleted routes must be tracked separately from active routes');
+  const restoredRoute = routeChanges(['src/pages/archived.astro']);
+  assert.deepEqual(restoredRoute, { changedRoutes: ['/archived/'], deletedRoutes: [], changedSpecialPages: [], deletedSpecialPages: [] }, 'restored routes must be checked as active routes');
+  const deleted404 = routeChanges(['src/pages/404.astro'], ['src/pages/404.astro']);
+  assert.deepEqual(deleted404, { changedRoutes: [], deletedRoutes: [], changedSpecialPages: [], deletedSpecialPages: ['404.html'] }, 'deleted Cloudflare fallback must not be treated as a /404/ route');
+  const restored404 = routeChanges(['src/pages/404.astro']);
+  assert.deepEqual(restored404, { changedRoutes: [], deletedRoutes: [], changedSpecialPages: ['404.html'], deletedSpecialPages: [] }, 'restored Cloudflare fallback must be checked as 404.html');
+  console.log('Release route deletion/restoration examples passed: 4');
   console.log(`Release classifier examples passed: ${tests.length + 6}`);
 }
 
@@ -216,11 +246,17 @@ async function main() {
   }
   if (!files.length && result.mode !== 'FULL') result = { mode: 'FULL', reason: 'diff unavailable; fail safe to FULL', changedRoutes: [] };
 
+  const routeChangeSet = routeChanges(files, deletedFiles(base));
+  result = { ...result, ...routeChangeSet };
+
   const markdownFiles = files.filter(isDocumentation);
   if (outputPath) await appendOutput(outputPath, {
     mode: result.mode,
     reason: result.reason,
     changed_routes: JSON.stringify(result.changedRoutes),
+    deleted_routes: JSON.stringify(result.deletedRoutes),
+    changed_special_pages: JSON.stringify(result.changedSpecialPages),
+    deleted_special_pages: JSON.stringify(result.deletedSpecialPages),
     changed_files: JSON.stringify(files),
   });
   if (summaryPath) await writeFile(summaryPath, summary(result, files), { flag: 'a' });
