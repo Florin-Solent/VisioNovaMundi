@@ -88,6 +88,14 @@ function pageRoutes(paths) {
   return [...new Set(paths.map(routeForPage).filter(Boolean))].sort();
 }
 
+export function routeChanges(paths, deletedPaths = []) {
+  const deleted = new Set(deletedPaths);
+  return {
+    changedRoutes: pageRoutes(paths.filter(path => !deleted.has(path))),
+    deletedRoutes: pageRoutes(paths.filter(path => deleted.has(path))),
+  };
+}
+
 function gitText(refPath) {
   try {
     return execFileSync('git', ['show', refPath], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
@@ -143,6 +151,12 @@ function changedFiles(base) {
   return output.split('\0').filter(Boolean);
 }
 
+function deletedFiles(base) {
+  if (!base) return [];
+  const output = execFileSync('git', ['diff', '--diff-filter=D', '--name-only', '-z', '--no-renames', `${base}...HEAD`], { encoding: 'utf8' });
+  return output.split('\0').filter(Boolean);
+}
+
 function appendOutput(file, entries) {
   const lines = Object.entries(entries).map(([key, value]) => `${key}=${String(value).replaceAll('%', '%25').replaceAll('\r', '%0D').replaceAll('\n', '%0A')}`);
   return writeFile(file, `${lines.join('\n')}\n`, { flag: 'a' });
@@ -150,8 +164,9 @@ function appendOutput(file, entries) {
 
 function summary(result, files) {
   const routes = result.changedRoutes.length ? result.changedRoutes.join(', ') : 'none';
+  const deletedRoutes = result.deletedRoutes.length ? result.deletedRoutes.join(', ') : 'none';
   const fileList = files.length ? files.map(file => `- \`${file}\``).join('\n') : '- none (FULL selected because diff metadata was unavailable)';
-  return `## Release QA decision\n\n**QA MODE: ${result.mode}**\n\n**Reason:** ${result.reason}\n\n**Changed routes:** ${routes}\n\n**Changed files:**\n${fileList}\n`;
+  return `## Release QA decision\n\n**QA MODE: ${result.mode}**\n\n**Reason:** ${result.reason}\n\n**Changed active routes:** ${routes}\n\n**Deleted routes:** ${deletedRoutes}\n\n**Changed files:**\n${fileList}\n`;
 }
 
 function selfTest() {
@@ -177,6 +192,11 @@ function selfTest() {
   assert.equal(classifyChangedFiles([], { trigger: 'workflow_dispatch' }).mode, 'FULL', 'manual workflow dispatch must run FULL');
   assert.equal(classifyChangedFiles([], { trigger: 'schedule' }).mode, 'FULL', 'scheduled regression must run FULL');
   assert.match(classifyChangedFiles(['.github/workflows/release-check.yml']).reason, /^release-system files changed:/);
+  const deleted404 = routeChanges(['src/pages/404.astro'], ['src/pages/404.astro']);
+  assert.deepEqual(deleted404, { changedRoutes: [], deletedRoutes: ['/404/'] }, 'deleted routes must not be required as active routes');
+  const restored404 = routeChanges(['src/pages/404.astro']);
+  assert.deepEqual(restored404, { changedRoutes: ['/404/'], deletedRoutes: [] }, 'restored routes must be checked as active routes');
+  console.log('Release route deletion/restoration examples passed: 2');
   console.log(`Release classifier examples passed: ${tests.length + 6}`);
 }
 
@@ -213,11 +233,15 @@ async function main() {
   }
   if (!files.length && result.mode !== 'FULL') result = { mode: 'FULL', reason: 'diff unavailable; fail safe to FULL', changedRoutes: [] };
 
+  const routeChangeSet = routeChanges(files, deletedFiles(base));
+  result = { ...result, ...routeChangeSet };
+
   const markdownFiles = files.filter(isDocumentation);
   if (outputPath) await appendOutput(outputPath, {
     mode: result.mode,
     reason: result.reason,
     changed_routes: JSON.stringify(result.changedRoutes),
+    deleted_routes: JSON.stringify(result.deletedRoutes),
     changed_files: JSON.stringify(files),
   });
   if (summaryPath) await writeFile(summaryPath, summary(result, files), { flag: 'a' });

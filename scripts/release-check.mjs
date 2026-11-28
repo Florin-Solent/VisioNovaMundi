@@ -21,9 +21,13 @@ const mode = live || explicitModes.includes('--full') ? 'FULL' : explicitModes.i
 assert(['FAST', 'FULL'].includes(mode), `Unsupported browser QA mode: ${mode}`);
 const changedRouteCandidates = JSON.parse(process.env.VNM_CHANGED_ROUTES || '[]');
 assert(Array.isArray(changedRouteCandidates) && changedRouteCandidates.every(route => typeof route === 'string' && route.startsWith('/') && route.endsWith('/')), 'Invalid changed-route list');
+const deletedRouteCandidates = JSON.parse(process.env.VNM_DELETED_ROUTES || '[]');
+assert(Array.isArray(deletedRouteCandidates) && deletedRouteCandidates.every(route => typeof route === 'string' && route.startsWith('/') && route.endsWith('/')), 'Invalid deleted-route list');
 // Retired pages are verified by their Pages redirect rules below, not served as local HTML routes.
 const redirectedRetiredRoutes = new Set(['/impact/', '/programmes/', '/work/']);
 const changedRoutes = changedRouteCandidates.filter(route => !redirectedRetiredRoutes.has(route));
+const deletedRoutes = [...new Set(deletedRouteCandidates)].filter(route => !redirectedRetiredRoutes.has(route));
+assert(!changedRoutes.some(route => deletedRoutes.includes(route)), 'A route cannot be both active and deleted');
 const coreRoutes = ['/', '/about/', '/journey/', '/projects/', '/governance/', '/contact/'];
 const smokeRoutes = [...new Set([...coreRoutes, ...changedRoutes])];
 const routes = mode === 'FULL' ? [...new Set([...fullRoutes, ...changedRoutes])] : smokeRoutes;
@@ -65,6 +69,7 @@ async function staticChecks() {
   for (const route of ['/impact/', '/programmes/', '/work/']) assert(!existsSync(join('dist', route, 'index.html')), 'Retired route ' + route + ' must not be generated as an HTML page');
   for (const route of fullRoutes) assert(existsSync(join('dist', route, 'index.html')), `Missing built route ${route}`);
   for (const route of changedRoutes) assert(existsSync(join('dist', route, 'index.html')), `Missing changed route ${route}`);
+  for (const route of deletedRoutes) assert(!existsSync(join('dist', route, 'index.html')), `Deleted route was unexpectedly generated: ${route}`);
   for (const path of await files('dist')) {
     if (extname(path) !== '.html') continue;
     const html = await readFile(path, 'utf8');
