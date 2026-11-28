@@ -23,11 +23,17 @@ const changedRouteCandidates = JSON.parse(process.env.VNM_CHANGED_ROUTES || '[]'
 assert(Array.isArray(changedRouteCandidates) && changedRouteCandidates.every(route => typeof route === 'string' && route.startsWith('/') && route.endsWith('/')), 'Invalid changed-route list');
 const deletedRouteCandidates = JSON.parse(process.env.VNM_DELETED_ROUTES || '[]');
 assert(Array.isArray(deletedRouteCandidates) && deletedRouteCandidates.every(route => typeof route === 'string' && route.startsWith('/') && route.endsWith('/')), 'Invalid deleted-route list');
+const changedSpecialPages = JSON.parse(process.env.VNM_CHANGED_SPECIAL_PAGES || '[]');
+const deletedSpecialPages = JSON.parse(process.env.VNM_DELETED_SPECIAL_PAGES || '[]');
+const validSpecialPages = pages => Array.isArray(pages) && pages.every(page => page === '404.html');
+assert(validSpecialPages(changedSpecialPages), 'Invalid changed special-page list');
+assert(validSpecialPages(deletedSpecialPages), 'Invalid deleted special-page list');
 // Retired pages are verified by their Pages redirect rules below, not served as local HTML routes.
 const redirectedRetiredRoutes = new Set(['/impact/', '/programmes/', '/work/']);
 const changedRoutes = changedRouteCandidates.filter(route => !redirectedRetiredRoutes.has(route));
 const deletedRoutes = [...new Set(deletedRouteCandidates)].filter(route => !redirectedRetiredRoutes.has(route));
 assert(!changedRoutes.some(route => deletedRoutes.includes(route)), 'A route cannot be both active and deleted');
+  assert(!changedSpecialPages.some(page => deletedSpecialPages.includes(page)), 'A special page cannot be both active and deleted');
 const coreRoutes = ['/', '/about/', '/journey/', '/projects/', '/governance/', '/contact/'];
 const smokeRoutes = [...new Set([...coreRoutes, ...changedRoutes])];
 const routes = mode === 'FULL' ? [...new Set([...fullRoutes, ...changedRoutes])] : smokeRoutes;
@@ -70,6 +76,8 @@ async function staticChecks() {
   for (const route of fullRoutes) assert(existsSync(join('dist', route, 'index.html')), `Missing built route ${route}`);
   for (const route of changedRoutes) assert(existsSync(join('dist', route, 'index.html')), `Missing changed route ${route}`);
   for (const route of deletedRoutes) assert(!existsSync(join('dist', route, 'index.html')), `Deleted route was unexpectedly generated: ${route}`);
+  for (const page of changedSpecialPages) assert(existsSync(join('dist', page)), `Missing changed special page ${page}`);
+  for (const page of deletedSpecialPages) assert(!existsSync(join('dist', page)), `Deleted special page was unexpectedly generated: ${page}`);
   for (const path of await files('dist')) {
     if (extname(path) !== '.html') continue;
     const html = await readFile(path, 'utf8');

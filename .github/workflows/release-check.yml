@@ -60,6 +60,8 @@ jobs:
           VNM_QA_MODE: ${{ steps.classify.outputs.mode }}
           VNM_CHANGED_ROUTES: ${{ steps.classify.outputs.changed_routes }}
           VNM_DELETED_ROUTES: ${{ steps.classify.outputs.deleted_routes }}
+          VNM_CHANGED_SPECIAL_PAGES: ${{ steps.classify.outputs.changed_special_pages }}
+          VNM_DELETED_SPECIAL_PAGES: ${{ steps.classify.outputs.deleted_special_pages }}
         run: npm run release:check
       - name: Resolve exact Cloudflare Journey preview
         if: github.event_name == 'pull_request' && steps.classify.outputs.mode != 'DOCS'

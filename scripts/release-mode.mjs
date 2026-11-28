@@ -36,6 +36,8 @@ const WORKFLOW_OR_BUILD = [
 export function routeForPage(path) {
   const match = path.match(/^src\/pages\/(.+)\.astro$/);
   if (!match || match[1].includes('[') || match[1].includes(']')) return null;
+  // Astro emits this as Cloudflare's fallback document, not a /404/ route.
+  if (match[1] === '404') return null;
   return match[1] === 'index' ? '/' : `/${match[1]}/`;
 }
 
@@ -90,9 +92,14 @@ function pageRoutes(paths) {
 
 export function routeChanges(paths, deletedPaths = []) {
   const deleted = new Set(deletedPaths);
+  const changedPages = paths.filter(path => !deleted.has(path));
+  const removedPages = paths.filter(path => deleted.has(path));
+  const isCloudflare404 = path => path === 'src/pages/404.astro';
   return {
-    changedRoutes: pageRoutes(paths.filter(path => !deleted.has(path))),
-    deletedRoutes: pageRoutes(paths.filter(path => deleted.has(path))),
+    changedRoutes: pageRoutes(changedPages),
+    deletedRoutes: pageRoutes(removedPages),
+    changedSpecialPages: changedPages.filter(isCloudflare404).map(() => '404.html'),
+    deletedSpecialPages: removedPages.filter(isCloudflare404).map(() => '404.html'),
   };
 }
 
@@ -165,8 +172,10 @@ function appendOutput(file, entries) {
 function summary(result, files) {
   const routes = result.changedRoutes.length ? result.changedRoutes.join(', ') : 'none';
   const deletedRoutes = result.deletedRoutes.length ? result.deletedRoutes.join(', ') : 'none';
+  const changedSpecialPages = result.changedSpecialPages.length ? result.changedSpecialPages.join(', ') : 'none';
+  const deletedSpecialPages = result.deletedSpecialPages.length ? result.deletedSpecialPages.join(', ') : 'none';
   const fileList = files.length ? files.map(file => `- \`${file}\``).join('\n') : '- none (FULL selected because diff metadata was unavailable)';
-  return `## Release QA decision\n\n**QA MODE: ${result.mode}**\n\n**Reason:** ${result.reason}\n\n**Changed active routes:** ${routes}\n\n**Deleted routes:** ${deletedRoutes}\n\n**Changed files:**\n${fileList}\n`;
+  return `## Release QA decision\n\n**QA MODE: ${result.mode}**\n\n**Reason:** ${result.reason}\n\n**Changed active routes:** ${routes}\n\n**Deleted routes:** ${deletedRoutes}\n\n**Changed special pages:** ${changedSpecialPages}\n\n**Deleted special pages:** ${deletedSpecialPages}\n\n**Changed files:**\n${fileList}\n`;
 }
 
 function selfTest() {
@@ -192,11 +201,15 @@ function selfTest() {
   assert.equal(classifyChangedFiles([], { trigger: 'workflow_dispatch' }).mode, 'FULL', 'manual workflow dispatch must run FULL');
   assert.equal(classifyChangedFiles([], { trigger: 'schedule' }).mode, 'FULL', 'scheduled regression must run FULL');
   assert.match(classifyChangedFiles(['.github/workflows/release-check.yml']).reason, /^release-system files changed:/);
+  const deletedRoute = routeChanges(['src/pages/archived.astro'], ['src/pages/archived.astro']);
+  assert.deepEqual(deletedRoute, { changedRoutes: [], deletedRoutes: ['/archived/'], changedSpecialPages: [], deletedSpecialPages: [] }, 'deleted routes must be tracked separately from active routes');
+  const restoredRoute = routeChanges(['src/pages/archived.astro']);
+  assert.deepEqual(restoredRoute, { changedRoutes: ['/archived/'], deletedRoutes: [], changedSpecialPages: [], deletedSpecialPages: [] }, 'restored routes must be checked as active routes');
   const deleted404 = routeChanges(['src/pages/404.astro'], ['src/pages/404.astro']);
-  assert.deepEqual(deleted404, { changedRoutes: [], deletedRoutes: ['/404/'] }, 'deleted routes must not be required as active routes');
+  assert.deepEqual(deleted404, { changedRoutes: [], deletedRoutes: [], changedSpecialPages: [], deletedSpecialPages: ['404.html'] }, 'deleted Cloudflare fallback must not be treated as a /404/ route');
   const restored404 = routeChanges(['src/pages/404.astro']);
-  assert.deepEqual(restored404, { changedRoutes: ['/404/'], deletedRoutes: [] }, 'restored routes must be checked as active routes');
-  console.log('Release route deletion/restoration examples passed: 2');
+  assert.deepEqual(restored404, { changedRoutes: [], deletedRoutes: [], changedSpecialPages: ['404.html'], deletedSpecialPages: [] }, 'restored Cloudflare fallback must be checked as 404.html');
+  console.log('Release route deletion/restoration examples passed: 4');
   console.log(`Release classifier examples passed: ${tests.length + 6}`);
 }
 
@@ -242,6 +255,8 @@ async function main() {
     reason: result.reason,
     changed_routes: JSON.stringify(result.changedRoutes),
     deleted_routes: JSON.stringify(result.deletedRoutes),
+    changed_special_pages: JSON.stringify(result.changedSpecialPages),
+    deleted_special_pages: JSON.stringify(result.deletedSpecialPages),
     changed_files: JSON.stringify(files),
   });
   if (summaryPath) await writeFile(summaryPath, summary(result, files), { flag: 'a' });
