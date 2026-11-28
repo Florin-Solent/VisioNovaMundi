@@ -375,6 +375,11 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
     await page.waitForFunction(() => document.querySelector('[data-year-select][data-year="2024"]')?.getAttribute('aria-current') === 'true');
     const yearMarkers = await markers.evaluateAll(items => items.filter(marker => !marker.classList.contains('is-filtered-out')).map(marker => marker.getAttribute('data-years') || ''));
     assert(yearMarkers.length > 0 && yearMarkers.every(value => value.split(/\s+/).includes('2024')), 'Hosted atlas year filter must show only 2024 place references');
+    const selectedYearPlace = await markers.evaluateAll(items => {
+      const marker = items.find(item => !item.classList.contains('is-filtered-out'));
+      return marker ? { id: marker.getAttribute('data-atlas-marker'), name: marker.getAttribute('data-name'), country: marker.getAttribute('data-country-code'), continent: marker.getAttribute('data-continent') } : null;
+    });
+    assert(selectedYearPlace, 'Hosted 2024 filter must return a selectable place');
     assert.match(await page.locator('#yearline-status').innerText(), /2024/, 'Timeline must announce the year selected in the atlas');
     const yearLink = page.locator('[data-year-select][data-year="2024"]');
     await yearLink.scrollIntoViewIfNeeded();
@@ -383,18 +388,22 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
     await page.waitForFunction(() => document.querySelector('#atlas-year')?.value === '2024');
 
     await atlas.locator('#atlas-year').selectOption('all');
-    const firstPlace = await markers.first().evaluate(marker => ({ name: marker.getAttribute('data-name'), country: marker.getAttribute('data-country-code'), continent: marker.getAttribute('data-continent') }));
     const citySearch = atlas.locator('#atlas-search');
-    await citySearch.fill(firstPlace.name);
-    assert(await markers.evaluateAll((items, name) => items.some(marker => !marker.classList.contains('is-filtered-out') && marker.getAttribute('data-name') === name), firstPlace.name), 'Hosted atlas city search must reveal its matching marker');
+    await citySearch.fill(selectedYearPlace.name);
+    const citySearchState = await markers.evaluateAll((items, name) => ({
+      query: document.querySelector('#atlas-search')?.value,
+      visibleMatches: items.filter(marker => !marker.classList.contains('is-filtered-out')).map(marker => marker.getAttribute('data-name')),
+      requestedName: name,
+    }), selectedYearPlace.name);
+    assert(citySearchState.visibleMatches.includes(selectedYearPlace.name), `Hosted atlas city search must reveal its matching marker: ${JSON.stringify(citySearchState)}`);
     await citySearch.fill('');
-    await atlas.locator('#atlas-country').selectOption(firstPlace.country);
+    await atlas.locator('#atlas-country').selectOption(selectedYearPlace.country);
     const countryMarkers = await markers.evaluateAll(items => items.filter(marker => !marker.classList.contains('is-filtered-out')).map(marker => marker.getAttribute('data-country-code')));
-    assert(countryMarkers.length > 0 && countryMarkers.every(code => code === firstPlace.country), 'Hosted atlas country filter must show only matching markers');
+    assert(countryMarkers.length > 0 && countryMarkers.every(code => code === selectedYearPlace.country), 'Hosted atlas country filter must show only matching markers');
     await atlas.locator('#atlas-country').selectOption('all');
-    await atlas.locator('#atlas-continent').selectOption(firstPlace.continent);
+    await atlas.locator('#atlas-continent').selectOption(selectedYearPlace.continent);
     const regionMarkers = await markers.evaluateAll(items => items.filter(marker => !marker.classList.contains('is-filtered-out')).map(marker => marker.getAttribute('data-continent')));
-    assert(regionMarkers.length > 0 && regionMarkers.every(region => region === firstPlace.continent), 'Hosted atlas region filter must show only matching markers');
+    assert(regionMarkers.length > 0 && regionMarkers.every(region => region === selectedYearPlace.continent), 'Hosted atlas region filter must show only matching markers');
     await atlas.locator('#atlas-continent').selectOption('all');
     const markerMeta = await markers.evaluateAll(items => items.map(marker => ({
       id: marker.getAttribute('data-atlas-marker'), name: marker.getAttribute('data-name'),
@@ -402,8 +411,8 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
       hasCountryOutline: Boolean(document.querySelector(`[data-country="${marker.getAttribute('data-country-code')}"]`)?.classList.contains('is-recorded')),
     })));
     assert(markerMeta.every(item => item.id && item.name && item.country && item.continent && item.hasCountryOutline), 'Every hosted place pin must map to a matching highlighted country outline');
-    const target = markers.first();
-    const targetName = await target.getAttribute('data-name');
+    const target = atlas.locator(`[data-atlas-marker="${selectedYearPlace.id}"]`);
+    const targetName = selectedYearPlace.name;
     await target.scrollIntoViewIfNeeded();
     await target.focus();
     await page.keyboard.press('Enter');
@@ -413,11 +422,15 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
     assert.notEqual(focusedView, '0 0 1200 620', 'Selecting a hosted map marker must zoom to the selected place');
     await atlas.locator('[data-atlas-zoom-in]').click();
     await atlas.locator('[data-atlas-reset]').click();
-    assert.equal(await map.getAttribute('viewBox'), '0 0 1200 620', 'Hosted map world-reset control must restore the complete atlas');
+    const resetViewBox = (await map.getAttribute('viewBox')).trim().split(/\s+/).map(Number);
+    assert.deepEqual(resetViewBox, [0, 0, 1200, 620], 'Hosted map world-reset control must restore the complete atlas');
     const labelsToggle = atlas.locator('[data-atlas-country-labels]');
-    await labelsToggle.check();
+    await labelsToggle.focus();
+    await page.keyboard.press('Space');
+    assert(await labelsToggle.isChecked(), 'Hosted map country-label toggle must be keyboard operable');
     assert(await atlas.evaluate(root => root.classList.contains('show-country-labels')), 'Hosted map country-label toggle must activate country labels');
-    await labelsToggle.uncheck();
+    await page.keyboard.press('Space');
+    assert(!(await labelsToggle.isChecked()), 'Hosted map country-label toggle must be keyboard reversible');
 
     report.hostedAcceptance = {
       mapMarkers: markerMeta.length, countryOutlinesMatched: markerMeta.filter(item => item.hasCountryOutline).length,
@@ -445,10 +458,31 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
       const mobileMarkers = mobileAtlas.locator('[data-atlas-marker]');
       assert.equal(await mobileMarkers.count(), 84, 'Mobile atlas must expose all 84 place references');
       await mobileAtlas.locator('#atlas-year').selectOption('2024');
-      const mobileYearMarkers = await mobileMarkers.evaluateAll(items => items.filter(marker => !marker.classList.contains('is-filtered-out')).map(marker => marker.getAttribute('data-years') || ''));
-      assert(mobileYearMarkers.length > 0 && mobileYearMarkers.every(value => value.split(/\s+/).includes('2024')), 'Mobile atlas year filter must select the requested year');
-      const mobileMarker = mobileMarkers.first();
-      const mobileName = await mobileMarker.getAttribute('data-name');
+      const mobileYearPlaces = await mobileMarkers.evaluateAll(items => items
+        .filter(marker => !marker.classList.contains('is-filtered-out'))
+        .map(marker => ({
+          id: marker.getAttribute('data-atlas-marker'),
+          name: marker.getAttribute('data-name'),
+          years: marker.getAttribute('data-years') || '',
+          x: Number(marker.getAttribute('data-x')),
+          y: Number(marker.getAttribute('data-y')),
+        })));
+      assert(mobileYearPlaces.length > 0 && mobileYearPlaces.every(place => place.years.split(/\s+/).includes('2024')), 'Mobile atlas year filter must select the requested year');
+      const allMobilePlaces = await mobileMarkers.evaluateAll(items => items.map(marker => ({
+        id: marker.getAttribute('data-atlas-marker'),
+        x: Number(marker.getAttribute('data-x')),
+        y: Number(marker.getAttribute('data-y')),
+      })));
+      // Prefer a pin with the most room around it, so this touch test measures
+      // marker activation rather than a second city pin intercepting the tap.
+      const mobileTarget = mobileYearPlaces.map(place => ({
+        ...place,
+        nearestDistance: Math.min(...allMobilePlaces.filter(other => other.id !== place.id)
+          .map(other => Math.hypot(place.x - other.x, place.y - other.y)), Infinity),
+      })).sort((a, b) => b.nearestDistance - a.nearestDistance)[0];
+      assert(mobileTarget, 'Mobile atlas year filter must provide a selectable place');
+      const mobileMarker = mobileAtlas.locator(`[data-atlas-marker="${mobileTarget.id}"]`);
+      const mobileName = mobileTarget.name;
       await mobileAtlas.locator('#atlas-year').selectOption('all');
       await mobileMarker.scrollIntoViewIfNeeded();
       await mobileMarker.click();
