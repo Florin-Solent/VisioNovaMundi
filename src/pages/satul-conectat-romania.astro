@@ -808,6 +808,9 @@ const romaniaResponses = [
 
     /* Keep all section copy legible over the translucent blue/teal panels. */
     .sc-section :is(h2, h3, h4, p, span, strong, small, time) { color: #102a43 !important; }
+    .learning-section .section-heading { padding: 18px; border: 1px solid rgba(37, 99, 235, 0.16); border-radius: 17px; background: #fff !important; }
+    .learning-section :is(.learner-node, .learning-hub, .learning-copy-card) { background: #fff !important; }
+    .learning-section :is(.section-heading, .learner-node, .learning-hub, .learning-copy-card) :is(h2, h3, h4, p, span, strong, small, time, .eyebrow) { color: #0b1220 !important; }
 
     @media (max-width: 380px) {
       .sc-hero { padding-right: 15px; padding-left: 15px; }
