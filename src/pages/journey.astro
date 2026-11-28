@@ -1,42 +1,44 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import routeMap from "../data/journey-map.json";
+import JourneyAtlas from "../components/JourneyAtlas.astro";
+import atlasData from "../data/journey-atlas-destinations.json";
 import journeyImageVariants from "../data/journey-image-variants.json";
 
-const responsiveImage = (src: string) => {
+const responsiveImage = (src: string, sizes = "(max-width: 760px) 100vw, 82vw") => {
   const image = journeyImageVariants[src as keyof typeof journeyImageVariants];
   return image
-    ? { src: image.src, srcset: image.variants.map((variant) => `${variant.src} ${variant.width}w`).join(", "), sizes: "(max-width: 760px) 100vw, 82vw" }
+    ? { src: image.src, srcset: image.variants.map((variant) => `${variant.src} ${variant.width}w`).join(", "), sizes }
     : { src };
 };
+const chapterImageSizes = (layout: string, mediaIndex: number) => {
+  if (layout === "full" || layout === "feature") return mediaIndex === 0 ? "100vw" : "(max-width: 760px) 70vw, 270px";
+  if (layout === "panorama") return "(max-width: 1220px) 100vw, 1180px";
+  if (layout === "split") return "(max-width: 760px) 100vw, 60vw";
+  if (layout === "diptych") return mediaIndex === 0 ? "(max-width: 760px) 100vw, 68vw" : "(max-width: 760px) 75vw, 38vw";
+  if (layout === "triptych") return "(max-width: 760px) 100vw, 33vw";
+  if (layout === "portrait") return "(max-width: 760px) 100vw, 40vw";
+  return "(max-width: 760px) 100vw, 70vw";
+};
 
-// Short captions sit on the photographs; the full provenance stays in each "Archive note".
+// Keep public captions concise and avoid exposing private archive metadata.
 const img = "/images/journey";
 const chapters = [
   {
-    id: "journey-2012", coord: [45.75, 21.23], years: "2012", countries: "ro", continents: "europe",
-    year: "2012", region: "Caraș-Severin · Timiș", place: "Romania",
-    tagline: "Where the journey began",
-    text: "Clear rivers, limestone gorges and the first outdoor days around Timișoara and Caraș-Severin: a first dated chapter in the story.",
-    layout: "full",
-    media: [{ src: `${img}/cinematic/romania-stream-wide.webp`, alt: "A clear stream winding through a wooded limestone gorge in Romania", cap: "Romania · album dated 22 October 2012", pos: "center 55%" }],
-  },
-  {
     id: "journey-2013", coord: [46.25, 20.15], years: "2013", countries: "hu", continents: "europe",
     year: "2013", region: "Hungary", place: "Szeged",
-    tagline: "A first international album",
-    text: "A late-summer visit to Szeged, on the banks of the Tisza.",
+    tagline: "A first recorded horizon beyond home",
+    text: "A Szeged place reference opens this chapter on the banks of the Tisza. The available record does not establish the photograph's capture date or a specific visit.",
     layout: "panorama",
-    media: [{ src: `${img}/editorial/szeged-garden-2013-scenery.webp`, alt: "A flower garden in Szeged, photographed from close range", cap: "Szeged · photographed 30 August 2013", pos: "center 60%" }],
+    media: [{ src: `${img}/editorial/szeged-garden-2013-scenery.webp`, alt: "A flower garden in Szeged, photographed from close range", cap: "Szeged · 2013 archive reference", pos: "center 60%" }],
     contexts: [{ title: "City context", text: "After the 1879 Great Flood, residents pledged to build Szeged’s Votive Church. This is city-history context; it does not identify any particular photograph.", href: "https://szegedtourism.hu/en/votive-church-2/" }],
   },
   {
     id: "journey-2014", coord: [44.85, 21.75], years: "2014", countries: "ro gb", continents: "europe",
-    year: "2014", region: "Romania · United Kingdom", place: "Open country",
-    tagline: "A wider horizon",
-    text: "Rolling hills above Cărbunari and Șopotu Nou, and, the same year, a remembered visit to the Tower of London.",
+    year: "2014", region: "Romania · United Kingdom", place: "A wider horizon",
+    tagline: "Water, woodland and a historic city landmark",
+    text: "Forest, water and rural landscape meet a historic London landmark in this chapter. The available year references do not establish exact travel days or viewpoints.",
     layout: "split",
-    media: [{ src: `${img}/cinematic/carbunari-wide.webp`, alt: "Rolling hills and open countryside in Romania", cap: "Cărbunari–Șopotu Nou · photographed 30 August 2014", pos: "center 50%" }],
+    media: [{ src: `${img}/cinematic/carbunari-wide.webp`, alt: "Rolling hills and open countryside in Romania", cap: "Cărbunari–Șopotu Nou · 2014 archive reference", pos: "center 50%" }],
   },
   {
     id: "journey-2016", coord: [48.4, 9.99], years: "2016 2017", countries: "de", continents: "europe",
@@ -92,18 +94,18 @@ const chapters = [
     ],
   },
   {
-    id: "journey-2022", coord: [55.68, 12.57], years: "2022", countries: "gb dk at si it de cz pl us", continents: "europe america_north",
+    id: "journey-2022", coord: [45.65, 13.80], years: "2022", countries: "gb dk at si it de pl us", continents: "europe america_north",
     year: "2022", region: "Europe · North America", place: "Longer routes",
     tagline: "New points of reference",
-    text: "Copenhagen, then a Central European journey through Austria, Slovenia and Trieste; a September post in New York; Warsaw and Prague as the year closed.",
+    text: "A Central European journey through Austria, Slovenia and Trieste; separate New York post and Warsaw album records.",
     layout: "titlecard", theme: "dark",
-    list: ["Copenhagen", "Austria", "Slovenia", "Trieste", "New York", "Warsaw", "Prague"],
+    list: ["Austria", "Slovenia", "Trieste", "New York", "Warsaw"],
   },
   {
-    id: "journey-2023", coord: [33.57, -7.59], years: "2022 2023", countries: "ma tr al gr es pt cz", continents: "europe asia africa",
+    id: "journey-2023", coord: [33.57, -7.59], years: "2022 2023", countries: "ma tr al es", continents: "europe asia africa",
     year: "2022–23", region: "Africa · Asia · Europe", place: "Morocco & the Mediterranean",
     tagline: "Tiles, water and many horizons",
-    text: "Morocco, Istanbul, Albania, Greece, Spain and Portugal: a year of movement around the Mediterranean world.",
+    text: "Morocco, Istanbul, Albania and Spain: a year of movement around the Mediterranean world.",
     layout: "full",
     media: [{ src: `${img}/cinematic/morocco-courtyard-wide.webp`, alt: "Blue mosaic tiles and a quiet fountain pool in a Moroccan courtyard", cap: "Morocco · photographed 5 February 2023", pos: "center 50%" }],
   },
@@ -132,8 +134,8 @@ const chapters = [
     ],
   },
   {
-    id: "journey-2026", coord: [28.49, -16.31], years: "2026", countries: "es", continents: "europe",
-    year: "2026", region: "Spain", place: "Canary Islands",
+    id: "journey-2026", coord: [28.49, -16.31], years: "2026", countries: "es", continents: "africa",
+    year: "2026", region: "Spain · Canary Islands off northwest Africa", place: "Canary Islands",
     tagline: "Island light in the Atlantic",
     text: "Volcanic stone, palms and quiet historic squares in Gran Canaria and Tenerife carry the story onward into the Atlantic.",
     layout: "split", reverse: true, tall: true,
@@ -152,20 +154,15 @@ const heroSlides = [
 const clips = [
   { name: "edinburgh-06", title: "Edinburgh", cap: "Still water beneath bare winter branches" },
   { name: "edinburgh-10", title: "Edinburgh", cap: "A garden stream moving over stone" },
-  { name: "richmond-pond", title: "Richmond Park", cap: "From a post dated 14 September 2020" },
-  { name: "richmond-grassland", title: "Richmond Park", cap: "From a post dated 14 September 2020" },
+  { name: "richmond-pond", title: "Richmond Park", cap: "Richmond Park · 2020 archive reference" },
+  { name: "richmond-grassland", title: "Richmond Park", cap: "Richmond Park · 2020 archive reference" },
   { name: "morocco-minaret", title: "Morocco", cap: "A minaret against the sky · original clip, date to be confirmed" },
   { name: "morocco-garden", title: "Morocco", cap: "Palms and shade in a garden · original clip, date to be confirmed" },
   { name: "istanbul-16", title: "Istanbul", cap: "A waterfront and crossing over the water" },
   { name: "dubai-23", title: "Dubai", cap: "Burj Khalifa above reflecting water" },
 ];
 
-const routeChapters = routeMap.chapters;
-const fullRoute = routeChapters.map((chapter) => chapter.d).join("");
-const prague = routeMap.prague;
-const newYork = routeMap.newYork;
 const chapterByYear: Record<number, string> = {
-  2012: "journey-2012",
   2013: "journey-2013",
   2014: "journey-2014",
   2016: "journey-2016",
@@ -181,24 +178,19 @@ const chapterByYear: Record<number, string> = {
   2026: "journey-2026",
 };
 const yearNotes: Record<number, string> = {
-  2010: "The timeline begins here; no dated travel chapter is included for this year.",
-  2011: "No dated travel chapter is included for this year.",
-  2015: "No dated travel chapter is included for this year.",
+  2010: "The timeline begins here; no travel story is published for this year.",
+  2011: "No travel story is published for this year.",
+  2012: "Timișoara remains in the atlas without an assigned travel year because available dates do not establish when the visit occurred.",
+  2015: "A London-area reference appears for this year; available timestamps do not establish a visit date.",
 };
 const timelineStartYear = 2010;
 const timelineEndYear = Math.max(2026, new Date().getFullYear());
 const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear + 1 }, (_, index) => {
   const year = timelineStartYear + index;
   const target = chapterByYear[year];
-  const note = year === 2017
-    ? "The Germany chapter includes dated material from 2016 and 2017."
-    : year === 2022
-      ? "The 2022–23 Mediterranean story spans both years."
-      : year === 2023
-        ? "The Mediterranean story spans late 2022 and 2023."
-        : target
-          ? "Select to open this year’s destination chapter."
-          : yearNotes[year] || "No dated travel chapter is included for this year.";
+  const places = atlasData.destinations.filter((destination: any) => (destination.years || []).includes(String(year))).map((destination: any) => destination.name);
+  const chapter = chapters.find((item) => item.years.split(/\s+/).includes(String(year)));
+  const note = yearNotes[year] || (places.length ? places.join(" · ") : target ? chapter?.place || "Chapter evidence is summarised below." : "No destination details are published for this year.");
   return { year, target, note };
 });
 ---
@@ -213,7 +205,7 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
     <div class="ts-slides" aria-hidden="true">
       {heroSlides.map((slide, index) => (
         <div class:list={["ts-slide", { "is-active": index === 0 }]}>
-          <img {...(index === 0 ? responsiveImage(slide.src) : { "data-src": slide.src, "data-srcset": responsiveImage(slide.src).srcset })} alt="" style={`object-position:${slide.pos}`} decoding="async" fetchpriority={index === 0 ? "high" : "low"} />
+          <img {...(index === 0 ? responsiveImage(slide.src, "100vw") : { "data-src": slide.src, "data-srcset": responsiveImage(slide.src, "100vw").srcset })} alt="" style={`object-position:${slide.pos}`} decoding="async" fetchpriority={index === 0 ? "high" : "low"} />
         </div>
       ))}
     </div>
@@ -248,108 +240,30 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
       <p class="prologue-text">I kept a quiet dream of discovering the world and one day helping others. Work and education widened the horizon. Travel gave that curiosity somewhere to go.</p>
     </div>
     <figure class="prologue-photo">
-      <img {...responsiveImage(`${img}/london-walk-2016.webp`)} alt="Florin walking between London buildings, with The Shard in the distance" loading="eager" decoding="async" />
+      <img {...responsiveImage(`${img}/london-walk-2016.webp`, "300px")} alt="Florin walking between London buildings, with The Shard in the distance" loading="lazy" decoding="async" />
       <figcaption>London · a moment between buildings</figcaption>
     </figure>
   </section>
 
   <!-- Keep every calendar year visible, including quieter years. -->
   <section class="yearline" id="yearline" aria-labelledby="yearline-title" data-yearline>
-    <div class="yearline-head">
-      <p class="jlabel">A living timeline · {timelineStartYear}–{timelineEndYear}</p>
-      <h2 id="yearline-title">A year-by-year story, still unfolding</h2>
-      <p>Choose a year to follow its journey chapter. Quieter years stay open for future discoveries.</p>
-    </div>
+    <div class="yearline-head"><p class="jlabel">Explore the journey · {timelineStartYear}–{timelineEndYear}</p><h2 id="yearline-title">Choose a year</h2></div>
     <nav class="yearline-nav" aria-label={`Select a year from ${timelineStartYear} to ${timelineEndYear}`}>
       <ol>
         {timelineYears.map(({ year, target, note }) => (
           <li class:list={{ "yearline-item--documented": Boolean(target), "yearline-item--open": !target }}>
-            <a href={target ? `#${target}` : "#yearline-status"} data-year-select data-year={year} data-note={note} aria-label={`${year}${target ? " · documented travel chapter" : " · no dated travel chapter published"}`}>
-              <span class="yearline-dot" aria-hidden="true"></span><span>{year}</span>
+            <a href={target ? `#${target}` : "#journey-map"} data-year-select data-year={year} data-note={note} aria-label={`${year} · ${note}`}>
+              <span>{year}</span>
             </a>
           </li>
         ))}
       </ol>
     </nav>
-    <p class="yearline-scroll-hint" aria-hidden="true">Swipe to discover later years <span>→</span></p>
-    <p class="yearline-status" id="yearline-status" role="status" aria-live="polite">Select any year. The quieter years are kept in the timeline without filling gaps with assumptions.</p>
+    <p class="yearline-status" id="yearline-status" role="status" aria-live="polite">Select a year to show archive place references on the atlas. Dates reflect the source record and do not automatically confirm a visit.</p>
   </section>
 
-  <!-- The route -->
-  <section class="route" id="journey-map" aria-labelledby="route-title" data-route>
-    <div class="route-head">
-      <p class="jlabel">Destination chapters · 2012–2026</p>
-      <h2 id="route-title">A journey drawn across the map</h2>
-      <p>Follow the line in order, or choose any chapter.</p>
-    </div>
-    <div class="route-stage">
-      <div class="route-map">
-        <svg class="route-overlay" viewBox={`0 0 ${routeMap.w} ${routeMap.h}`} preserveAspectRatio="xMidYMid slice" role="group" aria-labelledby="route-map-title">
-          <title id="route-map-title">Map of the destination chapters, from Romania in 2012 to the Canary Islands in 2026</title>
-          <image class="route-land" href={`${img}/cinematic/route-map.svg`} x="0" y="0" width={routeMap.w} height={routeMap.h} preserveAspectRatio="none" aria-hidden="true" />
-          <path class="route-line" d={fullRoute} pathLength="1" aria-hidden="true" />
-          <circle class="route-comet" r="7" cx="-50" cy="-50" aria-hidden="true" />
-          <path class="route-ny" d={`M${prague[0]} ${prague[1]} Q${(prague[0] + newYork[0]) / 2} ${newYork[1] - 120} ${newYork[0] + 8} ${newYork[1]}`} aria-hidden="true" />
-          <text class="route-ny-label" x={newYork[0] + 16} y={newYork[1] - 10} aria-hidden="true">← New York · 2022</text>
-          {routeChapters.map((chapter) => (
-            <g class="route-chapter" data-chapter={chapter.id} data-bbox={JSON.stringify(chapter.points.map((point) => point.xy))}>
-              <path class="route-seg" d={chapter.d} aria-hidden="true" />
-              {chapter.points.map((point, index) => (
-                <a href={`#${chapter.id}`} aria-label={`${chapter.year} · ${point.name}`} tabindex={index === 0 ? undefined : "-1"}>
-                  <circle class="route-halo" cx={point.xy[0]} cy={point.xy[1]} r="13" />
-                  <circle class="route-dot" cx={point.xy[0]} cy={point.xy[1]} r="4.5" />
-                </a>
-              ))}
-              <text class="route-tag" x={chapter.points[0].xy[0] > 560 ? chapter.points[0].xy[0] - 12 : chapter.points[0].xy[0] + 12} y={chapter.points[0].xy[1] - 12} text-anchor={chapter.points[0].xy[0] > 560 ? "end" : "start"} aria-hidden="true">{chapter.year} · {chapter.points.map((point) => point.name).join(" · ")}</text>
-            </g>
-          ))}
-        </svg>
-      </div>
-      <ol class="route-index" aria-label="Chapters in chronological order">
-        {chapters.map((chapter) => (
-          <li data-route-item={chapter.id}>
-            <a href={`#${chapter.id}`} data-chapter-link={chapter.id}><span class="route-year">{chapter.year}</span><span class="route-name">{chapter.place}</span></a>
-          </li>
-        ))}
-      </ol>
-    </div>
-    <div class="route-controls">
-      <button class="route-play" type="button" data-route-play aria-pressed="false"><span class="route-play-icon" aria-hidden="true"></span><span data-route-play-label>Fly the route</span></button>
-      <p class="route-now" data-route-now aria-live="polite"></p>
-    </div>
-    <details class="route-explore">
-      <summary>Explore by year, country or continent</summary>
-      <div class="journey-filters">
-        <label class="journey-filter-control" for="journey-year-filter">
-          <span>Year</span>
-          <select id="journey-year-filter">
-            <option value="all">All documented years</option>
-            {["2012", "2013", "2014", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026"].map((year) => <option value={year}>{year}</option>)}
-          </select>
-        </label>
-        <label class="journey-filter-control" for="journey-country-filter">
-          <span>Country</span>
-          <select id="journey-country-filter">
-            <option value="all">All recorded countries</option>
-            {[["de", "Germany"], ["nl", "Netherlands"], ["ro", "Romania"], ["gb", "United Kingdom"], ["ie", "Ireland"], ["dk", "Denmark"], ["at", "Austria"], ["si", "Slovenia"], ["it", "Italy"], ["hu", "Hungary"], ["tr", "Türkiye"], ["ma", "Morocco"], ["al", "Albania"], ["pt", "Portugal"], ["eg", "Egypt"], ["ae", "United Arab Emirates"], ["gr", "Greece"], ["pl", "Poland"], ["us", "United States"], ["sm", "San Marino"], ["fr", "France"], ["mc", "Monaco"], ["hr", "Croatia"], ["ba", "Bosnia and Herzegovina"], ["me", "Montenegro"], ["tn", "Tunisia"], ["es", "Spain"], ["mt", "Malta"], ["cy", "Cyprus"]].map(([code, name]) => <option value={code}>{name}</option>)}
-          </select>
-        </label>
-        <label class="journey-filter-control" for="journey-continent-filter">
-          <span>Continent</span>
-          <select id="journey-continent-filter">
-            <option value="all">All recorded continents</option>
-            <option value="africa">Africa</option>
-            <option value="asia">Asia</option>
-            <option value="europe">Europe</option>
-            <option value="america_north">North America</option>
-          </select>
-        </label>
-        <p class="journey-filter-status" id="journey-filter-status" role="status" aria-live="polite">Showing all dated chapters. The record is selective; a missing match does not mean no travel occurred.</p>
-      </div>
-    </details>
-    <p class="route-disclaimer">The map line is a visual cue between chapters, not a recorded route.</p>
-  </section>
-
+  <JourneyAtlas />
+  <p class="media-treatment-note">Image note: some photographs are AI-enhanced display derivatives. Upscaling can affect fine detail; these are not native 4K captures.</p>
   <!-- Chapters -->
   <nav class="chapter-rail" aria-label="Travel chapters" data-chapter-rail>
     <ol>
@@ -373,7 +287,7 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
           <div class="scene-visual">
             {chapter.media.map((media, mediaIndex) => (
               <figure class:list={["scene-photo", `scene-photo--${mediaIndex + 1}`]}>
-                <img {...responsiveImage(media.src)} alt={media.alt} loading={index === 0 ? "eager" : "lazy"} decoding="async" style={`object-position:${media.pos}`} />
+                <img {...responsiveImage(media.src, chapterImageSizes(chapter.layout, mediaIndex))} alt={media.alt} loading="lazy" decoding="async" style={`object-position:${media.pos}`} />
                 <figcaption>{media.cap}</figcaption>
               </figure>
             ))}
@@ -465,7 +379,7 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
 
   <!-- Closing -->
   <section class="finale" aria-labelledby="finale-title" data-finale>
-    <img {...responsiveImage(`${img}/cinematic/flensburg-night-wide.webp`)} class="finale-photo" alt="Night waterfront in Flensburg under a bright moon, with city lights reflected on the water" loading="eager" fetchpriority="low" decoding="async" />
+    <img {...responsiveImage(`${img}/cinematic/flensburg-night-wide.webp`, "100vw")} class="finale-photo" alt="Night waterfront in Flensburg under a bright moon, with city lights reflected on the water" loading="lazy" fetchpriority="low" decoding="async" />
     <div class="finale-copy">
       <h2 id="finale-title" class="jlabel">The journey continues</h2>
       <p class="finale-line">Travel opened my eyes.</p>
@@ -493,6 +407,7 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
       link.addEventListener("click", () => {
         const year = link.dataset.year || "";
         if (yearlineStatus) yearlineStatus.textContent = `${year} · ${link.dataset.note || "No dated travel chapter is included for this year."}`;
+        document.dispatchEvent(new CustomEvent("vnm:year-selected", { detail: { year } }));
         for (const entry of yearLinks) {
           const selected = entry === link;
           entry.closest("li")?.classList.toggle("is-selected", selected);
@@ -500,6 +415,15 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
         }
       });
     }
+    document.addEventListener("vnm:atlas-year-selected", ((event: CustomEvent<{ year: string }>) => {
+      const selected = yearLinks.find((link) => link.dataset.year === event.detail.year);
+      for (const link of yearLinks) {
+        const active = link === selected;
+        link.closest("li")?.classList.toggle("is-selected", active);
+        if (active) link.setAttribute("aria-current", "true"); else link.removeAttribute("aria-current");
+      }
+      if (selected && yearlineStatus) yearlineStatus.textContent = `${event.detail.year} · ${selected.dataset.note || "No place references are indexed for this year."}`;
+    }) as EventListener);
 
     // Title sequence: slow crossfade between landscapes, pausable (WCAG 2.2.2).
     const sequence = film.querySelector<HTMLElement>("[data-title-sequence]");
@@ -558,6 +482,7 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
           if (link.dataset.year === firstYear) link.setAttribute("aria-current", "location");
           else if (link.getAttribute("aria-current") === "location") link.removeAttribute("aria-current");
         }
+        if (firstYear) document.dispatchEvent(new CustomEvent("vnm:year-selected", { detail: { year: firstYear } }));
       };
       const yearObserver = new IntersectionObserver(() => {
         const centre = window.innerHeight / 2;
@@ -569,124 +494,6 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
       }, { rootMargin: "-49% 0px -49% 0px", threshold: 0 });
       for (const scene of scenes) yearObserver.observe(scene);
     }
-
-    // Route map: draw the line on arrival; highlight a chapter on hover, focus or playback.
-    const route = film.querySelector<HTMLElement>("[data-route]");
-    const routeGroups = Array.from(film.querySelectorAll<SVGGElement>(".route-chapter"));
-    const routeItems = Array.from(film.querySelectorAll<HTMLElement>("[data-route-item]"));
-    const routeNow = film.querySelector<HTMLElement>("[data-route-now]");
-    const playButton = film.querySelector<HTMLButtonElement>("[data-route-play]");
-    const chapterIds = scenes.map((scene) => scene.id);
-    const setActive = (id: string | null) => {
-      for (const group of routeGroups) group.classList.toggle("is-active", group.dataset.chapter === id);
-      for (const item of routeItems) item.classList.toggle("is-active", item.dataset.routeItem === id);
-      route?.classList.toggle("has-active", Boolean(id));
-    };
-    if (route && "IntersectionObserver" in window) {
-      const drawObserver = new IntersectionObserver(([entry]) => {
-        if (entry.isIntersecting) { route.classList.add("is-drawn"); drawObserver.disconnect(); }
-      }, { threshold: 0.25 });
-      drawObserver.observe(route);
-    } else route?.classList.add("is-drawn");
-    const hoverTargets = [...routeItems, ...routeGroups] as HTMLElement[];
-    for (const target of hoverTargets) {
-      const id = (target as HTMLElement).dataset.routeItem || (target as HTMLElement).dataset.chapter || null;
-      target.addEventListener("pointerenter", () => { if (!playTimer) setActive(id); });
-      target.addEventListener("focusin", () => { if (!playTimer) setActive(id); });
-    }
-    route?.querySelector(".route-stage")?.addEventListener("pointerleave", () => { if (!playTimer) setActive(null); });
-    let playTimer: number | undefined;
-    let playIndex = 0;
-    const playLabel = playButton?.querySelector<HTMLElement>("[data-route-play-label]");
-    const overlay = film.querySelector<SVGSVGElement>(".route-overlay");
-    const comet = film.querySelector<SVGCircleElement>(".route-comet");
-    const fullView = { x: 0, y: 0, w: 1000, h: 740 };
-    let view = { ...fullView };
-    let cameraFrame = 0;
-    const applyView = (v: typeof view) => {
-      overlay?.setAttribute("viewBox", `${v.x.toFixed(1)} ${v.y.toFixed(1)} ${v.w.toFixed(1)} ${v.h.toFixed(1)}`);
-      overlay?.style.setProperty("--z", (v.w / 1000).toFixed(3));
-    };
-    const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
-    const flyTo = (target: typeof view, duration = 1400) => {
-      cancelAnimationFrame(cameraFrame);
-      if (reduceMotion.matches) { view = { ...target }; applyView(view); return; }
-      const from = { ...view };
-      const started = performance.now();
-      const tick = (now: number) => {
-        const t = Math.min(1, (now - started) / duration), k = ease(t);
-        view = { x: from.x + (target.x - from.x) * k, y: from.y + (target.y - from.y) * k, w: from.w + (target.w - from.w) * k, h: from.h + (target.h - from.h) * k };
-        applyView(view);
-        if (t < 1) cameraFrame = requestAnimationFrame(tick);
-      };
-      cameraFrame = requestAnimationFrame(tick);
-    };
-    const frameFor = (points: number[][]) => {
-      const xs = points.map((point) => point[0]), ys = points.map((point) => point[1]);
-      const cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2;
-      let w = Math.max(320, (Math.max(...xs) - Math.min(...xs)) * 1.5, (Math.max(...ys) - Math.min(...ys)) * 1.5 * (1000 / 740));
-      w = Math.min(1000, w);
-      const h = w * 0.74;
-      return { x: Math.max(0, Math.min(1000 - w, cx - w / 2)), y: Math.max(0, Math.min(740 - h, cy - h / 2)), w, h };
-    };
-    let cometFrame = 0;
-    const flyComet = (group: SVGGElement | undefined, duration = 1300) => {
-      cancelAnimationFrame(cometFrame);
-      const seg = group?.querySelector<SVGPathElement>(".route-seg");
-      if (!seg || !comet || reduceMotion.matches) return;
-      const length = seg.getTotalLength();
-      if (!length) return;
-      const started = performance.now();
-      comet.classList.add("is-flying");
-      const tick = (now: number) => {
-        const t = Math.min(1, (now - started) / duration);
-        const point = seg.getPointAtLength(length * ease(t));
-        comet.setAttribute("cx", point.x.toFixed(1));
-        comet.setAttribute("cy", point.y.toFixed(1));
-        if (t < 1) cometFrame = requestAnimationFrame(tick); else comet.classList.remove("is-flying");
-      };
-      cometFrame = requestAnimationFrame(tick);
-    };
-    const visibleChapterIds = () => chapterIds.filter((id) => !document.getElementById(id)?.hidden);
-    const stopPlay = (message?: string) => {
-      const wasPlaying = Boolean(playTimer);
-      if (playTimer) window.clearInterval(playTimer);
-      playTimer = undefined;
-      playButton?.setAttribute("aria-pressed", "false");
-      route?.classList.remove("is-flying");
-      if (playLabel) playLabel.textContent = "Fly the route";
-      if (message !== undefined && routeNow) routeNow.textContent = message;
-      if (wasPlaying || message !== undefined) flyTo(fullView, 1600);
-    };
-    const describe = (id: string) => {
-      const item = routeItems.find((entry) => entry.dataset.routeItem === id);
-      const year = item?.querySelector(".route-year")?.textContent || "";
-      const name = item?.querySelector(".route-name")?.textContent || "";
-      return `${year} · ${name}`;
-    };
-    playButton?.addEventListener("click", () => {
-      if (playTimer) { stopPlay("Route paused."); return; }
-      const ids = visibleChapterIds();
-      if (!ids.length) return;
-      playIndex = 0;
-      playButton.setAttribute("aria-pressed", "true");
-      route?.classList.add("is-flying", "is-drawn");
-      if (playLabel) playLabel.textContent = "Pause the flight";
-      let previous: number[] | null = null;
-      const step = () => {
-        if (playIndex >= ids.length) { stopPlay("End of the route. Choose a chapter to continue."); setActive(null); return; }
-        const id = ids[playIndex++];
-        const group = routeGroups.find((entry) => entry.dataset.chapter === id);
-        const points: number[][] = JSON.parse(group?.dataset.bbox || "[]");
-        setActive(id);
-        if (points.length) flyTo(frameFor(previous ? [previous, ...points] : points));
-        flyComet(group);
-        previous = points[points.length - 1] || previous;
-        if (routeNow) routeNow.textContent = describe(id);
-      };
-      step();
-      playTimer = window.setInterval(step, reduceMotion.matches ? 2600 : 2300);
-    });
 
     // Chapter rail: a discreet chronological indicator while the chapters are on screen.
     const rail = film.querySelector<HTMLElement>("[data-chapter-rail]");
@@ -706,34 +513,6 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
         }
       }, { rootMargin: "-45% 0px -50% 0px" });
       for (const scene of scenes) currentObserver.observe(scene);
-    }
-
-    // Filters (preserved): hide chapters and their markers that do not match.
-    const yearFilter = film.querySelector<HTMLSelectElement>("#journey-year-filter");
-    const countryFilter = film.querySelector<HTMLSelectElement>("#journey-country-filter");
-    const continentFilter = film.querySelector<HTMLSelectElement>("#journey-continent-filter");
-    const filterStatus = film.querySelector<HTMLElement>("#journey-filter-status");
-    if (yearFilter && countryFilter && continentFilter && filterStatus) {
-      const updateChapters = () => {
-        stopPlay();
-        const year = yearFilter.value, country = countryFilter.value, continent = continentFilter.value;
-        const visibleIds = new Set<string>();
-        for (const scene of scenes) {
-          const has = (key: string, value: string) => value === "all" || (scene.dataset[key] || "").split(/\s+/).includes(value);
-          const visible = has("years", year) && has("countries", country) && has("continents", continent);
-          scene.hidden = !visible;
-          if (visible) visibleIds.add(scene.id);
-        }
-        for (const item of routeItems) item.hidden = !visibleIds.has(item.dataset.routeItem || "");
-        for (const item of railItems) item.hidden = !visibleIds.has(item.dataset.railItem || "");
-        for (const group of routeGroups) group.classList.toggle("is-filtered", !visibleIds.has(group.dataset.chapter || ""));
-        filterStatus.textContent = visibleIds.size
-          ? `Showing ${visibleIds.size} of ${scenes.length} chapters. The record is selective; a missing match does not mean no travel occurred.`
-          : "No chapter matches these filters. The current record is selective and does not establish that no travel occurred.";
-      };
-      yearFilter.addEventListener("change", updateChapters);
-      countryFilter.addEventListener("change", updateChapters);
-      continentFilter.addEventListener("change", updateChapters);
     }
 
     // Silent clips: load only near the viewport; autoplay only when motion is allowed.
@@ -924,19 +703,19 @@ body:has(.film) main#main-content{transform:none!important;}
 .film,.film *,.film *:before,.film *:after{box-sizing:border-box;}
 
 .film{
-  --ink:#0a1513;--deep:#0f201d;--forest:#17302b;--paper:#f4efe5;--paper-2:#ebe4d5;--sand:#e6d6b2;--gold:#c9a86a;--gold-deep:#735420;--mist:#d9e3dc;--muted-ink:#4c5a53;
+  --ink:#112b38;--deep:#112b38;--forest:#112b38;--paper:#f8fafc;--paper-2:#e3eef0;--sand:#e3eef0;--gold:#2563eb;--gold-deep:#3e5563;--mist:#e3eef0;--muted-ink:#3e5563;--teal:#2563eb;
   --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   --gutter:clamp(20px,5vw,72px);
   position:relative;width:100vw;margin:-40px 0 -40px calc(50% - 50vw);
-  background:var(--paper);color:#17211d;overflow-wrap:normal;
+  background:var(--paper);color:#112b38;overflow-wrap:normal;
 }
 .jlabel{margin:0 0 14px;font:700 11px/1.4 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--gold-deep);}
 .visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
 .film a:focus-visible,.film button:focus-visible,.film summary:focus-visible,.film select:focus-visible{outline:3px solid var(--gold);outline-offset:4px;box-shadow:none;}
 
 /* ---------- Title sequence ---------- */
-.title-sequence{position:relative;isolation:isolate;display:grid;grid-template-rows:auto 1fr auto;min-height:max(600px,calc(100svh - 76px));color:#fbf7ee;background:var(--ink);overflow:hidden;}
+.title-sequence{position:relative;isolation:isolate;display:grid;grid-template-rows:auto 1fr auto;min-height:max(600px,calc(100svh - 76px));color:#f8fafc;background:var(--ink);overflow:hidden;}
 .ts-slides,.ts-slide{position:absolute;inset:0;}
 .ts-slides{z-index:-3;}
 .ts-slide{opacity:0;transition:opacity 2.4s ease;}
@@ -945,27 +724,27 @@ body:has(.film) main#main-content{transform:none!important;}
 .film-motion .ts-slide.is-active img{animation:ts-drift 14s ease-out both;}
 .film-motion .is-paused .ts-slide.is-active img{animation-play-state:paused;}
 @keyframes ts-drift{from{transform:scale(1.14) translate3d(1.5%,1%,0)}to{transform:scale(1.04) translate3d(0,0,0)}}
-.ts-shade{position:absolute;inset:0;z-index:-2;background:linear-gradient(90deg,#060d0cf0 0%,#060d0cb8 38%,#060d0c33 72%,#060d0c1a 100%),linear-gradient(0deg,#060d0cdd 0%,#060d0c00 40%);}
+.ts-shade{position:absolute;inset:0;z-index:-2;background:linear-gradient(90deg,#102741f0 0%,#102741b8 38%,#10274133 72%,#1027411a 100%),linear-gradient(0deg,#102741dd 0%,#10274100 40%);}
 .ts-letterbox{position:relative;z-index:1;}
 .ts-letterbox--top{height:clamp(10px,2.4vh,26px);background:#000;}
 .ts-inner{position:relative;display:grid;grid-template-columns:minmax(0,1fr);align-items:end;padding:clamp(28px,6vh,72px) var(--gutter) clamp(26px,5vh,56px);}
 .ts-copy{max-width:1080px;padding-top:56px;}
 .ts-kicker{margin:0 0 20px;color:var(--sand);font:700 11px/1.4 var(--sans);letter-spacing:.32em;text-transform:uppercase;}
-.title-sequence h1{margin:0;color:#fffaf0;font:400 clamp(46px,7.4vw,112px)/.94 var(--serif);letter-spacing:-.035em;}
+.title-sequence h1{margin:0;color:#f8fafc;font:400 clamp(46px,7.4vw,112px)/.94 var(--serif);letter-spacing:-.035em;}
 .title-sequence h1 > span{display:block;}
-.title-sequence h1 > span+span{padding-left:clamp(0px,5vw,80px);font-style:italic;color:#f3e4c2;}
-.ts-lines{margin:clamp(26px,4vh,40px) 0 0;max-width:620px;font:400 clamp(19px,2.3vw,27px)/1.42 var(--serif);color:#f3efe4;}
+.title-sequence h1 > span+span{padding-left:clamp(0px,5vw,80px);font-style:italic;color:#e3eef0;}
+.ts-lines{margin:clamp(26px,4vh,40px) 0 0;max-width:620px;font:400 clamp(19px,2.3vw,27px)/1.42 var(--serif);color:#e3eef0;}
 .ts-lines span{display:block;}
 .ts-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px;margin-top:clamp(26px,4vh,40px);}
-.ts-begin{display:inline-flex;align-items:center;gap:12px;min-height:48px;padding:0 26px;border-radius:999px;background:#fbf4e3;color:#0e1c19;font:700 14px/1 var(--sans);letter-spacing:.06em;text-decoration:none;transition:background .3s ease,transform .3s ease;}
+.ts-begin{display:inline-flex;align-items:center;gap:12px;min-height:48px;padding:0 26px;border-radius:999px;background:#f8fafc;color:#112b38;font:700 14px/1 var(--sans);letter-spacing:.06em;text-decoration:none;transition:background .3s ease,transform .3s ease;}
 .ts-begin:hover{background:var(--sand);transform:translateY(-1px);}
-.ts-secondary{color:#f3ead6;font:600 14px/1.4 var(--sans);letter-spacing:.04em;text-decoration:underline;text-decoration-color:#f3ead666;text-underline-offset:6px;}
+.ts-secondary{color:#e3eef0;font:600 14px/1.4 var(--sans);letter-spacing:.04em;text-decoration:underline;text-decoration-color:#e3eef066;text-underline-offset:6px;}
 .ts-secondary:hover{text-decoration-color:currentColor;}
-.ts-letterbox--bottom{display:flex;flex-wrap:wrap;align-items:center;gap:10px 28px;padding:14px var(--gutter) 16px;background:#000;color:#d8cfbb;font:600 11px/1.4 var(--sans);letter-spacing:.2em;text-transform:uppercase;}
+.ts-letterbox--bottom{display:flex;flex-wrap:wrap;align-items:center;gap:10px 28px;padding:14px var(--gutter) 16px;background:#000;color:#c9d8dd;font:600 11px/1.4 var(--sans);letter-spacing:.2em;text-transform:uppercase;}
 .ts-span{display:flex;align-items:center;gap:12px;margin:0;color:var(--sand);}
-.ts-span i{display:block;width:clamp(50px,9vw,120px);height:1px;background:linear-gradient(90deg,var(--sand),#e6d6b233);}
+.ts-span i{display:block;width:clamp(50px,9vw,120px);height:1px;background:linear-gradient(90deg,var(--sand),#e3eef033);}
 .ts-regions{margin:0;}
-.ts-pause{margin-left:auto;min-height:36px;padding:0 14px;border:1px solid #ffffff40;border-radius:999px;background:transparent;color:#efe6d3;font:600 11px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;cursor:pointer;}
+.ts-pause{margin-left:auto;min-height:36px;padding:0 14px;border:1px solid #ffffff40;border-radius:999px;background:transparent;color:#e3eef0;font:600 11px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;cursor:pointer;}
 .ts-pause:hover{border-color:#ffffffa0;}
 .film-motion .ts-kicker,.film-motion:not(.film-split) .title-sequence h1 > span,.film-motion .ts-lines span,.film-motion .ts-actions{opacity:0;animation:ts-rise 1.25s cubic-bezier(.2,.7,.2,1) forwards;}
 .film-motion .ts-kicker{animation-delay:.2s;}
@@ -979,97 +758,97 @@ body:has(.film) main#main-content{transform:none!important;}
 
 /* ---------- Prologue ---------- */
 .prologue{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(220px,.75fr);align-items:center;gap:clamp(36px,7vw,120px);max-width:1180px;margin:0 auto;padding:clamp(80px,14vh,160px) var(--gutter);}
-.prologue h2{margin:0 0 30px;font:400 clamp(34px,4.6vw,58px)/1.04 var(--serif);letter-spacing:-.03em;color:#13201c;}
-.prologue-quote{margin:0;max-width:22ch;font:italic 400 clamp(26px,3.3vw,40px)/1.28 var(--serif);color:#22312b;}
+.prologue h2{margin:0 0 30px;font:400 clamp(34px,4.6vw,58px)/1.04 var(--serif);letter-spacing:-.03em;color:#112b38;}
+.prologue-quote{margin:0;max-width:22ch;font:italic 400 clamp(26px,3.3vw,40px)/1.28 var(--serif);color:#244858;}
 .prologue-text{max-width:48ch;margin:28px 0 0;font:400 clamp(17px,1.5vw,19px)/1.7 var(--serif);color:var(--muted-ink);}
 .prologue-photo{position:relative;justify-self:center;width:min(100%,300px);margin:0;}
-.prologue-photo:before{content:"";position:absolute;inset:-18px 18px 18px -18px;border:1px solid #c9a86a80;}
+.prologue-photo:before{content:"";position:absolute;inset:-18px 18px 18px -18px;border:1px solid #2563eb80;}
 .prologue-photo img{position:relative;display:block;width:100%;aspect-ratio:3/8;object-fit:cover;object-position:center 40%;}
 .prologue-photo figcaption{margin-top:12px;color:var(--muted-ink);font:italic 14px/1.4 var(--serif);}
 
 /* ---------- Archive notes (provenance kept, out of the way) ---------- */
 
 /* ---------- Continuous yearline ---------- */
-.yearline{position:relative;padding:clamp(58px,9vh,108px) var(--gutter) clamp(52px,8vh,90px);overflow:hidden;background:linear-gradient(130deg,#eee8da,#e4dece 70%,#ded8c8);color:#14221e;}
+.yearline{position:relative;padding:clamp(58px,9vh,108px) var(--gutter) clamp(52px,8vh,90px);overflow:hidden;background:linear-gradient(130deg,#e3eef0,#c9d8dd 70%,#c9d8dd);color:#112b38;}
 .yearline-head{max-width:1180px;margin:0 auto 34px;}
-.yearline-head .jlabel{color:#8a6831;}
-.yearline-head h2{max-width:18ch;margin:0;font:400 clamp(34px,4.5vw,60px)/1.04 var(--serif);letter-spacing:-.03em;color:#14221e;}
-.yearline-head>p:last-child{max-width:57ch;margin:14px 0 0;color:#59635b;font:italic 17px/1.5 var(--serif);}
-.yearline-nav{max-width:1180px;margin:0 auto;overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-color:#a88a55 #d4cebf;scrollbar-width:thin;scroll-padding-inline:16px;}
+.yearline-head .jlabel{color:#2563eb;}
+.yearline-head h2{max-width:18ch;margin:0;font:400 clamp(34px,4.5vw,60px)/1.04 var(--serif);letter-spacing:-.03em;color:#112b38;}
+.yearline-head>p:last-child{max-width:57ch;margin:14px 0 0;color:#3e5563;font:italic 17px/1.5 var(--serif);}
+.yearline-nav{max-width:1180px;margin:0 auto;overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-color:#2563eb #c9d8dd;scrollbar-width:thin;scroll-padding-inline:16px;}
 .yearline-nav ol{position:relative;display:flex;justify-content:space-between;gap:0;min-width:920px;margin:0;padding:8px 0 15px;list-style:none;}
-.yearline-nav ol:before{position:absolute;top:21px;left:18px;right:18px;height:1px;background:linear-gradient(90deg,#c5bca9,#a99776 55%,#c5bca9);content:"";}
+.yearline-nav ol:before{position:absolute;top:21px;left:18px;right:18px;height:1px;background:linear-gradient(90deg,#c9d8dd,#3e5563 55%,#c9d8dd);content:"";}
 .yearline-nav li{position:relative;z-index:1;flex:0 0 auto;}
-.yearline-nav a{display:grid;justify-items:center;gap:9px;min-width:48px;padding:0 3px;color:#6d756d;text-decoration:none;font:600 12px/1.2 var(--sans);font-variant-numeric:tabular-nums;transition:color .25s ease,transform .25s ease;}
-.yearline-nav a:hover{transform:translateY(-2px);color:#153e35;}
-.yearline-dot{display:block;width:12px;height:12px;border:1px solid #9b927f;border-radius:50%;background:#e7e1d4;transition:transform .25s ease,background .25s ease,box-shadow .25s ease;}
-.yearline-item--documented .yearline-dot{border-color:#245b4c;background:#245b4c;box-shadow:0 0 0 4px #245b4c16;}
-.yearline-item--documented>a{color:#273b32;}
+.yearline-nav a{display:grid;justify-items:center;gap:9px;min-width:48px;padding:0 3px;color:#3e5563;text-decoration:none;font:600 12px/1.2 var(--sans);font-variant-numeric:tabular-nums;transition:color .25s ease,transform .25s ease;}
+.yearline-nav a:hover{transform:translateY(-2px);color:#112b38;}
+.yearline-dot{display:block;width:12px;height:12px;border:1px solid #3e5563;border-radius:50%;background:#e3eef0;transition:transform .25s ease,background .25s ease,box-shadow .25s ease;}
+.yearline-item--documented .yearline-dot{border-color:#2563eb;background:#2563eb;box-shadow:0 0 0 4px #2563eb16;}
+.yearline-item--documented>a{color:#112b38;}
 .yearline-item--open .yearline-dot{border-style:dashed;background:transparent;}
-.yearline-item--open>a{color:#7d8178;}
-.yearline-nav li.is-selected .yearline-dot,.yearline-nav a:focus-visible .yearline-dot{transform:scale(1.28);box-shadow:0 0 0 5px #bb965333;}
-.yearline-nav li.is-selected>a{color:#153e35;}
-.yearline-nav a:focus-visible{outline:2px solid #705326;outline-offset:5px;border-radius:3px;}
+.yearline-item--open>a{color:#3e5563;}
+.yearline-nav li.is-selected .yearline-dot,.yearline-nav a:focus-visible .yearline-dot{transform:scale(1.28);box-shadow:0 0 0 5px #2563eb33;}
+.yearline-nav li.is-selected>a{color:#112b38;}
+.yearline-nav a:focus-visible{outline:2px solid #2563eb;outline-offset:5px;border-radius:3px;}
 .yearline-scroll-hint{display:none;}
-.yearline-status{max-width:1180px;min-height:1.5em;margin:8px auto 0;color:#59635b;font:14px/1.55 var(--sans);}
+.yearline-status{max-width:1180px;min-height:1.5em;margin:8px auto 0;color:#3e5563;font:14px/1.55 var(--sans);}
 
 /* ---------- Route ---------- */
-.route{position:relative;padding:clamp(80px,13vh,150px) var(--gutter) clamp(60px,10vh,110px);background:radial-gradient(at 70% 20%,#21423b 0%,#0e1d1b 55%,#09130f 100%);color:#eef1ea;}
+.route{position:relative;padding:clamp(80px,13vh,150px) var(--gutter) clamp(60px,10vh,110px);background:radial-gradient(at 70% 20%,#244858 0%,#112b38 55%,#102741 100%);color:#f8fafc;}
 .route-head{max-width:1180px;margin:0 auto 34px;}
 .route .jlabel{color:var(--gold);}
-.route-head h2{margin:0;font:400 clamp(34px,5vw,64px)/1.02 var(--serif);letter-spacing:-.03em;color:#fbf6ea;}
-.route-head p:last-child{margin:14px 0 0;color:#c4cec7;font:italic clamp(17px,1.6vw,20px)/1.5 var(--serif);}
+.route-head h2{margin:0;font:400 clamp(34px,5vw,64px)/1.02 var(--serif);letter-spacing:-.03em;color:#f8fafc;}
+.route-head p:last-child{margin:14px 0 0;color:#c9d8dd;font:italic clamp(17px,1.6vw,20px)/1.5 var(--serif);}
 .route-stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,280px);gap:clamp(20px,3vw,44px);max-width:1180px;margin:0 auto;}
-.route-map{position:relative;aspect-ratio:1000/740;overflow:hidden;border-radius:4px;background:#0b1715;box-shadow:inset 0 0 0 1px #ffffff14,0 40px 80px #0006;}
+.route-map{position:relative;aspect-ratio:1000/740;overflow:hidden;border-radius:4px;background:#112b38;box-shadow:inset 0 0 0 1px #ffffff14,0 40px 80px #0006;}
 .route-overlay{position:absolute;inset:0;width:100%;height:100%;}
 .route-overlay{overflow:visible;}
 .route-line{fill:none;stroke:var(--gold);stroke-width:1.6;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0;opacity:.85;}
 .film-motion .route-line{stroke-dashoffset:1;}
 .film-motion .route.is-drawn .route-line{stroke-dashoffset:0;transition:stroke-dashoffset 4.2s cubic-bezier(.45,.05,.25,1);}
-.route-ny{fill:none;stroke:#c9a86a99;stroke-width:1.2;stroke-dasharray:4 6;}
-.route-ny-label{fill:#e7d7b2;font:600 13px var(--sans);letter-spacing:.06em;}
+.route-ny{fill:none;stroke:#2563eb99;stroke-width:1.2;stroke-dasharray:4 6;}
+.route-ny-label{fill:#e3eef0;font:600 13px var(--sans);letter-spacing:.06em;}
 .route-seg{fill:none;stroke:transparent;stroke-width:3.2;stroke-linecap:round;transition:stroke .35s ease;}
-.route-chapter.is-active .route-seg{stroke:#ffe3a6;}
-.route-dot{fill:#f7e9c7;stroke:#0b1715;stroke-width:1.5;transition:r .3s ease,fill .3s ease;}
-.route-halo{fill:#c9a86a00;transition:fill .3s ease;}
+.route-chapter.is-active .route-seg{stroke:#e3eef0;}
+.route-dot{fill:#e3eef0;stroke:#112b38;stroke-width:1.5;transition:r .3s ease,fill .3s ease;}
+.route-halo{fill:#2563eb00;transition:fill .3s ease;}
 .route-chapter a{cursor:pointer;}
 .route-chapter a:focus{outline:none;}
-.route-chapter a:focus .route-halo,.route-chapter.is-active .route-halo{fill:#c9a86a55;}
-.route-chapter.is-active .route-dot{fill:#ffd88a;r:6.5;}
-.route.has-active .route-chapter:not(.is-active) .route-dot{fill:#f7e9c780;}
+.route-chapter a:focus .route-halo,.route-chapter.is-active .route-halo{fill:#2563eb55;}
+.route-chapter.is-active .route-dot{fill:#2563eb;r:6.5;}
+.route.has-active .route-chapter:not(.is-active) .route-dot{fill:#e3eef080;}
 .route-chapter.is-filtered{opacity:.18;}
-.route-tag{fill:#fff7e4;font:600 15px var(--sans);letter-spacing:.03em;paint-order:stroke;stroke:#0b1715;stroke-width:4px;stroke-linejoin:round;opacity:0;transition:opacity .3s ease;pointer-events:none;}
+.route-tag{fill:#f8fafc;font:600 15px var(--sans);letter-spacing:.03em;paint-order:stroke;stroke:#112b38;stroke-width:4px;stroke-linejoin:round;opacity:0;transition:opacity .3s ease;pointer-events:none;}
 .route-chapter.is-active .route-tag{opacity:1;}
 .route-index{display:grid;align-content:start;gap:2px;margin:0;padding:0;list-style:none;counter-reset:none;}
-.route-index a{display:grid;grid-template-columns:70px 1fr;align-items:baseline;gap:10px;padding:9px 12px;border-left:1px solid #ffffff1f;color:#dfe6df;text-decoration:none;transition:background .3s ease,border-color .3s ease,color .3s ease;}
-.route-index a:hover,.route-index li.is-active a{border-left-color:var(--gold);background:#ffffff0d;color:#fffaf0;}
+.route-index a{display:grid;grid-template-columns:70px 1fr;align-items:baseline;gap:10px;padding:9px 12px;border-left:1px solid #ffffff1f;color:#e3eef0;text-decoration:none;transition:background .3s ease,border-color .3s ease,color .3s ease;}
+.route-index a:hover,.route-index li.is-active a{border-left-color:var(--gold);background:#2563eb0d;color:#f8fafc;}
 .route-year{color:var(--gold);font:600 12px/1.3 var(--sans);letter-spacing:.12em;}
 .route-name{font:400 16px/1.3 var(--serif);}
 .route-controls{display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px;max-width:1180px;margin:26px auto 0;}
-.route-play{min-height:44px;padding:0 22px;border:1px solid #c9a86a;border-radius:999px;background:transparent;color:#f6ead0;font:700 12px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:background .3s ease;}
-.route-play:hover,.route-play[aria-pressed="true"]{background:#c9a86a26;}
-.route-now{margin:0;color:#e9dcbb;font:italic 18px/1.4 var(--serif);}
- .route-disclaimer{max-width:1180px;margin:12px auto 0;color:#b8c5bd;font:12px/1.5 var(--sans);letter-spacing:.03em;}
+.route-play{min-height:44px;padding:0 22px;border:1px solid #2563eb;border-radius:999px;background:transparent;color:#e3eef0;font:700 12px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:background .3s ease;}
+.route-play:hover,.route-play[aria-pressed="true"]{background:#2563eb26;}
+.route-now{margin:0;color:#e3eef0;font:italic 18px/1.4 var(--serif);}
+ .route-disclaimer{max-width:1180px;margin:12px auto 0;color:#c9d8dd;font:12px/1.5 var(--sans);letter-spacing:.03em;}
 .route-explore{max-width:1180px;margin:22px auto 0;}
-.route-explore summary{display:inline-flex;align-items:center;gap:8px;min-height:36px;cursor:pointer;list-style:none;color:#c9b98f;font:700 10.5px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;}
+.route-explore summary{display:inline-flex;align-items:center;gap:8px;min-height:36px;cursor:pointer;list-style:none;color:#c9d8dd;font:700 10.5px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;}
 .route-explore summary::-webkit-details-marker{display:none;}
 .route-explore summary:after{content:"+";font-size:15px;letter-spacing:0;transition:transform .3s ease;}
 .route-explore[open] summary:after{transform:rotate(45deg);}
 .journey-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:12px;}
-.journey-filter-control{display:grid;gap:6px;color:#d9ccaa;font:700 10.5px/1.3 var(--sans);letter-spacing:.18em;text-transform:uppercase;}
-.journey-filter-control select{width:100%;min-height:44px;padding:9px 12px;border:1px solid #ffffff33;border-radius:6px;background:#0b1715;color:#f3efe4;font:15px/1.3 var(--sans);letter-spacing:normal;text-transform:none;}
-.journey-filter-status{grid-column:1/-1;margin:0;color:#c4cec7;font:13px/1.55 var(--sans);}
+.journey-filter-control{display:grid;gap:6px;color:#c9d8dd;font:700 10.5px/1.3 var(--sans);letter-spacing:.18em;text-transform:uppercase;}
+.journey-filter-control select{width:100%;min-height:44px;padding:9px 12px;border:1px solid #ffffff33;border-radius:6px;background:#112b38;color:#e3eef0;font:15px/1.3 var(--sans);letter-spacing:normal;text-transform:none;}
+.journey-filter-status{grid-column:1/-1;margin:0;color:#c9d8dd;font:13px/1.55 var(--sans);}
 
 /* ---------- Chapter rail ---------- */
 .chapter-rail{position:fixed;z-index:20;top:50%;right:clamp(10px,1.6vw,26px);transform:translateY(-50%);opacity:0;visibility:hidden;transition:opacity .45s ease,visibility .45s;}
 .chapter-rail.is-visible{opacity:1;visibility:visible;}
-.chapter-rail ol{position:relative;display:grid;gap:2px;margin:0;padding:10px 6px;list-style:none;border-radius:999px;background:#f4efe5d9;backdrop-filter:blur(8px);box-shadow:0 10px 30px #0b151320;}
-.chapter-rail a{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-height:24px;padding:0 8px;color:#55625b;text-decoration:none;font:600 10.5px/1 var(--sans);letter-spacing:.06em;}
+.chapter-rail ol{position:relative;display:grid;gap:2px;margin:0;padding:10px 6px;list-style:none;border-radius:999px;background:#e3eef0d9;backdrop-filter:blur(8px);box-shadow:0 10px 30px #112b3820;}
+.chapter-rail a{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-height:24px;padding:0 8px;color:#3e5563;text-decoration:none;font:600 10.5px/1 var(--sans);letter-spacing:.06em;}
 .rail-year{opacity:0;transform:translateX(6px);transition:opacity .3s ease,transform .3s ease;white-space:nowrap;}
-.rail-dot{width:7px;height:7px;border-radius:50%;background:#9aa59e;transition:transform .3s ease,background .3s ease;}
+.rail-dot{width:7px;height:7px;border-radius:50%;background:#c9d8dd;transition:transform .3s ease,background .3s ease;}
 .chapter-rail:hover .rail-year,.chapter-rail:focus-within .rail-year,.chapter-rail li.is-current .rail-year{opacity:1;transform:none;}
-.chapter-rail li.is-current a{color:#12201c;}
+.chapter-rail li.is-current a{color:#112b38;}
 .chapter-rail li.is-current .rail-dot{background:var(--gold-deep);transform:scale(1.5);}
-@media (width<1520px){.chapter-rail{display:none;}}
+@media (width<1200px){.chapter-rail{display:none;}}
 
 /* ---------- Chapters ---------- */
 .journey{display:grid;gap:clamp(90px,15vh,180px);margin:0;padding:clamp(90px,14vh,170px) 0 clamp(90px,14vh,170px);list-style:none;}
@@ -1077,32 +856,32 @@ body:has(.film) main#main-content{transform:none!important;}
 .scene{position:relative;scroll-margin-top:24px;}
 .scene-copy,.scene-foot{width:100%;max-width:1180px;margin-inline:auto;padding-inline:var(--gutter);}
 .scene-year{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin:0 0 14px;color:var(--gold-deep);font:700 12px/1.4 var(--sans);letter-spacing:.2em;text-transform:uppercase;}
-.scene-num{color:#5f6b64;font-weight:600;}
-.scene-region{color:#525e57;font-weight:600;letter-spacing:.14em;}
-.scene-place{margin:0;font:400 clamp(40px,6.4vw,92px)/.98 var(--serif);letter-spacing:-.035em;color:#12201c;}
-.scene-tagline{margin:12px 0 0;font:italic 400 clamp(20px,2.2vw,28px)/1.3 var(--serif);color:#5b4a2a;}
-.scene-text{max-width:56ch;margin:20px 0 0;font:400 clamp(17px,1.5vw,19.5px)/1.65 var(--serif);color:#34413b;}
-.scene-photo{position:relative;margin:0;overflow:hidden;background:#d7d2c6;}
+.scene-num{color:#3e5563;font-weight:600;}
+.scene-region{color:#3e5563;font-weight:600;letter-spacing:.14em;}
+.scene-place{margin:0;font:400 clamp(40px,6.4vw,92px)/.98 var(--serif);letter-spacing:-.035em;color:#112b38;}
+.scene-tagline{margin:12px 0 0;font:italic 400 clamp(20px,2.2vw,28px)/1.3 var(--serif);color:#2563eb;}
+.scene-text{max-width:56ch;margin:20px 0 0;font:400 clamp(17px,1.5vw,19.5px)/1.65 var(--serif);color:#385363;}
+.scene-photo{position:relative;margin:0;overflow:hidden;background:#c9d8dd;}
 .scene-photo img{display:block;width:100%;height:100%;object-fit:cover;transition:transform 1.6s cubic-bezier(.2,.7,.2,1);}
-.scene-photo figcaption{position:absolute;right:14px;bottom:12px;left:auto;max-width:calc(100% - 28px);padding:5px 10px;border-radius:3px;background:#06100ea6;color:#f4ecda;font:600 11px/1.4 var(--sans);letter-spacing:.06em;backdrop-filter:blur(4px);}
+.scene-photo figcaption{position:absolute;right:14px;bottom:12px;left:auto;max-width:calc(100% - 28px);padding:5px 10px;border-radius:3px;background:#102741a6;color:#e3eef0;font:600 11px/1.4 var(--sans);letter-spacing:.06em;backdrop-filter:blur(4px);}
 .scene-foot{display:flex;flex-wrap:wrap;align-items:flex-start;gap:14px 40px;margin-top:22px;}
-.scene-context{flex:1 1 280px;max-width:520px;padding-left:16px;border-left:1px solid var(--gold);color:#4a5751;font:13.5px/1.6 var(--sans);}
-.scene-context strong{display:block;margin-bottom:4px;color:#7a5c27;font:700 10.5px/1.4 var(--sans);letter-spacing:.2em;text-transform:uppercase;}
+.scene-context{flex:1 1 280px;max-width:520px;padding-left:16px;border-left:1px solid var(--gold);color:#3e5563;font:13.5px/1.6 var(--sans);}
+.scene-context strong{display:block;margin-bottom:4px;color:#2563eb;font:700 10.5px/1.4 var(--sans);letter-spacing:.2em;text-transform:uppercase;}
 .scene-context p{margin:0;}
-.scene-context a{color:#0f5e57;font-weight:700;text-underline-offset:3px;white-space:nowrap;}
+.scene-context a{color:#2563eb;font-weight:700;text-underline-offset:3px;white-space:nowrap;}
 
 /* Full-bleed scene with the title over the photograph */
 .scene--full{display:grid;}
 .scene--full .scene-visual{grid-area:1/1;height:clamp(560px,94svh,980px);}
 .scene--full .scene-photo{height:100%;}
-.scene--full .scene-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#050c0bf2 0%,#050c0b99 28%,#050c0b00 62%),linear-gradient(90deg,#050c0b80,#050c0b00 60%);pointer-events:none;}
+.scene--full .scene-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#102741f2 0%,#10274199 28%,#10274100 62%),linear-gradient(90deg,#10274180,#10274100 60%);pointer-events:none;}
 .scene--full .scene-visual{position:relative;}
 .scene--full .scene-copy{grid-area:1/1;align-self:end;width:100%;padding-bottom:clamp(40px,8vh,90px);position:relative;z-index:1;}
-.scene--full .scene-place,.scene--full .scene-text{color:#fffaf0;}
-.scene--full .scene-tagline{color:#ecd9ad;}
+.scene--full .scene-place,.scene--full .scene-text{color:#f8fafc;}
+.scene--full .scene-tagline{color:#e3eef0;}
 .scene--full .scene-year{color:var(--sand);}
-.scene--full .scene-region,.scene--full .scene-num{color:#cfd6cf;}
-.scene--full .scene-text{color:#ece8dc;}
+.scene--full .scene-region,.scene--full .scene-num{color:#c9d8dd;}
+.scene--full .scene-text{color:#e3eef0;}
 .scene--full figcaption{top:18px;bottom:auto;}
 
 /* Panorama band */
@@ -1136,7 +915,7 @@ body:has(.film) main#main-content{transform:none!important;}
 .scene--feature{display:grid;}
 .scene--feature .scene-visual{position:relative;}
 .scene--feature .scene-photo--1{height:clamp(520px,88svh,940px);}
-.scene--feature .scene-photo--2{position:absolute;right:var(--gutter);bottom:clamp(-120px,-10vh,-60px);width:clamp(170px,19vw,270px);aspect-ratio:2/3;border:6px solid var(--paper);box-shadow:0 30px 60px #0b151340;}
+.scene--feature .scene-photo--2{position:absolute;right:var(--gutter);bottom:clamp(-120px,-10vh,-60px);width:clamp(170px,19vw,270px);aspect-ratio:2/3;border:6px solid var(--paper);box-shadow:0 30px 60px #112b3840;}
 .scene--feature .scene-photo--2 figcaption{left:8px;right:8px;bottom:8px;}
 .scene--feature .scene-photo--1 figcaption{top:18px;bottom:auto;}
 .scene--feature .scene-copy{margin-top:clamp(40px,6vh,70px);padding-right:calc(var(--gutter) + clamp(190px,21vw,300px));}
@@ -1161,9 +940,9 @@ body:has(.film) main#main-content{transform:none!important;}
 .scene--portrait .scene-copy,.scene--portrait .scene-foot{padding:0;margin:0;}
 .scene--portrait .scene-foot{margin-top:24px;align-self:start;}
 .scene--portrait .scene-copy{align-self:end;}
-.scene-stops{display:grid;gap:0;margin:30px 0 0;padding:0;list-style:none;border-top:1px solid #c9c2b0;}
-.scene-stops li{display:flex;justify-content:space-between;align-items:baseline;padding:12px 0;border-bottom:1px solid #c9c2b0;font:400 clamp(20px,2vw,26px)/1.2 var(--serif);color:#1d2a25;}
-.scene-stops small{color:#7a6b4c;font:700 11px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;}
+.scene-stops{display:grid;gap:0;margin:30px 0 0;padding:0;list-style:none;border-top:1px solid #c9d8dd;}
+.scene-stops li{display:flex;justify-content:space-between;align-items:baseline;padding:12px 0;border-bottom:1px solid #c9d8dd;font:400 clamp(20px,2vw,26px)/1.2 var(--serif);color:#112b38;}
+.scene-stops small{color:#2563eb;font:700 11px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;}
 
 /* Title card: typography as the scene */
 .scene--titlecard{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);align-items:center;column-gap:clamp(30px,6vw,100px);padding:clamp(70px,13vh,140px) var(--gutter);}
@@ -1171,25 +950,25 @@ body:has(.film) main#main-content{transform:none!important;}
 .scene--titlecard .scene-type{grid-column:1;grid-row:1/span 2;}
 .scene--titlecard .scene-copy{grid-column:2;align-self:end;}
 .scene--titlecard .scene-foot{grid-column:2;margin-top:24px;}
-.scene--dark{background:radial-gradient(at 20% 30%,#1c3832,#0c1917 70%);color:#eef1ea;}
-.scene--dark .scene-place{color:#fbf6ea;}
-.scene--dark .scene-tagline{color:#e2cd9b;}
-.scene--dark .scene-text{color:#d6ded8;}
+.scene--dark{background:radial-gradient(at 20% 30%,#244858,#112b38 70%);color:#f8fafc;}
+.scene--dark .scene-place{color:#f8fafc;}
+.scene--dark .scene-tagline{color:#c9d8dd;}
+.scene--dark .scene-text{color:#c9d8dd;}
 .scene--dark .scene-year{color:var(--gold);}
-.scene--dark .scene-region,.scene--dark .scene-num{color:#9fb0a7;}
-.scene--dark .scene-context{color:#cdd6d0;}
+.scene--dark .scene-region,.scene--dark .scene-num{color:#c9d8dd;}
+.scene--dark .scene-context{color:#c9d8dd;}
 .scene--dark .scene-context strong{color:var(--gold);}
-.scene--dark .scene-context a{color:#bfe3d6;}
-.scene--light{background:linear-gradient(120deg,#e9e2d1,#f4efe5);}
-.scene-numerals{display:flex;align-items:center;gap:clamp(14px,2vw,30px);margin:0 0 clamp(26px,5vh,50px);font:400 clamp(56px,10vw,150px)/.9 var(--serif);letter-spacing:-.04em;color:#f6ecd2;}
-.scene-numerals i{flex:1;height:1px;max-width:180px;background:linear-gradient(90deg,var(--gold),#c9a86a33);}
+.scene--dark .scene-context a{color:#e3eef0;}
+.scene--light{background:linear-gradient(120deg,#e3eef0,#e3eef0);}
+.scene-numerals{display:flex;align-items:center;gap:clamp(14px,2vw,30px);margin:0 0 clamp(26px,5vh,50px);font:400 clamp(56px,10vw,150px)/.9 var(--serif);letter-spacing:-.04em;color:#e3eef0;}
+.scene-numerals i{flex:1;height:1px;max-width:180px;background:linear-gradient(90deg,var(--gold),#2563eb33);}
 .scene-places{display:grid;gap:4px;margin:0;padding:0;list-style:none;}
 .scene-places li{display:flex;align-items:baseline;gap:16px;font:400 clamp(34px,5.4vw,76px)/1.04 var(--serif);letter-spacing:-.03em;}
-.scene--dark .scene-places li{color:transparent;-webkit-text-stroke:1px #e9dcbb;}
-.scene--dark .scene-places li:nth-child(odd){color:#f6ecd2;-webkit-text-stroke:0;}
-.scene--light .scene-places li{color:#1b2823;}
-.scene--light .scene-places li:nth-child(2){font-style:italic;color:#7a5c27;}
-.scene-places small{font:700 11px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:#8e7a52;-webkit-text-stroke:0;}
+.scene--dark .scene-places li{color:transparent;-webkit-text-stroke:1px #e3eef0;}
+.scene--dark .scene-places li:nth-child(odd){color:#e3eef0;-webkit-text-stroke:0;}
+.scene--light .scene-places li{color:#112b38;}
+.scene--light .scene-places li:nth-child(2){font-style:italic;color:#2563eb;}
+.scene-places small{font:700 11px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:#3e5563;-webkit-text-stroke:0;}
 .scene--titlecard:has(.scene-places li:nth-child(5)) .scene-places li{font-size:clamp(28px,3.8vw,52px);}
 
 /* Arrival motion (only when motion is allowed) */
@@ -1200,55 +979,55 @@ body:has(.film) main#main-content{transform:none!important;}
 .scene.cinematic-ready .scene-places li{opacity:0;transform:translateX(-18px);}
 .scene.cinematic-ready.is-in-view .scene-places li{opacity:1;transform:none;transition:opacity .9s ease calc(.25s + var(--i) * .12s),transform .9s cubic-bezier(.2,.7,.2,1) calc(.25s + var(--i) * .12s);}
 /* ---------- Motion interlude ---------- */
-.motion{padding:clamp(80px,14vh,160px) var(--gutter);background:linear-gradient(180deg,#0c1917,#13261f);color:#eef1ea;}
+.motion{padding:clamp(80px,14vh,160px) var(--gutter);background:linear-gradient(180deg,#112b38,#112b38);color:#f8fafc;}
 .motion-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:6px 30px;max-width:1180px;margin:0 auto clamp(34px,6vh,60px);}
 .motion-head .jlabel{grid-column:1/-1;color:var(--gold);}
-.motion-head h2{margin:0;font:400 clamp(34px,5vw,64px)/1.02 var(--serif);letter-spacing:-.03em;color:#fbf6ea;}
-.motion-head p:not(.label){grid-column:1;margin:10px 0 0;color:#c4cec7;font:italic 17px/1.5 var(--serif);}
-.motion-toggle{grid-column:2;grid-row:2/span 2;align-self:end;min-height:44px;padding:0 22px;border:1px solid #c9a86a;border-radius:999px;background:transparent;color:#f6ead0;font:700 12px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;}
-.motion-toggle:hover{background:#c9a86a26;}
+.motion-head h2{margin:0;font:400 clamp(34px,5vw,64px)/1.02 var(--serif);letter-spacing:-.03em;color:#f8fafc;}
+.motion-head p:not(.label){grid-column:1;margin:10px 0 0;color:#c9d8dd;font:italic 17px/1.5 var(--serif);}
+.motion-toggle{grid-column:2;grid-row:2/span 2;align-self:end;min-height:44px;padding:0 22px;border:1px solid #2563eb;border-radius:999px;background:transparent;color:#e3eef0;font:700 12px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;}
+.motion-toggle:hover{background:#2563eb26;}
 .motion-reel{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(10px,1.6vw,22px);max-width:1180px;margin:0 auto;}
 .motion-window{margin:0;}
 .motion-window:nth-child(even){margin-top:clamp(30px,8vh,90px);}
-.motion-window video{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:3px;background:#0a1412;box-shadow:0 30px 60px #0007;}
-.clip-status{margin:10px 0 0;color:#f3c7a7;font:13px/1.45 var(--sans);}
-.clip-retry{margin:8px 0 0;padding:7px 11px;border:1px solid #b9c4bd80;border-radius:2px;background:#15221d;color:#fbf6ea;font:600 12px/1.2 var(--sans);cursor:pointer;}
-.clip-retry:focus-visible{outline:2px solid #e6c68d;outline-offset:3px;}
+.motion-window video{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:3px;background:#102741;box-shadow:0 30px 60px #0007;}
+.clip-status{margin:10px 0 0;color:#e3eef0;font:13px/1.45 var(--sans);}
+.clip-retry{margin:8px 0 0;padding:7px 11px;border:1px solid #c9d8dd80;border-radius:2px;background:#112b38;color:#f8fafc;font:600 12px/1.2 var(--sans);cursor:pointer;}
+.clip-retry:focus-visible{outline:2px solid #2563eb;outline-offset:3px;}
 .motion-window figcaption{display:grid;gap:4px;margin-top:12px;}
-.motion-window strong{font:400 19px/1.2 var(--serif);color:#fbf6ea;}
-.motion-window span{color:#b9c4bd;font:12.5px/1.5 var(--sans);}
+.motion-window strong{font:400 19px/1.2 var(--serif);color:#f8fafc;}
+.motion-window span{color:#c9d8dd;font:12.5px/1.5 var(--sans);}
 
 /* ---------- From journey to vision ---------- */
-.vision{padding:clamp(90px,15vh,180px) var(--gutter);background:linear-gradient(180deg,#f4efe5,#ebe4d5);}
+.vision{padding:clamp(90px,15vh,180px) var(--gutter);background:linear-gradient(180deg,#e3eef0,#e3eef0);}
 .vision-inner{max-width:1080px;margin:0 auto;}
-.vision h2{max-width:16ch;margin:0;font:400 clamp(38px,5.6vw,78px)/1.0 var(--serif);letter-spacing:-.035em;color:#12201c;}
-.vision-lead{max-width:34ch;margin:32px 0 0;font:italic 400 clamp(22px,2.6vw,32px)/1.36 var(--serif);color:#34413b;}
+.vision h2{max-width:16ch;margin:0;font:400 clamp(38px,5.6vw,78px)/1.0 var(--serif);letter-spacing:-.035em;color:#112b38;}
+.vision-lead{max-width:34ch;margin:32px 0 0;font:italic 400 clamp(22px,2.6vw,32px)/1.36 var(--serif);color:#385363;}
 .vision-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(24px,4vw,60px);max-width:900px;margin-top:38px;}
-.vision-columns p{margin:0;color:#4a5751;font:400 17px/1.7 var(--serif);}
-.vision-link{display:inline-flex;gap:8px;margin-top:26px;color:#0f5e57;font:700 13px/1.4 var(--sans);letter-spacing:.06em;text-underline-offset:5px;}
-.vision-vnm{margin-top:clamp(70px,12vh,130px);padding-top:clamp(40px,7vh,70px);border-top:1px solid #c9a86a99;}
-.vision-mark{margin:0;color:#8e6c33;font:700 12px/1.3 var(--sans);letter-spacing:.36em;text-transform:uppercase;}
-.vision-statement{max-width:30ch;margin:18px 0 0;font:400 clamp(26px,3.3vw,42px)/1.24 var(--serif);letter-spacing:-.015em;color:#14221e;}
+.vision-columns p{margin:0;color:#3e5563;font:400 17px/1.7 var(--serif);}
+.vision-link{display:inline-flex;gap:8px;margin-top:26px;color:#2563eb;font:700 13px/1.4 var(--sans);letter-spacing:.06em;text-underline-offset:5px;}
+.vision-vnm{margin-top:clamp(70px,12vh,130px);padding-top:clamp(40px,7vh,70px);border-top:1px solid #2563eb99;}
+.vision-mark{margin:0;color:#2563eb;font:700 12px/1.3 var(--sans);letter-spacing:.36em;text-transform:uppercase;}
+.vision-statement{max-width:30ch;margin:18px 0 0;font:400 clamp(26px,3.3vw,42px)/1.24 var(--serif);letter-spacing:-.015em;color:#112b38;}
 .vision-projects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin:44px 0 0;padding:0;list-style:none;}
-.vision-projects li{display:grid;align-content:start;gap:10px;padding:22px 26px 6px 0;border-top:1px solid #c9c2b0;}
-.vision-projects li+li{padding-left:26px;border-left:1px solid #c9c2b0;}
-.vision-projects a{color:#12201c;font:400 24px/1.2 var(--serif);text-underline-offset:5px;text-decoration-color:#c9a86a;}
-.vision-projects span{color:#55625b;font:14px/1.6 var(--sans);}
-.vision-small{margin:26px 0 0;color:#6a756f;font:13px/1.6 var(--sans);}
+.vision-projects li{display:grid;align-content:start;gap:10px;padding:22px 26px 6px 0;border-top:1px solid #c9d8dd;}
+.vision-projects li+li{padding-left:26px;border-left:1px solid #c9d8dd;}
+.vision-projects a{color:#112b38;font:400 24px/1.2 var(--serif);text-underline-offset:5px;text-decoration-color:#2563eb;}
+.vision-projects span{color:#3e5563;font:14px/1.6 var(--sans);}
+.vision-small{margin:26px 0 0;color:#3e5563;font:13px/1.6 var(--sans);}
 
 /* ---------- Finale ---------- */
-.finale{position:relative;isolation:isolate;display:grid;align-items:end;min-height:clamp(620px,100svh,1000px);overflow:hidden;background:#05090a;color:#fffaf0;}
+.finale{position:relative;isolation:isolate;display:grid;align-items:end;min-height:clamp(620px,100svh,1000px);overflow:hidden;background:#102741;color:#f8fafc;}
 .finale-photo{position:absolute;z-index:-2;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 55%;}
-.finale:before{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(180deg,#05090a 0%,#05090a00 22%,#05090a00 45%,#05090ae6 82%,#05090a 100%),linear-gradient(90deg,#05090acc,#05090a00 70%);}
+.finale:before{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(180deg,#102741 0%,#10274100 22%,#10274100 45%,#102741e6 82%,#102741 100%),linear-gradient(90deg,#102741cc,#10274100 70%);}
 .finale-copy{width:100%;max-width:1180px;margin:0 auto;padding:clamp(60px,12vh,140px) var(--gutter) clamp(70px,12vh,130px);box-sizing:border-box;}
 .finale .jlabel{color:var(--sand);}
 .finale-line{max-width:20ch;margin:0 0 6px;font:400 clamp(32px,5.4vw,70px)/1.1 var(--serif);letter-spacing:-.025em;}
-.finale-line--last{margin-top:26px;font-style:italic;color:#f2d99f;}
-.finale-brand{display:grid;gap:6px;margin:44px 0 0;color:#f0e3c3;font:700 12px/1.3 var(--sans);letter-spacing:.34em;text-transform:uppercase;}
-.finale-brand span{color:#fffaf0;font:italic 17px/1.3 var(--serif);letter-spacing:.03em;text-transform:none;}
+.finale-line--last{margin-top:26px;font-style:italic;color:#e3eef0;}
+.finale-brand{display:grid;gap:6px;margin:44px 0 0;color:#e3eef0;font:700 12px/1.3 var(--sans);letter-spacing:.34em;text-transform:uppercase;}
+.finale-brand span{color:#f8fafc;font:italic 17px/1.3 var(--serif);letter-spacing:.03em;text-transform:none;}
 .finale-actions{display:flex;flex-wrap:wrap;gap:12px 28px;margin:32px 0 0;}
-.finale-actions a{color:#e9e1cd;font:600 13px/1.4 var(--sans);letter-spacing:.06em;text-underline-offset:6px;text-decoration-color:#e9e1cd66;}
-.finale-cap{position:absolute;top:22px;right:var(--gutter);margin:0;color:#d8cfbb;font:600 11px/1.3 var(--sans);letter-spacing:.12em;}
+.finale-actions a{color:#e3eef0;font:600 13px/1.4 var(--sans);letter-spacing:.06em;text-underline-offset:6px;text-decoration-color:#e3eef066;}
+.finale-cap{position:absolute;top:22px;right:var(--gutter);margin:0;color:#c9d8dd;font:600 11px/1.3 var(--sans);letter-spacing:.12em;}
 .finale.finale-ready .finale-line,.finale.finale-ready .finale-brand,.finale.finale-ready .finale-actions{opacity:0;transform:translateY(18px);filter:blur(4px);}
 .finale.is-playing .finale-line,.finale.is-playing .finale-brand,.finale.is-playing .finale-actions{opacity:1;transform:none;filter:none;transition:opacity 1.3s ease,transform 1.3s cubic-bezier(.2,.7,.2,1),filter 1.3s ease;}
 .finale.is-playing .finale-line:nth-of-type(3){transition-delay:.7s;}
@@ -1261,10 +1040,10 @@ body:has(.film) main#main-content{transform:none!important;}
 
 /* ================= 2026 motion layer ================= */
 /* Reading progress, drawn as a thin gold line. */
-.film-progress{position:fixed;z-index:30;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#c9a86a,#f2d99f);transform-origin:0 50%;transform:scaleX(0);pointer-events:none;opacity:0;}
+.film-progress{position:fixed;z-index:30;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#2563eb,#e3eef0);transform-origin:0 50%;transform:scaleX(0);pointer-events:none;opacity:0;}
 
 /* Film grain and a drifting warm light in the title sequence. */
-.ts-light{position:absolute;inset:-20%;z-index:-1;background:radial-gradient(40% 35% at 70% 30%,#ffcf8a2e,#0000 70%),radial-gradient(30% 30% at 20% 80%,#7fd1c01f,#0000 70%);mix-blend-mode:screen;pointer-events:none;}
+.ts-light{position:absolute;inset:-20%;z-index:-1;background:radial-gradient(40% 35% at 70% 30%,#2563eb2e,#0000 70%),radial-gradient(30% 30% at 20% 80%,#2563eb1f,#0000 70%);mix-blend-mode:screen;pointer-events:none;}
 .ts-grain{position:absolute;inset:-50%;z-index:-1;opacity:.09;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
 .film-motion .ts-light{animation:ts-light 16s ease-in-out infinite alternate;}
 .film-motion .ts-grain{animation:ts-grain 1.2s steps(6) infinite;}
@@ -1290,8 +1069,8 @@ body:has(.film) main#main-content{transform:none!important;}
 .film-split .scene.cinematic-ready .scene-copy{transform:none;}
 
 /* Coordinates */
-.scene-coord{font:600 11px/1.4 ui-monospace,"Cascadia Mono","Segoe UI Mono",Consolas,monospace;letter-spacing:.08em;color:#56625b;font-variant-numeric:tabular-nums;}
-.scene--full .scene-coord,.scene--dark .scene-coord{color:#bcc8c0;}
+.scene-coord{font:600 11px/1.4 ui-monospace,"Cascadia Mono","Segoe UI Mono",Consolas,monospace;letter-spacing:.08em;color:#3e5563;font-variant-numeric:tabular-nums;}
+.scene--full .scene-coord,.scene--dark .scene-coord{color:#c9d8dd;}
 
 /* Map camera and comet */
 .route-overlay{transition:none;}
@@ -1302,14 +1081,14 @@ body:has(.film) main#main-content{transform:none!important;}
 .route-halo{r:calc(13px * var(--z,1));}
 .route-tag{font-size:calc(15px * var(--z,1));stroke-width:calc(4px * var(--z,1));}
 .route-ny-label{font-size:calc(13px * var(--z,1));}
-.route-comet{r:calc(6px * var(--z,1));fill:#fff4d6;opacity:0;filter:drop-shadow(0 0 6px #ffd27a) drop-shadow(0 0 16px #ffb84a);transition:opacity .4s ease;}
+.route-comet{r:calc(6px * var(--z,1));fill:#e3eef0;opacity:0;filter:drop-shadow(0 0 6px #2563eb) drop-shadow(0 0 16px #2563eb);transition:opacity .4s ease;}
 .route-comet.is-flying{opacity:1;}
-.route.is-flying .route-map{box-shadow:inset 0 0 0 1px #c9a86a55,0 40px 90px #000a,0 0 0 6px #c9a86a14;}
+.route.is-flying .route-map{box-shadow:inset 0 0 0 1px #2563eb55,0 40px 90px #000a,0 0 0 6px #2563eb14;}
 .route-play{display:inline-flex;align-items:center;gap:12px;}
 .route-play-icon{width:0;height:0;border-style:solid;border-width:6px 0 6px 10px;border-color:transparent transparent transparent currentColor;}
 .route-play[aria-pressed="true"] .route-play-icon{width:10px;height:12px;border:0;border-left:3px solid currentColor;border-right:3px solid currentColor;}
 .film-motion .route-play:not([aria-pressed="true"]){animation:route-invite 2.8s ease-in-out infinite;}
-@keyframes route-invite{0%,100%{box-shadow:0 0 0 0 #c9a86a00}50%{box-shadow:0 0 0 8px #c9a86a24}}
+@keyframes route-invite{0%,100%{box-shadow:0 0 0 0 #2563eb00}50%{box-shadow:0 0 0 8px #2563eb24}}
 
 /* Scroll-linked cinematography (Edge, Chrome and other browsers with scroll-driven animations). */
 @supports (animation-timeline: view()){
@@ -1374,7 +1153,7 @@ body:has(.film) main#main-content{transform:none!important;}
   .motion-reel{grid-template-columns:repeat(2,minmax(0,1fr));}
 }
 @media (width<=760px){
-  .yearline-scroll-hint{display:flex;justify-content:space-between;max-width:1180px;margin:7px auto 0;color:#6e6e63;font:700 10px/1.3 var(--sans);letter-spacing:.16em;text-transform:uppercase;}
+  .yearline-scroll-hint{display:flex;justify-content:space-between;max-width:1180px;margin:7px auto 0;color:#3e5563;font:700 10px/1.3 var(--sans);letter-spacing:.16em;text-transform:uppercase;}
   .ts-inner{grid-template-columns:1fr;}
   .ts-copy{padding-top:92px;}
   .ts-regions{display:none;}
@@ -1415,4 +1194,94 @@ body:has(.film) main#main-content{transform:none!important;}
   .ts-slide img,.scene-photo img,.finale-photo{animation:none!important;transform:none!important;transition:none!important;}
   .route-line{stroke-dashoffset:0!important;transition:none!important;}
 }
+/* VNM production palette and a tighter documentary rhythm. */
+.film .title-sequence{background:var(--ink);}
+.film .ts-letterbox--top{background:#112b38;}
+.film .ts-shade{background:linear-gradient(90deg,#112b38ed 0%,#112b38a8 45%,#112b3840 100%),linear-gradient(0deg,#112b38a8,transparent 55%);}
+.film .ts-letterbox--bottom{background:#112b38;color:var(--mist);}
+.film .ts-secondary,.film .ts-begin{border-color:var(--mist);color:var(--mist);}
+.film .ts-begin{background:var(--teal,#2563eb);}
+.film .prologue h2,.film .prologue-quote{color:var(--ink);}
+.film .prologue-text{color:var(--muted-ink);}
+.film .prologue-photo:before{border-color:var(--line);}
+.film .yearline{padding:clamp(20px,3vw,34px) var(--gutter);background:var(--mist);color:var(--ink);}
+.film .yearline-head{display:flex;align-items:baseline;gap:1rem;max-width:1180px;margin:0 auto 10px;}
+.film .yearline-head .jlabel{margin:0;color:var(--teal,#2563eb);}
+.film .yearline-head h2{font:600 1rem/1.3 var(--sans);letter-spacing:0;color:var(--ink);}
+.film .yearline-nav{scrollbar-color:var(--teal,#2563eb) var(--line);}
+.film .yearline-nav ol{min-width:760px;padding:4px 0 8px;}
+.film .yearline-nav ol{justify-content:flex-start;gap:4px;width:max-content;min-width:0;}
+.film .yearline-nav ol:before{display:none;}
+.film .yearline-nav a{min-width:38px;padding:0 2px;color:var(--muted-ink);font-size:11px;}
+.film .yearline-nav a:hover,.film .yearline-nav li.is-selected>a{color:var(--ink);}
+.film .yearline-dot{display:none;}
+.film .yearline-item--documented>a{font-weight:700;color:var(--teal,#2563eb);}
+.film .yearline-nav li.is-selected>a{padding:3px 6px;border-radius:999px;background:var(--teal,#2563eb);color:#f8fafc;}
+.film .yearline-nav a:focus-visible{outline:2px solid var(--teal,#2563eb);}
+.film .yearline-status{min-height:1.2em;margin:4px auto 0;color:var(--muted-ink);font-size:12px;}
+.film .scene--light,.film .vision{background:linear-gradient(125deg,var(--bg,#f8fafc),var(--mist));}
+.film .journey{gap:clamp(48px,7vh,90px);padding-block:clamp(48px,8vh,90px);}
+.film .scene--titlecard{padding-block:clamp(48px,8vh,90px);}
+.film .scene-year{color:var(--teal,#2563eb);}
+.film .scene-num,.film .scene-region{color:var(--muted-ink);}
+.film .scene-place{color:var(--ink);}
+.film .scene-tagline{color:var(--teal,#2563eb);}
+.film .scene-text,.film .scene-context{color:var(--muted-ink);}
+.film .scene-context strong,.film .scene-context a{color:var(--teal,#2563eb);}
+.film .scene-stops,.film .scene-stops li{border-color:var(--line);}
+.film .scene-stops li{color:var(--ink);}
+.film .scene-stops small{color:var(--teal,#2563eb);}
+.film .scene--light .scene-place,.film .scene--light .scene-places li,.film .vision h2,.film .vision-statement{color:var(--ink);}
+.film .scene--light .scene-tagline,.film .scene--light .scene-places li:nth-child(2),.film .scene--light .scene-places small{color:var(--teal,#2563eb);}
+.film .scene--dark,.film .motion{background:linear-gradient(135deg,var(--ink),#2563eb);color:var(--bg,#f8fafc);}
+.film .scene--dark .scene-place,.film .scene--full .scene-place{color:#f8fafc;}
+.film .scene--dark .scene-tagline,.film .scene--dark .scene-year,.film .scene--dark .scene-region,.film .scene--dark .scene-num,.film .scene--dark .scene-text,.film .scene--dark .scene-context,.film .scene--dark .scene-context strong,.film .scene--dark .scene-context a,.film .scene--full .scene-tagline,.film .scene--full .scene-year,.film .scene--full .scene-region,.film .scene--full .scene-num,.film .scene--full .scene-text,.film .motion-head .jlabel{color:#e3eef0;}
+.film .scene--dark .scene-places li,.film .scene--dark .scene-places li:nth-child(odd){color:#e3eef0;-webkit-text-stroke:0;}
+.film .scene--dark .scene-places small,.film .scene-places small{color:#3e5563;}
+.film .scene--dark .scene-places small{color:#e3eef0;}
+.film .vision-link,.film .vision-projects a{color:var(--teal,#2563eb);}
+.film .motion-toggle,.film .clip-retry{border-color:var(--mist);background:transparent;color:var(--bg,#f8fafc);}
+.film .vision-vnm{border-color:var(--line);}
+.film .vision-columns p{color:var(--muted-ink);}
+.film .vision-projects li{border-color:var(--line);}
+.film .vision-projects li+li{border-left-color:var(--line);}
+.film .vision-projects a{text-decoration-color:var(--line);}
+.film .vision-projects span,.film .vision-small{color:var(--muted-ink);}
+.film .vision-mark,.film .finale-line--last,.film .finale .jlabel{color:var(--mist);}
+.film .finale:before{background:linear-gradient(180deg,#112b38 0%,#112b3833 22%,#112b3840 45%,#112b38e8 82%,#112b38 100%),linear-gradient(90deg,#112b38cc,#112b3800 70%);}
+.film .film-progress{background:var(--teal,#2563eb);}
+@media(max-width:760px){.film .yearline{padding:18px 16px}.film .yearline-head{gap:.6rem;flex-wrap:wrap}.film .yearline-nav ol{min-width:700px}.film .yearline-status{font-size:11px}.film .prologue,.film .vision,.film .motion{padding-block:48px}}
+.film .title-sequence h1>span+span{color:var(--mist)}
+.film .prologue-photo:before{border-color:var(--line)}
+.film .chapter-rail ol{border:1px solid var(--line);background:#112b38ed;box-shadow:0 10px 30px #112b3833}
+.film .chapter-rail a{color:var(--mist)}
+.film .rail-dot{background:var(--line)}
+.film .chapter-rail li.is-current a{color:var(--bg)}
+.film .chapter-rail li.is-current .rail-dot{background:var(--teal)}
+/* Final production identity pass: VNM blues across interface accents and navigation. */
+.film{--blue:#2563eb;--teal:#2563eb;--gold:#2563eb;--gold-deep:#3e5563;--forest:#112b38;--line:#c9d8dd;--mist:#e3eef0;--paper:#f8fafc;--ink:#112b38;--muted-ink:#3e5563;--deep:#112b38}
+.film .yearline{background:linear-gradient(130deg,#f8fafc,#e3eef0 70%,#c9d8dd);color:#112b38}
+.film .yearline-head .jlabel,.film .scene-year,.film .scene-tagline,.film .scene-context strong,.film .scene-context a,.film .scene-stops small,.film .vision-link,.film .vision-projects a,.film .film-progress{color:#2563eb}
+.film .yearline-nav{scrollbar-color:#2563eb #e3eef0}
+.film .yearline-nav a:hover,.film .yearline-nav li.is-selected>a{color:#112b38}
+.film .yearline-item--documented>a{color:#2563eb}
+.film .yearline-nav li.is-selected>a{background:#2563eb;color:#f8fafc}
+.film .yearline-nav a:focus-visible{outline-color:#2563eb}
+.film .scene--dark,.film .motion{background:linear-gradient(135deg,#112b38,#244858);color:#f8fafc}
+.film .route,.film .motion,.film .scene--dark{border-color:#244858}
+.film .route-index a:hover,.film .route-index li.is-active a{border-left-color:#2563eb}
+.film .route-year,.film .route .jlabel,.film .motion-head .jlabel{color:#e3eef0}
+.film .route-line{stroke:#2563eb}
+.film .chapter-rail li.is-current .rail-dot{background:#2563eb}
+.film .chapter-rail ol{border-color:#3e5563}
+.film .chapter-rail li.is-current a{color:#f8fafc}
+.media-treatment-note{max-width:1050px;margin:0 auto;padding:0 20px;color:#3e5563;font:500 12px/1.55 var(--sans);text-align:right}
+.film .scene-context{border-color:#2563eb}
+.film .scene-numerals i{background:linear-gradient(90deg,#2563eb,#2563eb55)}
+.film .ts-begin{border-color:#e3eef0;background:#1d4ed8;color:#f8fafc}
+.film .scene--light .scene-tagline,.film .scene--light .scene-places li:nth-child(2),.film .scene--light .scene-places small{color:#2563eb}
+.film .vision-vnm,.film .vision-projects li,.film .vision-projects li+li{border-color:#c9d8dd}
+.film a:focus-visible,.film button:focus-visible,.film summary:focus-visible,.film select:focus-visible{outline-color:#2563eb}
+body:has(.film) main#main-content{overflow-x:clip}
+@media(max-width:760px){.film .yearline{background:linear-gradient(130deg,#f8fafc,#e3eef0 70%,#c9d8dd)}}
 </style>

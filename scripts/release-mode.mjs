@@ -34,6 +34,8 @@ const WORKFLOW_OR_BUILD = [
 ];
 
 export function routeForPage(path) {
+  // Astro's custom 404 page is emitted as /404.html; it is not a public /404/ route.
+  if (path === 'src/pages/404.astro') return null;
   const match = path.match(/^src\/pages\/(.+)\.astro$/);
   if (!match || match[1].includes('[') || match[1].includes(']')) return null;
   return match[1] === 'index' ? '/' : `/${match[1]}/`;
@@ -165,6 +167,7 @@ function selfTest() {
     ['G: Three.js scene', ['src/scripts/cosmic-world.ts'], 'FULL', []],
     ['H: release runner', ['scripts/release-check.mjs'], 'FULL', []],
     ['I: unknown production asset', ['public/images/new-image.webp'], 'FULL', []],
+    ['J: custom not-found page', ['src/pages/404.astro'], 'FULL', []],
   ];
   for (const [name, files, mode, routes] of tests) {
     const result = classifyChangedFiles(files);

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { readFile, readdir, mkdir, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { resolve, join, extname, sep } from 'node:path';
@@ -27,6 +28,7 @@ const changedRoutes = changedRouteCandidates.filter(route => !redirectedRetiredR
 const coreRoutes = ['/', '/about/', '/journey/', '/projects/', '/governance/', '/contact/'];
 const smokeRoutes = [...new Set([...coreRoutes, ...changedRoutes])];
 const routes = mode === 'FULL' ? [...new Set([...fullRoutes, ...changedRoutes])] : smokeRoutes;
+const axePath = resolve('output/release-qa/axe-core/package/axe.min.js');
 const require = createRequire(import.meta.url);
 async function runtime() {
   const candidates = [];
@@ -51,6 +53,18 @@ async function files(dir) {
   }
   return result;
 }
+function webpExifChunkCount(bytes) {
+  if (bytes.toString('ascii', 0, 4) !== 'RIFF' || bytes.toString('ascii', 8, 12) !== 'WEBP') return -1;
+  let offset = 12, count = 0;
+  while (offset + 8 <= bytes.length) {
+    const kind = bytes.toString('ascii', offset, offset + 4);
+    const length = bytes.readUInt32LE(offset + 4);
+    if (offset + 8 + length > bytes.length) return -1;
+    if (kind === 'EXIF') count += 1;
+    offset += 8 + length + (length & 1);
+  }
+  return offset === bytes.length ? count : -1;
+}
 const forbidden = /(?:localhost|127\.0\.0\.1|\.chatgpt\.site|\.vercel\.app)/i;
 async function staticChecks() {
   const redirectText = await readFile('public/_redirects', 'utf8');
@@ -61,7 +75,38 @@ async function staticChecks() {
   ];
   for (const rule of expectedRedirects) assert(redirectRules.includes(rule), 'Missing Cloudflare Pages redirect: ' + rule);
   assert.equal(existsSync('vercel.json'), false, 'Cloudflare-only release must not include Vercel deployment configuration');
+  assert(existsSync(axePath), 'Missing pinned axe-core accessibility tooling in output/release-qa');
   assert.equal((await readFile('dist/_redirects', 'utf8')).trim(), redirectText.trim(), 'Cloudflare redirects were not copied to the Pages build output');
+  assert.equal((await readFile('dist/_headers', 'utf8')).trim(), (await readFile('public/_headers', 'utf8')).trim(), 'Cloudflare response headers were not copied to the Pages build output');
+  assert(existsSync('dist/404.html'), 'Cloudflare Pages build is missing the custom HTTP 404 page');
+  const robots = await readFile('dist/robots.txt', 'utf8');
+  assert(robots.includes('Sitemap: https://www.visionovamundi.com/sitemap.xml'), 'robots.txt is missing the canonical sitemap');
+  const sitemap = await readFile('dist/sitemap.xml', 'utf8');
+  for (const route of fullRoutes) assert(sitemap.includes(`<loc>https://www.visionovamundi.com${route}</loc>`), `Sitemap is missing canonical route ${route}`);
+  const builtJourney = await readFile('dist/journey/index.html', 'utf8');
+  assert(builtJourney.includes('property="og:image"') && builtJourney.includes('name="twitter:card"'), 'Journey social sharing metadata is incomplete');
+  assert(!/Facebook photo record|photo capture \d{4}-\d{2}-\d{2}|checkInLabels|albumEvidence|mediaPostEvidence/i.test(builtJourney), 'Private archive metadata leaked into the public Journey page');
+  const publicAtlas = JSON.parse(await readFile('src/data/journey-atlas-destinations.json', 'utf8'));
+  assert.equal(publicAtlas.destinations.length, 76, 'Expected the 76 supported public atlas place references after chronology remediation');
+  assert(publicAtlas.destinations.every(destination => !Object.hasOwn(destination, 'archive')), 'Private per-place archive evidence must remain outside the public atlas data');
+  const publicImageManifest = JSON.parse(await readFile('src/data/journey-image-variants.json', 'utf8'));
+  assert.equal(Object.keys(publicImageManifest).length, 12, 'Only the 12 cleared Journey photographs may be shipped');
+  for (const family of Object.values(publicImageManifest)) {
+    for (const variant of family.variants) {
+      assert(builtJourney.includes(variant.src), `Journey image variant is not referenced by the page: ${variant.src}`);
+      const imageBytes = await readFile(resolve('public', `.${variant.src}`));
+      assert.equal(imageBytes.length, variant.bytes, `Image byte manifest mismatch: ${variant.src}`);
+      assert.equal(createHash('sha256').update(imageBytes).digest('hex'), variant.sha256, `Image hash manifest mismatch: ${variant.src}`);
+      assert.equal(webpExifChunkCount(imageBytes), 0, `Journey publication image contains EXIF metadata or malformed WebP: ${variant.src}`);
+    }
+  }
+  const builtContentFiles = await files('dist');
+  const builtReferenceFiles = builtContentFiles.filter(path => /\.(?:html|css|js|xml)$/i.test(path));
+  const builtReferenceText = (await Promise.all(builtReferenceFiles.map(path => readFile(path, 'utf8')))).join('\n');
+  for (const asset of (await files('public/images/journey')).map(path => path.replaceAll('\\', '/').split('/public/')[1])) {
+    if (!/\.(?:webp|svg|png)$/i.test(asset)) continue;
+    assert(builtReferenceText.includes('/' + asset), `Unreferenced Journey image asset in the release: /${asset}`);
+  }
   for (const route of ['/impact/', '/programmes/', '/work/']) assert(!existsSync(join('dist', route, 'index.html')), 'Retired route ' + route + ' must not be generated as an HTML page');
   for (const route of fullRoutes) assert(existsSync(join('dist', route, 'index.html')), `Missing built route ${route}`);
   for (const route of changedRoutes) assert(existsSync(join('dist', route, 'index.html')), `Missing changed route ${route}`);
@@ -71,6 +116,9 @@ async function staticChecks() {
     if (fullRoutes.some(route => resolve(path) === resolve('dist', '.' + route, 'index.html')) || changedRoutes.some(route => resolve(path) === resolve('dist', '.' + route, 'index.html'))) {
       assert(/<title>[^<]+<\/title>/.test(html), `Missing title: ${path}`);
       assert(/name="description"\s+content="[^"]+"/.test(html), `Missing description: ${path}`);
+      assert(/rel="canonical"\s+href="https:\/\/www\.visionovamundi\.com\//.test(html), `Missing canonical production URL: ${path}`);
+      assert(/property="og:image"\s+content="https:\/\/www\.visionovamundi\.com\/images\/vnm-social-card\.png"/.test(html), `Missing Open Graph image: ${path}`);
+      assert(/name="twitter:card"\s+content="summary_large_image"/.test(html), `Missing large image Twitter card: ${path}`);
     }
     for (const match of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
       const value = match[1];
@@ -105,7 +153,7 @@ async function staticChecks() {
 }
 async function serve() {
   const root = resolve('dist');
-  const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.mp4': 'video/mp4', '.webm': 'video/webm' };
+  const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.xml': 'application/xml', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.mp4': 'video/mp4', '.webm': 'video/webm' };
   const server = createServer(async (req, res) => {
     try {
       const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
@@ -114,14 +162,17 @@ async function serve() {
       const body = await readFile(file);
       res.writeHead(200, { 'Content-Type': mime[extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-store' });
       res.end(req.method === 'HEAD' ? undefined : body);
-    } catch { res.writeHead(404); res.end('Not found'); }
+    } catch {
+      try { res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' }); res.end(await readFile(join(root, '404.html'))); }
+      catch { res.writeHead(404); res.end('Not found'); }
+    }
   });
   await new Promise(done => server.listen(0, '127.0.0.1', done));
   return { base: `http://127.0.0.1:${server.address().port}`, close: () => new Promise(done => server.close(done)) };
 }
 async function qa(base, chromium) {
   const browser = await chromium.launch({ headless: true, args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
-  const report = { mode, target: base, runtime: playwrightVersion, node: process.version, browser: browser.version(), commit: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), started: new Date().toISOString(), cases: [], failures: [], analyticsBeaconsAnswered: 0 };
+  const report = { mode, target: base, runtime: playwrightVersion, node: process.version, browser: browser.version(), commit: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), started: new Date().toISOString(), cases: [], accessibility: [], failures: [], analyticsBeaconsAnswered: 0 };
   const links = new Set(routes);
   try {
     const viewports = mode === 'FULL'
@@ -179,6 +230,13 @@ async function qa(base, chromium) {
         assert.equal(await main.count(), 1, `Expected one main content landmark on ${route}`);
         await main.waitFor({ state: 'visible' });
         await page.waitForTimeout(700);
+        if (!reduced && (viewport.width === 1440 || viewport.width === 390)) {
+          await page.addScriptTag({ path: axePath });
+          const result = await page.evaluate(() => window.axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'] } }));
+          const violations = result.violations.map(violation => ({ id: violation.id, impact: violation.impact, targets: violation.nodes.map(node => node.target), help: violation.help }));
+          report.accessibility.push({ route, viewport: viewport.width, violations: violations.length });
+          assert.equal(violations.length, 0, `axe-core found ${violations.length} WCAG 2.2 AA violation(s) on ${route} at ${viewport.width}px: ${JSON.stringify(violations)}`);
+        }
         assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Horizontal overflow at initial viewport');
         assert(await page.title(), 'Missing title');
         assert.equal(await main.locator('h1').count(), 1, 'Expected one page heading');
@@ -325,6 +383,48 @@ async function qa(base, chromium) {
       } catch (error) { report.failures.push({ label, error: error.message, browserErrors: errors }); console.error(`FAIL ${label}: ${error.message}`); }
       finally { report.analyticsBeaconsAnswered += analyticsBeacons; await context.close(); }
     }
+    const imageManifest = JSON.parse(await readFile('src/data/journey-image-variants.json', 'utf8'));
+    const imageBytes = new Map(Object.values(imageManifest).flatMap(image => image.variants.map(variant => [new URL(variant.src, base).href, variant.bytes])));
+    report.journeyImagePerformance = [];
+    for (const dpr of [1, 2]) {
+      const imageContext = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: dpr, reducedMotion: 'reduce', serviceWorkers: 'block' });
+      try {
+        const imagePage = await imageContext.newPage();
+        await imagePage.goto(base + '/journey/', { waitUntil: 'domcontentloaded', timeout: 45000 });
+        await imagePage.waitForFunction(() => {
+          const hero = document.querySelector('.title-sequence img');
+          return hero?.complete && hero.naturalWidth > 0;
+        }, undefined, { timeout: 15000 });
+        const firstViewUrls = await imagePage.evaluate(() => [...document.querySelectorAll('.title-sequence img')].filter(image => image.complete && image.naturalWidth > 0).map(image => image.currentSrc));
+        const firstViewBytes = [...new Set(firstViewUrls)].reduce((sum, src) => sum + (imageBytes.get(src) || 0), 0);
+        await imagePage.evaluate(() => {
+          for (const image of document.querySelectorAll('img[data-src]')) {
+            image.src = image.dataset.src || '';
+            image.srcset = image.dataset.srcset || '';
+            image.removeAttribute('data-src');
+            image.removeAttribute('data-srcset');
+          }
+        });
+        const images = imagePage.locator('.film img');
+        for (let index = 0; index < await images.count(); index += 1) {
+          const image = images.nth(index);
+          await image.scrollIntoViewIfNeeded();
+          await imagePage.waitForFunction(i => {
+            const current = document.querySelectorAll('.film img')[i];
+            return current?.complete && current.naturalWidth > 0;
+          }, index, { timeout: 15000 });
+        }
+        const fullUrls = await images.evaluateAll(items => items.map(image => image.currentSrc).filter(Boolean));
+        const uniqueUrls = [...new Set(fullUrls)];
+        const missingImages = uniqueUrls.filter(src => !imageBytes.has(src));
+        assert.deepEqual(missingImages, [], 'Journey used a responsive image that is absent from the byte manifest');
+        const fullBytes = uniqueUrls.reduce((sum, src) => sum + imageBytes.get(src), 0);
+        const metric = { deviceScaleFactor: dpr, firstViewportImageBytes: firstViewBytes, fullJourneyUniqueImageBytes: fullBytes, uniqueResponsiveFiles: uniqueUrls.length, files: uniqueUrls.map(src => ({ path: new URL(src).pathname, bytes: imageBytes.get(src) })).sort((a, b) => b.bytes - a.bytes) };
+        report.journeyImagePerformance.push(metric);
+        assert(firstViewBytes <= 1_200_000, `Journey first-view images exceed the 1.2 MB @1x budget: ${firstViewBytes} bytes`);
+        if (dpr === 2) assert(fullBytes <= 4_000_000, `Journey responsive photography exceeds the 4 MB @2x budget after scrolling: ${fullBytes} bytes`);
+      } finally { await imageContext.close(); }
+    }
     const request = await browser.newContext();
     try {
       for (const link of links) {
@@ -332,6 +432,9 @@ async function qa(base, chromium) {
         if (!response.ok()) report.failures.push({ label: `Internal link ${link}`, error: `HTTP ${response.status()}` });
         if (live && new URL(response.url()).origin !== production) report.failures.push({ label: link, error: 'Redirected off canonical production' });
       }
+      const missingResponse = await request.request.get(base + '/vnm-release-check-intentional-404/', { timeout: 30000 });
+      assert.equal(missingResponse.status(), 404, 'Unknown route must return an actual HTTP 404');
+      assert.match(await missingResponse.text(), /page not found/i, 'HTTP 404 response must display the custom not-found page');
     } finally { await request.close(); }
   } finally {
     await browser.close();

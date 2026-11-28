@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#112b38"/><stop offset=".55" stop-color="#1d4ed8"/><stop offset="1" stop-color="#2563eb"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#93c5fd" stop-opacity=".42"/><stop offset="1" stop-color="#93c5fd" stop-opacity="0"/></radialGradient>
+    <pattern id="lines" width="70" height="70" patternUnits="userSpaceOnUse"><path d="M0 35h70M35 0v70" fill="none" stroke="#dbeafe" stroke-opacity=".08"/></pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#blue)"/>
+  <rect width="1200" height="630" fill="url(#lines)"/>
+  <circle cx="980" cy="210" r="320" fill="url(#glow)"/>
+  <circle cx="980" cy="210" r="210" fill="none" stroke="#dbeafe" stroke-opacity=".2"/>
+  <circle cx="980" cy="210" r="145" fill="none" stroke="#dbeafe" stroke-opacity=".18"/>
+  <circle cx="980" cy="210" r="80" fill="none" stroke="#dbeafe" stroke-opacity=".15"/>
+  <g fill="#eff6ff" font-family="Arial, sans-serif">
+    <text x="96" y="170" font-size="22" font-weight="700" letter-spacing="6">VISIO NOVA MUNDI</text>
+    <text x="90" y="322" font-size="68" font-weight="700" letter-spacing="-2">A New Vision</text>
+    <text x="90" y="402" font-size="68" font-weight="700" letter-spacing="-2">of the World</text>
+    <text x="96" y="492" font-size="22" letter-spacing="3">INNOVATION · RESEARCH · COMMUNITY</text>
+  </g>
+  <path d="M96 212h112" stroke="#bfdbfe" stroke-width="3"/>
+</svg>
