@@ -74,34 +74,6 @@
     "firstPerson": "This chapter places Marrakech in its wider cultural context. Specific personal experiences appear only where the available evidence supports them."
   },
   {
-    "id": "lisbon",
-    "name": "Lisbon",
-    "yearLabel": "2023",
-    "narrative": "The municipality records the monument’s opening in 1959 and its position above both riverbanks. Lisbon’s own heritage story is shaped by the river and the city’s maritime past; the official visitor guide highlights Belém Tower and Jerónimos Monastery, both on the UNESCO list.",
-    "sources": [
-      {
-        "title": "Visit Lisboa · The Tagus route",
-        "url": "https://www.visitlisboa.com/en/places/the-tagus-route"
-      },
-      {
-        "title": "UNESCO · Jerónimos Monastery and Tower of Belém",
-        "url": "https://whc.unesco.org/en/list/263/"
-      }
-    ],
-    "sections": [
-      {
-        "heading": "A capital facing the river",
-        "text": "Lisbon’s development is inseparable from the Tagus estuary, maritime trade and its changing relationship with the Atlantic. The waterfront links civic life and global exchange, while the historic centre preserves distinct neighbourhoods and building traditions."
-      },
-      {
-        "heading": "Context without an invented itinerary",
-        "text": "Belém Tower and Jerónimos Monastery are city context, not confirmed personal stops in this record."
-      }
-    ],
-    "firstPerson": "This chapter places Lisbon in its wider cultural context. Specific personal experiences appear only where the available evidence supports them.",
-    "mapId": "lisbon"
-  },
-  {
     "id": "almada",
     "name": "Almada · Cristo Rei",
     "yearLabel": "2023",
@@ -225,33 +197,6 @@
       }
     ],
     "firstPerson": "This chapter places Warsaw in its wider cultural context. Specific personal experiences appear only where the available evidence supports them."
-  },
-  {
-    "id": "prague",
-    "name": "Prague",
-    "yearLabel": "2022",
-    "mapId": "prague",
-    "sections": [
-      {
-        "heading": "Stone, bridge and civic life",
-        "text": "Prague’s historic centre layers Romanesque, Gothic, Renaissance and Baroque architecture. The official city guide describes Prague Castle, St Vitus Cathedral, Charles Bridge and Old Town Square with its Astronomical Clock; these are context, not verified stops from the city labels."
-      },
-      {
-        "heading": "A table shaped by tradition",
-        "text": "Prague’s dining scene ranges from Czech classics to international cooking. The city guide highlights traditional cuisine and historic cafés."
-      }
-    ],
-    "sources": [
-      {
-        "title": "Old Town Square · Prague City Tourism",
-        "url": "https://prague.eu/en/objevujte/old-town-square-staromestske-namesti"
-      },
-      {
-        "title": "Food and drink · Prague City Tourism",
-        "url": "https://prague.eu/en/objevujte-kategorie/food-and-drink/"
-      }
-    ],
-    "firstPerson": "This chapter places Prague in its wider cultural context. Specific personal experiences appear only where the available evidence supports them."
   },
   {
     "id": "valletta",
@@ -526,33 +471,6 @@
       }
     ],
     "firstPerson": "This chapter places Rabat in its wider cultural context. Specific personal experiences appear only where the available evidence supports them."
-  },
-  {
-    "id": "tangier",
-    "name": "Tangier",
-    "yearLabel": "2024",
-    "mapId": "tangier",
-    "sections": [
-      {
-        "heading": "Between two seas",
-        "text": "Tangier looks toward both the Atlantic and Mediterranean at the Strait of Gibraltar. Its position has made it a meeting point for Moroccan, African and European histories and a distinctive port city."
-      },
-      {
-        "heading": "A city label, not a named stop",
-        "text": "The coastline and city’s layered cultural setting provide context without assigning an experience to you."
-      }
-    ],
-    "sources": [
-      {
-        "title": "Tangier · Visit Morocco",
-        "url": "https://www.visitmorocco.com/en/travel/tangier"
-      },
-      {
-        "title": "Tangier Medina · Visit Morocco",
-        "url": "https://www.visitmorocco.com/en/travel/tangier/medina"
-      }
-    ],
-    "firstPerson": "This chapter places Tangier in its wider cultural context. Specific personal experiences appear only where the available evidence supports them."
   },
   {
     "id": "alexandria-egypt",

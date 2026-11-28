@@ -309,8 +309,8 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
     // Exercise the hosted atlas and timeline, not only their generated markup.
     const atlas = page.locator('[data-journey-atlas]');
     const markers = atlas.locator('[data-atlas-marker]');
-    assert.equal(await markers.count(), 84, 'Hosted atlas must expose all 84 place references');
-    assert.equal(await atlas.locator('.atlas-story').count(), 34, 'Hosted atlas must expose the 34 reviewed cultural stories');
+    assert.equal(await markers.count(), 76, 'Hosted atlas must expose the 76 supported place references');
+    assert.equal(await atlas.locator('.atlas-story').count(), 31, 'Hosted atlas must expose the 31 supported cultural stories');
     const mapSemantics = await atlas.locator('[data-atlas-map]').evaluate(map => ({
       role: map.getAttribute('role'),
       title: document.getElementById(map.getAttribute('aria-labelledby')?.split(' ')[0] || '')?.textContent?.trim(),
@@ -434,7 +434,7 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
 
     report.hostedAcceptance = {
       mapMarkers: markerMeta.length, countryOutlinesMatched: markerMeta.filter(item => item.hasCountryOutline).length,
-      culturalStories: 34, timelineYears: years.length, atlasYearFilter: true, timelineKeyboardNavigation: true,
+      culturalStories: 31, timelineYears: years.length, atlasYearFilter: true, timelineKeyboardNavigation: true,
       citySearch: true, countryFilter: true, regionFilter: true,
       markerKeyboardSelection: true, zoomAndWorldReset: true, countryLabelsToggle: true,
       palette: 'VNM blue tokens matched', contrastRatios: contrast, accessibleNames: true, imageAltAttributes: true,
@@ -456,7 +456,7 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
       assert(await mobilePage.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Mobile Journey has horizontal overflow during clip playback');
       const mobileAtlas = mobilePage.locator('[data-journey-atlas]');
       const mobileMarkers = mobileAtlas.locator('[data-atlas-marker]');
-      assert.equal(await mobileMarkers.count(), 84, 'Mobile atlas must expose all 84 place references');
+      assert.equal(await mobileMarkers.count(), 76, 'Mobile atlas must expose the 76 supported place references');
       await mobileAtlas.locator('#atlas-year').selectOption('2024');
       const mobileYearPlaces = await mobileMarkers.evaluateAll(items => items
         .filter(marker => !marker.classList.contains('is-filtered-out'))
@@ -489,7 +489,7 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
       await mobilePage.waitForFunction(name => document.querySelector('[data-atlas-selected-name]')?.textContent?.trim() === name, mobileName);
       await mobileAtlas.locator('[data-atlas-reset]').click();
       assert(await mobilePage.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Mobile atlas interactions introduced horizontal overflow');
-      report.mobileAtlas = { markers: 84, yearFilter: true, markerSelection: true, noHorizontalOverflow: true };
+      report.mobileAtlas = { markers: 76, yearFilter: true, markerSelection: true, noHorizontalOverflow: true };
     } finally { await mobileContext.close(); }
 
     for (const viewport of [{ width: 1440, height: 900 }, { width: 820, height: 900 }, { width: 390, height: 844 }]) {

@@ -195,20 +195,6 @@
       ]
     },
     {
-      "id": "copenhagen",
-      "name": "Copenhagen",
-      "countryCode": "DNK",
-      "continent": "Europe",
-      "kind": "city",
-      "coordinates": [
-        12.56154,
-        55.68051
-      ],
-      "years": [
-        "2022"
-      ]
-    },
-    {
       "id": "kolding",
       "name": "Kolding",
       "countryCode": "DNK",
@@ -293,21 +279,6 @@
       ]
     },
     {
-      "id": "prague",
-      "name": "Prague",
-      "countryCode": "CZE",
-      "continent": "Europe",
-      "kind": "city",
-      "coordinates": [
-        14.464034,
-        50.085283
-      ],
-      "years": [
-        "2022",
-        "2023"
-      ]
-    },
-    {
       "id": "warsaw",
       "name": "Warsaw",
       "countryCode": "POL",
@@ -347,20 +318,6 @@
       ],
       "years": [
         "2022"
-      ]
-    },
-    {
-      "id": "athens",
-      "name": "Athens",
-      "countryCode": "GRC",
-      "continent": "Europe",
-      "kind": "city",
-      "coordinates": [
-        23.731375,
-        37.985272
-      ],
-      "years": [
-        "2023"
       ]
     },
     {
@@ -462,20 +419,6 @@
       ]
     },
     {
-      "id": "lisbon",
-      "name": "Lisbon",
-      "countryCode": "PRT",
-      "continent": "Europe",
-      "kind": "city",
-      "coordinates": [
-        -9.146812,
-        38.724669
-      ],
-      "years": [
-        "2023"
-      ]
-    },
-    {
       "id": "almada",
       "name": "Almada",
       "countryCode": "PRT",
@@ -530,20 +473,6 @@
       ],
       "years": [
         "2023"
-      ]
-    },
-    {
-      "id": "tangier",
-      "name": "Tangier",
-      "countryCode": "MAR",
-      "continent": "Africa",
-      "kind": "city",
-      "coordinates": [
-        -5.832704,
-        35.747287
-      ],
-      "years": [
-        "2024"
       ]
     },
     {
@@ -743,20 +672,6 @@
       ]
     },
     {
-      "id": "venice",
-      "name": "Venice",
-      "countryCode": "ITA",
-      "continent": "Europe",
-      "kind": "city",
-      "coordinates": [
-        12.334999,
-        45.438659
-      ],
-      "years": [
-        "2025"
-      ]
-    },
-    {
       "id": "bologna",
       "name": "Bologna",
       "countryCode": "ITA",
@@ -771,20 +686,6 @@
       ]
     },
     {
-      "id": "florence",
-      "name": "Florence",
-      "countryCode": "ITA",
-      "continent": "Europe",
-      "kind": "city",
-      "coordinates": [
-        11.25,
-        43.780001
-      ],
-      "years": [
-        "2025"
-      ]
-    },
-    {
       "id": "san-marino",
       "name": "San Marino",
       "countryCode": "SMR",
@@ -793,20 +694,6 @@
       "coordinates": [
         12.44177,
         43.936096
-      ],
-      "years": [
-        "2025"
-      ]
-    },
-    {
-      "id": "nice",
-      "name": "Nice",
-      "countryCode": "FRA",
-      "continent": "Europe",
-      "kind": "city",
-      "coordinates": [
-        7.263078,
-        43.716964
       ],
       "years": [
         "2025"

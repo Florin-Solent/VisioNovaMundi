@@ -87,7 +87,7 @@ async function staticChecks() {
   assert(builtJourney.includes('property="og:image"') && builtJourney.includes('name="twitter:card"'), 'Journey social sharing metadata is incomplete');
   assert(!/Facebook photo record|photo capture \d{4}-\d{2}-\d{2}|checkInLabels|albumEvidence|mediaPostEvidence/i.test(builtJourney), 'Private archive metadata leaked into the public Journey page');
   const publicAtlas = JSON.parse(await readFile('src/data/journey-atlas-destinations.json', 'utf8'));
-  assert.equal(publicAtlas.destinations.length, 84, 'Expected all 84 public atlas place references');
+  assert.equal(publicAtlas.destinations.length, 76, 'Expected the 76 supported public atlas place references after chronology remediation');
   assert(publicAtlas.destinations.every(destination => !Object.hasOwn(destination, 'archive')), 'Private per-place archive evidence must remain outside the public atlas data');
   const publicImageManifest = JSON.parse(await readFile('src/data/journey-image-variants.json', 'utf8'));
   assert.equal(Object.keys(publicImageManifest).length, 12, 'Only the 12 cleared Journey photographs may be shipped');
