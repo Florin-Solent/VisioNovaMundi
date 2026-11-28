@@ -276,7 +276,7 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
     assert(url.hostname.startsWith(`${deploymentId.slice(0, 8)}.`), 'Preview hostname does not match the supplied Cloudflare deployment ID');
   }
   const local = await inspectJourneyAssets(root);
-  const report = { outcome: 'passed', testedCommit: commit || execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), previewDeploymentId: deploymentId || null, target: url.origin, browser: browser.version(), clipCount: local.clipCount, assetCount: local.sourceCount, assets: [], viewports: [], playback: [], reducedMotion: null, networkRecovery: null, errorFallback: null };
+  const report = { outcome: 'passed', testedCommit: commit || execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), previewDeploymentId: deploymentId || null, target: url.origin, browser: browser.version(), clipCount: local.clipCount, assetCount: local.sourceCount, assets: [], viewports: [], playback: [], reducedMotion: null, networkRecovery: null, errorFallback: null, hostedAcceptance: null };
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'no-preference', serviceWorkers: 'block' });
   const page = await context.newPage();
   await page.addInitScript(() => {
@@ -306,6 +306,127 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
     assert.deepEqual(years, expectedYears, 'Journey navigation must contain each year from 2010 through 2026');
     assert.equal(await page.locator('video[data-clip]').count(), 8, 'Journey page must expose all eight cinematic clips');
 
+    // Exercise the hosted atlas and timeline, not only their generated markup.
+    const atlas = page.locator('[data-journey-atlas]');
+    const markers = atlas.locator('[data-atlas-marker]');
+    assert.equal(await markers.count(), 84, 'Hosted atlas must expose all 84 place references');
+    assert.equal(await atlas.locator('.atlas-story').count(), 34, 'Hosted atlas must expose the 34 reviewed cultural stories');
+    const mapSemantics = await atlas.locator('[data-atlas-map]').evaluate(map => ({
+      role: map.getAttribute('role'),
+      title: document.getElementById(map.getAttribute('aria-labelledby')?.split(' ')[0] || '')?.textContent?.trim(),
+      description: document.getElementById(map.getAttribute('aria-labelledby')?.split(' ')[1] || '')?.textContent?.trim(),
+    }));
+    assert.equal(mapSemantics.role, 'group', 'Hosted atlas map must expose a named group to assistive technology');
+    assert(mapSemantics.title && mapSemantics.description, 'Hosted atlas map title and description must be present');
+    const accessibleControls = await atlas.evaluate(root => {
+      const unlabelledMarker = [...root.querySelectorAll('[data-atlas-marker]')].some(marker => !marker.getAttribute('aria-label')?.trim());
+      const unlabelledField = [...root.querySelectorAll('input, select')].some(field => !field.labels?.length && !field.getAttribute('aria-label')?.trim());
+      const unlabelledButton = [...root.querySelectorAll('button')].some(button => !button.getAttribute('aria-label')?.trim() && !button.textContent?.trim());
+      return { unlabelledMarker, unlabelledField, unlabelledButton };
+    });
+    assert.deepEqual(accessibleControls, { unlabelledMarker: false, unlabelledField: false, unlabelledButton: false }, 'Hosted atlas controls must have accessible names');
+
+    const palette = await atlas.evaluate(root => {
+      const style = getComputedStyle(root);
+      const get = name => style.getPropertyValue(name).trim().toLowerCase();
+      return {
+        ink: get('--atlas-ink'), muted: get('--atlas-muted'), accent: get('--atlas-accent'),
+        deep: get('--atlas-deep'), land: get('--atlas-land'), landHot: get('--atlas-land-hot'), line: get('--atlas-line'),
+        heading: getComputedStyle(root.querySelector('.atlas-heading h2')).color,
+        smallText: getComputedStyle(root.querySelector('.atlas-eyebrow')).color,
+        storyLink: getComputedStyle(root.querySelector('.atlas-sources a')).color,
+        selectedMeta: getComputedStyle(root.querySelector('.atlas-selected-meta')).color,
+      };
+    });
+    assert.deepEqual(palette, {
+      ink: '#112b38', muted: '#3e5563', accent: '#2563eb', deep: '#112b38',
+      land: '#c9d8dd', landHot: '#2563eb', line: '#3e5563',
+      heading: 'rgb(17, 43, 56)', smallText: 'rgb(17, 43, 56)', storyLink: 'rgb(17, 43, 56)', selectedMeta: 'rgb(17, 43, 56)',
+    }, 'Hosted atlas interface must use the established VNM blue palette');
+    const filmPalette = await page.locator('[data-film]').evaluate(root => {
+      const style = getComputedStyle(root);
+      return Object.fromEntries(['--blue', '--teal', '--gold', '--gold-deep', '--forest', '--line', '--mist', '--paper', '--ink', '--muted-ink', '--deep']
+        .map(name => [name, style.getPropertyValue(name).trim().toLowerCase()]));
+    });
+    assert.deepEqual(filmPalette, {
+      '--blue': '#2563eb', '--teal': '#2563eb', '--gold': '#2563eb', '--gold-deep': '#3e5563',
+      '--forest': '#112b38', '--line': '#c9d8dd', '--mist': '#e3eef0', '--paper': '#f8fafc',
+      '--ink': '#112b38', '--muted-ink': '#3e5563', '--deep': '#112b38',
+    }, 'Hosted Journey cinematic and timeline tokens must stay within the VNM blue palette');
+    const imageAltAudit = await page.locator('main').evaluate(root => [...root.querySelectorAll('img')].filter(image => !image.hasAttribute('alt')).length);
+    assert.equal(imageAltAudit, 0, 'Hosted Journey images must expose alt attributes (empty alt is allowed for decorative images)');
+    const contrast = await page.evaluate(() => {
+      const luminance = (hex) => {
+        const values = hex.slice(1).match(/../g).map(pair => parseInt(pair, 16) / 255).map(value => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
+        return 0.2126 * values[0] + 0.7152 * values[1] + 0.0722 * values[2];
+      };
+      const ratio = (foreground, background) => {
+        const a = luminance(foreground); const b = luminance(background);
+        return Number(((Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)).toFixed(2));
+      };
+      return { body: ratio('#3e5563', '#e3eef0'), heading: ratio('#112b38', '#e3eef0'), accent: ratio('#2563eb', '#f8fafc'), button: ratio('#f8fafc', '#2563eb') };
+    });
+    assert(Object.values(contrast).every(value => value >= 4.5), `Hosted atlas core text contrast fell below 4.5:1: ${JSON.stringify(contrast)}`);
+
+    const labelsPresent = await atlas.evaluate(root => [...root.querySelectorAll('input,select')].every(field => field.labels?.length || field.getAttribute('aria-label')));
+    assert(labelsPresent, 'Hosted atlas filters must have visible or programmatic labels');
+    const yearFilter = atlas.locator('#atlas-year');
+    await yearFilter.selectOption('2024');
+    await page.waitForFunction(() => document.querySelector('[data-year-select][data-year="2024"]')?.getAttribute('aria-current') === 'true');
+    const yearMarkers = await markers.evaluateAll(items => items.filter(marker => !marker.classList.contains('is-filtered-out')).map(marker => marker.getAttribute('data-years') || ''));
+    assert(yearMarkers.length > 0 && yearMarkers.every(value => value.split(/\s+/).includes('2024')), 'Hosted atlas year filter must show only 2024 place references');
+    assert.match(await page.locator('#yearline-status').innerText(), /2024/, 'Timeline must announce the year selected in the atlas');
+    const yearLink = page.locator('[data-year-select][data-year="2024"]');
+    await yearLink.scrollIntoViewIfNeeded();
+    await yearLink.focus();
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(() => document.querySelector('#atlas-year')?.value === '2024');
+
+    await atlas.locator('#atlas-year').selectOption('all');
+    const firstPlace = await markers.first().evaluate(marker => ({ name: marker.getAttribute('data-name'), country: marker.getAttribute('data-country-code'), continent: marker.getAttribute('data-continent') }));
+    const citySearch = atlas.locator('#atlas-search');
+    await citySearch.fill(firstPlace.name);
+    assert(await markers.evaluateAll((items, name) => items.some(marker => !marker.classList.contains('is-filtered-out') && marker.getAttribute('data-name') === name), firstPlace.name), 'Hosted atlas city search must reveal its matching marker');
+    await citySearch.fill('');
+    await atlas.locator('#atlas-country').selectOption(firstPlace.country);
+    const countryMarkers = await markers.evaluateAll(items => items.filter(marker => !marker.classList.contains('is-filtered-out')).map(marker => marker.getAttribute('data-country-code')));
+    assert(countryMarkers.length > 0 && countryMarkers.every(code => code === firstPlace.country), 'Hosted atlas country filter must show only matching markers');
+    await atlas.locator('#atlas-country').selectOption('all');
+    await atlas.locator('#atlas-continent').selectOption(firstPlace.continent);
+    const regionMarkers = await markers.evaluateAll(items => items.filter(marker => !marker.classList.contains('is-filtered-out')).map(marker => marker.getAttribute('data-continent')));
+    assert(regionMarkers.length > 0 && regionMarkers.every(region => region === firstPlace.continent), 'Hosted atlas region filter must show only matching markers');
+    await atlas.locator('#atlas-continent').selectOption('all');
+    const markerMeta = await markers.evaluateAll(items => items.map(marker => ({
+      id: marker.getAttribute('data-atlas-marker'), name: marker.getAttribute('data-name'),
+      country: marker.getAttribute('data-country-code'), continent: marker.getAttribute('data-continent'), years: marker.getAttribute('data-years') || '',
+      hasCountryOutline: Boolean(document.querySelector(`[data-country="${marker.getAttribute('data-country-code')}"]`)?.classList.contains('is-recorded')),
+    })));
+    assert(markerMeta.every(item => item.id && item.name && item.country && item.continent && item.hasCountryOutline), 'Every hosted place pin must map to a matching highlighted country outline');
+    const target = markers.first();
+    const targetName = await target.getAttribute('data-name');
+    await target.scrollIntoViewIfNeeded();
+    await target.focus();
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(name => document.querySelector('[data-atlas-selected-name]')?.textContent?.trim() === name, targetName);
+    const map = atlas.locator('[data-atlas-map]');
+    const focusedView = await map.getAttribute('viewBox');
+    assert.notEqual(focusedView, '0 0 1200 620', 'Selecting a hosted map marker must zoom to the selected place');
+    await atlas.locator('[data-atlas-zoom-in]').click();
+    await atlas.locator('[data-atlas-reset]').click();
+    assert.equal(await map.getAttribute('viewBox'), '0 0 1200 620', 'Hosted map world-reset control must restore the complete atlas');
+    const labelsToggle = atlas.locator('[data-atlas-country-labels]');
+    await labelsToggle.check();
+    assert(await atlas.evaluate(root => root.classList.contains('show-country-labels')), 'Hosted map country-label toggle must activate country labels');
+    await labelsToggle.uncheck();
+
+    report.hostedAcceptance = {
+      mapMarkers: markerMeta.length, countryOutlinesMatched: markerMeta.filter(item => item.hasCountryOutline).length,
+      culturalStories: 34, timelineYears: years.length, atlasYearFilter: true, timelineKeyboardNavigation: true,
+      citySearch: true, countryFilter: true, regionFilter: true,
+      markerKeyboardSelection: true, zoomAndWorldReset: true, countryLabelsToggle: true,
+      palette: 'VNM blue tokens matched', contrastRatios: contrast, accessibleNames: true, imageAltAttributes: true,
+    };
+
     const clips = page.locator('video[data-clip]');
     const button = page.locator('[data-motion-toggle]');
     await verifyPageClips(page, report, { width: 1440, height: 900 }, true);
@@ -320,6 +441,21 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
       assert.equal(mobileResponse?.status(), 200, 'Mobile Journey route did not return HTTP 200');
       await verifyPageClips(mobilePage, report, { width: 390, height: 844 });
       assert(await mobilePage.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Mobile Journey has horizontal overflow during clip playback');
+      const mobileAtlas = mobilePage.locator('[data-journey-atlas]');
+      const mobileMarkers = mobileAtlas.locator('[data-atlas-marker]');
+      assert.equal(await mobileMarkers.count(), 84, 'Mobile atlas must expose all 84 place references');
+      await mobileAtlas.locator('#atlas-year').selectOption('2024');
+      const mobileYearMarkers = await mobileMarkers.evaluateAll(items => items.filter(marker => !marker.classList.contains('is-filtered-out')).map(marker => marker.getAttribute('data-years') || ''));
+      assert(mobileYearMarkers.length > 0 && mobileYearMarkers.every(value => value.split(/\s+/).includes('2024')), 'Mobile atlas year filter must select the requested year');
+      const mobileMarker = mobileMarkers.first();
+      const mobileName = await mobileMarker.getAttribute('data-name');
+      await mobileAtlas.locator('#atlas-year').selectOption('all');
+      await mobileMarker.scrollIntoViewIfNeeded();
+      await mobileMarker.click();
+      await mobilePage.waitForFunction(name => document.querySelector('[data-atlas-selected-name]')?.textContent?.trim() === name, mobileName);
+      await mobileAtlas.locator('[data-atlas-reset]').click();
+      assert(await mobilePage.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Mobile atlas interactions introduced horizontal overflow');
+      report.mobileAtlas = { markers: 84, yearFilter: true, markerSelection: true, noHorizontalOverflow: true };
     } finally { await mobileContext.close(); }
 
     for (const viewport of [{ width: 1440, height: 900 }, { width: 820, height: 900 }, { width: 390, height: 844 }]) {
@@ -471,6 +607,30 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
     const errorEvents = await page.evaluate(() => window.__journeyErrorEvents);
     assert.equal(errorEvents.length, 1, 'Playback failure did not emit one diagnostic event');
     report.errorFallback = { exposed: true, ariaLive: await status.getAttribute('aria-live'), retryRecovered: true, diagnostic: errorEvents[0] };
+
+    const sitePage = await context.newPage();
+    const sitePageErrors = [];
+    sitePage.on('pageerror', error => sitePageErrors.push(error.message));
+    const siteRoutes = ['/', '/about/', '/projects/', '/governance/', '/unity-house/', '/commissioners-partners/', '/contact/', '/journey/'];
+    for (const path of siteRoutes) {
+      const response = await sitePage.goto(`${url.origin}${path}`, { waitUntil: 'domcontentloaded', timeout: 45000 });
+      assert.equal(response?.status(), 200, `Hosted website route failed: ${path}`);
+      assert((await sitePage.title()).trim().length > 0, `Hosted website route has no page title: ${path}`);
+      assert(await sitePage.locator('main').count() === 1, `Hosted website route is missing its main landmark: ${path}`);
+      assert((await sitePage.locator('main').innerText()).trim().length > 60, `Hosted website route has no visible main content: ${path}`);
+    }
+    await sitePage.setViewportSize({ width: 390, height: 844 });
+    await sitePage.goto(`${url.origin}/`, { waitUntil: 'domcontentloaded', timeout: 45000 });
+    const mobileMenu = sitePage.locator('[data-mobile-nav-toggle]');
+    assert.equal(await mobileMenu.getAttribute('aria-expanded'), 'false', 'Mobile navigation must start collapsed');
+    await mobileMenu.focus();
+    await sitePage.keyboard.press('Enter');
+    assert.equal(await mobileMenu.getAttribute('aria-expanded'), 'true', 'Mobile navigation must open from the keyboard');
+    await sitePage.locator('[data-site-nav] a[href="/about/"]').click();
+    assert(sitePage.url().endsWith('/about/'), 'Mobile navigation must reach the About page');
+    assert.deepEqual(sitePageErrors, [], `Hosted institutional routes had uncaught errors: ${sitePageErrors.join('; ')}`);
+    report.hostedAcceptance.siteRoutes = siteRoutes;
+    report.hostedAcceptance.mobileNavigation = true;
   } finally {
     await context.close();
   }

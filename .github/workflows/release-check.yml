@@ -68,7 +68,7 @@ jobs:
           VNM_PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
           VNM_PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: node scripts/journey-preview-url.mjs
-      - name: Verify hosted Journey media playback and recovery
+      - name: Verify hosted Journey interface, media playback and recovery
         if: steps.journey-preview.outputs.required == 'true'
         run: >-
           npm run journey:media-check --
