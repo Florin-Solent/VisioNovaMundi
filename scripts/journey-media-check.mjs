@@ -618,6 +618,7 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
     await firstVideo.scrollIntoViewIfNeeded();
     const motionButtonText = (await button.textContent()).trim().toLowerCase();
     if (motionButtonText === 'pause clips') await button.click();
+    const priorErrorEventCount = await page.evaluate(() => window.__journeyErrorEvents.length);
     await firstVideo.evaluate(video => {
       video.__journeyNativePlay = HTMLMediaElement.prototype.play;
       video.play = () => Promise.reject(new DOMException('Simulated blocked playback for release QA', 'NotAllowedError'));
@@ -639,8 +640,10 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
       return video && !video.paused && video.dataset.playbackError === undefined && message?.hidden;
     }, undefined, { timeout: 10000 });
     const errorEvents = await page.evaluate(() => window.__journeyErrorEvents);
-    assert.equal(errorEvents.length, 1, 'Playback failure did not emit one diagnostic event');
-    report.errorFallback = { exposed: true, ariaLive: await status.getAttribute('aria-live'), retryRecovered: true, diagnostic: errorEvents[0] };
+    const simulatedFailureEvents = errorEvents.slice(priorErrorEventCount);
+    assert.equal(simulatedFailureEvents.length, 1, 'Simulated playback failure did not emit exactly one diagnostic event');
+    assert.equal(simulatedFailureEvents[0].name, 'NotAllowedError', 'Simulated playback diagnostic did not identify the expected failure');
+    report.errorFallback = { exposed: true, ariaLive: await status.getAttribute('aria-live'), retryRecovered: true, diagnostic: simulatedFailureEvents[0] };
 
     const sitePage = await context.newPage();
     const sitePageErrors = [];
