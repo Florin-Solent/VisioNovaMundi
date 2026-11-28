@@ -806,6 +806,9 @@ const romaniaResponses = [
       .hero-actions .sc-button { flex: 1 1 175px; }
     }
 
+    /* Keep all section copy legible over the translucent blue/teal panels. */
+    .sc-section :is(h2, h3, h4, p, span, strong, small, time) { color: #102a43 !important; }
+
     @media (max-width: 380px) {
       .sc-hero { padding-right: 15px; padding-left: 15px; }
       .sc-hero h1 { font-size: 32px; }
