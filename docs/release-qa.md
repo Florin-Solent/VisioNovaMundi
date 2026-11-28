@@ -63,6 +63,8 @@ QA uses the existing external Playwright version **1.64.0-alpha-1790635538000** 
 npm exec --yes --package=playwright@1.64.0-alpha-1790635538000 -- playwright install chromium
 ```
 
+The release job also provisions **axe-core 4.14.0** as a transient QA tool, verifies its npm archive against a pinned SHA-512 integrity value, then scans every public route at desktop and mobile sizes for the WCAG 2.2 A/AA rule tags. It is extracted under ignored `output/release-qa/` and does not change project dependencies or the lockfile. Any automated violation fails the release check.
+
 The prior CI timing record for 150 cases was about 3 seconds in `npm ci`, 31 seconds provisioning Playwright/Chromium and system packages, under 2 seconds building, and 11 minutes 25 seconds in browser QA. The 10 October 2026 local 162-case run took 17 minutes 56 seconds; browser execution is the dominant cost, while HTTP/static checks are inexpensive and run as part of the build/check process.
 
 In the 10 October 2026 local run, Node **22.14.0 ARM64** with Chromium **155.0.8059.12** passed FULL in **17m56s** (**162 cases, zero failures, 78 internal destinations**) on Windows. A previous local record on Node 22.14.0 passed FAST in 2m52s (14 cases, `/contact/` changed route, 27 internal destinations) and FULL in 20m06s (150 cases, zero failures, 62 internal destinations). Both full runs completed within the retained 25-minute timeout.
@@ -83,7 +85,7 @@ The dependency-security candidate `bc895827c573a3f171e4de935380cdc03318bc1c` pas
 
 The FAST smoke checks include HTTP success, page title/description, one H1, primary navigation, mobile menu, keyboard Enter/Escape/focus return, horizontal overflow, console errors, first-party resource settlement, changed-page assets, internal destinations, and obvious staging/local URLs. No page forms are submitted. Three.js/WebGL checks run in FULL mode; changed pages that affect runtime behavior escalate to FULL.
 
-Headless Chromium uses software WebGL for repeatable draw checks. Emulated touch/mobile and reduced motion are smoke checks, not physical-device, GPU, visual-design, accessibility-audit, or performance certification. Input delivery does not prove subjective scene usability. Third-party request failures are not treated as first-party failures; console errors fail conservatively. Static URL checks inspect generated HTML href/src attributes and do not audit arbitrary strings in bundled code.
+Headless Chromium uses software WebGL for repeatable draw checks. Emulated touch/mobile and reduced motion are smoke checks, not physical-device or GPU acceptance. axe-core checks an automated WCAG rule subset; it is not formal accessibility certification or a substitute for manual assistive-technology review. Input delivery does not prove subjective scene usability. Third-party request failures are not treated as first-party failures; console errors fail conservatively. Static URL checks inspect generated HTML href/src attributes and do not audit arbitrary strings in bundled code.
 
 Normal page publishing uses Cloudflare Pages. A `master` update triggers its production build; any publication or merge requires explicit release approval. Vercel is being retired and must not receive routine Git updates.
 

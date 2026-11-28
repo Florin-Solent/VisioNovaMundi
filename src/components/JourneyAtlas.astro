@@ -34,11 +34,7 @@ const destinations = atlasData.destinations.map((destination: any) => ({
   ...destination,
   xy: project(destination.coordinates),
   years: destination.years || [],
-  evidenceSummary: [
-    ...(destination.archive?.albumEvidence || []).map((item: any) => item.captureDate ? `photo capture ${item.captureDate}` : item.photoRecordDate ? `Facebook photo record ${item.photoRecordDate}` : item.dateRange ? `album ${item.dateRange}` : ""),
-    ...(destination.archive?.mediaPostEvidence || []).flatMap((item: any) => [item.postDate && `post ${item.postDate}`, item.captureDate && `photo ${item.captureDate}`].filter(Boolean)),
-  ].filter(Boolean).join("; "),
-  searchable: `${destination.name} ${destination.continent} ${destination.countryCode} ${(destination.archive?.checkInLabels || []).join(" ")} ${(destination.archive?.albumEvidence || []).map((item: any) => item.album).join(" ")}`.toLowerCase(),
+  searchable: `${destination.name} ${destination.continent} ${destination.countryLabel || destination.countryCode}`.toLowerCase(),
 }));
 const recordedCountries = new Set(destinations.map((destination: any) => destination.countryCode));
 const countryNames = new Map(countryData.features.map((feature: any) => [feature.properties.iso3, feature.properties.name]));
@@ -72,7 +68,7 @@ const graticules = [
   <header class="atlas-heading">
     <p class="atlas-eyebrow">A personal archive · 2010–2026</p>
     <h2 id="atlas-title">Places, held in memory</h2>
-        <p class="atlas-intro">Explore places recorded in the archive, with each date identified as a post date, a photo date or a location label.</p>
+        <p class="atlas-intro">Explore places represented in the journey. Year labels are archive references and do not independently confirm a visit.</p>
   </header>
 
   <div class="atlas-toolbar" aria-label="Filter places in the archive">
@@ -114,8 +110,8 @@ const graticules = [
     <div class="atlas-map-panel">
       <div class="atlas-map-frame">
         <svg class="atlas-map" viewBox={`0 0 ${width} ${height}`} role="group" aria-labelledby="atlas-map-title atlas-map-description" data-atlas-map>
-          <title id="atlas-map-title">World map of places recorded in the travel archive</title>
-          <desc id="atlas-map-description">A Natural Earth projection with country outlines and individual location markers. Select a marker or a place in the index to zoom to its location. Archive dates are not automatically treated as visit dates.</desc>
+          <title id="atlas-map-title">World map of places represented in the journey</title>
+          <desc id="atlas-map-description">A Natural Earth projection with country outlines and individual location markers. Select a marker or a place in the index to zoom to its location. Year labels do not independently confirm a visit.</desc>
           <rect class="atlas-ocean" x="0" y="0" width={width} height={height} />
           <g class="atlas-graticules" aria-hidden="true">{graticules.map((d) => <path d={d} />)}</g>
           <g class="atlas-country-layer" aria-label="Country boundaries">
@@ -129,7 +125,7 @@ const graticules = [
           </g>
           <g class="atlas-marker-layer" aria-label="Archive place markers">
             {destinations.map((destination: any) => (
-              <a class="atlas-marker" href={`#atlas-story-${destination.id}`} aria-label={`Select ${destination.name}, ${destination.years.length ? `archive years ${destination.years.join(", ")}` : "date not available"}`} data-atlas-marker={destination.id} data-name={destination.name} data-search={destination.searchable} data-country-code={destination.countryCode} data-continent={destination.continent} data-years={destination.years.join(" ")} data-evidence={destination.evidenceSummary || destination.archive?.dateBasis || "Location reference only; date not confirmed"} data-x={destination.xy[0].toFixed(1)} data-y={destination.xy[1].toFixed(1)}>
+              <a class="atlas-marker" href={`#atlas-story-${destination.id}`} aria-label={`Select ${destination.name}, ${destination.years.length ? `archive reference years ${destination.years.join(", ")}` : "year not available"}`} data-atlas-marker={destination.id} data-name={destination.name} data-search={destination.searchable} data-country-code={destination.countryCode} data-continent={destination.continent} data-years={destination.years.join(" ")} data-evidence="Place reference only; a year label does not confirm a visit" data-x={destination.xy[0].toFixed(1)} data-y={destination.xy[1].toFixed(1)}>
                 <circle class="atlas-marker-hit" cx={destination.xy[0]} cy={destination.xy[1]} r="14" />
                 <circle class="atlas-marker-glow" cx={destination.xy[0]} cy={destination.xy[1]} r="7" />
                 <circle class="atlas-marker-dot" cx={destination.xy[0]} cy={destination.xy[1]} r="3.2" />
@@ -152,15 +148,15 @@ const graticules = [
       <p class="atlas-eyebrow">Selected place</p>
       <h3 data-atlas-selected-name>Choose a marker</h3>
       <p class="atlas-selected-meta" data-atlas-selected-meta>Use a map marker or browse the destination index.</p>
-      <p data-atlas-selected-note>Archive post dates and photo capture dates are shown separately. A location tag by itself does not establish a visit date.</p>
+      <p data-atlas-selected-note>A place reference or year label does not by itself establish a visit date or a specific attraction.</p>
       <a class="atlas-story-link" data-atlas-story-link href="#atlas-stories" hidden>Read this city chapter <span aria-hidden="true">↗</span></a>
     </aside>
   </div>
 
   <div class="atlas-bottom-row">
     <details class="atlas-index-details">
-      <summary>Browse the {destinations.length}-place archive index</summary>
-      <div class="atlas-index-tools"><p>Choose a place to zoom in and review its archive evidence.</p><p class="atlas-results-count" data-atlas-count aria-live="polite"></p></div>
+      <summary>Browse the {destinations.length}-place index</summary>
+      <div class="atlas-index-tools"><p>Choose a place to zoom in and explore its chapter.</p><p class="atlas-results-count" data-atlas-count aria-live="polite"></p></div>
       <ul class="atlas-index" data-atlas-index>
         {destinations.map((destination: any) => (
           <li data-atlas-index-item data-name={destination.name} data-search={destination.searchable} data-country-code={destination.countryCode} data-continent={destination.continent} data-years={destination.years.join(" ")}>
@@ -173,14 +169,14 @@ const graticules = [
       </ul>
       <p class="atlas-empty" data-atlas-empty hidden>No places match those filters.</p>
     </details>
-    <p class="atlas-evidence-note"><strong>Reading the dates:</strong> years beside markers refer to archive evidence. For videos without capture timestamps, the map uses the Facebook post date and labels it as such. Dates in the index do not by themselves prove the exact day of a visit.</p>
+    <p class="atlas-evidence-note"><strong>Reading the dates:</strong> year labels identify the supporting record period; they do not establish an exact travel date or confirm entry to a listed attraction.</p>
   </div>
 
   <section class="atlas-stories" id="atlas-stories" aria-labelledby="atlas-stories-title">
     <div class="atlas-stories-heading">
       <p class="atlas-eyebrow">Cultural chapters · places and perspectives</p>
       <h3 id="atlas-stories-title">The archive opens a door</h3>
-      <p>Each chapter begins with what my archive records. Place history adds context; I leave memories, meals and moments the files cannot prove to my own recollection.</p>
+      <p>Each chapter pairs cultural context with carefully bounded personal evidence. A city reference does not claim a specific visit, meal or attraction unless the experience is supported.</p>
     </div>
     {cityStories.map((story: any, index: number) => (
       <article class="atlas-story" id={`atlas-story-${story.id}`}>

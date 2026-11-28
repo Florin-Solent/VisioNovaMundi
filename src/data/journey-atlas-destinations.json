@@ -1,5 +1,5 @@
 {
-  "dataset": "Natural Earth 10m populated places + owner archive evidence",
+  "dataset": "Natural Earth populated places",
   "citation": "https://www.naturalearthdata.com/downloads/10m-cultural-vectors/10m-populated-places/ ; https://github.com/nvkelso/natural-earth-vector/tree/master/geojson",
   "destinations": [
     {
@@ -12,38 +12,7 @@
         21.223448,
         45.758821
       ],
-      "years": [],
-      "archive": {
-        "postCount": 0,
-        "checkInLabels": [
-          "Timișoara"
-        ],
-        "mediaPostEvidence": [],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset",
-        "albumEvidence": [
-          {
-            "album": "Timișoara",
-            "photoRecordDate": "2012-05-28"
-          },
-          {
-            "album": "Timișoara",
-            "photoRecordDate": "2012-09-10"
-          },
-          {
-            "album": "Timișoara",
-            "photoRecordDate": "2012-10-25"
-          },
-          {
-            "album": "Parcul copiilor Timisoara",
-            "photoRecordDate": "2012-06-29"
-          },
-          {
-            "album": "Timișoara",
-            "photoRecordDate": "2013-04-11"
-          }
-        ],
-        "dateBasis": "Facebook album/photo record timestamps from 2012–2013. These are platform record dates, not EXIF capture dates or independently confirmed travel dates."
-      }
+      "years": []
     },
     {
       "id": "szeged",
@@ -57,13 +26,7 @@
       ],
       "years": [
         "2013"
-      ],
-      "archive": {
-        "postCount": 0,
-        "checkInLabels": [],
-        "mediaPostEvidence": [],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "london",
@@ -86,75 +49,7 @@
         "2023",
         "2024",
         "2025"
-      ],
-      "archive": {
-        "postCount": 6,
-        "checkInLabels": [
-          "Crystal Palace, London",
-          "Little Venice, London",
-          "Londra",
-          "Wembley, Brent, United Kingdom"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2015-06-23",
-            "placeLabels": [
-              "London area · Edgware"
-            ],
-            "mediaCount": 1,
-            "dateBasis": "Private editorial index lists matching photo capture and post dates of 23 June 2015; specific visit details remain unconfirmed."
-          },
-          {
-            "postDate": "2018-11-12",
-            "placeLabels": [
-              "Shard View, London Bridge"
-            ],
-            "mediaCount": 1,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2019-05-16",
-            "placeLabels": [
-              "Canary Wharf London City"
-            ],
-            "mediaCount": 1,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2020-07-06",
-            "placeLabels": [
-              "Waterloo London"
-            ],
-            "mediaCount": 1,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2020-12-08",
-            "placeLabels": [
-              "Canary Wharf London City"
-            ],
-            "mediaCount": 5,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2024-03-16",
-            "placeLabels": [
-              "Little Venice, London"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2024-10-14",
-            "placeLabels": [
-              "Londra"
-            ],
-            "mediaCount": 0,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "ulm",
@@ -170,73 +65,7 @@
         "2016",
         "2017",
         "2018"
-      ],
-      "archive": {
-        "postCount": 7,
-        "checkInLabels": [
-          "Neu-Ulm",
-          "Ulm"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2016-09-19",
-            "placeLabels": [
-              "Ulm"
-            ],
-            "mediaCount": 1,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2016-09-24",
-            "placeLabels": [
-              "Domul din Ulm"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2016-12-24",
-            "placeLabels": [
-              "Neu-Ulm"
-            ],
-            "mediaCount": 1,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2016-12-31",
-            "placeLabels": [
-              "Neu-Ulm"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2017-04-09",
-            "placeLabels": [
-              "Fort Oberer Kuhberg"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2018-02-07",
-            "placeLabels": [
-              "Ulm Minster"
-            ],
-            "mediaCount": 1,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2018-03-02",
-            "placeLabels": [
-              "Neu-Ulm"
-            ],
-            "mediaCount": 1,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "paris",
@@ -250,64 +79,7 @@
       ],
       "years": [
         "2018"
-      ],
-      "archive": {
-        "postCount": 6,
-        "checkInLabels": [
-          "Paris"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2018-11-20",
-            "placeLabels": [
-              "Cathédrale Notre-Dame de Paris"
-            ],
-            "mediaCount": 1,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2018-11-20",
-            "placeLabels": [
-              "St Michel, Paris France"
-            ],
-            "mediaCount": 1,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2018-11-20",
-            "placeLabels": [
-              "Louvre Pyramid"
-            ],
-            "mediaCount": 1,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2018-11-20",
-            "placeLabels": [
-              "Tour Eiffel"
-            ],
-            "mediaCount": 1,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2018-11-21",
-            "placeLabels": [
-              "Arc de Triomphe"
-            ],
-            "mediaCount": 1,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2018-11-24",
-            "placeLabels": [
-              "Basilica du Sacre-Coeur de Montmartre"
-            ],
-            "mediaCount": 1,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "versailles",
@@ -321,24 +93,7 @@
       ],
       "years": [
         "2018"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Versailles"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2018-11-20",
-            "placeLabels": [
-              "Versailles Palace Paris"
-            ],
-            "mediaCount": 1,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "amsterdam",
@@ -352,24 +107,7 @@
       ],
       "years": [
         "2018"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Amsterdam"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2018-12-12",
-            "placeLabels": [
-              "Central Amsterdam"
-            ],
-            "mediaCount": 18,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "edinburgh",
@@ -383,40 +121,7 @@
       ],
       "years": [
         "2019"
-      ],
-      "archive": {
-        "postCount": 3,
-        "checkInLabels": [
-          "Edinburgh"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2019-03-15",
-            "placeLabels": [
-              "Edinburgh, Scotland"
-            ],
-            "mediaCount": 12,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2019-03-17",
-            "placeLabels": [
-              "Mamma's Edinburgh"
-            ],
-            "mediaCount": 1,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2019-03-21",
-            "placeLabels": [
-              "Camera Obscura and World of Illusions"
-            ],
-            "mediaCount": 19,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "glasgow",
@@ -430,22 +135,7 @@
       ],
       "years": [
         "2020"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2020-12-21",
-            "placeLabels": [
-              "Glasgow, Scotland, UK"
-            ],
-            "mediaCount": 26,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "belfast",
@@ -459,24 +149,7 @@
       ],
       "years": [
         "2020"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Belfast"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2020-12-23",
-            "placeLabels": [
-              "Belfast, Northern Ireland, UK"
-            ],
-            "mediaCount": 19,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "dublin",
@@ -490,24 +163,7 @@
       ],
       "years": [
         "2020"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Dublin"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2020-12-27",
-            "placeLabels": [
-              "Dublin"
-            ],
-            "mediaCount": 17,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "oxford",
@@ -522,24 +178,7 @@
       "years": [
         "2019",
         "2021"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Oxford"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2021-11-08",
-            "placeLabels": [
-              "University of Oxford"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "cambridge",
@@ -553,22 +192,7 @@
       ],
       "years": [
         "2019"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2019-11-15",
-            "placeLabels": [
-              "University of Cambridge"
-            ],
-            "mediaCount": 1,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "copenhagen",
@@ -582,24 +206,7 @@
       ],
       "years": [
         "2022"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Copenhaga"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2022-07-02",
-            "placeLabels": [
-              "Copenhaga"
-            ],
-            "mediaCount": 8,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "kolding",
@@ -613,24 +220,7 @@
       ],
       "years": [
         "2022"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Kolding"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2022-06-29",
-            "placeLabels": [
-              "Kolding"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "manual fallback coordinate for a locality omitted from Natural Earth populated-place list"
-      }
+      ]
     },
     {
       "id": "frankfurt",
@@ -644,24 +234,7 @@
       ],
       "years": [
         "2022"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Frankfurt pe Main"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2022-07-11",
-            "placeLabels": [
-              "Frankfurt pe Main"
-            ],
-            "mediaCount": 4,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "klagenfurt",
@@ -675,15 +248,7 @@
       ],
       "years": [
         "2022"
-      ],
-      "archive": {
-        "postCount": 0,
-        "checkInLabels": [
-          "Klagenfurt am Wörthersee"
-        ],
-        "mediaPostEvidence": [],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "ljubljana",
@@ -697,24 +262,7 @@
       ],
       "years": [
         "2022"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Ljubljana"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2022-07-30",
-            "placeLabels": [
-              "Ljubljana"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "bled",
@@ -728,24 +276,7 @@
       ],
       "years": [
         "2022"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Bled"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2022-08-07",
-            "placeLabels": [
-              "Lake Bled"
-            ],
-            "mediaCount": 4,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "manual fallback coordinate for a locality omitted from Natural Earth populated-place list"
-      }
+      ]
     },
     {
       "id": "kranjska-gora",
@@ -759,24 +290,7 @@
       ],
       "years": [
         "2022"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Kranjska Gora"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2022-07-24",
-            "placeLabels": [
-              "Jezero Jasna / Lake Jasna"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "manual fallback coordinate for a locality omitted from Natural Earth populated-place list"
-      }
+      ]
     },
     {
       "id": "prague",
@@ -791,32 +305,7 @@
       "years": [
         "2022",
         "2023"
-      ],
-      "archive": {
-        "postCount": 2,
-        "checkInLabels": [
-          "Praga"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2022-12-31",
-            "placeLabels": [
-              "Praga"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2023-01-04",
-            "placeLabels": [
-              "Praga"
-            ],
-            "mediaCount": 12,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "warsaw",
@@ -830,24 +319,7 @@
       ],
       "years": [
         "2022"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Varșovia"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2022-12-29",
-            "placeLabels": [
-              "Varșovia"
-            ],
-            "mediaCount": 12,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "new-york",
@@ -861,15 +333,7 @@
       ],
       "years": [
         "2022"
-      ],
-      "archive": {
-        "postCount": 0,
-        "checkInLabels": [
-          "New York (oraș)"
-        ],
-        "mediaPostEvidence": [],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "trieste",
@@ -883,24 +347,7 @@
       ],
       "years": [
         "2022"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Triest"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2022-07-19",
-            "placeLabels": [
-              "Triest"
-            ],
-            "mediaCount": 6,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "athens",
@@ -914,22 +361,7 @@
       ],
       "years": [
         "2023"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2023-09-29",
-            "placeLabels": [
-              "Atena"
-            ],
-            "mediaCount": 3,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "barcelona",
@@ -943,22 +375,7 @@
       ],
       "years": [
         "2023"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2023-10-02",
-            "placeLabels": [
-              "Barcelona"
-            ],
-            "mediaCount": 3,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "benidorm",
@@ -972,24 +389,7 @@
       ],
       "years": [
         "2023"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Benidorm"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2023-10-05",
-            "placeLabels": [
-              "Benidorm"
-            ],
-            "mediaCount": 3,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "manual fallback coordinate for a locality omitted from Natural Earth populated-place list"
-      }
+      ]
     },
     {
       "id": "tirana",
@@ -1003,22 +403,7 @@
       ],
       "years": [
         "2023"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2023-09-15",
-            "placeLabels": [
-              "Tirana"
-            ],
-            "mediaCount": 3,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "saranda",
@@ -1032,24 +417,7 @@
       ],
       "years": [
         "2023"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Saranda"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2023-09-22",
-            "placeLabels": [
-              "Saranda"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "himare",
@@ -1063,24 +431,7 @@
       ],
       "years": [
         "2023"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Himara"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2023-09-18",
-            "placeLabels": [
-              "Himara"
-            ],
-            "mediaCount": 3,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "manual fallback coordinate for a locality omitted from Natural Earth populated-place list"
-      }
+      ]
     },
     {
       "id": "ksamil",
@@ -1094,22 +445,7 @@
       ],
       "years": [
         "2023"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2023-09-25",
-            "placeLabels": [
-              "Ksamil Islands"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "manual fallback coordinate for a locality omitted from Natural Earth populated-place list"
-      }
+      ]
     },
     {
       "id": "porto",
@@ -1123,24 +459,7 @@
       ],
       "years": [
         "2023"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Porto"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2023-11-03",
-            "placeLabels": [
-              "Porto"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "lisbon",
@@ -1154,24 +473,7 @@
       ],
       "years": [
         "2023"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Lisabona"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2023-10-30",
-            "placeLabels": [
-              "Lisabona"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "almada",
@@ -1185,24 +487,7 @@
       ],
       "years": [
         "2023"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Almada"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2023-11-01",
-            "placeLabels": [
-              "Santuário Nacional de Cristo Rei"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "manual fallback coordinate for a locality omitted from Natural Earth populated-place list"
-      }
+      ]
     },
     {
       "id": "faro",
@@ -1216,24 +501,7 @@
       ],
       "years": [
         "2023"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Faro"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2023-10-28",
-            "placeLabels": [
-              "Faro"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "casablanca",
@@ -1248,32 +516,7 @@
       "years": [
         "2023",
         "2024"
-      ],
-      "archive": {
-        "postCount": 2,
-        "checkInLabels": [
-          "Casablanca"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2023-02-08",
-            "placeLabels": [
-              "Casablanca"
-            ],
-            "mediaCount": 4,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2024-01-22",
-            "placeLabels": [
-              "Casablanca"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "marrakech",
@@ -1287,48 +530,7 @@
       ],
       "years": [
         "2023"
-      ],
-      "archive": {
-        "postCount": 4,
-        "checkInLabels": [
-          "Marrakech"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2023-02-11",
-            "placeLabels": [
-              "Marrakech"
-            ],
-            "mediaCount": 5,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2023-02-15",
-            "placeLabels": [
-              "Chez Ali"
-            ],
-            "mediaCount": 6,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2023-12-27",
-            "placeLabels": [
-              "Marrakech"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2023-12-30",
-            "placeLabels": [
-              "La Pergola Marrakech"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "tangier",
@@ -1342,24 +544,7 @@
       ],
       "years": [
         "2024"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Tanger"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2024-01-14",
-            "placeLabels": [
-              "Tanger"
-            ],
-            "mediaCount": 3,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "rabat",
@@ -1373,24 +558,7 @@
       ],
       "years": [
         "2024"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Rabat"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2024-01-18",
-            "placeLabels": [
-              "Rabat"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "fes",
@@ -1404,24 +572,7 @@
       ],
       "years": [
         "2024"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Fes"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2024-01-11",
-            "placeLabels": [
-              "Fes"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "asni",
@@ -1435,32 +586,7 @@
       ],
       "years": [
         "2024"
-      ],
-      "archive": {
-        "postCount": 2,
-        "checkInLabels": [
-          "Asni"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2024-01-06",
-            "placeLabels": [
-              "Mount Toubkal summit 4,167m"
-            ],
-            "mediaCount": 3,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2024-01-08",
-            "placeLabels": [
-              "Cascade Imlil"
-            ],
-            "mediaCount": 3,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "manual fallback coordinate for a locality omitted from Natural Earth populated-place list"
-      }
+      ]
     },
     {
       "id": "ouzooud",
@@ -1474,22 +600,7 @@
       ],
       "years": [
         "2024"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2024-11-06",
-            "placeLabels": [
-              "Ouzoud, Azilal, Morocco"
-            ],
-            "mediaCount": 3,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "manual fallback coordinate for a locality omitted from Natural Earth populated-place list"
-      }
+      ]
     },
     {
       "id": "istanbul",
@@ -1503,24 +614,7 @@
       ],
       "years": [
         "2023"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Istanbul"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2023-03-27",
-            "placeLabels": [
-              "Hagia Sophia Istanbul"
-            ],
-            "mediaCount": 5,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "cairo",
@@ -1534,24 +628,7 @@
       ],
       "years": [
         "2024"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Cairo"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2024-02-09",
-            "placeLabels": [
-              "Cairo"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "giza",
@@ -1565,24 +642,7 @@
       ],
       "years": [
         "2024"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Giza"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2024-01-27",
-            "placeLabels": [
-              "Giza"
-            ],
-            "mediaCount": 3,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "alexandria-egypt",
@@ -1596,24 +656,7 @@
       ],
       "years": [
         "2024"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Alexandria, Egipt"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2024-02-01",
-            "placeLabels": [
-              "Alexandria, Egipt"
-            ],
-            "mediaCount": 3,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "manual fallback coordinate for a locality omitted from Natural Earth populated-place list"
-      }
+      ]
     },
     {
       "id": "luxor",
@@ -1627,24 +670,7 @@
       ],
       "years": [
         "2024"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Luxor"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2024-02-13",
-            "placeLabels": [
-              "Luxor"
-            ],
-            "mediaCount": 4,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "abu-dhabi",
@@ -1658,30 +684,7 @@
       ],
       "years": [
         "2024"
-      ],
-      "archive": {
-        "postCount": 2,
-        "checkInLabels": [],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2024-02-16",
-            "placeLabels": [
-              "Abu Dhabi Shaikh Zayed Mosque"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2024-02-19",
-            "placeLabels": [
-              "Abu Dhabi"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "dubai",
@@ -1695,32 +698,7 @@
       ],
       "years": [
         "2024"
-      ],
-      "archive": {
-        "postCount": 2,
-        "checkInLabels": [
-          "Dubai"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2024-02-22",
-            "placeLabels": [
-              "Dubai"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2024-02-27",
-            "placeLabels": [
-              "Global Village"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "larnaca",
@@ -1734,24 +712,7 @@
       ],
       "years": [
         "2024"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Larnaca"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2024-03-08",
-            "placeLabels": [
-              "Larnaca"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "manual fallback coordinate for a locality omitted from Natural Earth populated-place list"
-      }
+      ]
     },
     {
       "id": "valletta",
@@ -1765,22 +726,7 @@
       ],
       "years": [
         "2024"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2024-12-29",
-            "placeLabels": [
-              "Valletta"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "mdina",
@@ -1794,22 +740,7 @@
       ],
       "years": [
         "2024"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2024-12-30",
-            "placeLabels": [
-              "St. Paul's Cathedral, Mdina"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "manual fallback coordinate for a locality omitted from Natural Earth populated-place list"
-      }
+      ]
     },
     {
       "id": "venice",
@@ -1823,24 +754,7 @@
       ],
       "years": [
         "2025"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Veneția"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2025-02-03",
-            "placeLabels": [
-              "Veneția"
-            ],
-            "mediaCount": 4,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "bologna",
@@ -1854,22 +768,7 @@
       ],
       "years": [
         "2025"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2025-02-05",
-            "placeLabels": [
-              "Bologna"
-            ],
-            "mediaCount": 3,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "florence",
@@ -1883,22 +782,7 @@
       ],
       "years": [
         "2025"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2025-02-09",
-            "placeLabels": [
-              "Florența"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "san-marino",
@@ -1912,22 +796,7 @@
       ],
       "years": [
         "2025"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2025-02-11",
-            "placeLabels": [
-              "San Marino"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "nice",
@@ -1941,22 +810,7 @@
       ],
       "years": [
         "2025"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2025-07-25",
-            "placeLabels": [
-              "Nisa"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "cannes",
@@ -1970,24 +824,7 @@
       ],
       "years": [
         "2025"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Cannes"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2025-07-27",
-            "placeLabels": [
-              "Cannes"
-            ],
-            "mediaCount": 3,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "manual fallback coordinate for a locality omitted from Natural Earth populated-place list"
-      }
+      ]
     },
     {
       "id": "saint-tropez",
@@ -2001,24 +838,7 @@
       ],
       "years": [
         "2025"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Saint-Tropez"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2025-07-31",
-            "placeLabels": [
-              "Saint-Tropez"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "manual fallback coordinate for a locality omitted from Natural Earth populated-place list"
-      }
+      ]
     },
     {
       "id": "monaco",
@@ -2032,30 +852,7 @@
       ],
       "years": [
         "2025"
-      ],
-      "archive": {
-        "postCount": 2,
-        "checkInLabels": [],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2025-07-22",
-            "placeLabels": [
-              "Monte-Carlo, Monaco"
-            ],
-            "mediaCount": 3,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2025-07-23",
-            "placeLabels": [
-              "Monaco"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "split",
@@ -2069,24 +866,7 @@
       ],
       "years": [
         "2025"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Split"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2025-08-26",
-            "placeLabels": [
-              "Split"
-            ],
-            "mediaCount": 3,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "supetar",
@@ -2100,22 +880,7 @@
       ],
       "years": [
         "2025"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2025-08-28",
-            "placeLabels": [
-              "Supetar, Brac, Croatia"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "manual fallback coordinate for a locality omitted from Natural Earth populated-place list"
-      }
+      ]
     },
     {
       "id": "mostar",
@@ -2129,24 +894,7 @@
       ],
       "years": [
         "2025"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Mostar"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2025-08-30",
-            "placeLabels": [
-              "The Old Bridge, Mostar, Bosnia and Herzegovina"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "kravice",
@@ -2160,22 +908,7 @@
       ],
       "years": [
         "2025"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2025-09-02",
-            "placeLabels": [
-              "Kravice Waterfalls, Bosnia"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "manual fallback coordinate for a locality omitted from Natural Earth populated-place list"
-      }
+      ]
     },
     {
       "id": "dubrovnik",
@@ -2189,22 +922,7 @@
       ],
       "years": [
         "2025"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2025-09-04",
-            "placeLabels": [
-              "Dubrovnik"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "kotor",
@@ -2218,24 +936,7 @@
       ],
       "years": [
         "2025"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Kotor"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2025-09-06",
-            "placeLabels": [
-              "Kotor"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "manual fallback coordinate for a locality omitted from Natural Earth populated-place list"
-      }
+      ]
     },
     {
       "id": "budva",
@@ -2249,24 +950,7 @@
       ],
       "years": [
         "2025"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Budva"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2025-09-09",
-            "placeLabels": [
-              "Budva"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "manual fallback coordinate for a locality omitted from Natural Earth populated-place list"
-      }
+      ]
     },
     {
       "id": "tunis",
@@ -2280,24 +964,7 @@
       ],
       "years": [
         "2025"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Tunis"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2025-11-26",
-            "placeLabels": [
-              "Tunis"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "Natural Earth 10m populated places, pinned dataset"
-      }
+      ]
     },
     {
       "id": "sidi-bou-said",
@@ -2311,24 +978,7 @@
       ],
       "years": [
         "2025"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Sidi Bou Saïd"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2025-11-28",
-            "placeLabels": [
-              "Sidi Bou Saïd"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "manual fallback coordinate for a locality omitted from Natural Earth populated-place list"
-      }
+      ]
     },
     {
       "id": "las-palmas",
@@ -2342,32 +992,7 @@
       ],
       "years": [
         "2026"
-      ],
-      "archive": {
-        "postCount": 2,
-        "checkInLabels": [
-          "Las Palmas de Gran Canaria"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2026-02-02",
-            "placeLabels": [
-              "Plaza De Santa Ana, Vegueta, Las Palmas De Gran Canaria"
-            ],
-            "mediaCount": 3,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          },
-          {
-            "postDate": "2026-02-04",
-            "placeLabels": [
-              "Las Palmas de Gran Canaria"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "manual fallback coordinate for a locality omitted from Natural Earth populated-place list"
-      }
+      ]
     },
     {
       "id": "la-laguna",
@@ -2381,24 +1006,7 @@
       ],
       "years": [
         "2026"
-      ],
-      "archive": {
-        "postCount": 2,
-        "checkInLabels": [
-          "San Cristóbal de La Laguna"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2026-02-10",
-            "placeLabels": [
-              "San Cristóbal de La Laguna"
-            ],
-            "mediaCount": 3,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata"
-          }
-        ],
-        "coordinateSource": "manual fallback coordinate for a locality omitted from Natural Earth populated-place list"
-      }
+      ]
     },
     {
       "id": "flensburg",
@@ -2413,16 +1021,7 @@
       "years": [
         "2025"
       ],
-      "evidenceSummary": "The derived place index groups Flensburg and Glücksburg labels with several 2025 dates; it does not bind each date or media item to one town.",
-      "archive": {
-        "postCount": 2,
-        "checkInLabels": [
-          "Flensburg"
-        ],
-        "mediaPostEvidence": [],
-        "coordinateSource": "Approximate city-centre reference from the private editorial index; not a camera location.",
-        "dateBasis": "Place label is grouped with Glücksburg in the derived index; exact post-to-town association remains unresolved."
-      }
+      "evidenceSummary": "The derived place index groups Flensburg and Glücksburg labels with several 2025 dates; it does not bind each date or media item to one town."
     },
     {
       "id": "gluecksburg",
@@ -2437,16 +1036,7 @@
       "years": [
         "2025"
       ],
-      "evidenceSummary": "The derived place index groups Flensburg and Glücksburg labels with several 2025 dates; it does not bind each date or media item to one town.",
-      "archive": {
-        "postCount": 2,
-        "checkInLabels": [
-          "Glücksburg"
-        ],
-        "mediaPostEvidence": [],
-        "coordinateSource": "Approximate town-centre reference based on public place data; not a camera location.",
-        "dateBasis": "Place label is grouped with Flensburg in the derived index; exact post-to-town association remains unresolved."
-      }
+      "evidenceSummary": "The derived place index groups Flensburg and Glücksburg labels with several 2025 dates; it does not bind each date or media item to one town."
     },
     {
       "id": "tenerife",
@@ -2461,25 +1051,7 @@
       "years": [
         "2026"
       ],
-      "evidenceSummary": "The archive label names Tenerife generally; this island-level marker is approximate and does not assign the post to a city.",
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Tenerife Canarias"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2026-02-07",
-            "placeLabels": [
-              "Tenerife Canarias"
-            ],
-            "mediaCount": 3,
-            "dateBasis": "Facebook post date; capture date not present in the video metadata. Island-level label only."
-          }
-        ],
-        "coordinateSource": "Approximate island-centre reference; not a camera location.",
-        "dateBasis": "Island-level location label; exact city and visit date not confirmed."
-      }
+      "evidenceSummary": "The archive label names Tenerife generally; this island-level marker is approximate and does not assign the post to a city."
     },
     {
       "id": "parcul-copiilor-timisoara",
@@ -2491,22 +1063,7 @@
         21.23639,
         45.75222
       ],
-      "years": [],
-      "archive": {
-        "postCount": 0,
-        "checkInLabels": [
-          "Parcul copiilor Timisoara"
-        ],
-        "mediaPostEvidence": [],
-        "albumEvidence": [
-          {
-            "album": "Parcul copiilor Timisoara",
-            "photoRecordDate": "2012-06-29"
-          }
-        ],
-        "coordinateSource": "Approximate park coordinate from public map data; album title supplies the place label, not camera GPS.",
-        "dateBasis": "Facebook album/photo record timestamp; no EXIF capture date is present in the reviewed album export, so the location remains undated."
-      }
+      "years": []
     },
     {
       "id": "edgware",
@@ -2520,25 +1077,7 @@
       ],
       "years": [
         "2015"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Edgware, UK"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2015-06-23",
-            "captureDate": "2015-06-23",
-            "placeLabels": [
-              "Edgware, UK"
-            ],
-            "mediaCount": 1,
-            "dateBasis": "Post date and photo taken timestamp; location tag is evidence of a labelled post, not proof of a journey or attraction."
-          }
-        ],
-        "coordinateSource": "Facebook location tag coordinates in owner-authored post."
-      }
+      ]
     },
     {
       "id": "cascada-bigar",
@@ -2552,20 +1091,7 @@
       ],
       "years": [
         "2014"
-      ],
-      "archive": {
-        "postCount": 0,
-        "checkInLabels": [],
-        "mediaPostEvidence": [],
-        "albumEvidence": [
-          {
-            "album": "Cascada Bigăr",
-            "captureDate": "2014-08-30"
-          }
-        ],
-        "coordinateSource": "Approximate public visitor-place coordinate; album title provides place label, not camera GPS.",
-        "dateBasis": "Album/media date indexed as 30 August 2014; trip day not independently confirmed."
-      }
+      ]
     },
     {
       "id": "carbunari-sopotu-nou",
@@ -2579,20 +1105,7 @@
       ],
       "years": [
         "2014"
-      ],
-      "archive": {
-        "postCount": 0,
-        "checkInLabels": [],
-        "mediaPostEvidence": [],
-        "albumEvidence": [
-          {
-            "album": "Cărbunari - Șopotu Nou",
-            "captureDate": "2014-08-30"
-          }
-        ],
-        "coordinateSource": "Approximate regional anchor from municipal geography; not an exact camera location.",
-        "dateBasis": "Album/media date indexed as 30 August 2014; exact viewpoints remain unknown."
-      }
+      ]
     },
     {
       "id": "baile-herculane",
@@ -2606,20 +1119,7 @@
       ],
       "years": [
         "2014"
-      ],
-      "archive": {
-        "postCount": 0,
-        "checkInLabels": [],
-        "mediaPostEvidence": [],
-        "albumEvidence": [
-          {
-            "album": "Herculane",
-            "captureDate": "2014-09-28"
-          }
-        ],
-        "coordinateSource": "Municipality location coordinate; album identifies town, not the photographed building.",
-        "dateBasis": "Album/media date indexed as 28 September 2014; precise visit day not independently confirmed."
-      }
+      ]
     },
     {
       "id": "stonehenge",
@@ -2633,25 +1133,7 @@
       ],
       "years": [
         "2021"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Stonehenge Visitor Centre"
-        ],
-        "mediaPostEvidence": [
-          {
-            "postDate": "2021-10-22",
-            "captureDate": "2021-10-22",
-            "placeLabels": [
-              "Stonehenge Visitor Centre"
-            ],
-            "mediaCount": 2,
-            "dateBasis": "Owner-authored location-tagged post and photo taken timestamps; exact site entry is not established by the Visitor Centre label."
-          }
-        ],
-        "coordinateSource": "Approximate archive location coordinate; marker indicates the tag region, not an exact photo position."
-      }
+      ]
     },
     {
       "id": "tower-of-london",
@@ -2665,16 +1147,7 @@
       ],
       "years": [
         "2014"
-      ],
-      "archive": {
-        "postCount": 0,
-        "checkInLabels": [],
-        "mediaPostEvidence": [],
-        "albumEvidence": [],
-        "founderConfirmation": "Founder identified the selected 2014 portrait as taken at the Tower of London.",
-        "dateBasis": "Founder-confirmed year from personal identification; exact visit date not stated.",
-        "coordinateSource": "Approximate public landmark coordinate; not an image GPS fix."
-      }
+      ]
     },
     {
       "id": "bath",
@@ -2688,16 +1161,7 @@
       ],
       "years": [
         "2022"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "The Roman Baths"
-        ],
-        "mediaPostEvidence": [],
-        "coordinateSource": "Natural Earth populated place reference; city-level anchor",
-        "dateBasis": "Owner-authored location-tagged post date; the year is an archive reference, not a verified travel or capture date."
-      }
+      ]
     },
     {
       "id": "cardiff",
@@ -2711,16 +1175,7 @@
       ],
       "years": [
         "2022"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Cardiff Castle, South Wales"
-        ],
-        "mediaPostEvidence": [],
-        "coordinateSource": "Natural Earth populated place reference; city-level anchor",
-        "dateBasis": "Owner-authored location-tagged post date; the year is an archive reference, not a verified travel or capture date."
-      }
+      ]
     },
     {
       "id": "canterbury",
@@ -2734,16 +1189,7 @@
       ],
       "years": [
         "2023"
-      ],
-      "archive": {
-        "postCount": 1,
-        "checkInLabels": [
-          "Canterbury Cathedral"
-        ],
-        "mediaPostEvidence": [],
-        "coordinateSource": "Natural Earth populated place reference; city-level anchor",
-        "dateBasis": "Owner-authored location-tagged post date; the year is an archive reference, not a verified travel or capture date."
-      }
+      ]
     }
   ],
   "countryLabels": [
@@ -2988,5 +1434,5 @@
       ]
     }
   ],
-  "editorialNote": "Archive place and date labels are evidence references, not a complete or verified list of trips. Photo capture timestamps, album/media dates, post dates, location tags and founder recollection are distinguished; none alone confirms every visit or site entry."
+  "editorialNote": "Place references and year labels do not by themselves verify travel or visits to specific attractions."
 }

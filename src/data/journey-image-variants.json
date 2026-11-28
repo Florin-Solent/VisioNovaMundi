@@ -8,19 +8,25 @@
         "src": "/images/journey/quality/carbunari-sopotu-nou-2014-480.webp",
         "width": 480,
         "height": 281,
-        "bytes": 41482
+        "bytes": 27166,
+        "sha256": "5fb1827eab8e22339e03d76cd3bbcf7c8db38a1d0c88846a0443850f6eba6d93",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/quality/carbunari-sopotu-nou-2014-960.webp",
         "width": 960,
         "height": 563,
-        "bytes": 131930
+        "bytes": 88748,
+        "sha256": "0b554688138dc2c3f41756e5a2bab4e89940bf2da4a3ac511523cac2f22b7052",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/quality/carbunari-sopotu-nou-2014-1280.webp",
         "width": 1280,
         "height": 750,
-        "bytes": 194808
+        "bytes": 130272,
+        "sha256": "3408f4382767e252e76ad454c6e721ce4128d78eedbe40a748d91bf56db68ec3",
+        "exif_count": 0
       }
     ],
     "sourceWidth": 1280,
@@ -36,37 +42,49 @@
         "src": "/images/journey/ai-enhanced/flensburg-night-wide-qnn-480w.webp",
         "width": 480,
         "height": 281,
-        "bytes": 24634
+        "bytes": 15072,
+        "sha256": "ce62260af50fea723a69aa0ec21e1b190c153d0756db533702ace312804563eb",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/flensburg-night-wide-qnn-768w.webp",
         "width": 768,
         "height": 450,
-        "bytes": 51380
+        "bytes": 32072,
+        "sha256": "2f66db414ae33ef683e8142bf5320a237f537ff2aa4c305124a0be391e001225",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/flensburg-night-wide-qnn-1280w.webp",
         "width": 1280,
         "height": 750,
-        "bytes": 117040
+        "bytes": 69830,
+        "sha256": "558c8f742692406583241154260dbca8a2ccbc18f8ae96a80f1cb291ad442c55",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/flensburg-night-wide-qnn-1920w.webp",
         "width": 1920,
         "height": 1125,
-        "bytes": 213732
+        "bytes": 123666,
+        "sha256": "aa7007c7a349732ed4fb84c3fa9646b3e2eb6089c0f8a912b46cffd740dadb6e",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/flensburg-night-wide-qnn-2560w.webp",
         "width": 2560,
         "height": 1500,
-        "bytes": 324226
+        "bytes": 182450,
+        "sha256": "d7543af5fe758b7494f4e3119062c3dfb4996a6dd1ae4d4d959b71b4e3e3952e",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/flensburg-night-wide-qnn-3840w.webp",
         "width": 3840,
         "height": 2250,
-        "bytes": 589770
+        "bytes": 312508,
+        "sha256": "342fe9efe4569f397eeca3c70211481b300ffbac5b72c040a5c6a0515fe94c9e",
+        "exif_count": 0
       }
     ],
     "sourceWidth": 1536,
@@ -82,48 +100,48 @@
         "src": "/images/journey/natural/giza-pyramids-2024-natural-480w.webp",
         "width": 480,
         "height": 281,
-        "bytes": 27330,
-        "sha256": "dac0e46cd2a55f4949d8011d4cca882c5a0b266babe9dc0b3c68929fd182e14f",
+        "bytes": 17620,
+        "sha256": "5c11332df8ce2132c65866bf24bcf442ab012c6b83e779c14e240958015d7a7e",
         "exif_count": 0
       },
       {
         "src": "/images/journey/natural/giza-pyramids-2024-natural-768w.webp",
         "width": 768,
         "height": 450,
-        "bytes": 67768,
-        "sha256": "8cd426d290b3f9846a992ce8cf1765ec8ae41f327a1171c919c0960fe8ae2a88",
+        "bytes": 45106,
+        "sha256": "f6ec89b782af3d5878b9a384d7abb18f2dd9a3ea43d08302efcc0491a67336a6",
         "exif_count": 0
       },
       {
         "src": "/images/journey/natural/giza-pyramids-2024-natural-1280w.webp",
         "width": 1280,
         "height": 750,
-        "bytes": 171416,
-        "sha256": "a8baf5d3bd9b950948f07fa6befc3937be849571e1631e281632a0995d8ecee1",
+        "bytes": 116558,
+        "sha256": "b3ba3c3daec32549ebb348e3c29c349aedd3ffa07d777554cd9c3d25e43e1bbb",
         "exif_count": 0
       },
       {
         "src": "/images/journey/natural/giza-pyramids-2024-natural-1920w.webp",
         "width": 1920,
         "height": 1125,
-        "bytes": 321882,
-        "sha256": "57bcf84c7dd875d3a43fbaa06e47abf6e571893b3c3eb2312fa2510fa8ecd34d",
+        "bytes": 208738,
+        "sha256": "ba7d3e58f328c404046f8e5ab4a10c8dde3b5a42df08c1bc6c20d7a26dd2bf6e",
         "exif_count": 0
       },
       {
         "src": "/images/journey/natural/giza-pyramids-2024-natural-2560w.webp",
         "width": 2560,
         "height": 1500,
-        "bytes": 456706,
-        "sha256": "ef83d2c51b22025a4640430cd248fd39e01621418f16ed31becdbf17b03620a7",
+        "bytes": 284230,
+        "sha256": "36463621e310d380a85d25fd5cd8daf5983cc0c803804c348497105d38266a28",
         "exif_count": 0
       },
       {
         "src": "/images/journey/natural/giza-pyramids-2024-natural-3840w.webp",
         "width": 3840,
         "height": 2250,
-        "bytes": 729688,
-        "sha256": "db300269f261e97311810cbfb12caa18af4f0001d18575a1a19e9620dd67babf",
+        "bytes": 443018,
+        "sha256": "4940d624f4efda55a0d041ec74f204ac852c883027a3e5e69686bde6225f3fbc",
         "exif_count": 0
       }
     ],
@@ -140,25 +158,33 @@
         "src": "/images/journey/quality/morocco-courtyard-2023-480.webp",
         "width": 480,
         "height": 281,
-        "bytes": 43734
+        "bytes": 31300,
+        "sha256": "ba32ce2fe777d0b469bab838c4422325893bba1fa2bc9eba49b1dbfc8114e94e",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/quality/morocco-courtyard-2023-960.webp",
         "width": 960,
         "height": 563,
-        "bytes": 169356
+        "bytes": 123158,
+        "sha256": "eef11a5fa08236372cb641729e49e8ff4923e90787b35068cc5e164f35fd4f69",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/quality/morocco-courtyard-2023-1280.webp",
         "width": 1280,
         "height": 750,
-        "bytes": 280998
+        "bytes": 202112,
+        "sha256": "662719c386d2c2a88ca9d5051e38f0b93d35cf8bffd76e64aa2ac75508e2e24b",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/quality/morocco-courtyard-2023-1536.webp",
         "width": 1536,
         "height": 900,
-        "bytes": 373848
+        "bytes": 267824,
+        "sha256": "722afe11c4e0aa029b91fbf8d78d43c95fec8df8ac4e01fba569a985450813e6",
+        "exif_count": 0
       }
     ],
     "sourceWidth": 1536,
@@ -174,88 +200,54 @@
         "src": "/images/journey/ai-enhanced/paris-fountain-2018-qnn-480w.webp",
         "width": 480,
         "height": 281,
-        "bytes": 49840
+        "bytes": 34314,
+        "sha256": "52c415a15ccb376588eba1840e901c915923e7b890c98f101e21488815e35e7c",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/paris-fountain-2018-qnn-768w.webp",
         "width": 768,
         "height": 450,
-        "bytes": 128240
+        "bytes": 87230,
+        "sha256": "dcfcd2768b1bd0332e2521a60f222f5f99b8710b2f6a4d0d53481bb0ad64c956",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/paris-fountain-2018-qnn-1280w.webp",
         "width": 1280,
         "height": 750,
-        "bytes": 346852
+        "bytes": 239010,
+        "sha256": "4903cb623cc15f85d40463c9af10334fa5fe6e84089b320562209102d6c8d6c7",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/paris-fountain-2018-qnn-1920w.webp",
         "width": 1920,
         "height": 1125,
-        "bytes": 736492
+        "bytes": 504238,
+        "sha256": "50286185f9e78f14fa03a90cad5a84cacad3c6a26c989fa5ab676e7e0d376b3e",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/paris-fountain-2018-qnn-2560w.webp",
         "width": 2560,
         "height": 1500,
-        "bytes": 1244274
+        "bytes": 837664,
+        "sha256": "3a54a8de7e734d15afc66a57530efc83e9c6b3b1c2d6ca3c63262b74331f32bb",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/paris-fountain-2018-qnn-3840w.webp",
         "width": 3840,
         "height": 2250,
-        "bytes": 2554066
+        "bytes": 1646490,
+        "sha256": "d82271df43e618489bade7950842df5c2db74312885ceae3355d99d1671c652d",
+        "exif_count": 0
       }
     ],
     "sourceWidth": 1536,
     "sourceHeight": 2048,
     "key": "paris-fountain"
-  },
-  "/images/journey/cinematic/romania-stream-wide.webp": {
-    "src": "/images/journey/ai-enhanced/romania-stream-2012-qnn-3840w.webp",
-    "width": 3840,
-    "height": 2240,
-    "variants": [
-      {
-        "src": "/images/journey/ai-enhanced/romania-stream-2012-qnn-480w.webp",
-        "width": 480,
-        "height": 280,
-        "bytes": 64812
-      },
-      {
-        "src": "/images/journey/ai-enhanced/romania-stream-2012-qnn-768w.webp",
-        "width": 768,
-        "height": 448,
-        "bytes": 149562
-      },
-      {
-        "src": "/images/journey/ai-enhanced/romania-stream-2012-qnn-1280w.webp",
-        "width": 1280,
-        "height": 747,
-        "bytes": 344472
-      },
-      {
-        "src": "/images/journey/ai-enhanced/romania-stream-2012-qnn-1920w.webp",
-        "width": 1920,
-        "height": 1120,
-        "bytes": 612466
-      },
-      {
-        "src": "/images/journey/ai-enhanced/romania-stream-2012-qnn-2560w.webp",
-        "width": 2560,
-        "height": 1493,
-        "bytes": 914052
-      },
-      {
-        "src": "/images/journey/ai-enhanced/romania-stream-2012-qnn-3840w.webp",
-        "width": 3840,
-        "height": 2240,
-        "bytes": 1650604
-      }
-    ],
-    "sourceWidth": 1536,
-    "sourceHeight": 2048,
-    "key": "romania-stream"
   },
   "/images/journey/editorial/amsterdam-pond-2018-scenery.webp": {
     "src": "/images/journey/ai-enhanced/amsterdam-pond-2018-qnn-3840w.webp",
@@ -266,37 +258,49 @@
         "src": "/images/journey/ai-enhanced/amsterdam-pond-2018-qnn-480w.webp",
         "width": 480,
         "height": 191,
-        "bytes": 45982
+        "bytes": 30988,
+        "sha256": "bcbc6010846b3df643b1db6b29019a2bdf15365135e50c73f169cfd67ea51053",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/amsterdam-pond-2018-qnn-768w.webp",
         "width": 768,
         "height": 305,
-        "bytes": 111928
+        "bytes": 76472,
+        "sha256": "2bbab9d3223d2d506e884604206e0b4de23c2d5d3d2c37c381735b8155ba0a7c",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/amsterdam-pond-2018-qnn-1280w.webp",
         "width": 1280,
         "height": 509,
-        "bytes": 284116
+        "bytes": 193162,
+        "sha256": "70a32db949bc0ed4cdd0893bf1a351b04ef9a448393f6ae7c7c8f4eb014a0b4c",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/amsterdam-pond-2018-qnn-1920w.webp",
         "width": 1920,
         "height": 764,
-        "bytes": 595018
+        "bytes": 389132,
+        "sha256": "4bcc4b74dda30919a171d9432044dff4d9c0bd2c72b2e3f63d6253072f972f9a",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/amsterdam-pond-2018-qnn-2560w.webp",
         "width": 2560,
         "height": 1018,
-        "bytes": 993368
+        "bytes": 629244,
+        "sha256": "6e9c6b6d9a5731f4fbca8cf3f5f4691cc8f6794dc38171bb5c0039892e7529c5",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/amsterdam-pond-2018-qnn-3840w.webp",
         "width": 3840,
         "height": 1527,
-        "bytes": 1920186
+        "bytes": 1212654,
+        "sha256": "d793aaac75dd90e98926add863583d7e0751480ec3822a3b124134c6f104b4d7",
+        "exif_count": 0
       }
     ],
     "sourceWidth": 1280,
@@ -312,19 +316,25 @@
         "src": "/images/journey/quality/szeged-garden-2013-480.webp",
         "width": 480,
         "height": 206,
-        "bytes": 55422
+        "bytes": 42158,
+        "sha256": "60f1f04ee74d604e6260d8160637ae43f251c8e3565ec0932390fc6022cf52a1",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/quality/szeged-garden-2013-960.webp",
         "width": 960,
         "height": 411,
-        "bytes": 201872
+        "bytes": 148468,
+        "sha256": "2b8c25c49b1e8896afd31cd1189e2808bfe1f74b2df5e4ee8b0e83439c4a3871",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/quality/szeged-garden-2013-1280.webp",
         "width": 1280,
         "height": 548,
-        "bytes": 327864
+        "bytes": 238312,
+        "sha256": "1e81cf2e05af9ab72ce6f90184336a7db180264050d5bc1aca00d6ff01e9ef74",
+        "exif_count": 0
       }
     ],
     "sourceWidth": 1280,
@@ -340,43 +350,57 @@
         "src": "/images/journey/ai-enhanced/tenerife-square-2026-qnn-480w.webp",
         "width": 480,
         "height": 853,
-        "bytes": 107700
+        "bytes": 63108,
+        "sha256": "ad15904ac5123c910959e322a9852c4dca83874c3b521f07c87543fa3eda4228",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/tenerife-square-2026-qnn-768w.webp",
         "width": 768,
         "height": 1364,
-        "bytes": 250662
+        "bytes": 144354,
+        "sha256": "2eb68240707f76886c846fbb4e3b56ae14998c8a7152a4769ba28652bbcf6f95",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/tenerife-square-2026-qnn-960w.webp",
         "width": 960,
         "height": 1705,
-        "bytes": 377546
+        "bytes": 219376,
+        "sha256": "e681ca12f24bf7d0ad07dea2d0478e1d7d437429a6adbae77a110433d9b4cae1",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/tenerife-square-2026-qnn-1280w.webp",
         "width": 1280,
         "height": 2274,
-        "bytes": 632446
+        "bytes": 362654,
+        "sha256": "7d2d3c4a9fd75c8a278724887da6fe4c078cbfb136edf91ac19b21fb4010aec2",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/tenerife-square-2026-qnn-1600w.webp",
         "width": 1600,
         "height": 2842,
-        "bytes": 934832
+        "bytes": 529002,
+        "sha256": "d28dc63abd791438b6c6389c3be725e7fb971eb58e026b01936947c17837e379",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/tenerife-square-2026-qnn-1920w.webp",
         "width": 1920,
         "height": 3410,
-        "bytes": 1294502
+        "bytes": 722488,
+        "sha256": "0161288235d2393253abb5d202de1dcfac8324cebe6543a45c61e85fd1b08eae",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/tenerife-square-2026-qnn-2162w.webp",
         "width": 2162,
         "height": 3840,
-        "bytes": 1597978
+        "bytes": 881106,
+        "sha256": "2aa3a0bc18718b6d6c3c9fe28ae51b8a458525171b1c68c59ec118a47b28918b",
+        "exif_count": 0
       }
     ],
     "sourceWidth": 1153,
@@ -392,13 +416,17 @@
         "src": "/images/journey/quality/valletta-scenery-2024-480.webp",
         "width": 480,
         "height": 715,
-        "bytes": 177956
+        "bytes": 132808,
+        "sha256": "136d4cd8b73ee79aba05a4b2dcc2bb35448dfa522202d6ce237b26d304fdfb66",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/quality/valletta-scenery-2024-528.webp",
         "width": 528,
         "height": 787,
-        "bytes": 220532
+        "bytes": 169674,
+        "sha256": "ac69a3b368fb3d70e691e37743dd30adfb579f32ba6fd37ac1eccd5e08e94304",
+        "exif_count": 0
       }
     ],
     "sourceWidth": 528,
@@ -414,49 +442,65 @@
         "src": "/images/journey/ai-enhanced/flensburg-night-2025-qnn-480w.webp",
         "width": 480,
         "height": 640,
-        "bytes": 26968
+        "bytes": 16116,
+        "sha256": "1c6474c0ea216614ff1697fc2c6acc408d8be5de3e45ad35431a0381e34194f4",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/flensburg-night-2025-qnn-768w.webp",
         "width": 768,
         "height": 1024,
-        "bytes": 58430
+        "bytes": 34168,
+        "sha256": "81da9fc6b8fba5186cf2e43e0c43040c6f4c322058fb7478b9cf4fac6451c464",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/flensburg-night-2025-qnn-960w.webp",
         "width": 960,
         "height": 1280,
-        "bytes": 83422
+        "bytes": 49072,
+        "sha256": "051b899d05864da41b83fdd79676d53fbbeea2e2f36fa0bafdf8407b81671071",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/flensburg-night-2025-qnn-1280w.webp",
         "width": 1280,
         "height": 1707,
-        "bytes": 132344
+        "bytes": 76480,
+        "sha256": "06deb54841016602b5ddefe45f5fa713771b92848ced7f96c1e21e22893cd82c",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/flensburg-night-2025-qnn-1600w.webp",
         "width": 1600,
         "height": 2133,
-        "bytes": 187510
+        "bytes": 107128,
+        "sha256": "bcd7dbf70586eae04ce23c9fe1678b5786dfb34a537197d608b6108add4a6ec2",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/flensburg-night-2025-qnn-1920w.webp",
         "width": 1920,
         "height": 2560,
-        "bytes": 245192
+        "bytes": 138054,
+        "sha256": "9f9f822039c701c3e31fd042fd7cff0e6461fe4c856734f85d6ccbe06ed15bf7",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/flensburg-night-2025-qnn-2560w.webp",
         "width": 2560,
         "height": 3413,
-        "bytes": 382704
+        "bytes": 205206,
+        "sha256": "d54a932db8ed3e086d5bf4152ba9f1b37a92a47984e643fa9026e5b5cbfe72c7",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/ai-enhanced/flensburg-night-2025-qnn-2880w.webp",
         "width": 2880,
         "height": 3840,
-        "bytes": 457990
+        "bytes": 242950,
+        "sha256": "4e6ee9dd50a67f2ffc4aeb6fca701c45ba774f0070d5c3913e0bfde419d4ee8a",
+        "exif_count": 0
       }
     ],
     "sourceWidth": 1536,
@@ -472,19 +516,25 @@
         "src": "/images/journey/quality/london-earth-2020-480.webp",
         "width": 480,
         "height": 853,
-        "bytes": 78914
+        "bytes": 49330,
+        "sha256": "45ef3927874b10278be055fdb4c88a30acad105f82d9fb0e9d6ae4666a7da9c2",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/quality/london-earth-2020-960.webp",
         "width": 960,
         "height": 1707,
-        "bytes": 192158
+        "bytes": 121960,
+        "sha256": "315dae4c7be784df500a3838ce6d622e90dc5c1bef79829422a9cd5f65891407",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/quality/london-earth-2020-1152.webp",
         "width": 1152,
         "height": 2048,
-        "bytes": 235868
+        "bytes": 151350,
+        "sha256": "afd941ad8ee60e1deddca8662f499cd8189aa91b8d9f8cbd20114bb4ba73a0f8",
+        "exif_count": 0
       }
     ],
     "sourceWidth": 1152,
@@ -500,13 +550,17 @@
         "src": "/images/journey/quality/london-walk-2016-480.webp",
         "width": 480,
         "height": 640,
-        "bytes": 38236
+        "bytes": 21514,
+        "sha256": "1af17a354278072eb2b28aa00c1c571dd4958ef1a771d9bf2aad89c63b659467",
+        "exif_count": 0
       },
       {
         "src": "/images/journey/quality/london-walk-2016-720.webp",
         "width": 720,
         "height": 960,
-        "bytes": 74910
+        "bytes": 47276,
+        "sha256": "cbd1cf4b55afaedcecb67b5ae97beb7f2601012cb85047f373498c30548fc00e",
+        "exif_count": 0
       }
     ],
     "sourceWidth": 720,

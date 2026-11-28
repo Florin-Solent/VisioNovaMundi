@@ -4,32 +4,41 @@ import JourneyAtlas from "../components/JourneyAtlas.astro";
 import atlasData from "../data/journey-atlas-destinations.json";
 import journeyImageVariants from "../data/journey-image-variants.json";
 
-const responsiveImage = (src: string) => {
+const responsiveImage = (src: string, sizes = "(max-width: 760px) 100vw, 82vw") => {
   const image = journeyImageVariants[src as keyof typeof journeyImageVariants];
   return image
-    ? { src: image.src, srcset: image.variants.map((variant) => `${variant.src} ${variant.width}w`).join(", "), sizes: "(max-width: 760px) 100vw, 82vw" }
+    ? { src: image.src, srcset: image.variants.map((variant) => `${variant.src} ${variant.width}w`).join(", "), sizes }
     : { src };
 };
+const chapterImageSizes = (layout: string, mediaIndex: number) => {
+  if (layout === "full" || layout === "feature") return mediaIndex === 0 ? "100vw" : "(max-width: 760px) 70vw, 270px";
+  if (layout === "panorama") return "(max-width: 1220px) 100vw, 1180px";
+  if (layout === "split") return "(max-width: 760px) 100vw, 60vw";
+  if (layout === "diptych") return mediaIndex === 0 ? "(max-width: 760px) 100vw, 68vw" : "(max-width: 760px) 75vw, 38vw";
+  if (layout === "triptych") return "(max-width: 760px) 100vw, 33vw";
+  if (layout === "portrait") return "(max-width: 760px) 100vw, 40vw";
+  return "(max-width: 760px) 100vw, 70vw";
+};
 
-// Short captions sit on the photographs; the full provenance stays in each "Archive note".
+// Keep public captions concise and avoid exposing private archive metadata.
 const img = "/images/journey";
 const chapters = [
   {
     id: "journey-2013", coord: [46.25, 20.15], years: "2013", countries: "hu", continents: "europe",
     year: "2013", region: "Hungary", place: "Szeged",
-    tagline: "A first international album",
-    text: "A late-summer visit to Szeged, on the banks of the Tisza.",
+    tagline: "A first recorded horizon beyond home",
+    text: "A Szeged place reference opens this chapter on the banks of the Tisza. The available record does not establish the photograph's capture date or a specific visit.",
     layout: "panorama",
-    media: [{ src: `${img}/editorial/szeged-garden-2013-scenery.webp`, alt: "A flower garden in Szeged, photographed from close range", cap: "Szeged · photographed 30 August 2013", pos: "center 60%" }],
+    media: [{ src: `${img}/editorial/szeged-garden-2013-scenery.webp`, alt: "A flower garden in Szeged, photographed from close range", cap: "Szeged · 2013 archive reference", pos: "center 60%" }],
     contexts: [{ title: "City context", text: "After the 1879 Great Flood, residents pledged to build Szeged’s Votive Church. This is city-history context; it does not identify any particular photograph.", href: "https://szegedtourism.hu/en/votive-church-2/" }],
   },
   {
     id: "journey-2014", coord: [44.85, 21.75], years: "2014", countries: "ro gb", continents: "europe",
     year: "2014", region: "Romania · United Kingdom", place: "A wider horizon",
     tagline: "Water, woodland and a historic city landmark",
-    text: "The archive indexes Bigăr and Cărbunari–Șopotu Nou albums to 30 August 2014, and a separate Herculane album to 28 September. A 2014 portrait identifies the Tower of London. Album dates and the founder-confirmed year are shown separately; the exact viewpoints and visit days remain unconfirmed.",
+    text: "Forest, water and rural landscape meet a historic London landmark in this chapter. The available year references do not establish exact travel days or viewpoints.",
     layout: "split",
-    media: [{ src: `${img}/cinematic/carbunari-wide.webp`, alt: "Rolling hills and open countryside in Romania", cap: "Cărbunari–Șopotu Nou · photographed 30 August 2014", pos: "center 50%" }],
+    media: [{ src: `${img}/cinematic/carbunari-wide.webp`, alt: "Rolling hills and open countryside in Romania", cap: "Cărbunari–Șopotu Nou · 2014 archive reference", pos: "center 50%" }],
   },
   {
     id: "journey-2016", coord: [48.4, 9.99], years: "2016 2017", countries: "de", continents: "europe",
@@ -145,8 +154,8 @@ const heroSlides = [
 const clips = [
   { name: "edinburgh-06", title: "Edinburgh", cap: "Still water beneath bare winter branches" },
   { name: "edinburgh-10", title: "Edinburgh", cap: "A garden stream moving over stone" },
-  { name: "richmond-pond", title: "Richmond Park", cap: "From a post dated 14 September 2020" },
-  { name: "richmond-grassland", title: "Richmond Park", cap: "From a post dated 14 September 2020" },
+  { name: "richmond-pond", title: "Richmond Park", cap: "Richmond Park · 2020 archive reference" },
+  { name: "richmond-grassland", title: "Richmond Park", cap: "Richmond Park · 2020 archive reference" },
   { name: "morocco-minaret", title: "Morocco", cap: "A minaret against the sky · original clip, date to be confirmed" },
   { name: "morocco-garden", title: "Morocco", cap: "Palms and shade in a garden · original clip, date to be confirmed" },
   { name: "istanbul-16", title: "Istanbul", cap: "A waterfront and crossing over the water" },
@@ -169,10 +178,10 @@ const chapterByYear: Record<number, string> = {
   2026: "journey-2026",
 };
 const yearNotes: Record<number, string> = {
-  2010: "The timeline begins here; no dated travel chapter is included for this year.",
-  2011: "No dated travel chapter is included for this year.",
-  2012: "The original export contains Timișoara and Parcul Copiilor album records dated 2012–2013, but the reviewed albums have no EXIF capture dates. They remain visible in the atlas as undated evidence; no travel year is assigned.",
-  2015: "The London-area record has matching photo and post dates of 23 June 2015; these timestamps do not confirm a visit that day.",
+  2010: "The timeline begins here; no travel story is published for this year.",
+  2011: "No travel story is published for this year.",
+  2012: "Timișoara remains in the atlas without an assigned travel year because available dates do not establish when the visit occurred.",
+  2015: "A London-area reference appears for this year; available timestamps do not establish a visit date.",
 };
 const timelineStartYear = 2010;
 const timelineEndYear = Math.max(2026, new Date().getFullYear());
@@ -196,7 +205,7 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
     <div class="ts-slides" aria-hidden="true">
       {heroSlides.map((slide, index) => (
         <div class:list={["ts-slide", { "is-active": index === 0 }]}>
-          <img {...(index === 0 ? responsiveImage(slide.src) : { "data-src": slide.src, "data-srcset": responsiveImage(slide.src).srcset })} alt="" style={`object-position:${slide.pos}`} decoding="async" fetchpriority={index === 0 ? "high" : "low"} />
+          <img {...(index === 0 ? responsiveImage(slide.src, "100vw") : { "data-src": slide.src, "data-srcset": responsiveImage(slide.src, "100vw").srcset })} alt="" style={`object-position:${slide.pos}`} decoding="async" fetchpriority={index === 0 ? "high" : "low"} />
         </div>
       ))}
     </div>
@@ -231,7 +240,7 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
       <p class="prologue-text">I kept a quiet dream of discovering the world and one day helping others. Work and education widened the horizon. Travel gave that curiosity somewhere to go.</p>
     </div>
     <figure class="prologue-photo">
-      <img {...responsiveImage(`${img}/london-walk-2016.webp`)} alt="Florin walking between London buildings, with The Shard in the distance" loading="eager" decoding="async" />
+      <img {...responsiveImage(`${img}/london-walk-2016.webp`, "300px")} alt="Florin walking between London buildings, with The Shard in the distance" loading="lazy" decoding="async" />
       <figcaption>London · a moment between buildings</figcaption>
     </figure>
   </section>
@@ -254,6 +263,7 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
   </section>
 
   <JourneyAtlas />
+  <p class="media-treatment-note">Image note: some photographs are AI-enhanced display derivatives. Upscaling can affect fine detail; these are not native 4K captures.</p>
   <!-- Chapters -->
   <nav class="chapter-rail" aria-label="Travel chapters" data-chapter-rail>
     <ol>
@@ -277,7 +287,7 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
           <div class="scene-visual">
             {chapter.media.map((media, mediaIndex) => (
               <figure class:list={["scene-photo", `scene-photo--${mediaIndex + 1}`]}>
-                <img {...responsiveImage(media.src)} alt={media.alt} loading={index === 0 ? "eager" : "lazy"} decoding="async" style={`object-position:${media.pos}`} />
+                <img {...responsiveImage(media.src, chapterImageSizes(chapter.layout, mediaIndex))} alt={media.alt} loading="lazy" decoding="async" style={`object-position:${media.pos}`} />
                 <figcaption>{media.cap}</figcaption>
               </figure>
             ))}
@@ -369,7 +379,7 @@ const timelineYears = Array.from({ length: timelineEndYear - timelineStartYear +
 
   <!-- Closing -->
   <section class="finale" aria-labelledby="finale-title" data-finale>
-    <img {...responsiveImage(`${img}/cinematic/flensburg-night-wide.webp`)} class="finale-photo" alt="Night waterfront in Flensburg under a bright moon, with city lights reflected on the water" loading="eager" fetchpriority="low" decoding="async" />
+    <img {...responsiveImage(`${img}/cinematic/flensburg-night-wide.webp`, "100vw")} class="finale-photo" alt="Night waterfront in Flensburg under a bright moon, with city lights reflected on the water" loading="lazy" fetchpriority="low" decoding="async" />
     <div class="finale-copy">
       <h2 id="finale-title" class="jlabel">The journey continues</h2>
       <p class="finale-line">Travel opened my eyes.</p>
@@ -838,7 +848,7 @@ body:has(.film) main#main-content{transform:none!important;}
 .chapter-rail:hover .rail-year,.chapter-rail:focus-within .rail-year,.chapter-rail li.is-current .rail-year{opacity:1;transform:none;}
 .chapter-rail li.is-current a{color:#112b38;}
 .chapter-rail li.is-current .rail-dot{background:var(--gold-deep);transform:scale(1.5);}
-@media (width<1520px){.chapter-rail{display:none;}}
+@media (width<1200px){.chapter-rail{display:none;}}
 
 /* ---------- Chapters ---------- */
 .journey{display:grid;gap:clamp(90px,15vh,180px);margin:0;padding:clamp(90px,14vh,170px) 0 clamp(90px,14vh,170px);list-style:none;}
@@ -1265,6 +1275,7 @@ body:has(.film) main#main-content{transform:none!important;}
 .film .chapter-rail li.is-current .rail-dot{background:#2563eb}
 .film .chapter-rail ol{border-color:#3e5563}
 .film .chapter-rail li.is-current a{color:#f8fafc}
+.media-treatment-note{max-width:1050px;margin:0 auto;padding:0 20px;color:#3e5563;font:500 12px/1.55 var(--sans);text-align:right}
 .film .scene-context{border-color:#2563eb}
 .film .scene-numerals i{background:linear-gradient(90deg,#2563eb,#2563eb55)}
 .film .ts-begin{border-color:#e3eef0;background:#2563eb;color:#f8fafc}

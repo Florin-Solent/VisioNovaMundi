@@ -644,6 +644,11 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
 
     const sitePage = await context.newPage();
     const sitePageErrors = [];
+    const externalHosts = new Set();
+    sitePage.on('request', request => {
+      const requestUrl = new URL(request.url());
+      if (requestUrl.hostname !== url.hostname) externalHosts.add(requestUrl.hostname);
+    });
     sitePage.on('pageerror', error => sitePageErrors.push(error.message));
     const siteRoutes = ['/', '/about/', '/projects/', '/governance/', '/unity-house/', '/commissioners-partners/', '/contact/', '/journey/'];
     for (const path of siteRoutes) {
@@ -653,6 +658,41 @@ export async function checkJourneyMedia({ base, browser, root = resolve('dist'),
       assert(await sitePage.locator('main').count() === 1, `Hosted website route is missing its main landmark: ${path}`);
       assert((await sitePage.locator('main').innerText()).trim().length > 60, `Hosted website route has no visible main content: ${path}`);
     }
+    await sitePage.goto(`${url.origin}/journey/`, { waitUntil: 'domcontentloaded', timeout: 45000 });
+    const canonical = await sitePage.locator('link[rel="canonical"]').getAttribute('href');
+    assert.equal(canonical, 'https://www.visionovamundi.com/journey/', 'Journey canonical URL must match the production www hostname');
+    const meta = await sitePage.evaluate(() => ({
+      ogImage: document.querySelector('meta[property="og:image"]')?.getAttribute('content'),
+      twitterCard: document.querySelector('meta[name="twitter:card"]')?.getAttribute('content'),
+    }));
+    assert.equal(meta.ogImage, 'https://www.visionovamundi.com/images/vnm-social-card.png', 'Journey Open Graph image must use the canonical social card');
+    assert.equal(meta.twitterCard, 'summary_large_image', 'Journey Twitter card must use the large image layout');
+    const robotsResponse = await sitePage.request.get(`${url.origin}/robots.txt`);
+    assert.equal(robotsResponse.status(), 200, 'robots.txt must be served on the hosted preview');
+    const robots = await robotsResponse.text();
+    assert(robots.includes('Sitemap: https://www.visionovamundi.com/sitemap.xml'), 'Hosted robots.txt has no canonical sitemap reference');
+    const sitemapResponse = await sitePage.request.get(`${url.origin}/sitemap.xml`);
+    assert.equal(sitemapResponse.status(), 200, 'Sitemap must be served on the hosted preview');
+    const sitemap = await sitemapResponse.text();
+    assert(sitemap.includes('<loc>https://www.visionovamundi.com/journey/</loc>'), 'Sitemap must include the canonical Journey route');
+    const missingResponse = await sitePage.request.get(`${url.origin}/vnm-release-check-intentional-404/`);
+    assert.equal(missingResponse.status(), 404, 'Unknown hosted routes must return HTTP 404');
+    assert.match(await missingResponse.text(), /page not found/i, 'Hosted 404 must display the branded not-found page');
+    const previewRobots = (await sitePage.request.get(`${url.origin}/journey/`)).headers()['x-robots-tag'] || '';
+    assert.match(previewRobots, /noindex/i, 'Cloudflare preview must be marked noindex');
+    const builtAsset = await sitePage.evaluate(() => performance.getEntriesByType('resource').map(entry => entry.name).find(name => new URL(name).origin === location.origin && new URL(name).pathname.startsWith('/_astro/')));
+    assert(builtAsset, 'Hosted page did not load a fingerprinted Astro asset for cache verification');
+    const hashedResponse = await sitePage.request.get(builtAsset);
+    assert.equal(hashedResponse.status(), 200, 'Fingerprint asset must be available from the hosted preview');
+    assert.match(hashedResponse.headers()['cache-control'] || '', /immutable/i, 'Fingerprint asset must have immutable caching');
+    const mediaCache = await sitePage.request.get(`${url.origin}/media/journey/cinematic/dubai-23.webm`);
+    assert.equal(mediaCache.status(), 200, 'Hosted video must be available for cache verification');
+    assert.match(mediaCache.headers()['cache-control'] || '', /max-age=604800/i, 'Stable media must use the configured bounded cache lifetime');
+    assert([...externalHosts].every(host => /(^|\.)cloudflareinsights\.com$/i.test(host)), `Unexpected third-party resource hosts: ${[...externalHosts].join(', ')}`);
+    report.hostedAcceptance.siteMetadata = { canonical, openGraphImage: meta.ogImage, twitterCard: meta.twitterCard };
+    report.hostedAcceptance.discoveryAndHttp = { robots: true, sitemap: true, custom404: true, previewNoindex: true };
+    report.hostedAcceptance.cacheHeaders = { fingerprintedAssets: hashedResponse.headers()['cache-control'], media: mediaCache.headers()['cache-control'] };
+    report.hostedAcceptance.externalResourceHosts = [...externalHosts];
     await sitePage.setViewportSize({ width: 390, height: 844 });
     await sitePage.goto(`${url.origin}/`, { waitUntil: 'domcontentloaded', timeout: 45000 });
     const mobileMenu = sitePage.locator('[data-mobile-nav-toggle]');
